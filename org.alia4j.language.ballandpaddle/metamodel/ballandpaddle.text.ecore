@@ -1,0 +1,193 @@
+package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddle" {
+		
+	class Root {
+		containment reference Level level (1..1);
+		containment reference Paddle paddles (1..-1);
+		containment reference Ball balls (1..-1);
+		containment reference Block blocks (0..-1);
+		containment reference Effect effects (0..-1);
+		containment reference Power powers (0..-1);		
+	}
+
+	class Level{
+		attribute EString id (1..1);
+		attribute EFloat powerSpawnChance (0..1);
+		attribute EString blocks (0..-1);		
+	}
+	
+	abstract class BAPObject{
+		attribute EString id (1..1);
+	}
+	
+	class Paddle extends BAPObject{				
+		attribute EInt x (1..1);
+		attribute EInt y (1..1);	
+		attribute Shape shape (1..1);
+		attribute EInt size (1..1);
+		attribute EInt orientation (1..1);		
+	}
+	
+	class Ball extends BAPObject{				
+		attribute EInt x (1..1);
+		attribute EInt y (1..1);	
+		attribute EInt size (0..1);
+		attribute EInt direction (0..1);
+		attribute EInt speed (0..1);
+	}
+		
+	class Block extends BAPObject{
+		attribute EInt hardness (1..1);
+		attribute EInt normalRes (0..1);
+		attribute EInt fireRes (0..1);
+		attribute EInt coldRes (0..1);
+		attribute EInt shockRes (0..1);
+		reference Power power (0..1);		
+	}
+	
+	class Power{
+		attribute EString id (1..1);	
+		reference Effect effects (1..-1);
+		attribute EInt duration (1..1);		
+		attribute EFloat powerSpawnChance (0..1);	
+		containment reference Target target (1..1);
+	}
+	
+	abstract class Target{
+	}
+	
+	class ObjectTarget extends Target{
+		reference BAPObject item (1..1);
+	}
+	
+	class TypeTarget extends Target{		
+		attribute TargetType type (1..1);
+		containment reference BooleanExpression params (1..1);
+	}
+	
+	abstract class BooleanExpression{}
+	
+	abstract class BooleanBinaryExpression extends BooleanExpression{
+		containment reference BooleanExpression left (1..1);
+		containment reference BooleanExpression right (1..1);		
+	}
+	
+	abstract class BooleanUnaryExpression extends BooleanExpression{
+		containment reference BooleanExpression body (1..1);
+	}
+	
+	class EqParameter extends BooleanBinaryExpression{
+	}
+	
+	class SmthParameter extends BooleanBinaryExpression{
+	}
+	
+	class SeqParameter extends BooleanBinaryExpression{
+	}
+	
+	class LthParameter extends BooleanBinaryExpression{
+	}
+	
+	class LeqParameter extends BooleanBinaryExpression{
+	}
+	
+	class NeqParameter extends BooleanBinaryExpression{
+	}
+	
+	class OrParameter extends BooleanBinaryExpression{
+	}
+	
+	class AndParameter extends BooleanBinaryExpression{
+	}
+	
+	class BracketParameter extends BooleanUnaryExpression{}
+	
+	class NegParameter extends BooleanUnaryExpression{}
+	
+	class AttParameter extends BooleanExpression{
+		attribute Attribute att (1..1);
+	}
+	
+	class ValueParameter extends BooleanExpression{
+		attribute EInt value(1..1);		
+	}
+	
+	class Effect{
+		attribute EString id (1..1);
+		containment reference Target target (0..1);
+		attribute Attribute type (1..1);	
+		containment reference Expression expression (1..1);
+	}
+	
+	abstract class Expression{	
+	}
+	
+	abstract class BinaryExpression extends Expression{		
+		containment reference Expression left(1..1);
+		containment reference Expression right(1..1);	
+	}
+	
+	abstract class UnaryExpression extends Expression{		
+		containment reference Expression body(1..1);		
+	}
+	
+	class MultExpression extends BinaryExpression{
+	}
+	
+	class DivExpression extends BinaryExpression {
+	}
+	
+	class PlusExpression extends BinaryExpression{
+	}
+	
+	class MinusExpression extends BinaryExpression{
+	}
+	
+	class BracketExpression extends UnaryExpression{				
+	}
+	
+	class NegExpression extends UnaryExpression{			
+	}
+	
+	class IntOperand extends Expression{
+		attribute EInt value (1..1);	
+	}
+	
+	class AttOperand extends Expression{		
+		attribute Attribute att(1..1);				
+	}
+	
+	serializable enum Attribute{
+		0 : X = "x";
+		1 : Y = "y";
+		2 : Size = "size";
+		3 : Orientation = "orientation";
+		4 : Speed = "speed";
+		5 : Hardness = "hardness";
+		6 : NormalRes = "normal resistance";
+		7 : FireRes = "fire resistance";
+		8 : ColdRes = "cold resistance";
+		9 : ShockRes = "shock resistance";
+		10 : NormalDam = "normal damage";
+		11 : FireDam = "fire damage";
+		12 : ColdDam = "cold damage";
+		13 : ShockDam = "Shock damage";
+	}
+		
+	serializable enum Shape {
+		0 : Circle = "circle";
+		1 : Triangle = "triangle";
+		2 : Square = "square";
+		3 : Rectangle = "rectangle";
+	}
+	
+	serializable enum DamageEffectType{		
+		0 : Damage = "damage";
+	}
+	
+	serializable enum TargetType{		
+		0 : Block = "block";
+		1 : Paddle = "paddle";
+		2 : Ball = "ball";
+	}
+		
+}

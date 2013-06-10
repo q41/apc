@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ASCII"?>
+<textadventure:World xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:textadventure="http://www.alia4j.org/alia4j-language-textadventure">
+  <items name="TheOneRing" location="//@tiles.0">
+    <effects xsi:type="textadventure:WhileEffect">
+      <binding id="p"/>
+      <action xsi:type="textadventure:RemoveAction" what="//@items.0/@effects.0/@binding.0">
+        <from/>
+      </action>
+    </effects>
+  </items>
+  <persons name="NazgulLord" location="//@tiles.2">
+    <abilities xsi:type="textadventure:IgnoreItemAbility" ignoredItem="//@items.0"/>
+  </persons>
+  <persons name="Frodo" location="//@tiles.0"/>
+  <persons name="Sam" location="//@tiles.2"/>
+  <tiles description="The Shire" id="x0y0"/>
+  <tiles x="1" description="Bree" id="x1y0"/>
+  <tiles x="2" description="Weathertop" id="x2y0"/>
+</textadventure:World>

@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EMFText Parser Plugin: textadventure
+Bundle-SymbolicName: org.alia4j.language.textadventure.resource.textadventure;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: Software Technology Group - TU Dresden Germany
+Require-Bundle: org.eclipse.core.runtime;resolution:=optional,
+  org.eclipse.emf.ecore,
+  org.eclipse.emf.ecore.change,
+  org.eclipse.emf.validation;resolution:=optional,
+  org.emftext.access;resolution:=optional,
+  org.eclipse.debug.core;resolution:=optional,
+  org.emftext.commons.antlr3_4_0,
+  org.alia4j.language.textadventure
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.alia4j.language.textadventure.resource.textadventure,
+  org.alia4j.language.textadventure.resource.textadventure.analysis,
+  org.alia4j.language.textadventure.resource.textadventure.mopp,
+  org.alia4j.language.textadventure.resource.textadventure.debug,
+  org.alia4j.language.textadventure.resource.textadventure.launch,
+  org.alia4j.language.textadventure.resource.textadventure.grammar,
+  org.alia4j.language.textadventure.resource.textadventure.util
+Bundle-Activator: org.alia4j.language.textadventure.resource.textadventure.mopp.TextadventurePlugin

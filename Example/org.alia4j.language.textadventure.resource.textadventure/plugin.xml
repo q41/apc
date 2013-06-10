@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<extension point="org.emftext.access.syntax">
+		<metaInformationProvider class="org.alia4j.language.textadventure.resource.textadventure.mopp.TextadventureMetaInformation" id="org.alia4j.language.textadventure.resource.textadventure.mopp.TextadventureMetaInformation">
+		</metaInformationProvider>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.problem" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="org.eclipse.core.resources.problemmarker">
+		</super>
+		<super type="org.eclipse.core.resources.textmarker">
+		</super>
+		<super type="org.eclipse.emf.ecore.diagnostic">
+		</super>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.problem.syntax_error" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="org.alia4j.language.textadventure.resource.textadventure.problem">
+		</super>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.problem.print_problem" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="org.alia4j.language.textadventure.resource.textadventure.problem">
+		</super>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.problem.unresolved_reference" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="org.alia4j.language.textadventure.resource.textadventure.problem">
+		</super>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.problem.analysis_problem" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="org.alia4j.language.textadventure.resource.textadventure.problem">
+		</super>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.problem.builder_error" name="EMFText Problem" point="org.eclipse.core.resources.markers">
+		<persistent value="true">
+		</persistent>
+		<super type="org.alia4j.language.textadventure.resource.textadventure.problem">
+		</super>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.nature" name="textadventure nature" point="org.eclipse.core.resources.natures">
+		<runtime>
+			<run class="org.alia4j.language.textadventure.resource.textadventure.mopp.TextadventureNature">
+			</run>
+		</runtime>
+		<builder id="org.alia4j.language.textadventure.resource.textadventure.builder">
+		</builder>
+	</extension>
+	
+	<extension point="org.eclipse.core.resources.builders" id="org.alia4j.language.textadventure.resource.textadventure.builder" name="textadventure Builder">
+		<builder hasNature="true">
+			<run class="org.alia4j.language.textadventure.resource.textadventure.mopp.TextadventureBuilderAdapter">
+			</run>
+		</builder>
+	</extension>
+	
+	<extension-point id="org.alia4j.language.textadventure.resource.textadventure.default_load_options" name="Default Load Options" schema="schema/default_load_options.exsd">
+	</extension-point>
+	
+	<extension point="org.eclipse.emf.ecore.extension_parser">
+		<parser class="org.alia4j.language.textadventure.resource.textadventure.mopp.TextadventureResourceFactoryDelegator" type="textadventure">
+		</parser>
+	</extension>
+	
+	<extension-point id="org.alia4j.language.textadventure.resource.textadventure.additional_extension_parser" name="Additional Extension Parser" schema="schema/additional_extension_parser.exsd">
+	</extension-point>
+	
+	<extension point="org.eclipse.debug.core.breakpoints">
+		<breakpoint class="org.alia4j.language.textadventure.resource.textadventure.debug.TextadventureLineBreakpoint" id="org.alia4j.language.textadventure.resource.textadventure.debug.breakpoint" markerType="org.alia4j.language.textadventure.resource.textadventure.debug.lineBreakpoint.marker" name="textadventure Breakpoint">
+		</breakpoint>
+	</extension>
+	
+	<extension id="org.alia4j.language.textadventure.resource.textadventure.debug.lineBreakpoint.marker" point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.debug.core.lineBreakpointMarker">
+		</super>
+		<super type="org.eclipse.core.resources.textmarker">
+		</super>
+		<persistent value="true">
+		</persistent>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType id="org.alia4j.language.textadventure.resource.textadventure.ui.launchConfigurationType" delegate="org.alia4j.language.textadventure.resource.textadventure.launch.TextadventureLaunchConfigurationDelegate" modes="run,debug" name="textadventure Application" sourceLocatorId="org.alia4j.language.textadventure.resource.textadventure.ui.sourceLocator" sourcePathComputerId="org.alia4j.language.textadventure.resource.textadventure.ui.sourcePathComputer" delegateName="textadventure Launch Tooling" delegateDescription="This will run or debug .textadventure files.">
+		</launchConfigurationType>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.sourcePathComputers">
+		<sourcePathComputer class="org.alia4j.language.textadventure.resource.textadventure.debug.TextadventureSourcePathComputerDelegate" id="org.alia4j.language.textadventure.resource.textadventure.ui.sourcePathComputer">
+		</sourcePathComputer>
+	</extension>
+	
+	<extension point="org.eclipse.debug.core.sourceLocators">
+		<sourceLocator id="org.alia4j.language.textadventure.resource.textadventure.ui.sourceLocator" class="org.alia4j.language.textadventure.resource.textadventure.debug.TextadventureSourceLocator" name="textadventure Source Locator">
+		</sourceLocator>
+	</extension>
+	
+</plugin>

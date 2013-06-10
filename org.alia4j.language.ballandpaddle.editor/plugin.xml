@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.alia4j.language.ballandpaddle.presentation.BallandpaddleModelWizardID"
+            name="%_UI_BallandpaddleModelWizard_label"
+            class="org.alia4j.language.ballandpaddle.presentation.BallandpaddleModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/BallandpaddleModelFile.gif">
+         <description>%_UI_BallandpaddleModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <editor
+            id="org.alia4j.language.ballandpaddle.presentation.BallandpaddleEditorID"
+            name="%_UI_BallandpaddleEditor_label"
+            icon="icons/full/obj16/BallandpaddleModelFile.gif"
+            extensions="ballandpaddle"
+            class="org.alia4j.language.ballandpaddle.presentation.BallandpaddleEditor"
+            contributorClass="org.alia4j.language.ballandpaddle.presentation.BallandpaddleActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>

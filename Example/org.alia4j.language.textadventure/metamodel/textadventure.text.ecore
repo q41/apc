@@ -1,0 +1,89 @@
+package textadventure textadventure "http://www.alia4j.org/alia4j-language-textadventure" {
+
+	class World {
+		containment reference Item items (0..-1);
+		containment reference Person persons (0..-1);
+		containment reference Tile tiles (0..-1);
+	}
+	
+	class Tile {
+		attribute EInt x (1..1);
+		attribute EInt y (1..1);
+		attribute EString description (1..1);
+		attribute EString id (1..1);
+	}
+
+	class Item {
+	
+		attribute EString name (1..1);
+		containment reference Effect effects (0..-1);
+		
+		reference Tile location (0..1);
+	}
+	
+	serializable enum Condition {
+		0 : USED = "used";
+	}
+	
+	serializable enum Participant {
+		0 : ON = "on";
+	}
+	
+	class Binding {
+		attribute Participant participant (1..1);
+		attribute EString id (1..1);
+	}
+	
+	abstract class Effect {
+	
+		attribute Condition condition (1..1);
+		containment reference Binding binding (1..-1);
+		containment reference Action action (1..-1);
+	}
+	
+	class WhileEffect extends Effect {
+	
+	}
+	
+	abstract class Action {
+	}
+	
+	class RemoveAction extends Action {
+		reference Binding what (1..1);
+		containment reference List from (1..1);
+	}
+	
+	class List {
+		attribute Position position (1..1);
+		attribute Target target (1..1);
+		attribute Property property (1..1);
+	}
+
+	serializable enum Position {
+		0 : RESULT = "result";
+	}
+
+	serializable enum Target {
+		0 : TILE = "Tile";
+	}
+
+	serializable enum Property {
+		0 : PERSONS = "Persons";
+		0 : ITEMS = "Items";
+	}
+
+	class Person {
+		attribute EString name (1..1);
+		containment reference Ability abilities (0..-1);
+
+		reference Tile location (1..1);
+	}
+	
+	abstract class Ability {
+	}
+	
+	class IgnoreItemAbility extends Ability {
+		reference Item ignoredItem (1..1);
+	}
+
+}
