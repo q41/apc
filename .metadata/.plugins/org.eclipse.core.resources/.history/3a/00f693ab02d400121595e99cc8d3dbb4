@@ -1,0 +1,29 @@
+import java.util.List;
+
+
+public class Level {
+
+	private String id;
+	private float powerSpawnChance;
+	private String[] importedBlocks;
+	
+	private List<Paddle> paddles;
+	private List<Ball> balls;
+	private List<Block> blocks;
+	
+	
+	
+	
+	
+	public List<Block> getBlocks(){
+		return blocks;
+	}
+	
+	public List<Paddle> getPaddles(){
+		return paddles;
+	}
+	
+	public List<Ball> getBalls(){
+		return balls;
+	}
+}

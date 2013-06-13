@@ -1,0 +1,25 @@
+import java.util.List;
+
+
+public class Level {
+
+	private Paddle[] paddles;
+	private List<Ball> balls;
+	private Block[] blocks;
+	
+	
+	
+	
+	
+	public Block[] getBlocks(){
+		return blocks;
+	}
+	
+	public Paddle[] getPaddles(){
+		return paddles;
+	}
+	
+	public List<Ball> getBalls(){
+		return balls;
+	}
+}

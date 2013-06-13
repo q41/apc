@@ -1,0 +1,16 @@
+
+public class Root {
+
+	private static Root INSTANCE;
+	
+	private Level level;
+	private Paddle[] paddles;
+	private Ball[] balls;
+	private Block[] blocks;
+	private Effect[] effects;
+	private Power[] powers;
+	
+	
+	
+	
+}

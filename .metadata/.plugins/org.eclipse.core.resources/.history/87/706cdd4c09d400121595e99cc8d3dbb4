@@ -1,0 +1,9 @@
+
+public abstract class BAPObject {
+
+	private String id;
+	public String getId(){
+		return this.id;
+	}
+	
+}

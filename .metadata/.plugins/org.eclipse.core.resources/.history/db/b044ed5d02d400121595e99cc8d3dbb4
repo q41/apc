@@ -1,0 +1,23 @@
+
+public class Level {
+
+	private Paddle[] paddles;
+	private Ball[] balls;
+	private Block[] blocks;
+	
+	
+	
+	
+	
+	public Block[] getBlocks(){
+		return blocks;
+	}
+	
+	public Paddle[] getPaddles(){
+		return paddles;
+	}
+	
+	public Ball[] getBalls(){
+		return balls;
+	}
+}

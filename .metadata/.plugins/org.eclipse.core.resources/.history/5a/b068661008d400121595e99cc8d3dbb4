@@ -1,0 +1,11 @@
+
+public class Block extends BAPObject {
+
+	private int hardness;
+	private int normalRes;
+	private int fireRes;
+	private int coldRes;
+	private int shockRes;
+	private Power power;
+	
+}
