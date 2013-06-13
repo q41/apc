@@ -4,9 +4,7 @@ import java.net.URL;
 import java.util.Map;
 
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
-import org.alia4j.liam.Attachment;
-import org.alia4j.liam.CompositionRule;
-import org.eclipse.emf.common.util.EList;
+import org.alia4j.language.ballandpaddle.Block;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -74,7 +72,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Process AST
 		//-----------------------
 
-		
+		Block block = ballandpaddle.base.Block.getInstance();
 
 		//-----------------------
 		// Deploy all definitions
