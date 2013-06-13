@@ -10,10 +10,6 @@ import java.util.Set;
 
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
 import org.alia4j.language.ballandpaddle.Block;
-import org.alia4j.language.textadventure.Ability;
-import org.alia4j.language.textadventure.IgnoreItemAbility;
-import org.alia4j.languages.textadventure.context.TAContextFactory;
-import org.alia4j.languages.textadventure.predicate.TAAtomicPredicateFactory;
 import org.alia4j.liam.ActionFactory;
 import org.alia4j.liam.AtomicPredicate;
 import org.alia4j.liam.Attachment;
@@ -36,8 +32,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-
-import textadventure.base.Person;
 
 public class Importer implements org.alia4j.fial.Importer {
 
@@ -103,7 +97,8 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Process AST
 		//-----------------------
 
-		ballandpaddle.base.Level block = ballandpaddle.base.Block.getInstance();
+		ballandpaddle.base.Level level = ballandpaddle.base.Level.getInstance();
+		
 
 		//-----------------------
 		// Deploy all definitions
@@ -116,24 +111,22 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 	}
 	
-	private void setupIgnoreAbility(
-			org.alia4j.language.textadventure.Person person, Ability ability) {
+	private void announcePrint() {
 		MethodPattern pattern = new MethodPattern(ModifiersPattern.ANY,
-				TypePattern.ANY, ClassTypePattern.ANY,
-				NamePattern.ANY, ParametersPattern.ANY,
+				TypePattern.ANY, ClassTypePattern.ANY, PRINTNAMEPATTERN, ParametersPattern.ANY,
 				ExceptionsPattern.ANY);
 
-		Specialization specialization = new Specialization(pattern,
-				new BasicPredicate<AtomicPredicate>(
-						TAAtomicPredicateFactory.findOrCreateIsSamePredicate(
-								ContextFactory.findOrCreateObjectConstantContext(Person.getPerson(person.getName())),
-								TAContextFactory.findOrCreateLocalVariableContext("ego")),
-								true),
-				Collections.<Context>emptyList());
-
-		Set<AttachmentReference> toIgnore = new HashSet<AttachmentReference>();
-		toIgnore.addAll(item2behavior.get(((IgnoreItemAbility) ability).getIgnoredItem()));
-		Attachment ignoreAttachment = new Attachment(
+		Specialization specialization = new Specialization(pattern, null, Collections.<Context>emptyList());
+//				new BasicPredicate<AtomicPredicate>(
+//						TAAtomicPredicateFactory.findOrCreateIsSamePredicate(
+//								ContextFactory.findOrCreateObjectConstantContext(Person.getPerson(person.getName())),
+//								TAContextFactory.findOrCreateLocalVariableContext("ego")),
+//								true)
+		
+		//Set<AttachmentReference> toIgnore = new HashSet<AttachmentReference>();
+		//toIgnore.addAll(item2behavior.get(((IgnoreItemAbility) ability).getIgnoredItem()));
+		
+		Attachment MyAttachment = new Attachment(
 				Collections.singleton(specialization),
 				ActionFactory.findOrCreateNoOpAction(), ScheduleInfo.BEFORE);
 		initialCompositionRules.add(new CompositionRule(
@@ -145,7 +138,24 @@ public class Importer implements org.alia4j.fial.Importer {
 		initialAttachments.add(ignoreAttachment);
 	}
 
-	
+	public static final NamePattern PRINTNAMEPATTERN = new NamePattern() {
+
+		@Override
+		public boolean matches(CharSequence name) {
+			return name.toString().equals("print");
+		}
+
+		@Override
+		public int hashCode() {
+			return System.identityHashCode(this);
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return obj == this;
+		}
+		
+	};
 }
 
 
