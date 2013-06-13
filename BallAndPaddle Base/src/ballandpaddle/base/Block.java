@@ -9,6 +9,10 @@ public class Block extends BAPObject {
 	private int shockRes;
 	private Power power;
 	
+	public Block(String id, int x, int y) {
+		super(id, x, y);
+	}
+	
 	public Block(int x, int y, Block b){
 		super(b.getId(), x, y);
 		this.hardness = b.getHardness();
