@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Level {
 
+	private static Level INSTANCE;
 	private String id;
 	private float powerSpawnChance;
 	private List<String> importedBlocks;
@@ -14,6 +15,34 @@ public class Level {
 	private List<Block> blocks;
 	private int height;
 	private int width;
+	
+	public static Level getInstance() {
+		if (INSTANCE == null)
+			INSTANCE = new Level();
+		return INSTANCE;
+	}
+	
+	public Level(){}
+	
+	public void setID(String id){
+		this.id = id;
+	}
+	
+	public void setPaddles(List<Paddle> paddles){
+		this.paddles = paddles;
+	}
+	
+	public void setBalls(List<Ball> balls){
+		this.balls = balls;
+	}
+	
+	public void setImportedBlocks(List<String> impBlocks){
+		importedBlocks = impBlocks;
+	}
+	
+	public void setPowerSpawnChance(float pSC){
+		powerSpawnChance = pSC;
+	}
 	
 	public Level(String id, List<Paddle> paddles, List<Ball> balls, List<String> impBlocks, float pSC){
 		this(id, paddles, balls, impBlocks);
@@ -69,4 +98,6 @@ public class Level {
 	public List<Ball> getBalls(){
 		return balls;
 	}
+	
+	
 }
