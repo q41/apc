@@ -69,7 +69,8 @@ public class Importer implements org.alia4j.fial.Importer {
 		URL mainFile = systemClassLoader.getResource(System
 				.getProperty("ballandpaddle.main") + ".xmi");
 		if (mainFile == null) {
-			System.out.println("No text adventure file specified (use VM argument -Dtextadventure.main=<class-path-relative-file-name>");
+			System.out.println("No text adventure file specified (use VM argument -Dballandpaddle.main=<class-path-relative-file-name>");
+			mainFile = systemClassLoader.getResource("ballandpaddle.main.xmi");
 		}
 
 		//-----------------------
@@ -129,13 +130,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		Attachment MyAttachment = new Attachment(
 				Collections.singleton(specialization),
 				ActionFactory.findOrCreateNoOpAction(), ScheduleInfo.BEFORE);
-		initialCompositionRules.add(new CompositionRule(
-				Collections.singleton(ignoreAttachment),
-				Collections.<AttachmentReference>emptySet(),
-				Collections.<AttachmentReference>emptySet(),
-				toIgnore,
-				true));
-		initialAttachments.add(ignoreAttachment);
 	}
 
 	public static final NamePattern PRINTNAMEPATTERN = new NamePattern() {

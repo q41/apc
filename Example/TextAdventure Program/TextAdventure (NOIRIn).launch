@@ -45,5 +45,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="textadventure.base.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="Frodo"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="TextAdventure Base"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:&quot;${workspace_loc:/ALIA4J NOIRIn libraries/lib/alia4j-noirin-core.jar}&quot;&#10;-Dorg.alia4j.importer=org.alia4j.languages.textadventure.importer.Importer&#10;-Dtextadventure.main=LordOfTheRings"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:&quot;${workspace_loc:/ALIA4J NOIRIn libraries/lib/alia4j-noirin-core.jar}&quot;&#13;&#10;-Dorg.alia4j.importer=org.alia4j.languages.textadventure.importer.Importer&#13;&#10;-Dtextadventure.main=LordOfTheRings"/>
 </launchConfiguration>
