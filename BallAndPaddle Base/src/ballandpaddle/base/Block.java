@@ -23,6 +23,16 @@ public class Block extends BAPObject {
 		this.power = b.getPower();
 	}
 	
+	public Block(String id, int hardness, int normalRes, int fireRes, int coldRes, int shockRes, Power power){
+		super(id,-1,-1);
+		this.hardness = hardness;
+		this.normalRes = normalRes;
+		this.fireRes = fireRes;
+		this.coldRes = coldRes;
+		this.shockRes = shockRes;
+		this.power = power;
+	}
+	
 	public int getHardness(){
 		return hardness;
 	}

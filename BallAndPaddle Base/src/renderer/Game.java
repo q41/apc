@@ -19,28 +19,37 @@ public class Game {
 	private Level level;
 	private int width;
 	private int height;
+	private double scale;
+	private double offsetX;
+	private double offsetY;
+	private double downscaleHeightRatio;
+	private double downscaleWidthRatio;
 	private List<BlockRenderer> blockRenderers;
 	private List<BallRenderer> ballRenderers;
 	private List<PaddleRenderer> paddleRenderers;
 	
 	
-	public Game(Level level, int width, int height){
+	public Game(Level level, int width, int height, double scale){
 		this.level = level;
 		this.width = width;
 		this.height = height;
+		this.scale = scale;
 		//TODO. add check to make certain height and width do not exceed screen size
 	}
 	
-	public Game(Level level){
+	public Game(Level level, double scale){
 		this.level = level;
+		this.scale = scale;
 		width = 800;
 		height = 600;
 	}
 	
 	public void start() {
+		System.out.println("starting");
 		try {
 		Display.setDisplayMode(new DisplayMode(width, height));
 		Display.create();
+		System.out.println(Display.isVisible());
 		} catch (LWJGLException e) {
 		e.printStackTrace();
 		System.exit(0);
@@ -68,23 +77,38 @@ public class Game {
 		GL11.glOrtho(0, width, 0, height, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		//scale, amount of pixels per "tile" in game.
-		double scaleHeight = height/level.getHeight();
-		double scaleWidth = width/level.getWidth(); 
+		downscaleHeightRatio = 1;
+		downscaleWidthRatio = 1;
+		offsetX = 0;
+		offsetY = 0;
+		if(scale*level.getHeight()>height)		
+			downscaleHeightRatio = height/(level.getHeight()*scale);
+		else
+			offsetY = (height-scale*level.getHeight())/2;
+		if(scale*level.getWidth()>width)
+			downscaleWidthRatio = width/(level.getWidth()*scale); 
+		else
+			offsetX = (width-scale*level.getWidth())/2;
+		
+		blockRenderers = new ArrayList<BlockRenderer>();
+		ballRenderers = new ArrayList<BallRenderer>();
+		paddleRenderers = new ArrayList<PaddleRenderer>();
+		
 		for(Block block : level.getBlocks()){
-			blockRenderers.add(new BlockRenderer(block, scaleHeight, scaleWidth));
+			blockRenderers.add(new BlockRenderer(block, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 		}		
 		for(Ball ball : level.getBalls()){
-			ballRenderers.add(new BallRenderer(ball, scaleHeight, scaleWidth));
+			ballRenderers.add(new BallRenderer(ball, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 		}		
 		for(Paddle paddle : level.getPaddles()){
 			switch (paddle.getShape()) {
-            case triangle: 	paddleRenderers.add(new PaddleTriangleRenderer(paddle, scaleHeight, scaleWidth));
+            case triangle: 	paddleRenderers.add(new PaddleTriangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
             				break;
-            case square: 	paddleRenderers.add(new PaddleSquareRenderer(paddle, scaleHeight, scaleWidth));
+            case square: 	paddleRenderers.add(new PaddleSquareRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 							break;
-            case rectangle: paddleRenderers.add(new PaddleRectangleRenderer(paddle,  scaleHeight, scaleWidth));
+            case rectangle: paddleRenderers.add(new PaddleRectangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 							break;
-            case circle: 	paddleRenderers.add(new PaddleCircleRenderer(paddle,  scaleHeight, scaleWidth));
+            case circle: 	paddleRenderers.add(new PaddleCircleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 							break;
 			}
 		}
@@ -104,7 +128,23 @@ public class Game {
 	}
 
 	private void renderGL() {
-		//TODO white background?
+		// Clear The Screen And The Depth Buffer
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		 
+		// R,G,B,A Set The Color To White for the background
+		GL11.glColor3f(1.0f, 1.0f, 1.0f); // TODO, white!
+		
+		// draw background quad
+		GL11.glPushMatrix();
+			GL11.glBegin(GL11.GL_QUADS);
+				GL11.glVertex2d(offsetX, offsetY);
+				GL11.glVertex2d(offsetX+scale*level.getWidth()*downscaleWidthRatio, offsetY);
+				GL11.glVertex2d(offsetX+scale*level.getWidth()*downscaleWidthRatio, (offsetY+scale*level.getHeight())*downscaleHeightRatio);
+				GL11.glVertex2d(offsetX, offsetY+scale*level.getHeight()*downscaleHeightRatio);
+			GL11.glEnd();
+		GL11.glPopMatrix();
+
+		
 		//TODO render blocks
 		for(BlockRenderer block : blockRenderers){
 			block.renderGL();

@@ -4,8 +4,8 @@ import ballandpaddle.base.Paddle;
 
 public class PaddleTriangleRenderer extends PaddleRenderer {
 
-	public PaddleTriangleRenderer(Paddle paddle, double scaleHeight, double scaleWidth) {
-		super(paddle, scaleHeight, scaleWidth);
+	public PaddleTriangleRenderer(Paddle paddle, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
+		super(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
 	}
 
 	@Override

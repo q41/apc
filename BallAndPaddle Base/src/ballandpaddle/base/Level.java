@@ -74,6 +74,7 @@ public class Level {
 			}
 			y++;
 		}
+		System.out.println("generated blocks");
 	}
 	
 	private Block generateBlock(List<Block> b, char cur, int x, int y){
@@ -83,6 +84,7 @@ public class Level {
 			if(b.get(i).getId().charAt(0) == cur){
 				kind = b.get(i);
 			}
+			i++;
 		}		
 		return new Block(x,y,kind);
 	}
@@ -105,6 +107,10 @@ public class Level {
 	
 	public int getWidth(){
 		return width;
+	}
+
+	public void print() {
+		System.out.println("level: "+id+". Contains paddles: "+paddles+". Contains blocks: "+blocks+". Contains balls: "+balls);
 	}
 	
 	

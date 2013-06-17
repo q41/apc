@@ -4,8 +4,8 @@ import ballandpaddle.base.Paddle;
 
 public class PaddleSquareRenderer extends PaddleRenderer {
 
-	public PaddleSquareRenderer(Paddle paddle, double scaleHeight, double scaleWidth) {
-		super(paddle, scaleHeight, scaleWidth);
+	public PaddleSquareRenderer(Paddle paddle, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
+		super(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
 	}
 
 	@Override
