@@ -19,7 +19,7 @@ public class Main {
 		Paddle testPaddle = new Paddle("testP", 2, 4, 0, 1, Shape.rectangle);
 		List<Paddle> testPads = new ArrayList<Paddle>();
 		testPads.add(testPaddle);
-		Ball testBall = new Ball("testB", 2, 3);
+		Ball testBall = new Ball("testB", 3, 4);
 		List<Ball> testBalls = new ArrayList<Ball>();
 		testBalls.add(testBall);
 		List<String> impBlocks = new ArrayList<String>();

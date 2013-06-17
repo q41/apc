@@ -32,16 +32,18 @@ public class BlockRenderer implements Renderer {
 	public void renderGL() {
 		double topLeftX = offsetX+block.getX()*scale*downscaleWidthRatio;
 		double topLeftY = offsetY+block.getY()*scale*downscaleHeightRatio;
-//		
-//		GL11.glPushMatrix();
-//		GL11.glBegin(GL11.GL_QUADS);
-//			GL11.glVertex2d(offsetX, offsetY);
-//			GL11.glVertex2d(offsetX+scale*level.getWidth()*downscaleWidthRatio, offsetY);
-//			GL11.glVertex2d(offsetX+scale*level.getWidth()*downscaleWidthRatio, (offsetY+scale*level.getHeight())*downscaleHeightRatio);
-//			GL11.glVertex2d(offsetX, offsetY+scale*level.getHeight()*downscaleHeightRatio);
-//		GL11.glEnd();
-//	GL11.glPopMatrix();
-//		
+		double bottomRightX = topLeftX+scale*downscaleWidthRatio;
+		double bottomRightY = topLeftY+scale*downscaleHeightRatio;
+		//TODO, outline around each block!
+		GL11.glColor3f(0.5f, 0.5f, 1.0f);
+		GL11.glPushMatrix();
+			GL11.glBegin(GL11.GL_QUADS);
+				GL11.glVertex2d(topLeftX, topLeftY);
+				GL11.glVertex2d(bottomRightX, topLeftY);
+				GL11.glVertex2d(bottomRightX, bottomRightY);
+				GL11.glVertex2d(topLeftX, bottomRightY);
+			GL11.glEnd();
+		GL11.glPopMatrix();
 	}
 
 }

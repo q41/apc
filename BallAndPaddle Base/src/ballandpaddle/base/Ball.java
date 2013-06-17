@@ -15,6 +15,7 @@ public class Ball extends BAPObject {
 	
 	public Ball(String id, int x, int y) {
 		super(id, x, y);
+		this.size = 1;
 	}
 	
 	public int getSize(){

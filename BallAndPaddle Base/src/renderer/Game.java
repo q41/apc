@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -74,7 +75,7 @@ public class Game {
 	private void initGL() {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, width, 0, height, 1, -1);
+		GL11.glOrtho(0, width, height, 0, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		//scale, amount of pixels per "tile" in game.
 		downscaleHeightRatio = 1;
@@ -118,7 +119,7 @@ public class Game {
 		//TODO, steps in following order
 		
 		//Check for keyboard input for moving the paddle and set the direction accordingly.
-		
+		pollInput();
 		//Move all items that are currently moving, collisions, new items to be rendered, etc etc.
 		
 		//Check if all items that have renderers still exist, if not remove the renderer.
@@ -178,6 +179,30 @@ public class Game {
 	    lastFrame = time;	 
 	    return delta;
 	}
+	
+	public void pollInput() {        
+ 
+	if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+	    System.out.println("SPACE KEY IS DOWN");
+	}
+ 
+	while (Keyboard.next()) {
+	    if (Keyboard.getEventKeyState()) {
+	        if (Keyboard.getEventKey() == 205) {
+	        	System.out.println("rightarrow");
+	        }
+	        if (Keyboard.getEventKey() == 203) {
+	        	System.out.println("leftarrow");
+	        }
+	        if (Keyboard.getEventKey() == 200) {
+	        	System.out.println("uparrow");
+	        }
+	        if (Keyboard.getEventKey() == 208) {
+	        	System.out.println("downarrow");
+	        }
+	    }
+	}
+    }
 	
 	
 	
