@@ -105,7 +105,7 @@ public class Game {
 			switch (paddle.getShape()) {
             case triangle: 	paddleRenderers.add(new PaddleTriangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
             				break;
-            case square: 	paddleRenderers.add(new PaddleSquareRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
+            case square: 	paddleRenderers.add(new PaddleRectangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 							break;
             case rectangle: paddleRenderers.add(new PaddleRectangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 							break;
@@ -121,7 +121,7 @@ public class Game {
 		//Check for keyboard input for moving the paddle and set the direction accordingly.
 		pollInput();
 		//Move all items that are currently moving, collisions, new items to be rendered, etc etc.
-		
+		level.moveAll(delta);
 		//Check if all items that have renderers still exist, if not remove the renderer.
 		
 		
@@ -182,26 +182,21 @@ public class Game {
 	
 	public void pollInput() {        
  
-	if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-	    System.out.println("SPACE KEY IS DOWN");
-	}
- 
-	while (Keyboard.next()) {
-	    if (Keyboard.getEventKeyState()) {
-	        if (Keyboard.getEventKey() == 205) {
-	        	System.out.println("rightarrow");
-	        }
-	        if (Keyboard.getEventKey() == 203) {
-	        	System.out.println("leftarrow");
-	        }
-	        if (Keyboard.getEventKey() == 200) {
-	        	System.out.println("uparrow");
-	        }
-	        if (Keyboard.getEventKey() == 208) {
-	        	System.out.println("downarrow");
-	        }
-	    }
-	}
+		if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+			System.out.println("SPACE KEY IS DOWN");
+		}
+		if (Keyboard.isKeyDown(205) && !Keyboard.isKeyDown(203)) {
+			for(Paddle pad : level.getPaddles())
+				pad.setDirection(1);
+		}
+		else if (Keyboard.isKeyDown(203) && !Keyboard.isKeyDown(205)) {
+			for(Paddle pad : level.getPaddles())
+				pad.setDirection(-1);
+		}
+		else{
+			for(Paddle pad : level.getPaddles())			
+				pad.setDirection(0);
+		}
     }
 	
 	

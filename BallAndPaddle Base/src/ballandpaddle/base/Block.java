@@ -1,5 +1,8 @@
 package ballandpaddle.base;
 
+import ballandpaddle.base.collision.Point;
+import ballandpaddle.base.collision.RectangleBody;
+
 public class Block extends BAPObject {
 
 	private int hardness;
@@ -8,13 +11,15 @@ public class Block extends BAPObject {
 	private int coldRes;
 	private int shockRes;
 	private Power power;
+	private RectangleBody body;
 	
 	public Block(String id, int x, int y) {
 		super(id, x, y);
+		body = new RectangleBody(new Point(x,y), new Point(x+1, y+1));
 	}
 	
 	public Block(int x, int y, Block b){
-		super(b.getId(), x, y);
+		this(b.getId(), x, y);
 		this.hardness = b.getHardness();
 		this.normalRes = b.getNormalRes();
 		this.fireRes = b.getFireRes();
@@ -24,7 +29,7 @@ public class Block extends BAPObject {
 	}
 	
 	public Block(String id, int hardness, int normalRes, int fireRes, int coldRes, int shockRes, Power power){
-		super(id,-1,-1);
+		this(id,-1,-1);
 		this.hardness = hardness;
 		this.normalRes = normalRes;
 		this.fireRes = fireRes;
@@ -55,5 +60,9 @@ public class Block extends BAPObject {
 	
 	public Power getPower(){
 		return power;
+	}
+	
+	public RectangleBody getBody(){
+		return body;
 	}
 }

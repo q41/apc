@@ -3,8 +3,8 @@ package ballandpaddle.base;
 public abstract class BAPObject {
 
 	private String id;
-	private double x;
-	private double y;
+	protected double x;
+	protected double y;
 	
 	public BAPObject(String id, double x, double y){
 		this.id = id;

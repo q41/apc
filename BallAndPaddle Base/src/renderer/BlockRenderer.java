@@ -30,10 +30,10 @@ public class BlockRenderer implements Renderer {
 
 	@Override
 	public void renderGL() {
-		double topLeftX = offsetX+block.getX()*scale*downscaleWidthRatio;
-		double topLeftY = offsetY+block.getY()*scale*downscaleHeightRatio;
-		double bottomRightX = topLeftX+scale*downscaleWidthRatio;
-		double bottomRightY = topLeftY+scale*downscaleHeightRatio;
+		double topLeftX = offsetX+block.getBody().getTopLeft().getX()*scale*downscaleWidthRatio;
+		double topLeftY = offsetY+block.getBody().getTopLeft().getY()*scale*downscaleHeightRatio;
+		double bottomRightX = offsetX+block.getBody().getBottomRight().getX()*scale*downscaleWidthRatio;
+		double bottomRightY = offsetY+block.getBody().getBottomRight().getY()*scale*downscaleHeightRatio;
 		//TODO, outline around each block!
 		GL11.glColor3f(0.5f, 0.5f, 1.0f);
 		GL11.glPushMatrix();

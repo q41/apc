@@ -2,6 +2,8 @@ package ballandpaddle.base;
 import java.util.ArrayList;
 import java.util.List;
 
+import ballandpaddle.base.collision.*;
+
 
 public class Level {
 
@@ -15,6 +17,11 @@ public class Level {
 	private List<Block> blocks;
 	private int height;
 	private int width;
+	
+	private Body top;
+	private Body left;
+	private Body right;
+	private Body bottom;
 	
 	public static Level getInstance() {
 		if (INSTANCE == null)
@@ -74,7 +81,10 @@ public class Level {
 			}
 			y++;
 		}
-		System.out.println("generated blocks");
+		top = new Border(new Point(0,0), new Point(width,0));
+		left = new Border(new Point(0,0), new Point(0,height));
+		right = new Border(new Point(width,0), new Point(width, height));
+		bottom = new Border(new Point(0,width), new Point(width,height));
 	}
 	
 	private Block generateBlock(List<Block> b, char cur, int x, int y){
@@ -111,6 +121,40 @@ public class Level {
 
 	public void print() {
 		System.out.println("level: "+id+". Contains paddles: "+paddles+". Contains blocks: "+blocks+". Contains balls: "+balls);
+	}
+
+	public void moveAll(int delta) {
+		if(delta>0){
+			double factor = 1.0/1000*delta;
+			for(Paddle pad : paddles){
+				pad.move(factor, this);
+			}
+			for(Ball ball : balls){
+				ball.move(factor, this);
+			}
+		}		
+	}
+
+	public void checkForCollision(Ball ball) {
+		if(ball.getBody().intersects(left)){
+		}
+		else if(ball.getBody().intersects(right)){
+			ball.setDirection(360-ball.getDirection());
+		}
+		else if(ball.getBody().intersects(top)){
+		}
+		else if(ball.getBody().intersects(bottom)){
+			//TODO destroy the ball. gameover if no balls left!
+		}
+	}
+
+	public void checkForCollision(Paddle paddle) {
+		if(paddle.getBody().intersects(left)){
+			paddle.getBody().undoMove();			
+		}
+		if(paddle.getBody().intersects(right)){
+			paddle.getBody().undoMove();
+		}
 	}
 	
 	

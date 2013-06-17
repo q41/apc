@@ -16,7 +16,7 @@ public class Main {
 		/**
 		 * TestLevel stuff
 		 */
-		Paddle testPaddle = new Paddle("testP", 2, 4, 0, 1, Shape.rectangle);
+		Paddle testPaddle = new Paddle("testP", 2, 4, 0, 1, Shape.triangle);
 		List<Paddle> testPads = new ArrayList<Paddle>();
 		testPads.add(testPaddle);
 		Ball testBall = new Ball("testB", 3, 4);
