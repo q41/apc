@@ -119,7 +119,7 @@ public class Importer implements org.alia4j.fial.Importer {
 //								TAContextFactory.findOrCreateLocalVariableContext("ego")),
 //								true)
 		
-		Action action = ActionFactory.findOrCreateMethodCallAction("ballandpaddle.base.Main", "anouncePrint", new String[]{}, "int");
+		Action action = ActionFactory.findOrCreateMethodCallAction("ballandpaddle.base.Main", "print", new String[]{}, "int");
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
 		initialAttachments.add(attachement);
