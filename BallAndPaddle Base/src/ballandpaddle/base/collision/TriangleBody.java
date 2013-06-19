@@ -95,6 +95,12 @@ public class TriangleBody implements Body {
 		left = previousState.getLeft();
 		right = previousState.getRight();
 	}
+
+	@Override
+	public int getNewDirection(int direction, Body body) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 }

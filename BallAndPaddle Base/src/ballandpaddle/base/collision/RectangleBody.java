@@ -49,5 +49,11 @@ public class RectangleBody implements Body {
 		topLeft = previousState.getTopLeft();
 		bottomRight = previousState.getBottomRight();		
 	}
+
+	@Override
+	public int getNewDirection(int direction, Body body) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

@@ -8,4 +8,6 @@ public interface Body {
 
 	void undoMove();
 
+	int getNewDirection(int direction, Body body);
+
 }

@@ -33,6 +33,12 @@ public class Border implements Body {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public int getNewDirection(int direction, Body body) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 

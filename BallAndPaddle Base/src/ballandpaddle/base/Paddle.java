@@ -12,13 +12,13 @@ public class Paddle extends BAPObject {
 	private int size;
 	private int orientation;
 	private int direction; //-1 for left, 1 for right, 0 for none
-	private double speed = 1;
+	private double speed = 4;
 	private Body body;
 	
 	public Paddle(String id, int x, int y, int orientation, int size, Shape shape) {
 		super(id, x, y);
 		this.orientation = orientation;
-		this.size = size;
+		this.size = 3;
 		this.shape = shape;
 		setBody();
 	}
@@ -27,9 +27,9 @@ public class Paddle extends BAPObject {
 		switch (shape) {
         case triangle: 	body = new TriangleBody(new Point(x,y-0.125), new Point(x-0.25*size,y+0.125), new Point(x+0.25*size,y+0.125));
         				break;
-        case square: 	body = new RectangleBody(new Point(x,y), new Point(x+0.5,y+0.5));
+        case square: 	body = new RectangleBody(new Point(x,y), new Point(x+0.5*size,y+0.5*size));
 						break;
-        case rectangle: body = new RectangleBody(new Point(x,y), new Point(x+0.5, y+0.1));
+        case rectangle: body = new RectangleBody(new Point(x,y), new Point(x+0.5*size, y+0.05));
 						break;
         case circle: 	body = new CircleBody(new Point(x,y), size*0.15);
 						break;

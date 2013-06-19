@@ -136,15 +136,87 @@ public class Level {
 	}
 
 	public void checkForCollision(Ball ball) {
+		int newDirection = 0;
 		if(ball.getBody().intersects(left)){
+			newDirection = 180-ball.getDirection();
+			ball.setDirection(newDirection);
+			ball.getBody().undoMove();
 		}
-		else if(ball.getBody().intersects(right)){
-			ball.setDirection(360-ball.getDirection());
+		else if(ball.getBody().intersects(right)){		
+			newDirection = 180-ball.getDirection();
+			ball.setDirection(newDirection);
+			ball.getBody().undoMove();
 		}
-		else if(ball.getBody().intersects(top)){
+		else if(ball.getBody().intersects(top)){	
+			newDirection = 360-ball.getDirection();		
+			ball.setDirection(newDirection);
+			ball.getBody().undoMove();
 		}
 		else if(ball.getBody().intersects(bottom)){
 			//TODO destroy the ball. gameover if no balls left!
+			newDirection = 360-ball.getDirection();			
+			ball.setDirection(newDirection);
+			ball.getBody().undoMove();
+		}
+		for(Paddle pad : paddles){
+			if(ball.getBody().intersects(pad.getBody())){
+
+				System.out.println("angle "+ball.getDirection());
+				double matchDir = 0.0;
+				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), pad.getBody()));
+				if(ball.getDirection()>=180 && ball.getDirection() <=270 && pad.getDirection() >= 180 && pad.getDirection() <= 270){
+					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+					if(matchDir<10){
+						ball.setSpeed(ball.getSpeed()*1.1);
+					}
+					else if(matchDir<25){
+						ball.setSpeed(ball.getSpeed()*1.05);
+					}					
+				}
+				else if(ball.getDirection()>=270 && ball.getDirection() <=359 && pad.getDirection() >= 270 && pad.getDirection() <= 359){
+					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+					if(matchDir<10){
+						ball.setSpeed(ball.getSpeed()*1.1);
+					}
+					else if(matchDir<25){
+						ball.setSpeed(ball.getSpeed()*1.05);
+					}
+				}
+				else if(ball.getDirection()>=0 && ball.getDirection() <=90 && pad.getDirection() >= 0 && pad.getDirection() <= 90){
+					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+					if(matchDir<10){
+						ball.setSpeed(ball.getSpeed()*1.1);
+					}
+					else if(matchDir<25){
+						ball.setSpeed(ball.getSpeed()*1.05);
+					}
+				}
+				else if(ball.getDirection()>=90 && ball.getDirection() <=180 && pad.getDirection() >= 90 && pad.getDirection() <= 180){
+					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+					if(matchDir<10){
+						ball.setSpeed(ball.getSpeed()*1.1);
+					}
+					else if(matchDir<25){
+						ball.setSpeed(ball.getSpeed()*1.05);
+					}
+				}
+				if(Math.abs(ball.getDirection()-270)<10)
+					ball.setSpeed(ball.getSpeed()*0.80);
+				else if(Math.abs(ball.getDirection()-270)<20)
+					ball.setSpeed(ball.getSpeed()*0.90);
+				else if(Math.abs(ball.getDirection()-270)<25)
+					ball.setSpeed(ball.getSpeed()*0.95);
+				else if(Math.abs(ball.getDirection()-270)>65)
+					ball.setSpeed(ball.getSpeed()*1.05);
+				else if(Math.abs(ball.getDirection()-270)>70)
+					ball.setSpeed(ball.getSpeed()*1.10);
+				else if(Math.abs(ball.getDirection()-270)>80)
+					ball.setSpeed(ball.getSpeed()*1.20);
+				
+				ball.getBody().undoMove();
+
+				System.out.println("new angle "+ball.getDirection());
+			}
 		}
 	}
 
