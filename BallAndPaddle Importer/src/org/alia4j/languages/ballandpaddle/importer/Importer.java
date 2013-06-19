@@ -3,21 +3,15 @@ package org.alia4j.languages.ballandpaddle.importer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
-import org.alia4j.language.ballandpaddle.Block;
+import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
-import org.alia4j.liam.AtomicPredicate;
 import org.alia4j.liam.Attachment;
-import org.alia4j.liam.AttachmentReference;
-import org.alia4j.liam.BasicPredicate;
 import org.alia4j.liam.CompositionRule;
 import org.alia4j.liam.Context;
-import org.alia4j.liam.ContextFactory;
 import org.alia4j.liam.ScheduleInfo;
 import org.alia4j.liam.Specialization;
 import org.alia4j.liam.pattern.MethodPattern;
@@ -66,11 +60,10 @@ public class Importer implements org.alia4j.fial.Importer {
 			throw new Error("Importer has already been executed.");
 		initialized = true;
 
-		URL mainFile = systemClassLoader.getResource(System
-				.getProperty("ballandpaddle.main") + ".xmi");
+		//URL mainFile = systemClassLoader.getResource(System.getProperty("ballandpaddle.main") + ".xmi");
+		URL mainFile = systemClassLoader.getResource("SampleLevel.xmi");
 		if (mainFile == null) {
-			System.out.println("No text adventure file specified (use VM argument -Dballandpaddle.main=<class-path-relative-file-name>");
-			mainFile = systemClassLoader.getResource("ballandpaddle.main.xmi");
+			System.out.println("No BAP level file specified (use VM argument -Dballandpaddle.main=<class-path-relative-file-name>");
 		}
 
 		//-----------------------
@@ -98,7 +91,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Process AST
 		//-----------------------
 
-		ballandpaddle.base.Level level = ballandpaddle.base.Level.getInstance();
+		//ballandpaddle.base.Level level = ballandpaddle.base.Level.getInstance();
+		
+		announcePrint();
 		
 
 		//-----------------------
@@ -124,12 +119,10 @@ public class Importer implements org.alia4j.fial.Importer {
 //								TAContextFactory.findOrCreateLocalVariableContext("ego")),
 //								true)
 		
-		//Set<AttachmentReference> toIgnore = new HashSet<AttachmentReference>();
-		//toIgnore.addAll(item2behavior.get(((IgnoreItemAbility) ability).getIgnoredItem()));
+		Action action = ActionFactory.findOrCreateMethodCallAction("ballandpaddle.base.Main", "anouncePrint", new String[]{}, "int");
 		
-		Attachment MyAttachment = new Attachment(
-				Collections.singleton(specialization),
-				ActionFactory.findOrCreateNoOpAction(), ScheduleInfo.BEFORE);
+		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
+		initialAttachments.add(attachement);
 	}
 
 	public static final NamePattern PRINTNAMEPATTERN = new NamePattern() {
