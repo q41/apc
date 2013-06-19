@@ -7,7 +7,7 @@ public class Ball extends BAPObject {
 	private int size;
 	private int direction; //0-360
 	private double speed;
-	private final double upperSpeedLimit = 50;
+	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
 	private CircleBody body;
 	
@@ -16,14 +16,16 @@ public class Ball extends BAPObject {
 		this.size = size;
 		this.direction = direction;
 		this.speed = speed;
+		if(speed==0)
+			this.speed= 0.001;
 	}
 	
 	public Ball(String id, int x, int y) {
-		super(id, 1, 3);
+		super(id, x, y);
 		this.size = 1;
 		direction = 360-135;
-		speed = 50;
-		body = new CircleBody(new Point(1,3), size*0.05);
+		speed = 1;
+		body = new CircleBody(new Point(x,y), size*0.05);
 	}
 	
 	public int getSize(){
@@ -47,13 +49,17 @@ public class Ball extends BAPObject {
 		double radDir = direction*Math.PI/180;
 		double movementVectorX = 0.0;
 		double movementVectorY = 0.0;
-		while(distance>0.05/speed){			
-			movementVectorX = 0.05/speed*Math.cos(radDir);
-			movementVectorY = 0.05/speed*Math.sin(radDir);
+		while(distance>0.25/speed){			
+			movementVectorX = 0.25/speed*Math.cos(radDir);
+			movementVectorY = 0.25/speed*Math.sin(radDir);
 			body.moveBy(movementVectorX, movementVectorY);
 			level.checkForCollision(this);
-			distance-=0.05/speed;
+			distance-=0.25/speed;
 		}
+		movementVectorX = distance/speed*Math.cos(radDir);
+		movementVectorY = distance/speed*Math.sin(radDir);
+		body.moveBy(movementVectorX, movementVectorY);
+		level.checkForCollision(this);
 			
 	}
 
@@ -66,9 +72,7 @@ public class Ball extends BAPObject {
 	}
 	
 	public void setSpeed(double newSpeed){
-		System.out.println("oldspeed "+speed);
 		speed = Math.max(Math.min(newSpeed, upperSpeedLimit), lowerSpeedLimit);
-		System.out.println("newSPeed "+speed);
 		
 	}
 }

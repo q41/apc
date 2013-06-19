@@ -30,7 +30,7 @@ public class Point implements Body {
 	}
 
 	@Override
-	public boolean intersects(Body right) {
+	public boolean intersects(int direction, Body other) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -42,7 +42,7 @@ public class Point implements Body {
 	}
 
 	@Override
-	public int getNewDirection(int direction, Body body) {
+	public int getNewDirection(int direction, Body other) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

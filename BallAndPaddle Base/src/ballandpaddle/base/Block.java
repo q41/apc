@@ -2,6 +2,7 @@ package ballandpaddle.base;
 
 import ballandpaddle.base.collision.Point;
 import ballandpaddle.base.collision.RectangleBody;
+import ballandpaddle.base.collision.SquareBody;
 
 public class Block extends BAPObject {
 
@@ -11,11 +12,11 @@ public class Block extends BAPObject {
 	private int coldRes;
 	private int shockRes;
 	private Power power;
-	private RectangleBody body;
+	private SquareBody body;
 	
 	public Block(String id, int x, int y) {
 		super(id, x, y);
-		body = new RectangleBody(new Point(x,y), new Point(x+1, y+1));
+		body = new SquareBody(new Point(x,y), new Point(x+1, y+1));
 	}
 	
 	public Block(int x, int y, Block b){
@@ -62,7 +63,7 @@ public class Block extends BAPObject {
 		return power;
 	}
 	
-	public RectangleBody getBody(){
+	public SquareBody getBody(){
 		return body;
 	}
 }

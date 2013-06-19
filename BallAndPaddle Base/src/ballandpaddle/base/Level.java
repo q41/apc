@@ -137,31 +137,29 @@ public class Level {
 
 	public void checkForCollision(Ball ball) {
 		int newDirection = 0;
-		if(ball.getBody().intersects(left)){
+		if(ball.getBody().intersects(ball.getDirection(),left)){
 			newDirection = 180-ball.getDirection();
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
 		}
-		else if(ball.getBody().intersects(right)){		
+		else if(ball.getBody().intersects(ball.getDirection(),right)){		
 			newDirection = 180-ball.getDirection();
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
 		}
-		else if(ball.getBody().intersects(top)){	
+		else if(ball.getBody().intersects(ball.getDirection(),top)){	
 			newDirection = 360-ball.getDirection();		
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
 		}
-		else if(ball.getBody().intersects(bottom)){
+		else if(ball.getBody().intersects(ball.getDirection(),bottom)){
 			//TODO destroy the ball. gameover if no balls left!
 			newDirection = 360-ball.getDirection();			
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
 		}
 		for(Paddle pad : paddles){
-			if(ball.getBody().intersects(pad.getBody())){
-
-				System.out.println("angle "+ball.getDirection());
+			if(ball.getBody().intersects(ball.getDirection(),pad.getBody())){
 				double matchDir = 0.0;
 				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), pad.getBody()));
 				if(ball.getDirection()>=180 && ball.getDirection() <=270 && pad.getDirection() >= 180 && pad.getDirection() <= 270){
@@ -211,20 +209,23 @@ public class Level {
 				else if(Math.abs(ball.getDirection()-270)>70)
 					ball.setSpeed(ball.getSpeed()*1.10);
 				else if(Math.abs(ball.getDirection()-270)>80)
-					ball.setSpeed(ball.getSpeed()*1.20);
-				
+					ball.setSpeed(ball.getSpeed()*1.20);				
 				ball.getBody().undoMove();
-
-				System.out.println("new angle "+ball.getDirection());
+			}
+		}
+		for(Block block : blocks){
+			if(ball.getBody().intersects(ball.getDirection(), block.getBody())){
+				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), block.getBody()));				
+				ball.getBody().undoMove();
 			}
 		}
 	}
 
 	public void checkForCollision(Paddle paddle) {
-		if(paddle.getBody().intersects(left)){
+		if(paddle.getBody().intersects(paddle.getDirection(),left)){
 			paddle.getBody().undoMove();			
 		}
-		if(paddle.getBody().intersects(right)){
+		if(paddle.getBody().intersects(paddle.getDirection(),right)){
 			paddle.getBody().undoMove();
 		}
 	}

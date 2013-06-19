@@ -27,7 +27,7 @@ public class RectangleBody implements Body {
 	}
 
 	
-	public boolean intersects(Body other) {
+	public boolean intersects(int direction, Body other) {
 		if(other instanceof Border)
 			return intersects((Border)other);
 		return false;

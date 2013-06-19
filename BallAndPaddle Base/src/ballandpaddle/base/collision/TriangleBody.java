@@ -34,7 +34,7 @@ public class TriangleBody implements Body {
 		right.moveBy(x, y);		
 	}
 
-	public boolean intersects(Body other) {
+	public boolean intersects(int direction, Body other) {
 		if(other instanceof Border)
 			return intersects((Border)other);
 		return false;
