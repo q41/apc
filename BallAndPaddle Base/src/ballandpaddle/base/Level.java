@@ -1,11 +1,12 @@
 package ballandpaddle.base;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import ballandpaddle.base.collision.*;
 
 
-public class Level {
+public class Level extends Observable {
 
 	private static Level INSTANCE;
 	private String id;
@@ -213,11 +214,20 @@ public class Level {
 				ball.getBody().undoMove();
 			}
 		}
+		List<Block> destroyedBlocks = new ArrayList<Block>();
 		for(Block block : blocks){
 			if(ball.getBody().intersects(ball.getDirection(), block.getBody())){
 				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), block.getBody()));				
 				ball.getBody().undoMove();
+				block.takeDamageFrom(ball);
+				if(block.isDestroyed())
+					destroyedBlocks.add(block);				
 			}
+		}
+		for(Block block : destroyedBlocks){
+			blocks.remove(block);
+			this.setChanged();
+			this.notifyObservers(block);
 		}
 	}
 

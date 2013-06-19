@@ -46,4 +46,8 @@ public class BlockRenderer implements Renderer {
 		GL11.glPopMatrix();
 	}
 
+	public Object getBlock() {
+		return block;
+	}
+
 }

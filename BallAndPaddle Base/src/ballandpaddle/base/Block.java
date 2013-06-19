@@ -66,4 +66,15 @@ public class Block extends BAPObject {
 	public SquareBody getBody(){
 		return body;
 	}
+
+	public void takeDamageFrom(Ball ball) {
+		hardness -= Math.max(0, ball.getNormalDamage()-normalRes);
+		hardness -= Math.max(0, ball.getFireDamage()-fireRes);
+		hardness -= Math.max(0, ball.getColdDamage()-coldRes);
+		hardness -= Math.max(0, ball.getShockDamage()-shockRes);	
+	}
+	
+	public boolean isDestroyed(){
+		return hardness<=0;
+	}
 }

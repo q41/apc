@@ -10,6 +10,10 @@ public class Ball extends BAPObject {
 	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
 	private CircleBody body;
+	private int normalDamage;
+	private int fireDamage;
+	private int coldDamage;
+	private int shockDamage;
 	
 	public Ball(String id, int x, int y, int size, int direction, int speed){
 		this(id, x, y);
@@ -26,6 +30,10 @@ public class Ball extends BAPObject {
 		direction = 360-135;
 		speed = 1;
 		body = new CircleBody(new Point(x,y), size*0.05);
+		normalDamage = 1;
+		fireDamage = 0;
+		coldDamage = 0;
+		shockDamage = 0;
 	}
 	
 	public int getSize(){
@@ -72,7 +80,22 @@ public class Ball extends BAPObject {
 	}
 	
 	public void setSpeed(double newSpeed){
-		speed = Math.max(Math.min(newSpeed, upperSpeedLimit), lowerSpeedLimit);
-		
+		speed = Math.max(Math.min(newSpeed, upperSpeedLimit), lowerSpeedLimit);		
+	}
+	
+	public int getNormalDamage(){
+		return normalDamage;
+	}
+	
+	public int getFireDamage(){
+		return fireDamage;
+	}
+	
+	public int getColdDamage(){
+		return coldDamage;
+	}
+	
+	public int getShockDamage(){
+		return shockDamage;
 	}
 }

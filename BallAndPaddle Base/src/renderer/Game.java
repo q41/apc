@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import ballandpaddle.base.*;
 import ballandpaddle.base.BAPObject.Shape;
 
-public class Game {
+public class Game implements Observer {
 
 	private long lastFrame;
 	private long lastFPS;
@@ -35,6 +35,7 @@ public class Game {
 		this.width = width;
 		this.height = height;
 		this.scale = scale;
+		level.addObserver(this);
 		//TODO. add check to make certain height and width do not exceed screen size
 	}
 	
@@ -43,6 +44,7 @@ public class Game {
 		this.scale = scale;
 		width = 800;
 		height = 600;
+		level.addObserver(this);
 	}
 	
 	public void start() {
@@ -198,6 +200,19 @@ public class Game {
 				pad.setDirection(0);
 		}
     }
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		if(arg1 instanceof Block){
+			Block b = (Block)arg1;
+			boolean found = false;
+			for(int i = 0; i<blockRenderers.size() && !found; i++){
+				found = blockRenderers.get(i).getBlock().equals(b);
+				if(found)
+					blockRenderers.remove(i);					
+			}
+		}
+	}
 	
 	
 	
