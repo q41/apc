@@ -6,15 +6,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.alia4j.hierarchy.TypeDescriptor;
+import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
 import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
 import org.alia4j.liam.Attachment;
 import org.alia4j.liam.CompositionRule;
 import org.alia4j.liam.Context;
+import org.alia4j.liam.ContextFactory;
 import org.alia4j.liam.ScheduleInfo;
 import org.alia4j.liam.Specialization;
 import org.alia4j.liam.pattern.MethodPattern;
+import org.alia4j.liam.signature.ResolutionStrategy;
 import org.alia4j.patterns.ClassTypePattern;
 import org.alia4j.patterns.ExceptionsPattern;
 import org.alia4j.patterns.ModifiersPattern;
@@ -111,7 +115,13 @@ public class Importer implements org.alia4j.fial.Importer {
 		MethodPattern pattern = new MethodPattern(ModifiersPattern.ANY,
 				TypePattern.ANY, ClassTypePattern.ANY, PRINTNAMEPATTERN, ParametersPattern.ANY,
 				ExceptionsPattern.ANY);
+		
+		//Context context = ContextFactory.findOrCreateCalleeContext();
 
+//		public static final Action findOrCreateMethodCallAction(final TypeDescriptor declaringClass,
+//                final CharSequence methodName, final TypeDescriptor[] parameterTypes, final TypeDescriptor resultType,
+//                final ResolutionStrategy invocationType)
+		
 		Specialization specialization = new Specialization(pattern, null, Collections.<Context>emptyList());
 //				new BasicPredicate<AtomicPredicate>(
 //						TAAtomicPredicateFactory.findOrCreateIsSamePredicate(
@@ -119,7 +129,13 @@ public class Importer implements org.alia4j.fial.Importer {
 //								TAContextFactory.findOrCreateLocalVariableContext("ego")),
 //								true)
 		
-		Action action = ActionFactory.findOrCreateMethodCallAction("ballandpaddle.base.Main", "print", new String[]{}, "int");
+		
+		Action action = ActionFactory.findOrCreateMethodCallAction(
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
+				(CharSequence)"print",
+				TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+				ResolutionStrategy.STATIC);
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
 		initialAttachments.add(attachement);
@@ -144,5 +160,3 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 	};
 }
-
-

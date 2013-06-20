@@ -39,9 +39,8 @@ public class Main {
 //		testGame.start();
 	}
 
-	private static int print() {
+	private static void print() {
 		System.out.println("Printing stuff...");
-		return 0;
 	}
 	
 	
