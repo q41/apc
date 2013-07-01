@@ -36,7 +36,6 @@ import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
 import ballandpaddle.base.Paddle;
 import ballandpaddle.base.Power;
-import ballandpaddle.base.BAPObject.Shape;
 
 public class Importer implements org.alia4j.fial.Importer {
 
