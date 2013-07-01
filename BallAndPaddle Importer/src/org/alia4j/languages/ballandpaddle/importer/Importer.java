@@ -117,7 +117,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		List<Paddle> paddles = new ArrayList<Paddle>();		
 		EList<org.alia4j.language.ballandpaddle.Paddle> tempPaddles = root.getPaddles();
 		for(org.alia4j.language.ballandpaddle.Paddle p : tempPaddles){
-			Paddle paddle = new Paddle(p.getId(), p.getX(), p.getY(), p.getOrientation(), p.getSize(), Shape.rectangle);
+			Paddle paddle = new Paddle(p.getId(), p.getX(), p.getY(), p.getOrientation(), p.getSize());
 			paddles.add(paddle);
 		}		
 		
