@@ -8,7 +8,7 @@ public class Collision {
 		Body first = moved.getBody();
 		Body second = other.getBody();
 		if(hasCollided(first, second))
-			resolver.resolveCollision(moved, other);		
+			resolver.resolveCollision(moved, other);	
 	}
 	
 	private static boolean hasCollided(Body moved, Body other){
