@@ -25,6 +25,8 @@ import org.alia4j.patterns.ModifiersPattern;
 import org.alia4j.patterns.NamePattern;
 import org.alia4j.patterns.ParametersPattern;
 import org.alia4j.patterns.TypePattern;
+import org.alia4j.patterns.modifiers.WildcardModifiersPattern;
+import org.alia4j.patterns.types.ExactTypePattern;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -150,6 +152,26 @@ public class Importer implements org.alia4j.fial.Importer {
 		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
 		
 	}
+	
+	
+	private void createEffect() {
+		
+		//modifiers
+		ModifiersPattern mPublic = new WildcardModifiersPattern(WildcardModifiersPattern.PUBLIC);
+		ModifiersPattern mFinal = new WildcardModifiersPattern(WildcardModifiersPattern.FINAL);
+		
+		//type patterns
+		TypePattern typeVoid = new ExactTypePattern(TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"));
+		
+		//class pattern for class that extends BAPOBject
+		
+				
+		//MethodPattern afterBAPObjectUpdate = new MethodPattern(mPublic.or(mFinal), typeVoid
+		
+	}
+	
+	
+	// testing code
 	
 	private void announcePrint() {
 		MethodPattern pattern = new MethodPattern(ModifiersPattern.ANY,
