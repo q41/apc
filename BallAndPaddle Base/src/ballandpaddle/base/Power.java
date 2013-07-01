@@ -6,4 +6,8 @@ public class Power {
 	private Effect[] effects;
 	private int duration;
 	private float powerSpawnChance;	
+	
+	public Power(){
+		
+	}
 }

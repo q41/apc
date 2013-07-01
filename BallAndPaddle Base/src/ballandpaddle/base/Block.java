@@ -1,8 +1,6 @@
 package ballandpaddle.base;
 
-import ballandpaddle.base.collision.body.Point;
-import ballandpaddle.base.collision.body.RectangleBody;
-import ballandpaddle.base.collision.body.SquareBody;
+import ballandpaddle.base.collision.body.*;
 
 public class Block extends BAPObject {
 
@@ -24,7 +22,7 @@ public class Block extends BAPObject {
 		this.fireRes = b.getFireRes();
 		this.coldRes = b.getColdRes();
 		this.shockRes = b.getShockRes();
-		this.power = b.getPower();
+		//this.power = b.getPower();
 	}
 	
 	public Block(String id, int hardness, int normalRes, int fireRes, int coldRes, int shockRes, Power power){

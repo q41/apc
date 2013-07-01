@@ -16,6 +16,7 @@ public class Ball extends BAPObject {
 	private int fireDamage;
 	private int coldDamage;
 	private int shockDamage;
+	private boolean alive;
 	
 	public Ball(String id, int x, int y, int size, int direction, int speed){
 		this(id, x, y, size);
@@ -38,6 +39,7 @@ public class Ball extends BAPObject {
 		fireDamage = 0;
 		coldDamage = 0;
 		shockDamage = 0;
+		alive = true;
 	}
 	
 	public int getSize(){
@@ -97,5 +99,9 @@ public class Ball extends BAPObject {
 	
 	public int getShockDamage(){
 		return shockDamage;
+	}
+	
+	public void setDestroyed(boolean destroyed){
+		alive = !destroyed;
 	}
 }

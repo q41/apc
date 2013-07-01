@@ -30,21 +30,9 @@ public class Point implements Body {
 	}
 
 	@Override
-	public boolean intersects(int direction, Body other) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void undoMove() {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public int getNewDirection(int direction, Body other) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
+		
 }

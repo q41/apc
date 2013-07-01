@@ -5,10 +5,6 @@ import ballandpaddle.base.collision.body.Body;
 import ballandpaddle.base.collision.body.CircleBody;
 import ballandpaddle.base.collision.body.Point;
 import ballandpaddle.base.collision.body.RectangleBody;
-import ballandpaddle.base.collision.body.TriangleBody;
-import ballandpaddle.base.renderer.PaddleCircleRenderer;
-import ballandpaddle.base.renderer.PaddleRectangleRenderer;
-import ballandpaddle.base.renderer.PaddleTriangleRenderer;
 
 public class Paddle extends BAPObject {
 

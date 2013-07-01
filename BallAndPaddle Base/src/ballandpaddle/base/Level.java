@@ -19,6 +19,7 @@ public class Level extends Observable {
 	private List<Paddle> paddles;
 	private List<Ball> balls;
 	private List<Block> blocks;
+	private ballandpaddle.base.Border[] borders;
 	private int height;
 	private int width;
 	
@@ -33,7 +34,9 @@ public class Level extends Observable {
 		return INSTANCE;
 	}
 	
-	public Level(){}
+	public Level(){
+		borders = new ballandpaddle.base.Border[4];
+	}
 	
 	public void setID(String id){
 		this.id = id;
@@ -54,6 +57,10 @@ public class Level extends Observable {
 	
 	public void setPowerSpawnChance(float pSC){
 		powerSpawnChance = pSC;
+	}
+	
+	public float getPowerSpawnChance(){
+		return powerSpawnChance;
 	}
 	
 	public Level(String id, List<Paddle> paddles, List<Ball> balls, List<String> impBlocks, float pSC){
@@ -86,10 +93,10 @@ public class Level extends Observable {
 			}
 			y++;
 		}
-		top = new Border(new Point(0,0), new Point(width,0));
-		left = new Border(new Point(0,0), new Point(0,height));
-		right = new Border(new Point(width,0), new Point(width, height));
-		bottom = new Border(new Point(0,width), new Point(width,height));
+		borders[0] = new ballandpaddle.base.Border("top", new ballandpaddle.base.collision.body.Border(new Point(0,0), new Point(width,0)));
+		borders[1] = new ballandpaddle.base.Border("left", new ballandpaddle.base.collision.body.Border(new Point(0,0), new Point(0,height)));
+		borders[2] = new ballandpaddle.base.Border("right", new ballandpaddle.base.collision.body.Border(new Point(width,0), new Point(width, height)));
+		borders[3] = new ballandpaddle.base.Border("bottom", new ballandpaddle.base.collision.body.Border(new Point(0,width), new Point(width,height)));
 	}
 	
 	private Block generateBlock(List<Block> b, char cur, int x, int y){
@@ -142,106 +149,106 @@ public class Level extends Observable {
 
 	public void checkForCollision(Ball ball) {
 		int newDirection = 0;
-		if(ball.getBody().intersects(ball.getDirection(),left)){
-			newDirection = 180-ball.getDirection();
-			ball.setDirection(newDirection);
-			ball.getBody().undoMove();
-		}
-		else if(ball.getBody().intersects(ball.getDirection(),right)){		
-			newDirection = 180-ball.getDirection();
-			ball.setDirection(newDirection);
-			ball.getBody().undoMove();
-		}
-		else if(ball.getBody().intersects(ball.getDirection(),top)){	
-			newDirection = 360-ball.getDirection();		
-			ball.setDirection(newDirection);
-			ball.getBody().undoMove();
-		}
-		else if(ball.getBody().intersects(ball.getDirection(),bottom)){
-			//TODO destroy the ball. gameover if no balls left!
-			newDirection = 360-ball.getDirection();			
-			ball.setDirection(newDirection);
-			ball.getBody().undoMove();
-		}
-		for(Paddle pad : paddles){
-			if(ball.getBody().intersects(ball.getDirection(),pad.getBody())){
-				double matchDir = 0.0;
-				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), pad.getBody()));
-				if(ball.getDirection()>=180 && ball.getDirection() <=270 && pad.getDirection() >= 180 && pad.getDirection() <= 270){
-					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
-					if(matchDir<10){
-						ball.setSpeed(ball.getSpeed()*1.1);
-					}
-					else if(matchDir<25){
-						ball.setSpeed(ball.getSpeed()*1.05);
-					}					
-				}
-				else if(ball.getDirection()>=270 && ball.getDirection() <=359 && pad.getDirection() >= 270 && pad.getDirection() <= 359){
-					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
-					if(matchDir<10){
-						ball.setSpeed(ball.getSpeed()*1.1);
-					}
-					else if(matchDir<25){
-						ball.setSpeed(ball.getSpeed()*1.05);
-					}
-				}
-				else if(ball.getDirection()>=0 && ball.getDirection() <=90 && pad.getDirection() >= 0 && pad.getDirection() <= 90){
-					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
-					if(matchDir<10){
-						ball.setSpeed(ball.getSpeed()*1.1);
-					}
-					else if(matchDir<25){
-						ball.setSpeed(ball.getSpeed()*1.05);
-					}
-				}
-				else if(ball.getDirection()>=90 && ball.getDirection() <=180 && pad.getDirection() >= 90 && pad.getDirection() <= 180){
-					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
-					if(matchDir<10){
-						ball.setSpeed(ball.getSpeed()*1.1);
-					}
-					else if(matchDir<25){
-						ball.setSpeed(ball.getSpeed()*1.05);
-					}
-				}
-				if(Math.abs(ball.getDirection()-270)<10)
-					ball.setSpeed(ball.getSpeed()*0.80);
-				else if(Math.abs(ball.getDirection()-270)<20)
-					ball.setSpeed(ball.getSpeed()*0.90);
-				else if(Math.abs(ball.getDirection()-270)<25)
-					ball.setSpeed(ball.getSpeed()*0.95);
-				else if(Math.abs(ball.getDirection()-270)>65)
-					ball.setSpeed(ball.getSpeed()*1.05);
-				else if(Math.abs(ball.getDirection()-270)>70)
-					ball.setSpeed(ball.getSpeed()*1.10);
-				else if(Math.abs(ball.getDirection()-270)>80)
-					ball.setSpeed(ball.getSpeed()*1.20);				
-				ball.getBody().undoMove();
-			}
-		}
-		List<Block> destroyedBlocks = new ArrayList<Block>();
-		for(Block block : blocks){
-			if(ball.getBody().intersects(ball.getDirection(), block.getBody())){
-				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), block.getBody()));				
-				ball.getBody().undoMove();
-				block.takeDamageFrom(ball);
-				if(block.isDestroyed())
-					destroyedBlocks.add(block);				
-			}
-		}
-		for(Block block : destroyedBlocks){
-			blocks.remove(block);
-			this.setChanged();
-			this.notifyObservers(block);
-		}
+//		if(ball.getBody().intersects(ball.getDirection(),left)){
+//			newDirection = 180-ball.getDirection();
+//			ball.setDirection(newDirection);
+//			ball.getBody().undoMove();
+//		}
+//		else if(ball.getBody().intersects(ball.getDirection(),right)){		
+//			newDirection = 180-ball.getDirection();
+//			ball.setDirection(newDirection);
+//			ball.getBody().undoMove();
+//		}
+//		else if(ball.getBody().intersects(ball.getDirection(),top)){	
+//			newDirection = 360-ball.getDirection();		
+//			ball.setDirection(newDirection);
+//			ball.getBody().undoMove();
+//		}
+//		else if(ball.getBody().intersects(ball.getDirection(),bottom)){
+//			//TODO destroy the ball. gameover if no balls left!
+//			newDirection = 360-ball.getDirection();			
+//			ball.setDirection(newDirection);
+//			ball.getBody().undoMove();
+//		}
+//		for(Paddle pad : paddles){
+//			if(ball.getBody().intersects(ball.getDirection(),pad.getBody())){
+//				double matchDir = 0.0;
+//				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), pad.getBody()));
+//				if(ball.getDirection()>=180 && ball.getDirection() <=270 && pad.getDirection() >= 180 && pad.getDirection() <= 270){
+//					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+//					if(matchDir<10){
+//						ball.setSpeed(ball.getSpeed()*1.1);
+//					}
+//					else if(matchDir<25){
+//						ball.setSpeed(ball.getSpeed()*1.05);
+//					}					
+//				}
+//				else if(ball.getDirection()>=270 && ball.getDirection() <=359 && pad.getDirection() >= 270 && pad.getDirection() <= 359){
+//					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+//					if(matchDir<10){
+//						ball.setSpeed(ball.getSpeed()*1.1);
+//					}
+//					else if(matchDir<25){
+//						ball.setSpeed(ball.getSpeed()*1.05);
+//					}
+//				}
+//				else if(ball.getDirection()>=0 && ball.getDirection() <=90 && pad.getDirection() >= 0 && pad.getDirection() <= 90){
+//					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+//					if(matchDir<10){
+//						ball.setSpeed(ball.getSpeed()*1.1);
+//					}
+//					else if(matchDir<25){
+//						ball.setSpeed(ball.getSpeed()*1.05);
+//					}
+//				}
+//				else if(ball.getDirection()>=90 && ball.getDirection() <=180 && pad.getDirection() >= 90 && pad.getDirection() <= 180){
+//					matchDir = Math.abs(ball.getDirection()-pad.getDirection());
+//					if(matchDir<10){
+//						ball.setSpeed(ball.getSpeed()*1.1);
+//					}
+//					else if(matchDir<25){
+//						ball.setSpeed(ball.getSpeed()*1.05);
+//					}
+//				}
+//				if(Math.abs(ball.getDirection()-270)<10)
+//					ball.setSpeed(ball.getSpeed()*0.80);
+//				else if(Math.abs(ball.getDirection()-270)<20)
+//					ball.setSpeed(ball.getSpeed()*0.90);
+//				else if(Math.abs(ball.getDirection()-270)<25)
+//					ball.setSpeed(ball.getSpeed()*0.95);
+//				else if(Math.abs(ball.getDirection()-270)>65)
+//					ball.setSpeed(ball.getSpeed()*1.05);
+//				else if(Math.abs(ball.getDirection()-270)>70)
+//					ball.setSpeed(ball.getSpeed()*1.10);
+//				else if(Math.abs(ball.getDirection()-270)>80)
+//					ball.setSpeed(ball.getSpeed()*1.20);				
+//				ball.getBody().undoMove();
+//			}
+//		}
+//		List<Block> destroyedBlocks = new ArrayList<Block>();
+//		for(Block block : blocks){
+//			if(ball.getBody().intersects(ball.getDirection(), block.getBody())){
+//				ball.setDirection(ball.getBody().getNewDirection(ball.getDirection(), block.getBody()));				
+//				ball.getBody().undoMove();
+//				block.takeDamageFrom(ball);
+//				if(block.isDestroyed())
+//					destroyedBlocks.add(block);				
+//			}
+//		}
+//		for(Block block : destroyedBlocks){
+//			blocks.remove(block);
+//			this.setChanged();
+//			this.notifyObservers(block);
+//		}
 	}
 
 	public void checkForCollision(Paddle paddle) {
-		if(paddle.getBody().intersects(paddle.getDirection(),left)){
-			paddle.getBody().undoMove();			
-		}
-		if(paddle.getBody().intersects(paddle.getDirection(),right)){
-			paddle.getBody().undoMove();
-		}
+//		if(paddle.getBody().intersects(paddle.getDirection(),left)){
+//			paddle.getBody().undoMove();			
+//		}
+//		if(paddle.getBody().intersects(paddle.getDirection(),right)){
+//			paddle.getBody().undoMove();
+//		}
 	}
 	
 	
