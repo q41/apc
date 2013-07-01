@@ -188,7 +188,7 @@ public class CollisionResolver {
 		moved.undoMove();
 	}
 
-	protected void resolveCollision(Paddle paddle, Border border){
+	protected void resolveCollision(Paddle paddle, ballandpaddle.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
 		paddle.getBody().undoMove();
 	}

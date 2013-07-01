@@ -34,9 +34,7 @@ public class Level extends Observable {
 		return INSTANCE;
 	}
 	
-	public Level(){
-		borders = new ballandpaddle.base.Border[4];
-	}
+	public Level(){}
 	
 	public void setID(String id){
 		this.id = id;
@@ -93,6 +91,7 @@ public class Level extends Observable {
 			}
 			y++;
 		}
+		borders = new ballandpaddle.base.Border[4];
 		borders[0] = new ballandpaddle.base.Border("top", new ballandpaddle.base.collision.body.Border(new Point(0,0), new Point(width,0)));
 		borders[1] = new ballandpaddle.base.Border("left", new ballandpaddle.base.collision.body.Border(new Point(0,0), new Point(0,height)));
 		borders[2] = new ballandpaddle.base.Border("right", new ballandpaddle.base.collision.body.Border(new Point(width,0), new Point(width, height)));
@@ -153,13 +152,14 @@ public class Level extends Observable {
 		}
 		for(Paddle paddle : paddles){
 			Collision.collision(ball, paddle, CollisionResolver.getInstance());
-		}		
-		for(Block block : blocks){
-			Collision.collision(ball, block, CollisionResolver.getInstance());
-			if(block.isDestroyed()){
-				blocks.remove(block);
+		}				
+		for(int i = 0; i<blocks.size(); i++){
+			Collision.collision(ball, blocks.get(i), CollisionResolver.getInstance());
+			if(blocks.get(i).isDestroyed()){
 				this.setChanged();
-				this.notifyObservers(block);
+				this.notifyObservers(blocks.get(i));
+				blocks.remove(i);
+				i--;
 			}
 		}
 	}

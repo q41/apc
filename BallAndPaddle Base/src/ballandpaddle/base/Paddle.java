@@ -12,7 +12,6 @@ public class Paddle extends BAPObject {
 	private int orientation;
 	private int direction; //-1 for left, 1 for right, 0 for none
 	private double speed = 4;
-	private Body body;
 	private double effectiveSpeed;
 	
 	public Paddle(String id, int x, int y, int orientation, int size) {
@@ -43,7 +42,7 @@ public class Paddle extends BAPObject {
 		while(distance>0.001 && effectiveSpeed != 0){	
 			update();
 			level.checkForCollision(this);
-			distance-=effectiveSpeed;
+			distance-=Math.abs(effectiveSpeed);
 		}
 	}
 	
