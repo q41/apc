@@ -25,11 +25,18 @@ import org.alia4j.patterns.ModifiersPattern;
 import org.alia4j.patterns.NamePattern;
 import org.alia4j.patterns.ParametersPattern;
 import org.alia4j.patterns.TypePattern;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+
+import ballandpaddle.base.Ball;
+import ballandpaddle.base.Block;
+import ballandpaddle.base.Paddle;
+import ballandpaddle.base.Power;
+import ballandpaddle.base.BAPObject.Shape;
 
 public class Importer implements org.alia4j.fial.Importer {
 
@@ -54,8 +61,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	private final ClassLoader systemClassLoader;
 
 	public Importer(ClassLoader systemClassLoader) {
-		this.systemClassLoader = systemClassLoader;
-
+		this.systemClassLoader = systemClassLoader;		
 	}
 
 	@Override
@@ -64,8 +70,9 @@ public class Importer implements org.alia4j.fial.Importer {
 			throw new Error("Importer has already been executed.");
 		initialized = true;
 
-		//URL mainFile = systemClassLoader.getResource(System.getProperty("ballandpaddle.main") + ".xmi");
-		URL mainFile = systemClassLoader.getResource("SampleLevel.xmi");
+		URL mainFile = systemClassLoader.getResource(System.getProperty("ballandpaddle.main") + ".xmi");
+		//URL mainFile = systemClassLoader.getResource("simple.xmi");
+		//URL mainFile = null;
 		if (mainFile == null) {
 			System.out.println("No BAP level file specified (use VM argument -Dballandpaddle.main=<class-path-relative-file-name>");
 		}
@@ -95,7 +102,42 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Process AST
 		//-----------------------
 
-		//ballandpaddle.base.Level level = ballandpaddle.base.Level.getInstance();
+		ballandpaddle.base.Level level = ballandpaddle.base.Level.getInstance();
+		//create powers before creating blocks since some blocks can have powers!
+		//create unique blocks
+		List<Block> blocks = new ArrayList<Block>();
+		EList<org.alia4j.language.ballandpaddle.Block> tempBlocks = root.getBlocks();
+		
+		for(org.alia4j.language.ballandpaddle.Block b : tempBlocks){
+			Block block = new Block(b.getId(), b.getHardness(), b.getNormalRes(), b.getFireRes(), b.getColdRes(), b.getShockRes(), null);
+			blocks.add(block);
+		}
+		
+		
+		//create paddle
+		List<Paddle> paddles = new ArrayList<Paddle>();		
+		EList<org.alia4j.language.ballandpaddle.Paddle> tempPaddles = root.getPaddles();
+		for(org.alia4j.language.ballandpaddle.Paddle p : tempPaddles){
+			Paddle paddle = new Paddle(p.getId(), p.getX(), p.getY(), p.getOrientation(), p.getSize(), Shape.rectangle);
+			paddles.add(paddle);
+		}		
+		
+		//create ball
+		List<Ball> balls = new ArrayList<Ball>();
+		EList<org.alia4j.language.ballandpaddle.Ball> tempBalls = root.getBalls();
+		for(org.alia4j.language.ballandpaddle.Ball b : tempBalls){
+			Ball ball = new Ball(b.getId(), b.getX(), b.getY(), b.getSize(), b.getDirection(), b.getSpeed());
+			balls.add(ball);
+		}
+		
+		//set up the level
+		level.setBalls(balls);
+		level.setPaddles(paddles);
+		level.setPowerSpawnChance(root.getLevel().getPowerSpawnChance());
+		level.setImportedBlocks(root.getLevel().getBlocks());
+		level.setID(root.getLevel().getId());
+		level.generateBlocks(blocks);
+		
 		
 		announcePrint();
 		

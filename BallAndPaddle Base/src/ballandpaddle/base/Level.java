@@ -41,6 +41,7 @@ public class Level extends Observable {
 	}
 	
 	public void setBalls(List<Ball> balls){
+		System.out.println("current "+this.balls+". new "+balls);
 		this.balls = balls;
 	}
 	
@@ -120,8 +121,8 @@ public class Level extends Observable {
 		return width;
 	}
 
-	public void print() {
-		System.out.println("level: "+id+". Contains paddles: "+paddles+". Contains blocks: "+blocks+". Contains balls: "+balls);
+	public String toString() {
+		return "level: "+id+". Contains paddles: "+paddles+". Contains blocks: "+blocks+". Contains balls: "+balls;
 	}
 
 	public void moveAll(int delta) {

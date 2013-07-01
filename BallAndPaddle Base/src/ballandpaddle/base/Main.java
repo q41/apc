@@ -12,7 +12,7 @@ public class Main {
 	public static void main(String[] args) {
 		Level level = Level.getInstance();
 		
-		print();
+		//print();
 		
 		/**
 		 * TestLevel stuff
@@ -32,11 +32,19 @@ public class Main {
 //		uniqBlocks.add(A); uniqBlocks.add(B);
 //		Level testLevel = new Level("test", testPads, testBalls, impBlocks);
 //		testLevel.generateBlocks(uniqBlocks);		
-//		Game testGame = new Game(testLevel, 100.0);
-//		level.print();
+//		String[] additionalExcludes = System.getProperty("org.alia4j.exclude", "").split(",");
+//		for (String exclude : additionalExcludes) {
+//			
+//			String className = "org/lwjgl/opengl/ContextCapabilities";
+//			if (exclude.equals(""))
+//				continue;
+//			if (className.startsWith(exclude.replace('.', '/')))
+//				System.out.println("exclude "+exclude);
+//			}
 //		
-//		
-//		testGame.start();
+		Game game = new Game(level, 100.0);
+		game.start();
+		System.out.println(level.toString());
 	}
 
 	private static void print() {
