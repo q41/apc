@@ -1,6 +1,9 @@
 package ballandpaddle.base;
 
 import ballandpaddle.base.collision.*;
+import ballandpaddle.base.collision.body.Body;
+import ballandpaddle.base.collision.body.CircleBody;
+import ballandpaddle.base.collision.body.Point;
 
 public class Ball extends BAPObject {
 
@@ -9,27 +12,28 @@ public class Ball extends BAPObject {
 	private double speed;
 	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
-	private CircleBody body;
 	private int normalDamage;
 	private int fireDamage;
 	private int coldDamage;
 	private int shockDamage;
 	
 	public Ball(String id, int x, int y, int size, int direction, int speed){
-		this(id, x, y);
-		this.size = size;
+		this(id, x, y, size);
 		this.direction = direction;
 		this.speed = speed;
 		if(speed==0)
 			this.speed= 0.001;
 	}
 	
-	public Ball(String id, int x, int y) {
-		super(id, x, y);
-		this.size = 1;
+	public Ball(String id, int x, int y){
+		this(id, x, y, 1);
+	}
+	
+	public Ball(String id, int x, int y, int size) {
+		super(id, x, y, new CircleBody(new Point(x,y), 1*0.05));
+		this.size = size;
 		direction = 360-135;
 		speed = 1;
-		body = new CircleBody(new Point(x,y), size*0.05);
 		normalDamage = 1;
 		fireDamage = 0;
 		coldDamage = 0;
@@ -69,10 +73,6 @@ public class Ball extends BAPObject {
 		body.moveBy(movementVectorX, movementVectorY);
 		level.checkForCollision(this);
 			
-	}
-
-	public Body getBody() {
-		return body;
 	}
 
 	public double getSpeed() {

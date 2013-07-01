@@ -1,9 +1,9 @@
-package renderer;
+package ballandpaddle.base.renderer;
 
 import org.lwjgl.opengl.GL11;
 
 import ballandpaddle.base.Ball;
-import ballandpaddle.base.collision.CircleBody;
+import ballandpaddle.base.collision.body.CircleBody;
 
 public class BallRenderer implements Renderer {
 

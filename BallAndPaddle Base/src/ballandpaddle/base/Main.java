@@ -2,9 +2,9 @@ package ballandpaddle.base;
 
 import java.util.*;
 
-import renderer.Game;
 
 import ballandpaddle.base.BAPObject.Shape;
+import ballandpaddle.base.renderer.Game;
 
 public class Main {
 

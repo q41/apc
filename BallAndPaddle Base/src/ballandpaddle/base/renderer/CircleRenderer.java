@@ -1,4 +1,4 @@
-package renderer;
+package ballandpaddle.base.renderer;
 
 import org.lwjgl.opengl.GL11;
 

@@ -1,4 +1,4 @@
-package renderer;
+package ballandpaddle.base.renderer;
 
 public interface Renderer {
 

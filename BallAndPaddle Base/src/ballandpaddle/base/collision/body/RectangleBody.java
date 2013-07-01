@@ -1,4 +1,4 @@
-package ballandpaddle.base.collision;
+package ballandpaddle.base.collision.body;
 
 public class RectangleBody implements Body {
 

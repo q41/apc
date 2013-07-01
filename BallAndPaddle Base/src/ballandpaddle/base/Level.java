@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Observable;
 
 import ballandpaddle.base.collision.*;
+import ballandpaddle.base.collision.body.Body;
+import ballandpaddle.base.collision.body.Border;
+import ballandpaddle.base.collision.body.Point;
 
 
 public class Level extends Observable {

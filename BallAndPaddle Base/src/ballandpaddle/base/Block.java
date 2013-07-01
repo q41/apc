@@ -1,8 +1,8 @@
 package ballandpaddle.base;
 
-import ballandpaddle.base.collision.Point;
-import ballandpaddle.base.collision.RectangleBody;
-import ballandpaddle.base.collision.SquareBody;
+import ballandpaddle.base.collision.body.Point;
+import ballandpaddle.base.collision.body.RectangleBody;
+import ballandpaddle.base.collision.body.SquareBody;
 
 public class Block extends BAPObject {
 
@@ -12,11 +12,9 @@ public class Block extends BAPObject {
 	private int coldRes;
 	private int shockRes;
 	private Power power;
-	private SquareBody body;
 	
 	public Block(String id, int x, int y) {
-		super(id, x, y);
-		body = new SquareBody(new Point(x,y), new Point(x+1, y+1));
+		super(id, x, y,  new SquareBody(new Point(x,y), new Point(x+1, y+1)));
 	}
 	
 	public Block(int x, int y, Block b){
@@ -61,10 +59,6 @@ public class Block extends BAPObject {
 	
 	public Power getPower(){
 		return power;
-	}
-	
-	public SquareBody getBody(){
-		return body;
 	}
 
 	public void takeDamageFrom(Ball ball) {

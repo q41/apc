@@ -1,16 +1,28 @@
-package renderer;
+package ballandpaddle.base.renderer;
 
 import org.lwjgl.opengl.GL11;
 
 import ballandpaddle.base.Paddle;
-import ballandpaddle.base.collision.*;
+import ballandpaddle.base.collision.body.RectangleBody;
 
-public class PaddleRectangleRenderer  extends PaddleRenderer {
+public class PaddleRenderer implements Renderer {
+
+	protected Paddle paddle;
+	protected double scale;
+	protected double downscaleHeightRatio;
+	protected double downscaleWidthRatio;
+	protected double offsetX;
+	protected double offsetY;
 	
-	public PaddleRectangleRenderer(Paddle paddle, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
-		super(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
-	}
-
+	protected PaddleRenderer(Paddle paddle, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
+		this.paddle = paddle;
+		this.scale = scale;
+		this.downscaleHeightRatio = downscaleHeightRatio;
+		this.downscaleWidthRatio = downscaleWidthRatio;
+		this.offsetX = offsetX;
+		this.offsetY = offsetY;
+	}	
+	
 	@Override
 	public void update(int delta) {
 		// TODO Auto-generated method stub
@@ -31,8 +43,7 @@ public class PaddleRectangleRenderer  extends PaddleRenderer {
 				GL11.glVertex2d(bottomRightX, bottomRightY);
 				GL11.glVertex2d(topLeftX, bottomRightY);
 			GL11.glEnd();
-		GL11.glPopMatrix();
-		
+		GL11.glPopMatrix();		
 	}
-
+	
 }

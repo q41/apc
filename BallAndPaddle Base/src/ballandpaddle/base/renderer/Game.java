@@ -1,4 +1,4 @@
-package renderer;
+package ballandpaddle.base.renderer;
 
 import java.util.*;
 
@@ -103,18 +103,9 @@ public class Game implements Observer {
 		for(Ball ball : level.getBalls()){
 			ballRenderers.add(new BallRenderer(ball, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 		}		
-		for(Paddle paddle : level.getPaddles()){
-			switch (paddle.getShape()) {
-            case triangle: 	paddleRenderers.add(new PaddleTriangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
-            				break;
-            case square: 	paddleRenderers.add(new PaddleRectangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
-							break;
-            case rectangle: paddleRenderers.add(new PaddleRectangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
-							break;
-            case circle: 	paddleRenderers.add(new PaddleCircleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
-							break;
-			}
-		}
+		for(Paddle paddle : level.getPaddles()){			
+           paddleRenderers.add(new PaddleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
+        }
 	}
 
 	private void update(int delta) {

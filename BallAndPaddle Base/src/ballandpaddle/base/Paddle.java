@@ -1,14 +1,17 @@
 package ballandpaddle.base;
 
-import renderer.PaddleCircleRenderer;
-import renderer.PaddleRectangleRenderer;
-import renderer.PaddleTriangleRenderer;
-import ballandpaddle.base.collision.Body;
 import ballandpaddle.base.collision.*;
+import ballandpaddle.base.collision.body.Body;
+import ballandpaddle.base.collision.body.CircleBody;
+import ballandpaddle.base.collision.body.Point;
+import ballandpaddle.base.collision.body.RectangleBody;
+import ballandpaddle.base.collision.body.TriangleBody;
+import ballandpaddle.base.renderer.PaddleCircleRenderer;
+import ballandpaddle.base.renderer.PaddleRectangleRenderer;
+import ballandpaddle.base.renderer.PaddleTriangleRenderer;
 
 public class Paddle extends BAPObject {
 
-	private Shape shape;
 	private int size;
 	private int orientation;
 	private int direction; //-1 for left, 1 for right, 0 for none
@@ -16,32 +19,9 @@ public class Paddle extends BAPObject {
 	private Body body;
 	
 	public Paddle(String id, int x, int y, int orientation, int size, Shape shape) {
-		super(id, x, y);
+		super(id, x, y, new RectangleBody(new Point(x,y), new Point(x+0.5*size, y+0.05)));
 		this.orientation = orientation;
 		this.size = 3;
-		this.shape = shape;
-		setBody();
-	}
-	
-	private void setBody() {
-		switch (shape) {
-        case triangle: 	body = new TriangleBody(new Point(x,y-0.125), new Point(x-0.25*size,y+0.125), new Point(x+0.25*size,y+0.125));
-        				break;
-        case square: 	body = new RectangleBody(new Point(x,y), new Point(x+0.5*size,y+0.5*size));
-						break;
-        case rectangle: body = new RectangleBody(new Point(x,y), new Point(x+0.5*size, y+0.05));
-						break;
-        case circle: 	body = new CircleBody(new Point(x,y), size*0.15);
-						break;
-		}		
-	}
-	
-	public Body getBody(){
-		return body;
-	}
-	
-	public Shape getShape(){
-		return shape;
 	}
 	
 	public int getOrientation(){
