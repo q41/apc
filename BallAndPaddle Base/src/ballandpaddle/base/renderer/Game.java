@@ -48,29 +48,42 @@ public class Game implements Observer {
 	
 	public void start() {
 		System.out.println("starting");
-		try {
-		Display.setDisplayMode(new DisplayMode(width, height));
-		Display.create();
-		System.out.println(Display.isVisible());
-		} catch (LWJGLException e) {
-		e.printStackTrace();
-		System.exit(0);
-		}
-
-		initGL(); // init OpenGL
+//		try {
+//		Display.setDisplayMode(new DisplayMode(width, height));
+//		Display.create();
+//		System.out.println(Display.isVisible());
+//		} catch (LWJGLException e) {
+//		e.printStackTrace();
+//		System.exit(0);
+//		}
+//
+//		initGL(); // init OpenGL
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
-		while (!Display.isCloseRequested()) {
-			int delta = getDelta();
- 
+//		while (!Display.isCloseRequested()) {
+		while(true){
+			int delta = getDelta();			
+			//temp stuff to ensure 60 fps while stuff is broken
+			long timePerFrame = 1000/60;
+			long sleepTime = timePerFrame-delta;
+			System.out.println(1000/(delta+sleepTime));
+			if(sleepTime>0)
+				try {
+					Thread.sleep(sleepTime);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+			
 			update(delta);
-			renderGL();
+			//renderGL();
  
-			Display.update();
-			Display.sync(60); // cap fps to 60fps
+			//Display.update();
+			//Display.sync(60); // cap fps to 60fps
 		}
  
-		Display.destroy();
+		//Display.destroy();
 	}
 	
 	private void initGL() {
@@ -111,7 +124,7 @@ public class Game implements Observer {
 		//TODO, steps in following order
 		
 		//Check for keyboard input for moving the paddle and set the direction accordingly.
-		pollInput();
+		//pollInput();
 		//Move all items that are currently moving, collisions, new items to be rendered, etc etc.
 		level.moveAll(delta);
 		//Check if all items that have renderers still exist, if not remove the renderer.
