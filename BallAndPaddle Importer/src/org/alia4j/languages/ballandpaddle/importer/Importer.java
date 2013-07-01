@@ -71,8 +71,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		initialized = true;
 
 		URL mainFile = systemClassLoader.getResource(System.getProperty("ballandpaddle.main") + ".xmi");
-		//URL mainFile = systemClassLoader.getResource("simple.xmi");
-		//URL mainFile = null;
+		mainFile = systemClassLoader.getResource("SampleLevel.xmi");
 		if (mainFile == null) {
 			System.out.println("No BAP level file specified (use VM argument -Dballandpaddle.main=<class-path-relative-file-name>");
 		}
