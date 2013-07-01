@@ -1,11 +1,7 @@
 package ballandpaddle.base.collision;
 
-import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
-import ballandpaddle.base.Level;
-import ballandpaddle.base.Paddle;
-import ballandpaddle.base.collision.body.Body;
 import ballandpaddle.base.collision.body.CircleBody;
 import ballandpaddle.base.collision.body.SquareBody;
 

@@ -18,8 +18,6 @@ public class CollisionResolver {
 	}
 	
 	public void resolveCollision(BAPObject moved, BAPObject other) {
-		Body first = moved.getBody();
-		Body second = other.getBody();
 		if(moved instanceof Ball)
 			resolveBallCollision((Ball) moved, other);
 		else if(moved instanceof Paddle)

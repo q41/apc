@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ballandpaddle:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ballandpaddle="http://www.alia4j.org/language/ballandpaddle">
+  <level id="first">
+    <blocks>.......</blocks>
+    <blocks>...A...</blocks>
+    <blocks>..BBB..</blocks>
+  </level>
+  <paddles id="Paddle" x="2" y="4" shape="rectangle" size="1"/>
+  <balls id="Ball" x="3" y="4"/>
+  <blocks id="A" hardness="1" coldRes="2" shockRes="3"/>
+  <blocks id="B" hardness="5"/>
+</ballandpaddle:Root>
