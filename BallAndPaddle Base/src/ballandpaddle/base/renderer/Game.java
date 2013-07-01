@@ -10,7 +10,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import ballandpaddle.base.*;
-import ballandpaddle.base.BAPObject.Shape;
 
 public class Game implements Observer {
 

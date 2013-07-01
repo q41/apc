@@ -27,12 +27,7 @@ public abstract class BAPObject {
 	
 	public double getY(){
 		return y;
-	}	
-	
-	public enum Shape{
-		circle,triangle,square,rectangle;
-	}
-	
+	}		
 	
 	public Body getBody(){
 		return body;

@@ -3,7 +3,6 @@ package ballandpaddle.base;
 import java.util.*;
 
 
-import ballandpaddle.base.BAPObject.Shape;
 import ballandpaddle.base.renderer.Game;
 
 public class Main {
@@ -42,9 +41,9 @@ public class Main {
 //				System.out.println("exclude "+exclude);
 //			}
 //		
+		System.out.println(level.toString());
 		Game game = new Game(level, 100.0);
 		game.start();
-		System.out.println(level.toString());
 	}
 
 	private static void print() {

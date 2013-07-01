@@ -43,11 +43,11 @@ public class Level extends Observable {
 	}
 	
 	public void setPaddles(List<Paddle> paddles){
+		System.out.println("adding paddles "+paddles);
 		this.paddles = paddles;
 	}
 	
 	public void setBalls(List<Ball> balls){
-		System.out.println("current "+this.balls+". new "+balls);
 		this.balls = balls;
 	}
 	
