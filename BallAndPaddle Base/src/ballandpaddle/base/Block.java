@@ -69,4 +69,10 @@ public class Block extends BAPObject {
 	public boolean isDestroyed(){
 		return hardness<=0;
 	}
+
+	@Override
+	protected void update() {
+		//TODO, do something if destroyed?
+		
+	}
 }

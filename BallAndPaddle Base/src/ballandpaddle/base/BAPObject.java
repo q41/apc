@@ -33,4 +33,7 @@ public abstract class BAPObject {
 		return body;
 	}
 	
+	protected abstract void update();
+	
+	
 }

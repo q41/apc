@@ -17,6 +17,8 @@ public class Ball extends BAPObject {
 	private int coldDamage;
 	private int shockDamage;
 	private boolean alive;
+	private double movementVectorX;
+	private double movementVectorY;
 	
 	public Ball(String id, int x, int y, int size, int direction, int speed){
 		this(id, x, y, size);
@@ -57,24 +59,25 @@ public class Ball extends BAPObject {
 	public double speed(){
 		return speed;
 	}
+	
+	protected void update(){
+		body.moveBy(movementVectorX, movementVectorY);
+	}
 
 	public void move(double factor, Level level) {
 		double distance = speed * factor;
 		double radDir = direction*Math.PI/180;
-		double movementVectorX = 0.0;
-		double movementVectorY = 0.0;
 		while(distance>0.25/speed){			
 			movementVectorX = 0.25/speed*Math.cos(radDir);
 			movementVectorY = 0.25/speed*Math.sin(radDir);
-			body.moveBy(movementVectorX, movementVectorY);
+			update();
 			level.checkForCollision(this);
 			distance-=0.25/speed;
 		}
 		movementVectorX = distance/speed*Math.cos(radDir);
 		movementVectorY = distance/speed*Math.sin(radDir);
-		body.moveBy(movementVectorX, movementVectorY);
+		update();
 		level.checkForCollision(this);
-			
 	}
 
 	public double getSpeed() {

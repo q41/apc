@@ -148,13 +148,19 @@ public class Level extends Observable {
 	}
 
 	public void checkForCollision(Ball ball) {
-		int newDirection = 0;
-		List<Block> destroyedBlocks = new ArrayList<Block>();
-		
-		for(Block block : destroyedBlocks){
-			blocks.remove(block);
-			this.setChanged();
-			this.notifyObservers(block);
+		for(ballandpaddle.base.Border border : borders){
+			Collision.collision(ball, border, CollisionResolver.getInstance());
+		}
+		for(Paddle paddle : paddles){
+			Collision.collision(ball, paddle, CollisionResolver.getInstance());
+		}		
+		for(Block block : blocks){
+			Collision.collision(ball, block, CollisionResolver.getInstance());
+			if(block.isDestroyed()){
+				blocks.remove(block);
+				this.setChanged();
+				this.notifyObservers(block);
+			}
 		}
 	}
 

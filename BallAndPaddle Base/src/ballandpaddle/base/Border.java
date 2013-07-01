@@ -8,6 +8,10 @@ public class Border extends BAPObject{
 		super(id, 0, 0, body);
 	}
 
+	@Override
+	protected void update() {		
+	}
+
 	
 	
 	
