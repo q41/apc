@@ -27,6 +27,7 @@ public class Game implements Observer {
 	private List<BlockRenderer> blockRenderers;
 	private List<BallRenderer> ballRenderers;
 	private List<PaddleRenderer> paddleRenderers;
+	private boolean initializing;
 	
 	
 	public Game(Level level, int width, int height, double scale){
@@ -44,43 +45,47 @@ public class Game implements Observer {
 		width = 800;
 		height = 600;
 		level.addObserver(this);
+		initializing = true;
 	}
 	
 	public void start() {
 		System.out.println("starting");
-//		try {
-//		Display.setDisplayMode(new DisplayMode(width, height));
-//		Display.create();
-//		System.out.println(Display.isVisible());
-//		} catch (LWJGLException e) {
-//		e.printStackTrace();
-//		System.exit(0);
-//		}
-//
-//		initGL(); // init OpenGL
+		try {
+		Display.setDisplayMode(new DisplayMode(width, height));
+		Display.create();
+		System.out.println(Display.isVisible());
+		} catch (LWJGLException e) {
+		e.printStackTrace();
+		System.exit(0);
+		}
+
+		initGL(); // init OpenGL
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
-//		while (!Display.isCloseRequested()) {
-		while(true){
+		int i = 0;
+		while (!Display.isCloseRequested()) {			
+//		while(true){
 			int delta = getDelta();			
 			//temp stuff to ensure 60 fps while stuff is broken
-			long timePerFrame = 1000/60;
-			long sleepTime = timePerFrame-delta;
-			System.out.println(1000/(delta+sleepTime));
-			if(sleepTime>0)
-				try {
-					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
+//			long timePerFrame = 1000/60;
+//			long sleepTime = timePerFrame-delta;
+//			System.out.println(1000/(delta+sleepTime));
+//			if(sleepTime>0)
+//				try {
+//					Thread.sleep(sleepTime);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			
 			update(delta);
-			//renderGL();
+			renderGL();
  
-			//Display.update();
-			//Display.sync(60); // cap fps to 60fps
+			Display.update();
+			Display.sync(30); // cap fps to 60fps
+			if(i>60)
+				initializing = false;
+			i++;
 		}
  
 		//Display.destroy();
@@ -124,9 +129,12 @@ public class Game implements Observer {
 		//TODO, steps in following order
 		
 		//Check for keyboard input for moving the paddle and set the direction accordingly.
-		//pollInput();
+		pollInput();
 		//Move all items that are currently moving, collisions, new items to be rendered, etc etc.
-		level.moveAll(delta);
+		if(initializing)
+			level.moveAll(delta/60);
+		else
+			level.moveAll(delta);
 		//Check if all items that have renderers still exist, if not remove the renderer.
 		
 		

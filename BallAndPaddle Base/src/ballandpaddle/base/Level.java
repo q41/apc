@@ -165,10 +165,12 @@ public class Level extends Observable {
 	}
 
 	public void checkForCollision(Paddle paddle) {
-		Collision.collision(paddle, borders[0], CollisionResolver.getInstance());
-		Collision.collision(paddle, borders[1], CollisionResolver.getInstance());
-		Collision.collision(paddle, borders[2], CollisionResolver.getInstance());
-		Collision.collision(paddle, borders[3], CollisionResolver.getInstance());		
+		if(paddle.getDirection()>0)
+			Collision.collision(paddle, borders[2], CollisionResolver.getInstance());
+		else if(paddle.getDirection()<0)
+				Collision.collision(paddle, borders[1], CollisionResolver.getInstance());
+//		Collision.collision(paddle, borders[0], CollisionResolver.getInstance());
+//		Collision.collision(paddle, borders[3], CollisionResolver.getInstance());		
 	}
 	
 	

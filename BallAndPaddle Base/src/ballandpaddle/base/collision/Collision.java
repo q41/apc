@@ -1,19 +1,31 @@
 package ballandpaddle.base.collision;
+import java.util.*;
+
 import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.collision.body.*;
 
 public class Collision {
 
+	private static Map<BAPObject, BAPObject> lastCollision;
+	
 	public static void collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
+		if(lastCollision == null)
+			lastCollision = new HashMap<BAPObject, BAPObject>();
 		Body first = moved.getBody();
 		Body second = other.getBody();
-		if(hasCollided(first, second))
-			resolver.resolveCollision(moved, other);	
+		if(hasCollided(first, second)){			
+			resolver.resolveCollision(moved, other);
+			lastCollision.put(moved, other);			
+		}
 	}
 	
 	private static boolean hasCollided(Body moved, Body other){
 		if(moved instanceof CircleBody)
-			return hasCollided((CircleBody)moved, other);
+			//check if the last collision of moved was with other, if so then it can't have collided with it again right away
+			if(!lastCollision.containsKey(moved) || (lastCollision.containsKey(moved) && !lastCollision.get(moved).equals(other)))
+				return hasCollided((CircleBody)moved, other);
+			else
+				return false;
 		else if(moved instanceof RectangleBody)
 			return hasCollided((RectangleBody)moved, other);
 		return false;

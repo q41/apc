@@ -41,29 +41,35 @@ public class CollisionResolver {
 	}	
 	
 	protected void resolveCollision(Ball ball, ballandpaddle.base.Border border){
+		System.out.println("old "+ball.getDirection());
 		int newDirection = 0;
-		if(border.getId().equals("left")){
+		if(border.getId().equals("left") && ball.getDirection()>90 && ball.getDirection()<270){
 			newDirection = 180-ball.getDirection();
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
+			System.out.println("new left"+ball.getDirection());
 		}
-		else if(border.getId().equals("right")){
+		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0))){
 			newDirection = 180-ball.getDirection();
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
+			System.out.println("new right"+ball.getDirection());
 		}
-		else if(border.getId().equals("top")){
+		else if(border.getId().equals("top") && ball.getDirection()>180 && ball.getDirection()<360){
 			newDirection = 360-ball.getDirection();		
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
+			System.out.println("new top"+ball.getDirection());
 		}
-		else if(border.getId().equals("bottom")){
+		else if(border.getId().equals("bottom") && ball.getDirection()>0 && ball.getDirection()<180){
 			newDirection = 360-ball.getDirection();			
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
 			ball.setDestroyed(true);
+			System.out.println("new bottom"+ball.getDirection());
 			//TODO, destroy the ball?
 		}		
+		
 	}
 	
 	protected void resolveCollision(Ball ball, Paddle paddle){
@@ -133,7 +139,7 @@ public class CollisionResolver {
 	
 	protected void resolveCollision(Ball ball, Block block){
 		CircleBody moved = (CircleBody) ball.getBody();
-		SquareBody other = (SquareBody) block.getBody();	
+		SquareBody other = (SquareBody) block.getBody();
 		//split up the square into 4 parts, bottom, left, right, top. 
 		//top
 		double topY = other.getTopLeft().getY();
@@ -148,49 +154,47 @@ public class CollisionResolver {
 		double ballYTop = moved.getCenter().getY()-moved.getR();
 		double ballXLeft = moved.getCenter().getX()-moved.getR();
 		double ballXRight = moved.getCenter().getX()+moved.getR();
-		//top hit?
-		boolean topHit = ballYBottom>topY && ballYBottom<bottomY && ballYTop<topY && ballYTop<bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
-		//bottom hit?
-		boolean bottomHit = ballYTop>topY && ballYTop<bottomY && ballYBottom>topY && ballYBottom>bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
-		//right hit?
-		boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
-		//left hit?
-		boolean leftHit = ballXRight<rightX && ballXRight>leftX && ballXLeft<rightX && ballXLeft<leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
-								
-		//check which the ball has collided with to determine the new direction of the ball	
+		//hit right side?
 		int newDirection = ball.getDirection();
-		if(topHit && rightHit){
-			newDirection = newDirection - 180;
+		if(ball.getDirection()>90 && ball.getDirection()<270){
+			boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
+			if(rightHit)
+				newDirection = 180-newDirection;			
 		}
-		else if(topHit && leftHit){
-			newDirection = newDirection - 180;
+		//hit left side?
+		if((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0)){
+			boolean leftHit = ballXRight<rightX && ballXRight>leftX && ballXLeft<rightX && ballXLeft<leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
+			if(leftHit)
+				newDirection = 180-newDirection;
 		}
-		else if(topHit){
-			newDirection = 360-newDirection;	
+		//hit bottom side?
+		
+		if(ball.getDirection()>180 && ball.getDirection()<360){
+			boolean bottomHit = ballYTop>topY && ballYTop<bottomY && ballYBottom>topY && ballYBottom>bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
+			if(bottomHit)
+				newDirection = 360-newDirection;			
 		}
-		else if(bottomHit && rightHit){
-			newDirection = newDirection + 180;
-		}
-		else if(bottomHit && leftHit){
-			newDirection = newDirection + 180;
-		}
-		else if(bottomHit){
-			newDirection = 360-newDirection;
-		}
-		else if(rightHit){
-			newDirection = 180-newDirection;
-		}
-		else{
-			newDirection = 180-newDirection;
-		}
-		ball.setDirection(newDirection);
-		block.takeDamageFrom(ball);
-		moved.undoMove();
+		//hit top side?
+		if(ball.getDirection()>0 && ball.getDirection()<180){
+			boolean topHit = ballYBottom>topY && ballYBottom<bottomY && ballYTop<topY && ballYTop<bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
+			if(topHit)
+				newDirection = 360-newDirection;				
+		}		
+			ball.setDirection(newDirection);
+			block.takeDamageFrom(ball);
+			moved.undoMove();		
 	}
 
 	protected void resolveCollision(Paddle paddle, ballandpaddle.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
-		paddle.getBody().undoMove();
+		if(paddle.getDirection()>0){
+			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRight().getX();
+			paddle.getBody().moveBy(adjustX, 0);			
+		}
+		else{
+			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeft().getX();
+			paddle.getBody().moveBy(adjustX, 0);	
+		}		
 	}
 	
 	

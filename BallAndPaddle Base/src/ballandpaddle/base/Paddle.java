@@ -37,13 +37,19 @@ public class Paddle extends BAPObject {
 	}
 	
 	public void move(double adjustment, Level level){
+		//calculate distance to travel this update
 		double distance = speed*adjustment;
-		effectiveSpeed = speed*0.001*direction;
-		while(distance>0.001 && effectiveSpeed != 0){	
+		//speed per move
+		effectiveSpeed = 0.250;
+		while(distance != 0 && distance>=effectiveSpeed){	
 			update();
 			level.checkForCollision(this);
-			distance-=Math.abs(effectiveSpeed);
+			distance-=effectiveSpeed;
 		}
+		effectiveSpeed = distance;
+		update();
+
+		level.checkForCollision(this);
 	}
 	
 	public double getSpeed(){
@@ -52,7 +58,7 @@ public class Paddle extends BAPObject {
 
 	@Override
 	protected void update() {
-		body.moveBy(effectiveSpeed,0);			
+		body.moveBy(effectiveSpeed*direction,0);			
 	}
 
 }

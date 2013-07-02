@@ -35,7 +35,7 @@ public class Ball extends BAPObject {
 	public Ball(String id, int x, int y, int size) {
 		super(id, x, y, new CircleBody(new Point(x,y), 1*0.05));
 		this.size = size;
-		direction = 360-135;
+		direction = 360-125;
 		speed = 1;
 		normalDamage = 1;
 		fireDamage = 0;
@@ -53,7 +53,11 @@ public class Ball extends BAPObject {
 	}
 	
 	public void setDirection(int direction){
+		if(direction<0)
+			direction+=360;
 		this.direction = direction%360;
+		
+		
 	}
 	
 	public double speed(){
@@ -65,6 +69,7 @@ public class Ball extends BAPObject {
 	}
 
 	public void move(double factor, Level level) {
+		speed = 5;
 		double distance = speed * factor;
 		double radDir = direction*Math.PI/180;
 		while(distance>0.25/speed){			
