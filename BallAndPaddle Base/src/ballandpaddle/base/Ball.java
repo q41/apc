@@ -64,7 +64,8 @@ public class Ball extends BAPObject {
 		return speed;
 	}
 	
-	protected void update(){
+	@Override
+	public final void update(){
 		body.moveBy(movementVectorX, movementVectorY);
 	}
 

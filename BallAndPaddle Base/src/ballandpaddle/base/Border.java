@@ -9,7 +9,7 @@ public class Border extends BAPObject{
 	}
 
 	@Override
-	protected void update() {		
+	public final void update() {		
 	}
 
 	

@@ -71,7 +71,7 @@ public class Block extends BAPObject {
 	}
 
 	@Override
-	protected void update() {
+	public final void update() {
 		//TODO, do something if destroyed?
 		
 	}

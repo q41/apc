@@ -143,8 +143,11 @@ public class Importer implements org.alia4j.fial.Importer {
 		level.generateBlocks(blocks);
 		
 		
-		announcePrint();
+		//-----------------------
+		// Creating attachments
+		//-----------------------
 		
+		createEffect();
 
 		//-----------------------
 		// Deploy all definitions
@@ -156,7 +159,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
 		
 	}
-	
 	
 	private void createEffect() {
 		Specialization specialization = new Specialization(BAPObjectUpdate, null, Collections.<Context>emptyList());

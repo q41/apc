@@ -57,7 +57,7 @@ public class Paddle extends BAPObject {
 	}
 
 	@Override
-	protected void update() {
+	public final void update() {
 		body.moveBy(effectiveSpeed*direction,0);			
 	}
 
