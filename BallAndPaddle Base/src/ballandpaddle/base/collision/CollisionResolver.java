@@ -126,9 +126,7 @@ public class CollisionResolver {
 		else if(Math.abs(ball.getDirection()-270)>70)
 			ball.setSpeed(ball.getSpeed()*1.10);
 		else if(Math.abs(ball.getDirection()-270)>80)
-			ball.setSpeed(ball.getSpeed()*1.20);		
-		
-		ball.getBody().undoMove();
+			ball.setSpeed(ball.getSpeed()*1.20);	
 	}
 	
 	protected void resolveCollision(Ball ball, Block block){

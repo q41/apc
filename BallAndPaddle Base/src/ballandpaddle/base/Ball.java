@@ -19,6 +19,7 @@ public class Ball extends BAPObject {
 	private boolean alive;
 	private double movementVectorX;
 	private double movementVectorY;
+	private final double increment = 0.25;
 	
 	public Ball(String id, double d, double e, int size, int direction, int speed){
 		this(id, d, e, size);
@@ -26,10 +27,10 @@ public class Ball extends BAPObject {
 		if(this.direction>=0 && this.direction<=180)
 			this.direction=270;
 		this.speed = speed;
-		if(speed==0)
-			this.speed= 0.001;
+		if(speed<1)
+			this.speed = 1;
 		else if(speed>2)
-			speed = 2;
+			this.speed = 2;
 	}
 	
 	public Ball(String id, double x, double y){
@@ -73,25 +74,26 @@ public class Ball extends BAPObject {
 		body.moveBy(movementVectorX, movementVectorY);
 	}
 
-	public void move(double factor, Level level) {
-		speed = 5;
+	public void calculateMove(double factor, Level level) {
 		double distance = speed * factor;
 		double radDir = direction*Math.PI/180;
-		while(distance>0.25/speed){			
-			movementVectorX = 0.25/speed*Math.cos(radDir);
-			movementVectorY = 0.25/speed*Math.sin(radDir);
-			update();
-			level.checkForCollision(this);
-			distance-=0.25/speed;
+		if(distance>=increment){			
+			movementVectorX = increment*Math.cos(radDir);
+			movementVectorY = increment*Math.sin(radDir);
 		}
-		movementVectorX = distance/speed*Math.cos(radDir);
-		movementVectorY = distance/speed*Math.sin(radDir);
-		update();
-		level.checkForCollision(this);
+		else{
+			movementVectorX = distance*Math.cos(radDir);
+			movementVectorY = distance*Math.sin(radDir);
+		}
 	}
 
 	public double getSpeed() {
 		return speed;
+	}
+	
+	public int getNeededSteps(double factor){
+		double distance = speed*factor;
+		return (int) Math.ceil((distance/increment));		
 	}
 	
 	public void setSpeed(double newSpeed){

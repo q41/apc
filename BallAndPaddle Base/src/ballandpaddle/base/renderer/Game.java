@@ -62,18 +62,17 @@ public class Game implements Observer {
 		initGL(); // init OpenGL
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
-		int i = 0;
+		double init = 0.0;
 		while (!Display.isCloseRequested() && !level.gameOver()) {		
 			int delta = getDelta();					
 			
-			update(delta);
+			update((int) (delta*init));
 			renderGL();
  
 			Display.update();
 			Display.sync(30); // cap fps to 30fps
-			if(i>60)
-				initializing = false;
-			i++;
+			if(init<1.0)
+				init+=0.00125;
 		}
 		while(!Display.isCloseRequested()){
 			renderGL();			 
@@ -124,10 +123,7 @@ public class Game implements Observer {
 		//Check for keyboard input for moving the paddle and set the direction accordingly.
 		pollInput();
 		//Move all items that are currently moving, collisions, new items to be rendered, etc etc.
-		if(initializing)
-			level.moveAll(delta/60);
-		else
-			level.moveAll(delta);
+		level.moveAll(delta);
 		//Check if all items that have renderers still exist, if not remove the renderer.
 		
 		

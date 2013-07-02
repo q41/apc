@@ -12,7 +12,8 @@ public class Paddle extends BAPObject {
 	private int orientation;
 	private int direction; //-1 for left, 1 for right, 0 for none
 	private double speed = 4;
-	private double effectiveSpeed;
+	private final double increment = 0.25;
+	private double movementVectorX;
 	
 	public Paddle(String id, double d, double e, int orientation, int size) {
 		super(id, d, e, new RectangleBody(new Point(d,e), new Point(d+0.5*size, e+0.05)));
@@ -36,20 +37,22 @@ public class Paddle extends BAPObject {
 		return direction;
 	}
 	
-	public void move(double adjustment, Level level){
+	public void calculateMove(double factor, Level level){
 		//calculate distance to travel this update
-		double distance = speed*adjustment;
-		//speed per move
-		effectiveSpeed = 0.250;
-		while(distance != 0 && distance>=effectiveSpeed){	
-			update();
-			level.checkForCollision(this);
-			distance-=effectiveSpeed;
-		}
-		effectiveSpeed = distance;
-		update();
-
-		level.checkForCollision(this);
+		double distance = speed*factor;
+		if(distance>=increment)
+			movementVectorX = increment*direction;			
+		else
+			movementVectorX = distance*direction;
+	}
+	
+	
+	
+	public int getNeededSteps(double factor){
+		double distance = 0;
+		if(direction!=0)
+			distance = speed*factor;
+		return (int) Math.ceil((distance/increment));		
 	}
 	
 	public double getSpeed(){
@@ -58,7 +61,7 @@ public class Paddle extends BAPObject {
 
 	@Override
 	public final void update() {
-		body.moveBy(effectiveSpeed*direction,0);			
+		body.moveBy(movementVectorX,0);			
 	}
 
 }

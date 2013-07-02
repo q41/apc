@@ -1,7 +1,5 @@
 package ballandpaddle.base;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
+import java.util.*;
 
 import ballandpaddle.base.collision.*;
 import ballandpaddle.base.collision.body.Body;
@@ -131,17 +129,40 @@ public class Level extends Observable {
 	public void moveAll(int delta) {
 		if(delta>0){
 			double factor = 1.0/1000*delta;
+			int maxSteps = 0;
+			Map<BAPObject, Integer> stepsPerObject = new HashMap<BAPObject, Integer>();
+			//get steps needed
 			for(Paddle pad : paddles){
-				pad.move(factor, this);
+				int steps = pad.getNeededSteps(factor);
+				stepsPerObject.put(pad, steps);
+				if(steps>maxSteps)
+					maxSteps = steps;
 			}
-			for(int i =0; i<balls.size(); i++){
-				balls.get(i).move(factor, this);
-				if(balls.get(i).isDestroyed()){
-					this.setChanged();
-					this.notifyObservers(balls.get(i));
-					balls.remove(i);
-					i--;
+			for(Ball ball : balls){
+				int steps = ball.getNeededSteps(factor);
+				stepsPerObject.put(ball, steps);
+				if(steps>maxSteps)
+					maxSteps = steps;
+			}
+			for(int i = 0; i<maxSteps; i++){
+				for(Paddle pad : paddles){
+					if(pad.getDirection()!=0){
+						pad.calculateMove(factor*stepsPerObject.get(pad)/maxSteps, this);
+						pad.update();
+						checkForCollision(pad);
+					}
 				}
+				for(int j =0; j<balls.size(); j++){
+					balls.get(j).calculateMove(factor*stepsPerObject.get(balls.get(j))/maxSteps, this);
+					balls.get(j).update();
+					checkForCollision(balls.get(j));
+					if(balls.get(j).isDestroyed()){
+						this.setChanged();
+						this.notifyObservers(balls.get(j));
+						balls.remove(j);
+						j--;
+					}
+				}				
 			}
 		}		
 	}
@@ -154,7 +175,7 @@ public class Level extends Observable {
 			Collision.collision(ball, paddle, CollisionResolver.getInstance());
 		}				
 		for(int i = 0; i<blocks.size(); i++){
-			Collision.collision(ball, blocks.get(i), ImmaterialCollisionResolver.getInstance());
+			Collision.collision(ball, blocks.get(i), CollisionResolver.getInstance());
 			if(blocks.get(i).isDestroyed()){
 				this.setChanged();
 				this.notifyObservers(blocks.get(i));
