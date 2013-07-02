@@ -19,10 +19,13 @@ import org.alia4j.language.ballandpaddle.BracketExpression;
 import org.alia4j.language.ballandpaddle.BracketParameter;
 import org.alia4j.language.ballandpaddle.DamageEffectType;
 import org.alia4j.language.ballandpaddle.DivExpression;
+import org.alia4j.language.ballandpaddle.DoubleOperand;
+import org.alia4j.language.ballandpaddle.DoubleValueParameter;
 import org.alia4j.language.ballandpaddle.Effect;
 import org.alia4j.language.ballandpaddle.EqParameter;
 import org.alia4j.language.ballandpaddle.Expression;
 import org.alia4j.language.ballandpaddle.IntOperand;
+import org.alia4j.language.ballandpaddle.IntValueParameter;
 import org.alia4j.language.ballandpaddle.LeqParameter;
 import org.alia4j.language.ballandpaddle.Level;
 import org.alia4j.language.ballandpaddle.LthParameter;
@@ -38,13 +41,11 @@ import org.alia4j.language.ballandpaddle.PlusExpression;
 import org.alia4j.language.ballandpaddle.Power;
 import org.alia4j.language.ballandpaddle.Root;
 import org.alia4j.language.ballandpaddle.SeqParameter;
-import org.alia4j.language.ballandpaddle.Shape;
 import org.alia4j.language.ballandpaddle.SmthParameter;
 import org.alia4j.language.ballandpaddle.Target;
 import org.alia4j.language.ballandpaddle.TargetType;
 import org.alia4j.language.ballandpaddle.TypeTarget;
 import org.alia4j.language.ballandpaddle.UnaryExpression;
-import org.alia4j.language.ballandpaddle.ValueParameter;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -235,7 +236,14 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
-  private EClass valueParameterEClass = null;
+  private EClass intValueParameterEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass doubleValueParameterEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -319,6 +327,13 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass doubleOperandEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass attOperandEClass = null;
 
   /**
@@ -327,13 +342,6 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * @generated
    */
   private EEnum attributeEEnum = null;
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  private EEnum shapeEEnum = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -577,7 +585,7 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getPaddle_Shape()
+  public EAttribute getPaddle_Size()
   {
     return (EAttribute)paddleEClass.getEStructuralFeatures().get(2);
   }
@@ -587,19 +595,9 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getPaddle_Size()
-  {
-    return (EAttribute)paddleEClass.getEStructuralFeatures().get(3);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EAttribute getPaddle_Orientation()
   {
-    return (EAttribute)paddleEClass.getEStructuralFeatures().get(4);
+    return (EAttribute)paddleEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1037,9 +1035,9 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
-  public EClass getValueParameter()
+  public EClass getIntValueParameter()
   {
-    return valueParameterEClass;
+    return intValueParameterEClass;
   }
 
   /**
@@ -1047,9 +1045,29 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getValueParameter_Value()
+  public EAttribute getIntValueParameter_Value()
   {
-    return (EAttribute)valueParameterEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)intValueParameterEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getDoubleValueParameter()
+  {
+    return doubleValueParameterEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getDoubleValueParameter_Value()
+  {
+    return (EAttribute)doubleValueParameterEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -1247,6 +1265,26 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getDoubleOperand()
+  {
+    return doubleOperandEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getDoubleOperand_Value()
+  {
+    return (EAttribute)doubleOperandEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getAttOperand()
   {
     return attOperandEClass;
@@ -1270,16 +1308,6 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
   public EEnum getAttribute()
   {
     return attributeEEnum;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EEnum getShape()
-  {
-    return shapeEEnum;
   }
 
   /**
@@ -1351,7 +1379,6 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     paddleEClass = createEClass(PADDLE);
     createEAttribute(paddleEClass, PADDLE__X);
     createEAttribute(paddleEClass, PADDLE__Y);
-    createEAttribute(paddleEClass, PADDLE__SHAPE);
     createEAttribute(paddleEClass, PADDLE__SIZE);
     createEAttribute(paddleEClass, PADDLE__ORIENTATION);
 
@@ -1418,8 +1445,11 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     attParameterEClass = createEClass(ATT_PARAMETER);
     createEAttribute(attParameterEClass, ATT_PARAMETER__ATT);
 
-    valueParameterEClass = createEClass(VALUE_PARAMETER);
-    createEAttribute(valueParameterEClass, VALUE_PARAMETER__VALUE);
+    intValueParameterEClass = createEClass(INT_VALUE_PARAMETER);
+    createEAttribute(intValueParameterEClass, INT_VALUE_PARAMETER__VALUE);
+
+    doubleValueParameterEClass = createEClass(DOUBLE_VALUE_PARAMETER);
+    createEAttribute(doubleValueParameterEClass, DOUBLE_VALUE_PARAMETER__VALUE);
 
     effectEClass = createEClass(EFFECT);
     createEAttribute(effectEClass, EFFECT__ID);
@@ -1451,12 +1481,14 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     intOperandEClass = createEClass(INT_OPERAND);
     createEAttribute(intOperandEClass, INT_OPERAND__VALUE);
 
+    doubleOperandEClass = createEClass(DOUBLE_OPERAND);
+    createEAttribute(doubleOperandEClass, DOUBLE_OPERAND__VALUE);
+
     attOperandEClass = createEClass(ATT_OPERAND);
     createEAttribute(attOperandEClass, ATT_OPERAND__ATT);
 
     // Create enums
     attributeEEnum = createEEnum(ATTRIBUTE);
-    shapeEEnum = createEEnum(SHAPE);
     damageEffectTypeEEnum = createEEnum(DAMAGE_EFFECT_TYPE);
     targetTypeEEnum = createEEnum(TARGET_TYPE);
   }
@@ -1508,7 +1540,8 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     bracketParameterEClass.getESuperTypes().add(this.getBooleanUnaryExpression());
     negParameterEClass.getESuperTypes().add(this.getBooleanUnaryExpression());
     attParameterEClass.getESuperTypes().add(this.getBooleanExpression());
-    valueParameterEClass.getESuperTypes().add(this.getBooleanExpression());
+    intValueParameterEClass.getESuperTypes().add(this.getBooleanExpression());
+    doubleValueParameterEClass.getESuperTypes().add(this.getBooleanExpression());
     binaryExpressionEClass.getESuperTypes().add(this.getExpression());
     unaryExpressionEClass.getESuperTypes().add(this.getExpression());
     multExpressionEClass.getESuperTypes().add(this.getBinaryExpression());
@@ -1518,6 +1551,7 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     bracketExpressionEClass.getESuperTypes().add(this.getUnaryExpression());
     negExpressionEClass.getESuperTypes().add(this.getUnaryExpression());
     intOperandEClass.getESuperTypes().add(this.getExpression());
+    doubleOperandEClass.getESuperTypes().add(this.getExpression());
     attOperandEClass.getESuperTypes().add(this.getExpression());
 
     // Initialize classes and features; add operations and parameters
@@ -1538,15 +1572,14 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     initEAttribute(getBAPObject_Id(), ecorePackage.getEString(), "id", null, 1, 1, BAPObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(paddleEClass, Paddle.class, "Paddle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getPaddle_X(), ecorePackage.getEInt(), "x", null, 1, 1, Paddle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getPaddle_Y(), ecorePackage.getEInt(), "y", null, 1, 1, Paddle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getPaddle_Shape(), this.getShape(), "shape", null, 1, 1, Paddle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getPaddle_X(), ecorePackage.getEDouble(), "x", null, 1, 1, Paddle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getPaddle_Y(), ecorePackage.getEDouble(), "y", null, 1, 1, Paddle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getPaddle_Size(), ecorePackage.getEInt(), "size", null, 1, 1, Paddle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getPaddle_Orientation(), ecorePackage.getEInt(), "orientation", null, 1, 1, Paddle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ballEClass, Ball.class, "Ball", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getBall_X(), ecorePackage.getEInt(), "x", null, 1, 1, Ball.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getBall_Y(), ecorePackage.getEInt(), "y", null, 1, 1, Ball.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getBall_X(), ecorePackage.getEDouble(), "x", null, 1, 1, Ball.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getBall_Y(), ecorePackage.getEDouble(), "y", null, 1, 1, Ball.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBall_Size(), ecorePackage.getEInt(), "size", null, 0, 1, Ball.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBall_Direction(), ecorePackage.getEInt(), "direction", null, 0, 1, Ball.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getBall_Speed(), ecorePackage.getEInt(), "speed", null, 0, 1, Ball.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1607,8 +1640,11 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     initEClass(attParameterEClass, AttParameter.class, "AttParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAttParameter_Att(), this.getAttribute(), "att", null, 1, 1, AttParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-    initEClass(valueParameterEClass, ValueParameter.class, "ValueParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getValueParameter_Value(), ecorePackage.getEInt(), "value", null, 1, 1, ValueParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEClass(intValueParameterEClass, IntValueParameter.class, "IntValueParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getIntValueParameter_Value(), ecorePackage.getEInt(), "value", null, 1, 1, IntValueParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(doubleValueParameterEClass, DoubleValueParameter.class, "DoubleValueParameter", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getDoubleValueParameter_Value(), ecorePackage.getEDouble(), "value", null, 1, 1, DoubleValueParameter.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(effectEClass, Effect.class, "Effect", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getEffect_Id(), ecorePackage.getEString(), "id", null, 1, 1, Effect.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1640,6 +1676,9 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     initEClass(intOperandEClass, IntOperand.class, "IntOperand", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getIntOperand_Value(), ecorePackage.getEInt(), "value", null, 1, 1, IntOperand.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+    initEClass(doubleOperandEClass, DoubleOperand.class, "DoubleOperand", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getDoubleOperand_Value(), ecorePackage.getEDouble(), "value", null, 1, 1, DoubleOperand.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
     initEClass(attOperandEClass, AttOperand.class, "AttOperand", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getAttOperand_Att(), this.getAttribute(), "att", null, 1, 1, AttOperand.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -1659,12 +1698,6 @@ public class BallandpaddlePackageImpl extends EPackageImpl implements Ballandpad
     addEEnumLiteral(attributeEEnum, Attribute.FIRE_DAM);
     addEEnumLiteral(attributeEEnum, Attribute.COLD_DAM);
     addEEnumLiteral(attributeEEnum, Attribute.SHOCK_DAM);
-
-    initEEnum(shapeEEnum, Shape.class, "Shape");
-    addEEnumLiteral(shapeEEnum, Shape.CIRCLE);
-    addEEnumLiteral(shapeEEnum, Shape.TRIANGLE);
-    addEEnumLiteral(shapeEEnum, Shape.SQUARE);
-    addEEnumLiteral(shapeEEnum, Shape.RECTANGLE);
 
     initEEnum(damageEffectTypeEEnum, DamageEffectType.class, "DamageEffectType");
     addEEnumLiteral(damageEffectTypeEEnum, DamageEffectType.DAMAGE);

@@ -195,9 +195,14 @@ public class BallandpaddleAdapterFactory extends AdapterFactoryImpl
         return createAttParameterAdapter();
       }
       @Override
-      public Adapter caseValueParameter(ValueParameter object)
+      public Adapter caseIntValueParameter(IntValueParameter object)
       {
-        return createValueParameterAdapter();
+        return createIntValueParameterAdapter();
+      }
+      @Override
+      public Adapter caseDoubleValueParameter(DoubleValueParameter object)
+      {
+        return createDoubleValueParameterAdapter();
       }
       @Override
       public Adapter caseEffect(Effect object)
@@ -253,6 +258,11 @@ public class BallandpaddleAdapterFactory extends AdapterFactoryImpl
       public Adapter caseIntOperand(IntOperand object)
       {
         return createIntOperandAdapter();
+      }
+      @Override
+      public Adapter caseDoubleOperand(DoubleOperand object)
+      {
+        return createDoubleOperandAdapter();
       }
       @Override
       public Adapter caseAttOperand(AttOperand object)
@@ -642,16 +652,31 @@ public class BallandpaddleAdapterFactory extends AdapterFactoryImpl
   }
 
   /**
-   * Creates a new adapter for an object of class '{@link org.alia4j.language.ballandpaddle.ValueParameter <em>Value Parameter</em>}'.
+   * Creates a new adapter for an object of class '{@link org.alia4j.language.ballandpaddle.IntValueParameter <em>Int Value Parameter</em>}'.
    * <!-- begin-user-doc -->
    * This default implementation returns null so that we can easily ignore cases;
    * it's useful to ignore a case when inheritance will catch all the cases anyway.
    * <!-- end-user-doc -->
    * @return the new adapter.
-   * @see org.alia4j.language.ballandpaddle.ValueParameter
+   * @see org.alia4j.language.ballandpaddle.IntValueParameter
    * @generated
    */
-  public Adapter createValueParameterAdapter()
+  public Adapter createIntValueParameterAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.alia4j.language.ballandpaddle.DoubleValueParameter <em>Double Value Parameter</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.alia4j.language.ballandpaddle.DoubleValueParameter
+   * @generated
+   */
+  public Adapter createDoubleValueParameterAdapter()
   {
     return null;
   }
@@ -817,6 +842,21 @@ public class BallandpaddleAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createIntOperandAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link org.alia4j.language.ballandpaddle.DoubleOperand <em>Double Operand</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see org.alia4j.language.ballandpaddle.DoubleOperand
+   * @generated
+   */
+  public Adapter createDoubleOperandAdapter()
   {
     return null;
   }

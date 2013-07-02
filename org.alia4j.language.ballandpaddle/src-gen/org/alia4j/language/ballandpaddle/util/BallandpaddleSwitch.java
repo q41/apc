@@ -268,11 +268,19 @@ public class BallandpaddleSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
-      case BallandpaddlePackage.VALUE_PARAMETER:
+      case BallandpaddlePackage.INT_VALUE_PARAMETER:
       {
-        ValueParameter valueParameter = (ValueParameter)theEObject;
-        T result = caseValueParameter(valueParameter);
-        if (result == null) result = caseBooleanExpression(valueParameter);
+        IntValueParameter intValueParameter = (IntValueParameter)theEObject;
+        T result = caseIntValueParameter(intValueParameter);
+        if (result == null) result = caseBooleanExpression(intValueParameter);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case BallandpaddlePackage.DOUBLE_VALUE_PARAMETER:
+      {
+        DoubleValueParameter doubleValueParameter = (DoubleValueParameter)theEObject;
+        T result = caseDoubleValueParameter(doubleValueParameter);
+        if (result == null) result = caseBooleanExpression(doubleValueParameter);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -365,6 +373,14 @@ public class BallandpaddleSwitch<T> extends Switch<T>
         IntOperand intOperand = (IntOperand)theEObject;
         T result = caseIntOperand(intOperand);
         if (result == null) result = caseExpression(intOperand);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case BallandpaddlePackage.DOUBLE_OPERAND:
+      {
+        DoubleOperand doubleOperand = (DoubleOperand)theEObject;
+        T result = caseDoubleOperand(doubleOperand);
+        if (result == null) result = caseExpression(doubleOperand);
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
@@ -765,17 +781,33 @@ public class BallandpaddleSwitch<T> extends Switch<T>
   }
 
   /**
-   * Returns the result of interpreting the object as an instance of '<em>Value Parameter</em>'.
+   * Returns the result of interpreting the object as an instance of '<em>Int Value Parameter</em>'.
    * <!-- begin-user-doc -->
    * This implementation returns null;
    * returning a non-null result will terminate the switch.
    * <!-- end-user-doc -->
    * @param object the target of the switch.
-   * @return the result of interpreting the object as an instance of '<em>Value Parameter</em>'.
+   * @return the result of interpreting the object as an instance of '<em>Int Value Parameter</em>'.
    * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
    * @generated
    */
-  public T caseValueParameter(ValueParameter object)
+  public T caseIntValueParameter(IntValueParameter object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Double Value Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Double Value Parameter</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDoubleValueParameter(DoubleValueParameter object)
   {
     return null;
   }
@@ -952,6 +984,22 @@ public class BallandpaddleSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseIntOperand(IntOperand object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>Double Operand</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>Double Operand</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseDoubleOperand(DoubleOperand object)
   {
     return null;
   }

@@ -44,8 +44,8 @@ TOKENSTYLES {
 RULES {
 	Root ::= level paddles+ balls+ blocks* powers* effects*;	
 	Level ::= "level" id[] "{" blocks[LEVELLINE]* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";	
-	Paddle ::= "paddle" id[] "{" "x" "=" x[INTEGER] "y" "=" y[INTEGER] "shape" "=" shape[Circle:"circle", Triangle:"triangle", Square:"square", Rectangle:"rectangle"] "size" "=" size[INTEGER]  "orientation" "=" orientation[INTEGER] "}";
-	Ball ::= "ball" id[] "{" "x" "=" x[INTEGER] "y" "=" y[INTEGER] ("size" "=" size[INTEGER])? ("direction" "=" direction[INTEGER])? ("speed" "=" speed[INTEGER])? "}";
+	Paddle ::= "paddle" id[] "{" "x" "=" x[FLOAT] "y" "=" y[FLOAT] "size" "=" size[INTEGER]  "orientation" "=" orientation[INTEGER] "}";
+	Ball ::= "ball" id[] "{" "x" "=" x[FLOAT] "y" "=" y[FLOAT] ("size" "=" size[INTEGER])? ("direction" "=" direction[INTEGER])? ("speed" "=" speed[INTEGER])? "}";
 	Block ::= "block" id[CHAR] "{" "hardness" "=" hardness[INTEGER] ("resistance normal" "=" normalRes[INTEGER])? ("resistance fire" "=" fireRes[INTEGER])? ("resistance cold" "=" coldRes[INTEGER])?  ("resistance shock" "=" shockRes[INTEGER])?  ("power" "=" power[])? "}";	
 	Power ::= "power" id[]"("target")" "{" "effects" "=" effects[] "duration" "=" duration[INTEGER] ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
 	
@@ -74,10 +74,12 @@ RULES {
 
 	@Operator(type="primitive", weight="4", superclass="Expression")
 	IntOperand ::= value[INTEGER];
+	
+	@Operator(type="primitive", weight="4", superclass="Expression")
+	DoubleOperand ::= value[FLOAT];
 
 	@Operator(type="primitive", weight="4", superclass="Expression")
 	AttOperand ::= att[X:"x",Y:"y",Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance normal", FireRes:"resistance fire",ColdRes:"resistance cold",ShockRes:"resistance shock", NormalDam:"normal damage", FireDam:"fire damage", ColdDam:"cold damage", ShockDam:"shock damage"];
-
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
 	EqParameter ::= left "=" right;
@@ -113,6 +115,9 @@ RULES {
 	AttParameter ::= att[X:"x",Y:"y",Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance normal", FireRes:"resistance fire",ColdRes:"resistance cold",ShockRes:"resistance shock"];
 	
 	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
-	ValueParameter ::= value[INTEGER];
+	IntValueParameter ::= value[INTEGER];
+	
+	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
+	DoubleValueParameter ::= value[FLOAT];
 	
 }

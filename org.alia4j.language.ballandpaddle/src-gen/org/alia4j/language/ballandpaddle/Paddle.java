@@ -13,7 +13,6 @@ package org.alia4j.language.ballandpaddle;
  * <ul>
  *   <li>{@link org.alia4j.language.ballandpaddle.Paddle#getX <em>X</em>}</li>
  *   <li>{@link org.alia4j.language.ballandpaddle.Paddle#getY <em>Y</em>}</li>
- *   <li>{@link org.alia4j.language.ballandpaddle.Paddle#getShape <em>Shape</em>}</li>
  *   <li>{@link org.alia4j.language.ballandpaddle.Paddle#getSize <em>Size</em>}</li>
  *   <li>{@link org.alia4j.language.ballandpaddle.Paddle#getOrientation <em>Orientation</em>}</li>
  * </ul>
@@ -34,12 +33,12 @@ public interface Paddle extends BAPObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>X</em>' attribute.
-   * @see #setX(int)
+   * @see #setX(double)
    * @see org.alia4j.language.ballandpaddle.BallandpaddlePackage#getPaddle_X()
    * @model required="true"
    * @generated
    */
-  int getX();
+  double getX();
 
   /**
    * Sets the value of the '{@link org.alia4j.language.ballandpaddle.Paddle#getX <em>X</em>}' attribute.
@@ -49,7 +48,7 @@ public interface Paddle extends BAPObject
    * @see #getX()
    * @generated
    */
-  void setX(int value);
+  void setX(double value);
 
   /**
    * Returns the value of the '<em><b>Y</b></em>' attribute.
@@ -60,12 +59,12 @@ public interface Paddle extends BAPObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Y</em>' attribute.
-   * @see #setY(int)
+   * @see #setY(double)
    * @see org.alia4j.language.ballandpaddle.BallandpaddlePackage#getPaddle_Y()
    * @model required="true"
    * @generated
    */
-  int getY();
+  double getY();
 
   /**
    * Sets the value of the '{@link org.alia4j.language.ballandpaddle.Paddle#getY <em>Y</em>}' attribute.
@@ -75,36 +74,7 @@ public interface Paddle extends BAPObject
    * @see #getY()
    * @generated
    */
-  void setY(int value);
-
-  /**
-   * Returns the value of the '<em><b>Shape</b></em>' attribute.
-   * The literals are from the enumeration {@link org.alia4j.language.ballandpaddle.Shape}.
-   * <!-- begin-user-doc -->
-   * <p>
-   * If the meaning of the '<em>Shape</em>' attribute isn't clear,
-   * there really should be more of a description here...
-   * </p>
-   * <!-- end-user-doc -->
-   * @return the value of the '<em>Shape</em>' attribute.
-   * @see org.alia4j.language.ballandpaddle.Shape
-   * @see #setShape(Shape)
-   * @see org.alia4j.language.ballandpaddle.BallandpaddlePackage#getPaddle_Shape()
-   * @model required="true"
-   * @generated
-   */
-  Shape getShape();
-
-  /**
-   * Sets the value of the '{@link org.alia4j.language.ballandpaddle.Paddle#getShape <em>Shape</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Shape</em>' attribute.
-   * @see org.alia4j.language.ballandpaddle.Shape
-   * @see #getShape()
-   * @generated
-   */
-  void setShape(Shape value);
+  void setY(double value);
 
   /**
    * Returns the value of the '<em><b>Size</b></em>' attribute.

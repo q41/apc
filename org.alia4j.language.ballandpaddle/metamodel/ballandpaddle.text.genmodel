@@ -22,12 +22,6 @@
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/ColdDam"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/ShockDam"/>
     </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ballandpaddle.text.ecore#//Shape">
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Shape/Circle"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Shape/Triangle"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Shape/Square"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Shape/Rectangle"/>
-    </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="ballandpaddle.text.ecore#//DamageEffectType">
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//DamageEffectType/Damage"/>
     </genEnums>
@@ -55,7 +49,6 @@
     <genClasses ecoreClass="ballandpaddle.text.ecore#//Paddle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Paddle/x"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Paddle/y"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Paddle/shape"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Paddle/size"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Paddle/orientation"/>
     </genClasses>
@@ -110,8 +103,11 @@
     <genClasses ecoreClass="ballandpaddle.text.ecore#//AttParameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//AttParameter/att"/>
     </genClasses>
-    <genClasses ecoreClass="ballandpaddle.text.ecore#//ValueParameter">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//ValueParameter/value"/>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//IntValueParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//IntValueParameter/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//DoubleValueParameter">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//DoubleValueParameter/value"/>
     </genClasses>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//Effect">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Effect/id"/>
@@ -135,6 +131,9 @@
     <genClasses ecoreClass="ballandpaddle.text.ecore#//NegExpression"/>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//IntOperand">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//IntOperand/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//DoubleOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//DoubleOperand/value"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//AttOperand">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//AttOperand/att"/>

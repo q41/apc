@@ -34,12 +34,12 @@ public interface Ball extends BAPObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>X</em>' attribute.
-   * @see #setX(int)
+   * @see #setX(double)
    * @see org.alia4j.language.ballandpaddle.BallandpaddlePackage#getBall_X()
    * @model required="true"
    * @generated
    */
-  int getX();
+  double getX();
 
   /**
    * Sets the value of the '{@link org.alia4j.language.ballandpaddle.Ball#getX <em>X</em>}' attribute.
@@ -49,7 +49,7 @@ public interface Ball extends BAPObject
    * @see #getX()
    * @generated
    */
-  void setX(int value);
+  void setX(double value);
 
   /**
    * Returns the value of the '<em><b>Y</b></em>' attribute.
@@ -60,12 +60,12 @@ public interface Ball extends BAPObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Y</em>' attribute.
-   * @see #setY(int)
+   * @see #setY(double)
    * @see org.alia4j.language.ballandpaddle.BallandpaddlePackage#getBall_Y()
    * @model required="true"
    * @generated
    */
-  int getY();
+  double getY();
 
   /**
    * Sets the value of the '{@link org.alia4j.language.ballandpaddle.Ball#getY <em>Y</em>}' attribute.
@@ -75,7 +75,7 @@ public interface Ball extends BAPObject
    * @see #getY()
    * @generated
    */
-  void setY(int value);
+  void setY(double value);
 
   /**
    * Returns the value of the '<em><b>Size</b></em>' attribute.

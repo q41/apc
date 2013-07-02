@@ -20,16 +20,15 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 	}
 	
 	class Paddle extends BAPObject{				
-		attribute EInt x (1..1);
-		attribute EInt y (1..1);	
-		attribute Shape shape (1..1);
+		attribute EDouble x (1..1);
+		attribute EDouble y (1..1);	
 		attribute EInt size (1..1);
 		attribute EInt orientation (1..1);		
 	}
 	
 	class Ball extends BAPObject{				
-		attribute EInt x (1..1);
-		attribute EInt y (1..1);	
+		attribute EDouble x (1..1);
+		attribute EDouble y (1..1);	
 		attribute EInt size (0..1);
 		attribute EInt direction (0..1);
 		attribute EInt speed (0..1);
@@ -107,8 +106,12 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		attribute Attribute att (1..1);
 	}
 	
-	class ValueParameter extends BooleanExpression{
+	class IntValueParameter extends BooleanExpression{
 		attribute EInt value(1..1);		
+	}
+	
+	class DoubleValueParameter extends BooleanExpression{
+		attribute EDouble value(1..1);		
 	}
 	
 	class Effect{
@@ -152,6 +155,10 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		attribute EInt value (1..1);	
 	}
 	
+	class DoubleOperand extends Expression{
+		attribute EDouble value (1..1);		
+	}
+	
 	class AttOperand extends Expression{		
 		attribute Attribute att(1..1);				
 	}
@@ -171,13 +178,6 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		11 : FireDam = "fire damage";
 		12 : ColdDam = "cold damage";
 		13 : ShockDam = "Shock damage";
-	}
-		
-	serializable enum Shape {
-		0 : Circle = "circle";
-		1 : Triangle = "triangle";
-		2 : Square = "square";
-		3 : Rectangle = "rectangle";
 	}
 	
 	serializable enum DamageEffectType{		

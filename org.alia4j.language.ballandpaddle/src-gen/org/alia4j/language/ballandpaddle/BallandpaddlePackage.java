@@ -242,22 +242,13 @@ public interface BallandpaddlePackage extends EPackage
   int PADDLE__Y = BAP_OBJECT_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Shape</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int PADDLE__SHAPE = BAP_OBJECT_FEATURE_COUNT + 2;
-
-  /**
    * The feature id for the '<em><b>Size</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int PADDLE__SIZE = BAP_OBJECT_FEATURE_COUNT + 3;
+  int PADDLE__SIZE = BAP_OBJECT_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Orientation</b></em>' attribute.
@@ -266,7 +257,7 @@ public interface BallandpaddlePackage extends EPackage
    * @generated
    * @ordered
    */
-  int PADDLE__ORIENTATION = BAP_OBJECT_FEATURE_COUNT + 4;
+  int PADDLE__ORIENTATION = BAP_OBJECT_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>Paddle</em>' class.
@@ -275,7 +266,7 @@ public interface BallandpaddlePackage extends EPackage
    * @generated
    * @ordered
    */
-  int PADDLE_FEATURE_COUNT = BAP_OBJECT_FEATURE_COUNT + 5;
+  int PADDLE_FEATURE_COUNT = BAP_OBJECT_FEATURE_COUNT + 4;
 
   /**
    * The meta object id for the '{@link org.alia4j.language.ballandpaddle.impl.BallImpl <em>Ball</em>}' class.
@@ -1045,14 +1036,14 @@ public interface BallandpaddlePackage extends EPackage
   int ATT_PARAMETER_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
-   * The meta object id for the '{@link org.alia4j.language.ballandpaddle.impl.ValueParameterImpl <em>Value Parameter</em>}' class.
+   * The meta object id for the '{@link org.alia4j.language.ballandpaddle.impl.IntValueParameterImpl <em>Int Value Parameter</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see org.alia4j.language.ballandpaddle.impl.ValueParameterImpl
-   * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getValueParameter()
+   * @see org.alia4j.language.ballandpaddle.impl.IntValueParameterImpl
+   * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getIntValueParameter()
    * @generated
    */
-  int VALUE_PARAMETER = 24;
+  int INT_VALUE_PARAMETER = 24;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1061,16 +1052,44 @@ public interface BallandpaddlePackage extends EPackage
    * @generated
    * @ordered
    */
-  int VALUE_PARAMETER__VALUE = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
+  int INT_VALUE_PARAMETER__VALUE = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
 
   /**
-   * The number of structural features of the '<em>Value Parameter</em>' class.
+   * The number of structural features of the '<em>Int Value Parameter</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int VALUE_PARAMETER_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
+  int INT_VALUE_PARAMETER_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link org.alia4j.language.ballandpaddle.impl.DoubleValueParameterImpl <em>Double Value Parameter</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.alia4j.language.ballandpaddle.impl.DoubleValueParameterImpl
+   * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getDoubleValueParameter()
+   * @generated
+   */
+  int DOUBLE_VALUE_PARAMETER = 25;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOUBLE_VALUE_PARAMETER__VALUE = BOOLEAN_EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Double Value Parameter</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOUBLE_VALUE_PARAMETER_FEATURE_COUNT = BOOLEAN_EXPRESSION_FEATURE_COUNT + 1;
 
   /**
    * The meta object id for the '{@link org.alia4j.language.ballandpaddle.impl.EffectImpl <em>Effect</em>}' class.
@@ -1080,7 +1099,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getEffect()
    * @generated
    */
-  int EFFECT = 25;
+  int EFFECT = 26;
 
   /**
    * The feature id for the '<em><b>Id</b></em>' attribute.
@@ -1135,7 +1154,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getExpression()
    * @generated
    */
-  int EXPRESSION = 26;
+  int EXPRESSION = 27;
 
   /**
    * The number of structural features of the '<em>Expression</em>' class.
@@ -1154,7 +1173,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getBinaryExpression()
    * @generated
    */
-  int BINARY_EXPRESSION = 27;
+  int BINARY_EXPRESSION = 28;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1191,7 +1210,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getUnaryExpression()
    * @generated
    */
-  int UNARY_EXPRESSION = 28;
+  int UNARY_EXPRESSION = 29;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1219,7 +1238,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getMultExpression()
    * @generated
    */
-  int MULT_EXPRESSION = 29;
+  int MULT_EXPRESSION = 30;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1256,7 +1275,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getDivExpression()
    * @generated
    */
-  int DIV_EXPRESSION = 30;
+  int DIV_EXPRESSION = 31;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1293,7 +1312,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getPlusExpression()
    * @generated
    */
-  int PLUS_EXPRESSION = 31;
+  int PLUS_EXPRESSION = 32;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1330,7 +1349,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getMinusExpression()
    * @generated
    */
-  int MINUS_EXPRESSION = 32;
+  int MINUS_EXPRESSION = 33;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -1367,7 +1386,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getBracketExpression()
    * @generated
    */
-  int BRACKET_EXPRESSION = 33;
+  int BRACKET_EXPRESSION = 34;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1395,7 +1414,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getNegExpression()
    * @generated
    */
-  int NEG_EXPRESSION = 34;
+  int NEG_EXPRESSION = 35;
 
   /**
    * The feature id for the '<em><b>Body</b></em>' containment reference.
@@ -1423,7 +1442,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getIntOperand()
    * @generated
    */
-  int INT_OPERAND = 35;
+  int INT_OPERAND = 36;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -1444,6 +1463,34 @@ public interface BallandpaddlePackage extends EPackage
   int INT_OPERAND_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link org.alia4j.language.ballandpaddle.impl.DoubleOperandImpl <em>Double Operand</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see org.alia4j.language.ballandpaddle.impl.DoubleOperandImpl
+   * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getDoubleOperand()
+   * @generated
+   */
+  int DOUBLE_OPERAND = 37;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOUBLE_OPERAND__VALUE = EXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>Double Operand</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int DOUBLE_OPERAND_FEATURE_COUNT = EXPRESSION_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link org.alia4j.language.ballandpaddle.impl.AttOperandImpl <em>Att Operand</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1451,7 +1498,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getAttOperand()
    * @generated
    */
-  int ATT_OPERAND = 36;
+  int ATT_OPERAND = 38;
 
   /**
    * The feature id for the '<em><b>Att</b></em>' attribute.
@@ -1479,17 +1526,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getAttribute()
    * @generated
    */
-  int ATTRIBUTE = 37;
-
-  /**
-   * The meta object id for the '{@link org.alia4j.language.ballandpaddle.Shape <em>Shape</em>}' enum.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see org.alia4j.language.ballandpaddle.Shape
-   * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getShape()
-   * @generated
-   */
-  int SHAPE = 38;
+  int ATTRIBUTE = 39;
 
   /**
    * The meta object id for the '{@link org.alia4j.language.ballandpaddle.DamageEffectType <em>Damage Effect Type</em>}' enum.
@@ -1499,7 +1536,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getDamageEffectType()
    * @generated
    */
-  int DAMAGE_EFFECT_TYPE = 39;
+  int DAMAGE_EFFECT_TYPE = 40;
 
   /**
    * The meta object id for the '{@link org.alia4j.language.ballandpaddle.TargetType <em>Target Type</em>}' enum.
@@ -1509,7 +1546,7 @@ public interface BallandpaddlePackage extends EPackage
    * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getTargetType()
    * @generated
    */
-  int TARGET_TYPE = 40;
+  int TARGET_TYPE = 41;
 
 
   /**
@@ -1683,17 +1720,6 @@ public interface BallandpaddlePackage extends EPackage
    * @generated
    */
   EAttribute getPaddle_Y();
-
-  /**
-   * Returns the meta object for the attribute '{@link org.alia4j.language.ballandpaddle.Paddle#getShape <em>Shape</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Shape</em>'.
-   * @see org.alia4j.language.ballandpaddle.Paddle#getShape()
-   * @see #getPaddle()
-   * @generated
-   */
-  EAttribute getPaddle_Shape();
 
   /**
    * Returns the meta object for the attribute '{@link org.alia4j.language.ballandpaddle.Paddle#getSize <em>Size</em>}'.
@@ -2171,25 +2197,46 @@ public interface BallandpaddlePackage extends EPackage
   EAttribute getAttParameter_Att();
 
   /**
-   * Returns the meta object for class '{@link org.alia4j.language.ballandpaddle.ValueParameter <em>Value Parameter</em>}'.
+   * Returns the meta object for class '{@link org.alia4j.language.ballandpaddle.IntValueParameter <em>Int Value Parameter</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for class '<em>Value Parameter</em>'.
-   * @see org.alia4j.language.ballandpaddle.ValueParameter
+   * @return the meta object for class '<em>Int Value Parameter</em>'.
+   * @see org.alia4j.language.ballandpaddle.IntValueParameter
    * @generated
    */
-  EClass getValueParameter();
+  EClass getIntValueParameter();
 
   /**
-   * Returns the meta object for the attribute '{@link org.alia4j.language.ballandpaddle.ValueParameter#getValue <em>Value</em>}'.
+   * Returns the meta object for the attribute '{@link org.alia4j.language.ballandpaddle.IntValueParameter#getValue <em>Value</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @return the meta object for the attribute '<em>Value</em>'.
-   * @see org.alia4j.language.ballandpaddle.ValueParameter#getValue()
-   * @see #getValueParameter()
+   * @see org.alia4j.language.ballandpaddle.IntValueParameter#getValue()
+   * @see #getIntValueParameter()
    * @generated
    */
-  EAttribute getValueParameter_Value();
+  EAttribute getIntValueParameter_Value();
+
+  /**
+   * Returns the meta object for class '{@link org.alia4j.language.ballandpaddle.DoubleValueParameter <em>Double Value Parameter</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Double Value Parameter</em>'.
+   * @see org.alia4j.language.ballandpaddle.DoubleValueParameter
+   * @generated
+   */
+  EClass getDoubleValueParameter();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.alia4j.language.ballandpaddle.DoubleValueParameter#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.alia4j.language.ballandpaddle.DoubleValueParameter#getValue()
+   * @see #getDoubleValueParameter()
+   * @generated
+   */
+  EAttribute getDoubleValueParameter_Value();
 
   /**
    * Returns the meta object for class '{@link org.alia4j.language.ballandpaddle.Effect <em>Effect</em>}'.
@@ -2390,6 +2437,27 @@ public interface BallandpaddlePackage extends EPackage
   EAttribute getIntOperand_Value();
 
   /**
+   * Returns the meta object for class '{@link org.alia4j.language.ballandpaddle.DoubleOperand <em>Double Operand</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Double Operand</em>'.
+   * @see org.alia4j.language.ballandpaddle.DoubleOperand
+   * @generated
+   */
+  EClass getDoubleOperand();
+
+  /**
+   * Returns the meta object for the attribute '{@link org.alia4j.language.ballandpaddle.DoubleOperand#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see org.alia4j.language.ballandpaddle.DoubleOperand#getValue()
+   * @see #getDoubleOperand()
+   * @generated
+   */
+  EAttribute getDoubleOperand_Value();
+
+  /**
    * Returns the meta object for class '{@link org.alia4j.language.ballandpaddle.AttOperand <em>Att Operand</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2419,16 +2487,6 @@ public interface BallandpaddlePackage extends EPackage
    * @generated
    */
   EEnum getAttribute();
-
-  /**
-   * Returns the meta object for enum '{@link org.alia4j.language.ballandpaddle.Shape <em>Shape</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for enum '<em>Shape</em>'.
-   * @see org.alia4j.language.ballandpaddle.Shape
-   * @generated
-   */
-  EEnum getShape();
 
   /**
    * Returns the meta object for enum '{@link org.alia4j.language.ballandpaddle.DamageEffectType <em>Damage Effect Type</em>}'.
@@ -2608,14 +2666,6 @@ public interface BallandpaddlePackage extends EPackage
      * @generated
      */
     EAttribute PADDLE__Y = eINSTANCE.getPaddle_Y();
-
-    /**
-     * The meta object literal for the '<em><b>Shape</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute PADDLE__SHAPE = eINSTANCE.getPaddle_Shape();
 
     /**
      * The meta object literal for the '<em><b>Size</b></em>' attribute feature.
@@ -3018,14 +3068,14 @@ public interface BallandpaddlePackage extends EPackage
     EAttribute ATT_PARAMETER__ATT = eINSTANCE.getAttParameter_Att();
 
     /**
-     * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.impl.ValueParameterImpl <em>Value Parameter</em>}' class.
+     * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.impl.IntValueParameterImpl <em>Int Value Parameter</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * @see org.alia4j.language.ballandpaddle.impl.ValueParameterImpl
-     * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getValueParameter()
+     * @see org.alia4j.language.ballandpaddle.impl.IntValueParameterImpl
+     * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getIntValueParameter()
      * @generated
      */
-    EClass VALUE_PARAMETER = eINSTANCE.getValueParameter();
+    EClass INT_VALUE_PARAMETER = eINSTANCE.getIntValueParameter();
 
     /**
      * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
@@ -3033,7 +3083,25 @@ public interface BallandpaddlePackage extends EPackage
      * <!-- end-user-doc -->
      * @generated
      */
-    EAttribute VALUE_PARAMETER__VALUE = eINSTANCE.getValueParameter_Value();
+    EAttribute INT_VALUE_PARAMETER__VALUE = eINSTANCE.getIntValueParameter_Value();
+
+    /**
+     * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.impl.DoubleValueParameterImpl <em>Double Value Parameter</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.alia4j.language.ballandpaddle.impl.DoubleValueParameterImpl
+     * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getDoubleValueParameter()
+     * @generated
+     */
+    EClass DOUBLE_VALUE_PARAMETER = eINSTANCE.getDoubleValueParameter();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DOUBLE_VALUE_PARAMETER__VALUE = eINSTANCE.getDoubleValueParameter_Value();
 
     /**
      * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.impl.EffectImpl <em>Effect</em>}' class.
@@ -3210,6 +3278,24 @@ public interface BallandpaddlePackage extends EPackage
     EAttribute INT_OPERAND__VALUE = eINSTANCE.getIntOperand_Value();
 
     /**
+     * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.impl.DoubleOperandImpl <em>Double Operand</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.alia4j.language.ballandpaddle.impl.DoubleOperandImpl
+     * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getDoubleOperand()
+     * @generated
+     */
+    EClass DOUBLE_OPERAND = eINSTANCE.getDoubleOperand();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute DOUBLE_OPERAND__VALUE = eINSTANCE.getDoubleOperand_Value();
+
+    /**
      * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.impl.AttOperandImpl <em>Att Operand</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3236,16 +3322,6 @@ public interface BallandpaddlePackage extends EPackage
      * @generated
      */
     EEnum ATTRIBUTE = eINSTANCE.getAttribute();
-
-    /**
-     * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.Shape <em>Shape</em>}' enum.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @see org.alia4j.language.ballandpaddle.Shape
-     * @see org.alia4j.language.ballandpaddle.impl.BallandpaddlePackageImpl#getShape()
-     * @generated
-     */
-    EEnum SHAPE = eINSTANCE.getShape();
 
     /**
      * The meta object literal for the '{@link org.alia4j.language.ballandpaddle.DamageEffectType <em>Damage Effect Type</em>}' enum.

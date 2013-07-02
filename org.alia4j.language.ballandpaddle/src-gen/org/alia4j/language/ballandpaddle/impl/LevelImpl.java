@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 
+import org.eclipse.emf.ecore.util.EDataTypeEList;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 
 /**
@@ -161,7 +162,7 @@ public class LevelImpl extends EObjectImpl implements Level
   {
     if (blocks == null)
     {
-      blocks = new EDataTypeUniqueEList<String>(String.class, this, BallandpaddlePackage.LEVEL__BLOCKS);
+      blocks = new EDataTypeEList<String>(String.class, this, BallandpaddlePackage.LEVEL__BLOCKS);
     }
     return blocks;
   }

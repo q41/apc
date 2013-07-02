@@ -4,9 +4,11 @@
     <blocks>.......</blocks>
     <blocks>...A...</blocks>
     <blocks>..BBB..</blocks>
+    <blocks>.......</blocks>
+    <blocks>.......</blocks>
   </level>
-  <paddles id="Paddle" x="2" y="4" shape="rectangle" size="1"/>
-  <balls id="Ball" x="3" y="4"/>
+  <paddles id="Paddle" x="2.0" y="4.0" size="1"/>
+  <balls id="Ball" x="3.0" y="4.0"/>
   <blocks id="A" hardness="1" coldRes="2" shockRes="3"/>
   <blocks id="B" hardness="5"/>
 </ballandpaddle:Root>

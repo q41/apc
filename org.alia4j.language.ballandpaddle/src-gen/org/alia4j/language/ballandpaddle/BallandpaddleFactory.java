@@ -194,13 +194,22 @@ public interface BallandpaddleFactory extends EFactory
   AttParameter createAttParameter();
 
   /**
-   * Returns a new object of class '<em>Value Parameter</em>'.
+   * Returns a new object of class '<em>Int Value Parameter</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return a new object of class '<em>Value Parameter</em>'.
+   * @return a new object of class '<em>Int Value Parameter</em>'.
    * @generated
    */
-  ValueParameter createValueParameter();
+  IntValueParameter createIntValueParameter();
+
+  /**
+   * Returns a new object of class '<em>Double Value Parameter</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Double Value Parameter</em>'.
+   * @generated
+   */
+  DoubleValueParameter createDoubleValueParameter();
 
   /**
    * Returns a new object of class '<em>Effect</em>'.
@@ -273,6 +282,15 @@ public interface BallandpaddleFactory extends EFactory
    * @generated
    */
   IntOperand createIntOperand();
+
+  /**
+   * Returns a new object of class '<em>Double Operand</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Double Operand</em>'.
+   * @generated
+   */
+  DoubleOperand createDoubleOperand();
 
   /**
    * Returns a new object of class '<em>Att Operand</em>'.

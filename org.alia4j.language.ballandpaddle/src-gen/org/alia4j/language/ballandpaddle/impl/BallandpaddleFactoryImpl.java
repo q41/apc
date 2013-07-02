@@ -84,7 +84,8 @@ public class BallandpaddleFactoryImpl extends EFactoryImpl implements Ballandpad
       case BallandpaddlePackage.BRACKET_PARAMETER: return createBracketParameter();
       case BallandpaddlePackage.NEG_PARAMETER: return createNegParameter();
       case BallandpaddlePackage.ATT_PARAMETER: return createAttParameter();
-      case BallandpaddlePackage.VALUE_PARAMETER: return createValueParameter();
+      case BallandpaddlePackage.INT_VALUE_PARAMETER: return createIntValueParameter();
+      case BallandpaddlePackage.DOUBLE_VALUE_PARAMETER: return createDoubleValueParameter();
       case BallandpaddlePackage.EFFECT: return createEffect();
       case BallandpaddlePackage.MULT_EXPRESSION: return createMultExpression();
       case BallandpaddlePackage.DIV_EXPRESSION: return createDivExpression();
@@ -93,6 +94,7 @@ public class BallandpaddleFactoryImpl extends EFactoryImpl implements Ballandpad
       case BallandpaddlePackage.BRACKET_EXPRESSION: return createBracketExpression();
       case BallandpaddlePackage.NEG_EXPRESSION: return createNegExpression();
       case BallandpaddlePackage.INT_OPERAND: return createIntOperand();
+      case BallandpaddlePackage.DOUBLE_OPERAND: return createDoubleOperand();
       case BallandpaddlePackage.ATT_OPERAND: return createAttOperand();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
@@ -111,8 +113,6 @@ public class BallandpaddleFactoryImpl extends EFactoryImpl implements Ballandpad
     {
       case BallandpaddlePackage.ATTRIBUTE:
         return createAttributeFromString(eDataType, initialValue);
-      case BallandpaddlePackage.SHAPE:
-        return createShapeFromString(eDataType, initialValue);
       case BallandpaddlePackage.DAMAGE_EFFECT_TYPE:
         return createDamageEffectTypeFromString(eDataType, initialValue);
       case BallandpaddlePackage.TARGET_TYPE:
@@ -134,8 +134,6 @@ public class BallandpaddleFactoryImpl extends EFactoryImpl implements Ballandpad
     {
       case BallandpaddlePackage.ATTRIBUTE:
         return convertAttributeToString(eDataType, instanceValue);
-      case BallandpaddlePackage.SHAPE:
-        return convertShapeToString(eDataType, instanceValue);
       case BallandpaddlePackage.DAMAGE_EFFECT_TYPE:
         return convertDamageEffectTypeToString(eDataType, instanceValue);
       case BallandpaddlePackage.TARGET_TYPE:
@@ -359,10 +357,21 @@ public class BallandpaddleFactoryImpl extends EFactoryImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
-  public ValueParameter createValueParameter()
+  public IntValueParameter createIntValueParameter()
   {
-    ValueParameterImpl valueParameter = new ValueParameterImpl();
-    return valueParameter;
+    IntValueParameterImpl intValueParameter = new IntValueParameterImpl();
+    return intValueParameter;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public DoubleValueParameter createDoubleValueParameter()
+  {
+    DoubleValueParameterImpl doubleValueParameter = new DoubleValueParameterImpl();
+    return doubleValueParameter;
   }
 
   /**
@@ -458,6 +467,17 @@ public class BallandpaddleFactoryImpl extends EFactoryImpl implements Ballandpad
    * <!-- end-user-doc -->
    * @generated
    */
+  public DoubleOperand createDoubleOperand()
+  {
+    DoubleOperandImpl doubleOperand = new DoubleOperandImpl();
+    return doubleOperand;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public AttOperand createAttOperand()
   {
     AttOperandImpl attOperand = new AttOperandImpl();
@@ -482,28 +502,6 @@ public class BallandpaddleFactoryImpl extends EFactoryImpl implements Ballandpad
    * @generated
    */
   public String convertAttributeToString(EDataType eDataType, Object instanceValue)
-  {
-    return instanceValue == null ? null : instanceValue.toString();
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Shape createShapeFromString(EDataType eDataType, String initialValue)
-  {
-    Shape result = Shape.get(initialValue);
-    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-    return result;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public String convertShapeToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

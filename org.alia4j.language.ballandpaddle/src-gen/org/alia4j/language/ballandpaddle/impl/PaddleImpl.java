@@ -4,7 +4,6 @@ package org.alia4j.language.ballandpaddle.impl;
 
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
 import org.alia4j.language.ballandpaddle.Paddle;
-import org.alia4j.language.ballandpaddle.Shape;
 
 import org.eclipse.emf.common.notify.Notification;
 
@@ -21,7 +20,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * <ul>
  *   <li>{@link org.alia4j.language.ballandpaddle.impl.PaddleImpl#getX <em>X</em>}</li>
  *   <li>{@link org.alia4j.language.ballandpaddle.impl.PaddleImpl#getY <em>Y</em>}</li>
- *   <li>{@link org.alia4j.language.ballandpaddle.impl.PaddleImpl#getShape <em>Shape</em>}</li>
  *   <li>{@link org.alia4j.language.ballandpaddle.impl.PaddleImpl#getSize <em>Size</em>}</li>
  *   <li>{@link org.alia4j.language.ballandpaddle.impl.PaddleImpl#getOrientation <em>Orientation</em>}</li>
  * </ul>
@@ -39,7 +37,7 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * @generated
    * @ordered
    */
-  protected static final int X_EDEFAULT = 0;
+  protected static final double X_EDEFAULT = 0.0;
 
   /**
    * The cached value of the '{@link #getX() <em>X</em>}' attribute.
@@ -49,7 +47,7 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * @generated
    * @ordered
    */
-  protected int x = X_EDEFAULT;
+  protected double x = X_EDEFAULT;
 
   /**
    * The default value of the '{@link #getY() <em>Y</em>}' attribute.
@@ -59,7 +57,7 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * @generated
    * @ordered
    */
-  protected static final int Y_EDEFAULT = 0;
+  protected static final double Y_EDEFAULT = 0.0;
 
   /**
    * The cached value of the '{@link #getY() <em>Y</em>}' attribute.
@@ -69,27 +67,7 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * @generated
    * @ordered
    */
-  protected int y = Y_EDEFAULT;
-
-  /**
-   * The default value of the '{@link #getShape() <em>Shape</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getShape()
-   * @generated
-   * @ordered
-   */
-  protected static final Shape SHAPE_EDEFAULT = Shape.CIRCLE;
-
-  /**
-   * The cached value of the '{@link #getShape() <em>Shape</em>}' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @see #getShape()
-   * @generated
-   * @ordered
-   */
-  protected Shape shape = SHAPE_EDEFAULT;
+  protected double y = Y_EDEFAULT;
 
   /**
    * The default value of the '{@link #getSize() <em>Size</em>}' attribute.
@@ -157,7 +135,7 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * <!-- end-user-doc -->
    * @generated
    */
-  public int getX()
+  public double getX()
   {
     return x;
   }
@@ -167,9 +145,9 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setX(int newX)
+  public void setX(double newX)
   {
-    int oldX = x;
+    double oldX = x;
     x = newX;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, BallandpaddlePackage.PADDLE__X, oldX, x));
@@ -180,7 +158,7 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * <!-- end-user-doc -->
    * @generated
    */
-  public int getY()
+  public double getY()
   {
     return y;
   }
@@ -190,35 +168,12 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setY(int newY)
+  public void setY(double newY)
   {
-    int oldY = y;
+    double oldY = y;
     y = newY;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, BallandpaddlePackage.PADDLE__Y, oldY, y));
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public Shape getShape()
-  {
-    return shape;
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public void setShape(Shape newShape)
-  {
-    Shape oldShape = shape;
-    shape = newShape == null ? SHAPE_EDEFAULT : newShape;
-    if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, BallandpaddlePackage.PADDLE__SHAPE, oldShape, shape));
   }
 
   /**
@@ -281,8 +236,6 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
         return getX();
       case BallandpaddlePackage.PADDLE__Y:
         return getY();
-      case BallandpaddlePackage.PADDLE__SHAPE:
-        return getShape();
       case BallandpaddlePackage.PADDLE__SIZE:
         return getSize();
       case BallandpaddlePackage.PADDLE__ORIENTATION:
@@ -302,13 +255,10 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
     switch (featureID)
     {
       case BallandpaddlePackage.PADDLE__X:
-        setX((Integer)newValue);
+        setX((Double)newValue);
         return;
       case BallandpaddlePackage.PADDLE__Y:
-        setY((Integer)newValue);
-        return;
-      case BallandpaddlePackage.PADDLE__SHAPE:
-        setShape((Shape)newValue);
+        setY((Double)newValue);
         return;
       case BallandpaddlePackage.PADDLE__SIZE:
         setSize((Integer)newValue);
@@ -336,9 +286,6 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
       case BallandpaddlePackage.PADDLE__Y:
         setY(Y_EDEFAULT);
         return;
-      case BallandpaddlePackage.PADDLE__SHAPE:
-        setShape(SHAPE_EDEFAULT);
-        return;
       case BallandpaddlePackage.PADDLE__SIZE:
         setSize(SIZE_EDEFAULT);
         return;
@@ -363,8 +310,6 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
         return x != X_EDEFAULT;
       case BallandpaddlePackage.PADDLE__Y:
         return y != Y_EDEFAULT;
-      case BallandpaddlePackage.PADDLE__SHAPE:
-        return shape != SHAPE_EDEFAULT;
       case BallandpaddlePackage.PADDLE__SIZE:
         return size != SIZE_EDEFAULT;
       case BallandpaddlePackage.PADDLE__ORIENTATION:
@@ -388,8 +333,6 @@ public class PaddleImpl extends BAPObjectImpl implements Paddle
     result.append(x);
     result.append(", y: ");
     result.append(y);
-    result.append(", shape: ");
-    result.append(shape);
     result.append(", size: ");
     result.append(size);
     result.append(", orientation: ");

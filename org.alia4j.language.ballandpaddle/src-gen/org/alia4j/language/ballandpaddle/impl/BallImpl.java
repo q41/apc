@@ -38,7 +38,7 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * @generated
    * @ordered
    */
-  protected static final int X_EDEFAULT = 0;
+  protected static final double X_EDEFAULT = 0.0;
 
   /**
    * The cached value of the '{@link #getX() <em>X</em>}' attribute.
@@ -48,7 +48,7 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * @generated
    * @ordered
    */
-  protected int x = X_EDEFAULT;
+  protected double x = X_EDEFAULT;
 
   /**
    * The default value of the '{@link #getY() <em>Y</em>}' attribute.
@@ -58,7 +58,7 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * @generated
    * @ordered
    */
-  protected static final int Y_EDEFAULT = 0;
+  protected static final double Y_EDEFAULT = 0.0;
 
   /**
    * The cached value of the '{@link #getY() <em>Y</em>}' attribute.
@@ -68,7 +68,7 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * @generated
    * @ordered
    */
-  protected int y = Y_EDEFAULT;
+  protected double y = Y_EDEFAULT;
 
   /**
    * The default value of the '{@link #getSize() <em>Size</em>}' attribute.
@@ -156,7 +156,7 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * <!-- end-user-doc -->
    * @generated
    */
-  public int getX()
+  public double getX()
   {
     return x;
   }
@@ -166,9 +166,9 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setX(int newX)
+  public void setX(double newX)
   {
-    int oldX = x;
+    double oldX = x;
     x = newX;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, BallandpaddlePackage.BALL__X, oldX, x));
@@ -179,7 +179,7 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * <!-- end-user-doc -->
    * @generated
    */
-  public int getY()
+  public double getY()
   {
     return y;
   }
@@ -189,9 +189,9 @@ public class BallImpl extends BAPObjectImpl implements Ball
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setY(int newY)
+  public void setY(double newY)
   {
-    int oldY = y;
+    double oldY = y;
     y = newY;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, BallandpaddlePackage.BALL__Y, oldY, y));
@@ -301,10 +301,10 @@ public class BallImpl extends BAPObjectImpl implements Ball
     switch (featureID)
     {
       case BallandpaddlePackage.BALL__X:
-        setX((Integer)newValue);
+        setX((Double)newValue);
         return;
       case BallandpaddlePackage.BALL__Y:
-        setY((Integer)newValue);
+        setY((Double)newValue);
         return;
       case BallandpaddlePackage.BALL__SIZE:
         setSize((Integer)newValue);
