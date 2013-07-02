@@ -20,19 +20,23 @@ public class Ball extends BAPObject {
 	private double movementVectorX;
 	private double movementVectorY;
 	
-	public Ball(String id, int x, int y, int size, int direction, int speed){
-		this(id, x, y, size);
+	public Ball(String id, double d, double e, int size, int direction, int speed){
+		this(id, d, e, size);
 		this.direction = direction;
+		if(this.direction>=0 && this.direction<=180)
+			this.direction=270;
 		this.speed = speed;
 		if(speed==0)
 			this.speed= 0.001;
+		else if(speed>2)
+			speed = 2;
 	}
 	
-	public Ball(String id, int x, int y){
+	public Ball(String id, double x, double y){
 		this(id, x, y, 1);
 	}
 	
-	public Ball(String id, int x, int y, int size) {
+	public Ball(String id, double x, double y, int size) {
 		super(id, x, y, new CircleBody(new Point(x,y), 1*0.05));
 		this.size = size;
 		direction = 360-125;

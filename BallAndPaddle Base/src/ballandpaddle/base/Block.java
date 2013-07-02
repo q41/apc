@@ -11,11 +11,11 @@ public class Block extends BAPObject {
 	private int shockRes;
 	private Power power;
 	
-	public Block(String id, int x, int y) {
+	public Block(String id, double x, double y) {
 		super(id, x, y,  new SquareBody(new Point(x,y), new Point(x+1, y+1)));
 	}
 	
-	public Block(int x, int y, Block b){
+	public Block(double x, double y, Block b){
 		this(b.getId(), x, y);
 		this.hardness = b.getHardness();
 		this.normalRes = b.getNormalRes();

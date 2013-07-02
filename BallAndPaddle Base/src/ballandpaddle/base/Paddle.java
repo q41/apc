@@ -14,8 +14,8 @@ public class Paddle extends BAPObject {
 	private double speed = 4;
 	private double effectiveSpeed;
 	
-	public Paddle(String id, int x, int y, int orientation, int size) {
-		super(id, x, y, new RectangleBody(new Point(x,y), new Point(x+0.5*size, y+0.05)));
+	public Paddle(String id, double d, double e, int orientation, int size) {
+		super(id, d, e, new RectangleBody(new Point(d,e), new Point(d+0.5*size, e+0.05)));
 		this.orientation = orientation;
 		this.size = 3;
 	}

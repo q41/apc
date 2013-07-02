@@ -115,8 +115,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		for(org.alia4j.language.ballandpaddle.Block b : tempBlocks){
 			Block block = new Block(b.getId(), b.getHardness(), b.getNormalRes(), b.getFireRes(), b.getColdRes(), b.getShockRes(), null);
 			blocks.add(block);
-		}
-		
+		}		
 		
 		//create paddle
 		List<Paddle> paddles = new ArrayList<Paddle>();		
