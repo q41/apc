@@ -26,7 +26,10 @@ import org.alia4j.patterns.NamePattern;
 import org.alia4j.patterns.ParametersPattern;
 import org.alia4j.patterns.TypePattern;
 import org.alia4j.patterns.modifiers.WildcardModifiersPattern;
+import org.alia4j.patterns.names.ExactNamePattern;
+import org.alia4j.patterns.types.ExactClassTypePattern;
 import org.alia4j.patterns.types.ExactTypePattern;
+import org.alia4j.patterns.types.SubTypePattern;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -34,6 +37,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
 import ballandpaddle.base.Paddle;
@@ -155,43 +159,50 @@ public class Importer implements org.alia4j.fial.Importer {
 	
 	
 	private void createEffect() {
+		Specialization specialization = new Specialization(BAPObjectUpdate, null, Collections.<Context>emptyList());
 		
-		//modifiers
-		ModifiersPattern mPublic = new WildcardModifiersPattern(WildcardModifiersPattern.PUBLIC);
-		ModifiersPattern mFinal = new WildcardModifiersPattern(WildcardModifiersPattern.FINAL);
+		Action action = ActionFactory.findOrCreateMethodCallAction(
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
+				(CharSequence)"print",
+				TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+				ResolutionStrategy.STATIC);
 		
-		//type patterns
-		TypePattern typeVoid = new ExactTypePattern(TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"));
-		
-		//class pattern for class that extends BAPOBject
-		
-				
-		//MethodPattern afterBAPObjectUpdate = new MethodPattern(mPublic.or(mFinal), typeVoid
-		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
 	}
 	
+	private static final MethodPattern BAPObjectUpdate;
+	
+	static {
+		//modifier patterns
+		ModifiersPattern publicModifier = new WildcardModifiersPattern(WildcardModifiersPattern.PUBLIC);
+		ModifiersPattern finalModifier = new WildcardModifiersPattern(WildcardModifiersPattern.FINAL);
+		
+		//type patterns
+		TypePattern voidType = new ExactTypePattern(TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"));
+		
+		//class patterns
+		ClassTypePattern bapobjectClassType = new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(BAPObject.class));
+		
+		BAPObjectUpdate = new MethodPattern(
+				publicModifier.and(finalModifier),
+				voidType,
+				new SubTypePattern(bapobjectClassType),
+				new ExactNamePattern("update"),
+				ParametersPattern.ANY,
+				ExceptionsPattern.ANY
+		);
+	}
 	
 	// testing code
-	
 	private void announcePrint() {
 		MethodPattern pattern = new MethodPattern(ModifiersPattern.ANY,
-				TypePattern.ANY, ClassTypePattern.ANY, PRINTNAMEPATTERN, ParametersPattern.ANY,
+				TypePattern.ANY, ClassTypePattern.ANY, new ExactNamePattern("print"), ParametersPattern.ANY,
 				ExceptionsPattern.ANY);
 		
-		//Context context = ContextFactory.findOrCreateCalleeContext();
-
-//		public static final Action findOrCreateMethodCallAction(final TypeDescriptor declaringClass,
-//                final CharSequence methodName, final TypeDescriptor[] parameterTypes, final TypeDescriptor resultType,
-//                final ResolutionStrategy invocationType)
-		
 		Specialization specialization = new Specialization(pattern, null, Collections.<Context>emptyList());
-//				new BasicPredicate<AtomicPredicate>(
-//						TAAtomicPredicateFactory.findOrCreateIsSamePredicate(
-//								ContextFactory.findOrCreateObjectConstantContext(Person.getPerson(person.getName())),
-//								TAContextFactory.findOrCreateLocalVariableContext("ego")),
-//								true)
-		
-		
+			
 		Action action = ActionFactory.findOrCreateMethodCallAction(
 				TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
 				(CharSequence)"print",
@@ -202,23 +213,4 @@ public class Importer implements org.alia4j.fial.Importer {
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
 		initialAttachments.add(attachement);
 	}
-
-	public static final NamePattern PRINTNAMEPATTERN = new NamePattern() {
-
-		@Override
-		public boolean matches(CharSequence name) {
-			return name.toString().equals("print");
-		}
-
-		@Override
-		public int hashCode() {
-			return System.identityHashCode(this);
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			return obj == this;
-		}
-		
-	};
 }
