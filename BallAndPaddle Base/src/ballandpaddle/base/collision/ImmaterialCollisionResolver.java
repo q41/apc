@@ -17,6 +17,7 @@ public class ImmaterialCollisionResolver extends CollisionResolver {
 	
 	@Override
 	protected void resolveCollision(Ball ball, Block block){
+		block.setDestroyed(true);
 		//destroy the block, ball continues on course
 	}
 	

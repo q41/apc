@@ -41,33 +41,27 @@ public class CollisionResolver {
 	}	
 	
 	protected void resolveCollision(Ball ball, ballandpaddle.base.Border border){
-		System.out.println("old "+ball.getDirection());
 		int newDirection = 0;
 		if(border.getId().equals("left") && ball.getDirection()>90 && ball.getDirection()<270){
 			newDirection = 180-ball.getDirection();
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
-			System.out.println("new left"+ball.getDirection());
 		}
 		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0))){
 			newDirection = 180-ball.getDirection();
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
-			System.out.println("new right"+ball.getDirection());
 		}
 		else if(border.getId().equals("top") && ball.getDirection()>180 && ball.getDirection()<360){
 			newDirection = 360-ball.getDirection();		
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
-			System.out.println("new top"+ball.getDirection());
 		}
 		else if(border.getId().equals("bottom") && ball.getDirection()>0 && ball.getDirection()<180){
 			newDirection = 360-ball.getDirection();			
 			ball.setDirection(newDirection);
 			ball.getBody().undoMove();
 			ball.setDestroyed(true);
-			System.out.println("new bottom"+ball.getDirection());
-			//TODO, destroy the ball?
 		}		
 		
 	}

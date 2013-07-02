@@ -75,4 +75,9 @@ public class Block extends BAPObject {
 		//TODO, do something if destroyed?
 		
 	}
+
+	public void setDestroyed(boolean b) {
+		if(b)
+			hardness = 0;		
+	}
 }

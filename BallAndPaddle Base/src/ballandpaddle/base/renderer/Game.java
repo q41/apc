@@ -63,32 +63,25 @@ public class Game implements Observer {
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
 		int i = 0;
-		while (!Display.isCloseRequested()) {			
-//		while(true){
-			int delta = getDelta();			
-			//temp stuff to ensure 60 fps while stuff is broken
-//			long timePerFrame = 1000/60;
-//			long sleepTime = timePerFrame-delta;
-//			System.out.println(1000/(delta+sleepTime));
-//			if(sleepTime>0)
-//				try {
-//					Thread.sleep(sleepTime);
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
+		while (!Display.isCloseRequested() && !level.gameOver()) {		
+			int delta = getDelta();					
 			
 			update(delta);
 			renderGL();
  
 			Display.update();
-			Display.sync(30); // cap fps to 60fps
+			Display.sync(30); // cap fps to 30fps
 			if(i>60)
 				initializing = false;
 			i++;
 		}
+		while(!Display.isCloseRequested()){
+			renderGL();			 
+			Display.update();
+			Display.sync(10); // cap fps to 30fps
+		}
  
-		//Display.destroy();
+		Display.destroy();
 	}
 	
 	private void initGL() {
@@ -221,6 +214,15 @@ public class Game implements Observer {
 				found = blockRenderers.get(i).getBlock().equals(b);
 				if(found)
 					blockRenderers.remove(i);					
+			}
+		}
+		else if(arg1 instanceof Ball){
+			Ball b = (Ball)arg1;
+			boolean found = false;
+			for(int i = 0; i<ballRenderers.size() && !found; i++){
+				found = ballRenderers.get(i).getBall().equals(b);
+				if(found)
+					ballRenderers.remove(i);					
 			}
 		}
 	}

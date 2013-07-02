@@ -117,4 +117,8 @@ public class Ball extends BAPObject {
 	public void setDestroyed(boolean destroyed){
 		alive = !destroyed;
 	}
+	
+	public boolean isDestroyed(){
+		return !alive;
+	}
 }

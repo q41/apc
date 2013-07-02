@@ -23,7 +23,7 @@ public class Collision {
 		if(moved instanceof CircleBody)
 			//check if the last collision of moved was with other, if so then it can't have collided with it again right away
 			if(!lastCollision.containsKey(moved) || (lastCollision.containsKey(moved) && !lastCollision.get(moved).equals(other)))
-				return hasCollided((CircleBody)moved, other);
+				return hasCollided((CircleBody)moved, other);				
 			else
 				return false;
 		else if(moved instanceof RectangleBody)
@@ -52,10 +52,11 @@ public class Collision {
 	private static boolean hasCollided(CircleBody ball, Border border){
 		if(border.getStart().getX()==border.getEnd().getX())
 			return border.getStart().getX()> ball.getCenter().getX()-ball.getR() && border.getStart().getX()<ball.getCenter().getX()+ball.getR();
-		else if(border.getStart().getY()==border.getEnd().getY())
+		else if(border.getStart().getY()==border.getEnd().getY()){
 			return border.getStart().getY()> ball.getCenter().getY()-ball.getR() && border.getStart().getY()<ball.getCenter().getY()+ball.getR();
+		}
 		else
-			return false;
+			return false;		
 	}
 	
 	private static boolean hasCollided(CircleBody ball, RectangleBody paddle){

@@ -40,4 +40,8 @@ public class BallRenderer implements Renderer {
 		CircleRenderer.DrawCircle(cx, cy, r, 10);
 		GL11.glPopMatrix();
 	}
+	
+	public Ball getBall(){
+		return ball;
+	}
 }

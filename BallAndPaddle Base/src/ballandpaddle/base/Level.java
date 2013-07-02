@@ -23,11 +23,6 @@ public class Level extends Observable {
 	private int height;
 	private int width;
 	
-	private Body top;
-	private Body left;
-	private Body right;
-	private Body bottom;
-	
 	public static Level getInstance() {
 		if (INSTANCE == null)
 			INSTANCE = new Level();
@@ -41,7 +36,6 @@ public class Level extends Observable {
 	}
 	
 	public void setPaddles(List<Paddle> paddles){
-		System.out.println("adding paddles "+paddles);
 		this.paddles = paddles;
 	}
 	
@@ -95,7 +89,7 @@ public class Level extends Observable {
 		borders[0] = new ballandpaddle.base.Border("top", new ballandpaddle.base.collision.body.Border(new Point(0,0), new Point(width,0)));
 		borders[1] = new ballandpaddle.base.Border("left", new ballandpaddle.base.collision.body.Border(new Point(0,0), new Point(0,height)));
 		borders[2] = new ballandpaddle.base.Border("right", new ballandpaddle.base.collision.body.Border(new Point(width,0), new Point(width, height)));
-		borders[3] = new ballandpaddle.base.Border("bottom", new ballandpaddle.base.collision.body.Border(new Point(0,width), new Point(width,height)));
+		borders[3] = new ballandpaddle.base.Border("bottom", new ballandpaddle.base.collision.body.Border(new Point(0,height), new Point(width,height)));
 	}
 	
 	private Block generateBlock(List<Block> b, char cur, int x, int y){
@@ -140,8 +134,14 @@ public class Level extends Observable {
 			for(Paddle pad : paddles){
 				pad.move(factor, this);
 			}
-			for(Ball ball : balls){
-				ball.move(factor, this);
+			for(int i =0; i<balls.size(); i++){
+				balls.get(i).move(factor, this);
+				if(balls.get(i).isDestroyed()){
+					this.setChanged();
+					this.notifyObservers(balls.get(i));
+					balls.remove(i);
+					i--;
+				}
 			}
 		}		
 	}
@@ -154,7 +154,7 @@ public class Level extends Observable {
 			Collision.collision(ball, paddle, CollisionResolver.getInstance());
 		}				
 		for(int i = 0; i<blocks.size(); i++){
-			Collision.collision(ball, blocks.get(i), CollisionResolver.getInstance());
+			Collision.collision(ball, blocks.get(i), ImmaterialCollisionResolver.getInstance());
 			if(blocks.get(i).isDestroyed()){
 				this.setChanged();
 				this.notifyObservers(blocks.get(i));
@@ -169,8 +169,10 @@ public class Level extends Observable {
 			Collision.collision(paddle, borders[2], CollisionResolver.getInstance());
 		else if(paddle.getDirection()<0)
 				Collision.collision(paddle, borders[1], CollisionResolver.getInstance());
-//		Collision.collision(paddle, borders[0], CollisionResolver.getInstance());
-//		Collision.collision(paddle, borders[3], CollisionResolver.getInstance());		
+	}
+
+	public boolean gameOver() {
+		return balls.isEmpty() || blocks.isEmpty();
 	}
 	
 	
