@@ -72,6 +72,11 @@ public class Ball extends BAPObject {
 	@Override
 	public final void update(){
 		body.moveBy(movementVectorX, movementVectorY);
+		update2();
+	}
+	
+	public static final void update2() {
+		
 	}
 
 	public void calculateMove(double factor, Level level) {
