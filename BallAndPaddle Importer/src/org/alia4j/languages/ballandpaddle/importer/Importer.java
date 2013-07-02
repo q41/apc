@@ -160,7 +160,8 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private void createEffect() {
-		Specialization specialization = new Specialization(BAPObjectUpdate, null, Collections.<Context>emptyList());
+		Context calleeContex = ContextFactory.findOrCreateCalleeContext();
+		Specialization specialization = new Specialization(BAPObjectUpdate, null, Collections.singletonList(calleeContex));
 		
 		Action action = ActionFactory.findOrCreateMethodCallAction(
 				TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
