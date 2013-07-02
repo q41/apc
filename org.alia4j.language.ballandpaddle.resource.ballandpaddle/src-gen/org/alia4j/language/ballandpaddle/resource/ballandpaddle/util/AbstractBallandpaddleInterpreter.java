@@ -148,12 +148,6 @@ public class AbstractBallandpaddleInterpreter<ResultType, ContextType> {
 		if (result != null) {
 			return result;
 		}
-		if (object instanceof org.alia4j.language.ballandpaddle.OrParameter) {
-			result = interprete_org_alia4j_language_ballandpaddle_OrParameter((org.alia4j.language.ballandpaddle.OrParameter) object, context);
-		}
-		if (result != null) {
-			return result;
-		}
 		if (object instanceof org.alia4j.language.ballandpaddle.AndParameter) {
 			result = interprete_org_alia4j_language_ballandpaddle_AndParameter((org.alia4j.language.ballandpaddle.AndParameter) object, context);
 		}
@@ -190,14 +184,26 @@ public class AbstractBallandpaddleInterpreter<ResultType, ContextType> {
 		if (result != null) {
 			return result;
 		}
+		if (object instanceof org.alia4j.language.ballandpaddle.OrParameter) {
+			result = interprete_org_alia4j_language_ballandpaddle_OrParameter((org.alia4j.language.ballandpaddle.OrParameter) object, context);
+		}
+		if (result != null) {
+			return result;
+		}
 		if (object instanceof org.alia4j.language.ballandpaddle.AttParameter) {
 			result = interprete_org_alia4j_language_ballandpaddle_AttParameter((org.alia4j.language.ballandpaddle.AttParameter) object, context);
 		}
 		if (result != null) {
 			return result;
 		}
-		if (object instanceof org.alia4j.language.ballandpaddle.ValueParameter) {
-			result = interprete_org_alia4j_language_ballandpaddle_ValueParameter((org.alia4j.language.ballandpaddle.ValueParameter) object, context);
+		if (object instanceof org.alia4j.language.ballandpaddle.IntValueParameter) {
+			result = interprete_org_alia4j_language_ballandpaddle_IntValueParameter((org.alia4j.language.ballandpaddle.IntValueParameter) object, context);
+		}
+		if (result != null) {
+			return result;
+		}
+		if (object instanceof org.alia4j.language.ballandpaddle.DoubleValueParameter) {
+			result = interprete_org_alia4j_language_ballandpaddle_DoubleValueParameter((org.alia4j.language.ballandpaddle.DoubleValueParameter) object, context);
 		}
 		if (result != null) {
 			return result;
@@ -264,6 +270,12 @@ public class AbstractBallandpaddleInterpreter<ResultType, ContextType> {
 		}
 		if (object instanceof org.alia4j.language.ballandpaddle.IntOperand) {
 			result = interprete_org_alia4j_language_ballandpaddle_IntOperand((org.alia4j.language.ballandpaddle.IntOperand) object, context);
+		}
+		if (result != null) {
+			return result;
+		}
+		if (object instanceof org.alia4j.language.ballandpaddle.DoubleOperand) {
+			result = interprete_org_alia4j_language_ballandpaddle_DoubleOperand((org.alia4j.language.ballandpaddle.DoubleOperand) object, context);
 		}
 		if (result != null) {
 			return result;
@@ -379,7 +391,11 @@ public class AbstractBallandpaddleInterpreter<ResultType, ContextType> {
 		return null;
 	}
 	
-	public ResultType interprete_org_alia4j_language_ballandpaddle_ValueParameter(org.alia4j.language.ballandpaddle.ValueParameter valueParameter, ContextType context) {
+	public ResultType interprete_org_alia4j_language_ballandpaddle_IntValueParameter(org.alia4j.language.ballandpaddle.IntValueParameter intValueParameter, ContextType context) {
+		return null;
+	}
+	
+	public ResultType interprete_org_alia4j_language_ballandpaddle_DoubleValueParameter(org.alia4j.language.ballandpaddle.DoubleValueParameter doubleValueParameter, ContextType context) {
 		return null;
 	}
 	
@@ -424,6 +440,10 @@ public class AbstractBallandpaddleInterpreter<ResultType, ContextType> {
 	}
 	
 	public ResultType interprete_org_alia4j_language_ballandpaddle_IntOperand(org.alia4j.language.ballandpaddle.IntOperand intOperand, ContextType context) {
+		return null;
+	}
+	
+	public ResultType interprete_org_alia4j_language_ballandpaddle_DoubleOperand(org.alia4j.language.ballandpaddle.DoubleOperand doubleOperand, ContextType context) {
 		return null;
 	}
 	

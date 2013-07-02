@@ -1,5 +1,8 @@
 package org.alia4j.languages.ballandpaddle.importer;
 
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +14,9 @@ import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
 import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
+import org.alia4j.liam.AtomicPredicate;
 import org.alia4j.liam.Attachment;
+import org.alia4j.liam.BasicPredicate;
 import org.alia4j.liam.CompositionRule;
 import org.alia4j.liam.Context;
 import org.alia4j.liam.ContextFactory;
@@ -19,6 +24,7 @@ import org.alia4j.liam.ScheduleInfo;
 import org.alia4j.liam.Specialization;
 import org.alia4j.liam.pattern.MethodPattern;
 import org.alia4j.liam.signature.ResolutionStrategy;
+import org.alia4j.liam.signature.Signed;
 import org.alia4j.patterns.ClassTypePattern;
 import org.alia4j.patterns.ExceptionsPattern;
 import org.alia4j.patterns.ModifiersPattern;
@@ -30,6 +36,7 @@ import org.alia4j.patterns.names.ExactNamePattern;
 import org.alia4j.patterns.types.ExactClassTypePattern;
 import org.alia4j.patterns.types.ExactTypePattern;
 import org.alia4j.patterns.types.SubTypePattern;
+import org.alia4j.util.Maybe;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -159,9 +166,35 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 	}
 	
+	static class IsMethodFinalAtomicPredicate extends AtomicPredicate {
+	
+		public IsMethodFinalAtomicPredicate(Context ctx) {
+			super(Collections.singletonList(ctx));
+		}
+		
+		@Override
+		public int estimateRuntimeCost() {
+			return 1;
+		}
+		
+		@Override
+		public Maybe<Boolean> computeIsSatisfiedStatically(
+				List<? extends Signed<?>> callStack) {
+			return new Maybe<Boolean>();
+		}
+		
+		public boolean isSatisfied(Object o) {
+			Member m = (Member) o;
+			return Modifier.isFinal(m.getModifiers());
+		}
+	}
+
 	private void createEffect() {
-		Context calleeContex = ContextFactory.findOrCreateCalleeContext();
-		Specialization specialization = new Specialization(BAPObjectUpdate, null, Collections.singletonList(calleeContex));
+		//Context calleeContex = ContextFactory.findOrCreateCalleeContext();
+		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
+		AtomicPredicate pred = new IsMethodFinalAtomicPredicate(resolvedMethodContext);
+		
+		Specialization specialization = new Specialization(BAPObjectUpdate, new BasicPredicate<AtomicPredicate>(pred, true), Collections.<Context>emptyList());
 		
 		Action action = ActionFactory.findOrCreateMethodCallAction(
 				TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
@@ -188,13 +221,21 @@ public class Importer implements org.alia4j.fial.Importer {
 		ClassTypePattern bapobjectClassType = new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(BAPObject.class));
 		
 		BAPObjectUpdate = new MethodPattern(
-				publicModifier.and(finalModifier),
+				ModifiersPattern.ANY,
 				voidType,
-				new SubTypePattern(bapobjectClassType),
+				bapobjectClassType,
 				new ExactNamePattern("update"),
 				ParametersPattern.ANY,
 				ExceptionsPattern.ANY
 		);
+//		BAPObjectUpdate = new MethodPattern(
+//				publicModifier.and(finalModifier),
+//				voidType,
+//				bapobjectClassType,
+//				new ExactNamePattern("update"),
+//				ParametersPattern.ANY,
+//				ExceptionsPattern.ANY
+//		);
 	}
 	
 	// testing code

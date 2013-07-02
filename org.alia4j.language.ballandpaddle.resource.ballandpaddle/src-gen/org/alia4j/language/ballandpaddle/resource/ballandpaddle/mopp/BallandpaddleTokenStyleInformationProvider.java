@@ -74,21 +74,6 @@ public class BallandpaddleTokenStyleInformationProvider {
 		if ("y".equals(tokenName)) {
 			return new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
 		}
-		if ("shape".equals(tokenName)) {
-			return new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
-		}
-		if ("circle".equals(tokenName)) {
-			return new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
-		}
-		if ("triangle".equals(tokenName)) {
-			return new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
-		}
-		if ("square".equals(tokenName)) {
-			return new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
-		}
-		if ("rectangle".equals(tokenName)) {
-			return new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
-		}
 		if ("size".equals(tokenName)) {
 			return new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTokenStyle(new int[] {0x80, 0x00, 0x55}, null, true, false, false, false);
 		}

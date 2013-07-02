@@ -26,6 +26,7 @@ public class BallandpaddleSyntaxCoverageInformationProvider {
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(),
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(),
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getIntOperand(),
+			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getDoubleOperand(),
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttOperand(),
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(),
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(),
@@ -38,7 +39,8 @@ public class BallandpaddleSyntaxCoverageInformationProvider {
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(),
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(),
 			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttParameter(),
-			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getValueParameter(),
+			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getIntValueParameter(),
+			org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getDoubleValueParameter(),
 		};
 	}
 	

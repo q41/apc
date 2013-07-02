@@ -52,11 +52,6 @@ public class BallandpaddleLexer extends Lexer {
     public static final int T__51=51;
     public static final int T__52=52;
     public static final int T__53=53;
-    public static final int T__54=54;
-    public static final int T__55=55;
-    public static final int T__56=56;
-    public static final int T__57=57;
-    public static final int T__58=58;
     public static final int ANDOR=4;
     public static final int CHAR=5;
     public static final int COMMENT=6;
@@ -442,10 +437,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__29;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:31:7: ( 'circle' )
-            // Ballandpaddle.g:31:9: 'circle'
+            // Ballandpaddle.g:31:7: ( 'cold damage' )
+            // Ballandpaddle.g:31:9: 'cold damage'
             {
-            match("circle"); 
+            match("cold damage"); 
 
 
 
@@ -465,10 +460,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__30;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:32:7: ( 'cold damage' )
-            // Ballandpaddle.g:32:9: 'cold damage'
+            // Ballandpaddle.g:32:7: ( 'direction' )
+            // Ballandpaddle.g:32:9: 'direction'
             {
-            match("cold damage"); 
+            match("direction"); 
 
 
 
@@ -488,10 +483,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__31;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:33:7: ( 'direction' )
-            // Ballandpaddle.g:33:9: 'direction'
+            // Ballandpaddle.g:33:7: ( 'duration' )
+            // Ballandpaddle.g:33:9: 'duration'
             {
-            match("direction"); 
+            match("duration"); 
 
 
 
@@ -511,10 +506,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__32;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:34:7: ( 'duration' )
-            // Ballandpaddle.g:34:9: 'duration'
+            // Ballandpaddle.g:34:7: ( 'effect' )
+            // Ballandpaddle.g:34:9: 'effect'
             {
-            match("duration"); 
+            match("effect"); 
 
 
 
@@ -534,10 +529,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__33;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:35:7: ( 'effect' )
-            // Ballandpaddle.g:35:9: 'effect'
+            // Ballandpaddle.g:35:7: ( 'effects' )
+            // Ballandpaddle.g:35:9: 'effects'
             {
-            match("effect"); 
+            match("effects"); 
 
 
 
@@ -557,10 +552,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__34;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:36:7: ( 'effects' )
-            // Ballandpaddle.g:36:9: 'effects'
+            // Ballandpaddle.g:36:7: ( 'fire damage' )
+            // Ballandpaddle.g:36:9: 'fire damage'
             {
-            match("effects"); 
+            match("fire damage"); 
 
 
 
@@ -580,10 +575,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__35;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:37:7: ( 'fire damage' )
-            // Ballandpaddle.g:37:9: 'fire damage'
+            // Ballandpaddle.g:37:7: ( 'hardness' )
+            // Ballandpaddle.g:37:9: 'hardness'
             {
-            match("fire damage"); 
+            match("hardness"); 
 
 
 
@@ -603,10 +598,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__36;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:38:7: ( 'hardness' )
-            // Ballandpaddle.g:38:9: 'hardness'
+            // Ballandpaddle.g:38:7: ( 'level' )
+            // Ballandpaddle.g:38:9: 'level'
             {
-            match("hardness"); 
+            match("level"); 
 
 
 
@@ -626,10 +621,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__37;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:39:7: ( 'level' )
-            // Ballandpaddle.g:39:9: 'level'
+            // Ballandpaddle.g:39:7: ( 'normal damage' )
+            // Ballandpaddle.g:39:9: 'normal damage'
             {
-            match("level"); 
+            match("normal damage"); 
 
 
 
@@ -649,10 +644,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__38;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:40:7: ( 'normal damage' )
-            // Ballandpaddle.g:40:9: 'normal damage'
+            // Ballandpaddle.g:40:7: ( 'orientation' )
+            // Ballandpaddle.g:40:9: 'orientation'
             {
-            match("normal damage"); 
+            match("orientation"); 
 
 
 
@@ -672,10 +667,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__39;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:41:7: ( 'orientation' )
-            // Ballandpaddle.g:41:9: 'orientation'
+            // Ballandpaddle.g:41:7: ( 'paddle' )
+            // Ballandpaddle.g:41:9: 'paddle'
             {
-            match("orientation"); 
+            match("paddle"); 
 
 
 
@@ -695,10 +690,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__40;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:42:7: ( 'paddle' )
-            // Ballandpaddle.g:42:9: 'paddle'
+            // Ballandpaddle.g:42:7: ( 'power' )
+            // Ballandpaddle.g:42:9: 'power'
             {
-            match("paddle"); 
+            match("power"); 
 
 
 
@@ -718,10 +713,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__41;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:43:7: ( 'power' )
-            // Ballandpaddle.g:43:9: 'power'
+            // Ballandpaddle.g:43:7: ( 'powerSpawnChance' )
+            // Ballandpaddle.g:43:9: 'powerSpawnChance'
             {
-            match("power"); 
+            match("powerSpawnChance"); 
 
 
 
@@ -741,10 +736,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__42;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:44:7: ( 'powerSpawnChance' )
-            // Ballandpaddle.g:44:9: 'powerSpawnChance'
+            // Ballandpaddle.g:44:7: ( 'resistance cold' )
+            // Ballandpaddle.g:44:9: 'resistance cold'
             {
-            match("powerSpawnChance"); 
+            match("resistance cold"); 
 
 
 
@@ -764,10 +759,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__43;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:45:7: ( 'rectangle' )
-            // Ballandpaddle.g:45:9: 'rectangle'
+            // Ballandpaddle.g:45:7: ( 'resistance fire' )
+            // Ballandpaddle.g:45:9: 'resistance fire'
             {
-            match("rectangle"); 
+            match("resistance fire"); 
 
 
 
@@ -787,10 +782,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__44;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:46:7: ( 'resistance cold' )
-            // Ballandpaddle.g:46:9: 'resistance cold'
+            // Ballandpaddle.g:46:7: ( 'resistance normal' )
+            // Ballandpaddle.g:46:9: 'resistance normal'
             {
-            match("resistance cold"); 
+            match("resistance normal"); 
 
 
 
@@ -810,10 +805,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__45;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:47:7: ( 'resistance fire' )
-            // Ballandpaddle.g:47:9: 'resistance fire'
+            // Ballandpaddle.g:47:7: ( 'resistance shock' )
+            // Ballandpaddle.g:47:9: 'resistance shock'
             {
-            match("resistance fire"); 
+            match("resistance shock"); 
 
 
 
@@ -833,10 +828,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__46;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:48:7: ( 'resistance normal' )
-            // Ballandpaddle.g:48:9: 'resistance normal'
+            // Ballandpaddle.g:48:7: ( 'shock damage' )
+            // Ballandpaddle.g:48:9: 'shock damage'
             {
-            match("resistance normal"); 
+            match("shock damage"); 
 
 
 
@@ -856,10 +851,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__47;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:49:7: ( 'resistance shock' )
-            // Ballandpaddle.g:49:9: 'resistance shock'
+            // Ballandpaddle.g:49:7: ( 'size' )
+            // Ballandpaddle.g:49:9: 'size'
             {
-            match("resistance shock"); 
+            match("size"); 
 
 
 
@@ -879,10 +874,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__48;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:50:7: ( 'shape' )
-            // Ballandpaddle.g:50:9: 'shape'
+            // Ballandpaddle.g:50:7: ( 'speed' )
+            // Ballandpaddle.g:50:9: 'speed'
             {
-            match("shape"); 
+            match("speed"); 
 
 
 
@@ -902,12 +897,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__49;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:51:7: ( 'shock damage' )
-            // Ballandpaddle.g:51:9: 'shock damage'
+            // Ballandpaddle.g:51:7: ( 'x' )
+            // Ballandpaddle.g:51:9: 'x'
             {
-            match("shock damage"); 
-
-
+            match('x'); 
 
             }
 
@@ -925,12 +918,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__50;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:52:7: ( 'size' )
-            // Ballandpaddle.g:52:9: 'size'
+            // Ballandpaddle.g:52:7: ( 'y' )
+            // Ballandpaddle.g:52:9: 'y'
             {
-            match("size"); 
-
-
+            match('y'); 
 
             }
 
@@ -948,12 +939,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__51;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:53:7: ( 'speed' )
-            // Ballandpaddle.g:53:9: 'speed'
+            // Ballandpaddle.g:53:7: ( '{' )
+            // Ballandpaddle.g:53:9: '{'
             {
-            match("speed"); 
-
-
+            match('{'); 
 
             }
 
@@ -971,12 +960,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__52;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:54:7: ( 'square' )
-            // Ballandpaddle.g:54:9: 'square'
+            // Ballandpaddle.g:54:7: ( '|' )
+            // Ballandpaddle.g:54:9: '|'
             {
-            match("square"); 
-
-
+            match('|'); 
 
             }
 
@@ -994,115 +981,8 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = T__53;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:55:7: ( 'triangle' )
-            // Ballandpaddle.g:55:9: 'triangle'
-            {
-            match("triangle"); 
-
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "T__53"
-
-    // $ANTLR start "T__54"
-    public final void mT__54() throws RecognitionException {
-        try {
-            int _type = T__54;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:56:7: ( 'x' )
-            // Ballandpaddle.g:56:9: 'x'
-            {
-            match('x'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "T__54"
-
-    // $ANTLR start "T__55"
-    public final void mT__55() throws RecognitionException {
-        try {
-            int _type = T__55;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:57:7: ( 'y' )
-            // Ballandpaddle.g:57:9: 'y'
-            {
-            match('y'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "T__55"
-
-    // $ANTLR start "T__56"
-    public final void mT__56() throws RecognitionException {
-        try {
-            int _type = T__56;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:58:7: ( '{' )
-            // Ballandpaddle.g:58:9: '{'
-            {
-            match('{'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "T__56"
-
-    // $ANTLR start "T__57"
-    public final void mT__57() throws RecognitionException {
-        try {
-            int _type = T__57;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:59:7: ( '|' )
-            // Ballandpaddle.g:59:9: '|'
-            {
-            match('|'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "T__57"
-
-    // $ANTLR start "T__58"
-    public final void mT__58() throws RecognitionException {
-        try {
-            int _type = T__58;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:60:7: ( '}' )
-            // Ballandpaddle.g:60:9: '}'
+            // Ballandpaddle.g:55:7: ( '}' )
+            // Ballandpaddle.g:55:9: '}'
             {
             match('}'); 
 
@@ -1115,24 +995,24 @@ public class BallandpaddleLexer extends Lexer {
         	// do for sure before leaving
         }
     }
-    // $ANTLR end "T__58"
+    // $ANTLR end "T__53"
 
     // $ANTLR start "COMMENT"
     public final void mCOMMENT() throws RecognitionException {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4724:8: ( ( '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )* ) )
-            // Ballandpaddle.g:4725:2: ( '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )* )
+            // Ballandpaddle.g:4753:8: ( ( '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )* ) )
+            // Ballandpaddle.g:4754:2: ( '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )* )
             {
-            // Ballandpaddle.g:4725:2: ( '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )* )
-            // Ballandpaddle.g:4725:2: '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )*
+            // Ballandpaddle.g:4754:2: ( '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )* )
+            // Ballandpaddle.g:4754:2: '//' (~ ( '\\n' | '\\r' | '\\uffff' ) )*
             {
             match("//"); 
 
 
 
-            // Ballandpaddle.g:4725:6: (~ ( '\\n' | '\\r' | '\\uffff' ) )*
+            // Ballandpaddle.g:4754:6: (~ ( '\\n' | '\\r' | '\\uffff' ) )*
             loop1:
             do {
                 int alt1=2;
@@ -1187,10 +1067,10 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = INTEGER;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4728:8: ( ( ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) )
-            // Ballandpaddle.g:4729:2: ( ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* | '0' )
+            // Ballandpaddle.g:4757:8: ( ( ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) )
+            // Ballandpaddle.g:4758:2: ( ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* | '0' )
             {
-            // Ballandpaddle.g:4729:2: ( ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* | '0' )
+            // Ballandpaddle.g:4758:2: ( ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )* | '0' )
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -1209,9 +1089,9 @@ public class BallandpaddleLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // Ballandpaddle.g:4729:2: ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )*
+                    // Ballandpaddle.g:4758:2: ( '-' )? ( '1' .. '9' ) ( '0' .. '9' )*
                     {
-                    // Ballandpaddle.g:4729:2: ( '-' )?
+                    // Ballandpaddle.g:4758:2: ( '-' )?
                     int alt2=2;
                     int LA2_0 = input.LA(1);
 
@@ -1220,7 +1100,7 @@ public class BallandpaddleLexer extends Lexer {
                     }
                     switch (alt2) {
                         case 1 :
-                            // Ballandpaddle.g:4729:3: '-'
+                            // Ballandpaddle.g:4758:3: '-'
                             {
                             match('-'); 
 
@@ -1240,7 +1120,7 @@ public class BallandpaddleLexer extends Lexer {
                     }
 
 
-                    // Ballandpaddle.g:4729:18: ( '0' .. '9' )*
+                    // Ballandpaddle.g:4758:18: ( '0' .. '9' )*
                     loop3:
                     do {
                         int alt3=2;
@@ -1277,7 +1157,7 @@ public class BallandpaddleLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // Ballandpaddle.g:4729:30: '0'
+                    // Ballandpaddle.g:4758:30: '0'
                     {
                     match('0'); 
 
@@ -1303,13 +1183,13 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = FLOAT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4731:6: ( ( ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+ ) )
-            // Ballandpaddle.g:4732:2: ( ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+ )
+            // Ballandpaddle.g:4760:6: ( ( ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+ ) )
+            // Ballandpaddle.g:4761:2: ( ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+ )
             {
-            // Ballandpaddle.g:4732:2: ( ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+ )
-            // Ballandpaddle.g:4732:2: ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+
+            // Ballandpaddle.g:4761:2: ( ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+ )
+            // Ballandpaddle.g:4761:2: ( '-' )? ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' ) '.' ( '0' .. '9' )+
             {
-            // Ballandpaddle.g:4732:2: ( '-' )?
+            // Ballandpaddle.g:4761:2: ( '-' )?
             int alt5=2;
             int LA5_0 = input.LA(1);
 
@@ -1318,7 +1198,7 @@ public class BallandpaddleLexer extends Lexer {
             }
             switch (alt5) {
                 case 1 :
-                    // Ballandpaddle.g:4732:3: '-'
+                    // Ballandpaddle.g:4761:3: '-'
                     {
                     match('-'); 
 
@@ -1328,7 +1208,7 @@ public class BallandpaddleLexer extends Lexer {
             }
 
 
-            // Ballandpaddle.g:4732:8: ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' )
+            // Ballandpaddle.g:4761:8: ( ( '1' .. '9' ) ( '0' .. '9' )* | '0' )
             int alt7=2;
             int LA7_0 = input.LA(1);
 
@@ -1347,7 +1227,7 @@ public class BallandpaddleLexer extends Lexer {
             }
             switch (alt7) {
                 case 1 :
-                    // Ballandpaddle.g:4732:9: ( '1' .. '9' ) ( '0' .. '9' )*
+                    // Ballandpaddle.g:4761:9: ( '1' .. '9' ) ( '0' .. '9' )*
                     {
                     if ( (input.LA(1) >= '1' && input.LA(1) <= '9') ) {
                         input.consume();
@@ -1359,7 +1239,7 @@ public class BallandpaddleLexer extends Lexer {
                     }
 
 
-                    // Ballandpaddle.g:4732:20: ( '0' .. '9' )*
+                    // Ballandpaddle.g:4761:20: ( '0' .. '9' )*
                     loop6:
                     do {
                         int alt6=2;
@@ -1396,7 +1276,7 @@ public class BallandpaddleLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // Ballandpaddle.g:4732:34: '0'
+                    // Ballandpaddle.g:4761:34: '0'
                     {
                     match('0'); 
 
@@ -1408,7 +1288,7 @@ public class BallandpaddleLexer extends Lexer {
 
             match('.'); 
 
-            // Ballandpaddle.g:4732:43: ( '0' .. '9' )+
+            // Ballandpaddle.g:4761:43: ( '0' .. '9' )+
             int cnt8=0;
             loop8:
             do {
@@ -1466,7 +1346,7 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = CHAR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4734:5: ( ( ( 'A' .. 'Z' ) ) )
+            // Ballandpaddle.g:4763:5: ( ( ( 'A' .. 'Z' ) ) )
             // Ballandpaddle.g:
             {
             if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z') ) {
@@ -1495,13 +1375,13 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = LEVELLINE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4737:10: ( ( ( ( 'A' .. 'Z' ) | ( '.' ) )+ ) )
-            // Ballandpaddle.g:4738:2: ( ( ( 'A' .. 'Z' ) | ( '.' ) )+ )
+            // Ballandpaddle.g:4766:10: ( ( ( ( 'A' .. 'Z' ) | ( '.' ) )+ ) )
+            // Ballandpaddle.g:4767:2: ( ( ( 'A' .. 'Z' ) | ( '.' ) )+ )
             {
-            // Ballandpaddle.g:4738:2: ( ( ( 'A' .. 'Z' ) | ( '.' ) )+ )
-            // Ballandpaddle.g:4738:2: ( ( 'A' .. 'Z' ) | ( '.' ) )+
+            // Ballandpaddle.g:4767:2: ( ( ( 'A' .. 'Z' ) | ( '.' ) )+ )
+            // Ballandpaddle.g:4767:2: ( ( 'A' .. 'Z' ) | ( '.' ) )+
             {
-            // Ballandpaddle.g:4738:2: ( ( 'A' .. 'Z' ) | ( '.' ) )+
+            // Ballandpaddle.g:4767:2: ( ( 'A' .. 'Z' ) | ( '.' ) )+
             int cnt9=0;
             loop9:
             do {
@@ -1559,8 +1439,8 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = ANDOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4740:6: ( ( ( '|' ) | ( '&' ) ) )
-            // Ballandpaddle.g:4741:2: ( ( '|' ) | ( '&' ) )
+            // Ballandpaddle.g:4769:6: ( ( ( '|' ) | ( '&' ) ) )
+            // Ballandpaddle.g:4770:2: ( ( '|' ) | ( '&' ) )
             {
             if ( input.LA(1)=='&'||input.LA(1)=='|' ) {
                 input.consume();
@@ -1590,13 +1470,13 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = TEXT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4744:5: ( ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ ) )
-            // Ballandpaddle.g:4745:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
+            // Ballandpaddle.g:4773:5: ( ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ ) )
+            // Ballandpaddle.g:4774:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
             {
-            // Ballandpaddle.g:4745:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
-            // Ballandpaddle.g:4745:2: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
+            // Ballandpaddle.g:4774:2: ( ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+ )
+            // Ballandpaddle.g:4774:2: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
             {
-            // Ballandpaddle.g:4745:2: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
+            // Ballandpaddle.g:4774:2: ( 'A' .. 'Z' | 'a' .. 'z' | '0' .. '9' | '_' | '-' )+
             int cnt10=0;
             loop10:
             do {
@@ -1654,8 +1534,8 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = WHITESPACE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4747:11: ( ( ( ' ' | '\\t' | '\\f' ) ) )
-            // Ballandpaddle.g:4748:2: ( ( ' ' | '\\t' | '\\f' ) )
+            // Ballandpaddle.g:4776:11: ( ( ( ' ' | '\\t' | '\\f' ) ) )
+            // Ballandpaddle.g:4777:2: ( ( ' ' | '\\t' | '\\f' ) )
             {
             if ( input.LA(1)=='\t'||input.LA(1)=='\f'||input.LA(1)==' ' ) {
                 input.consume();
@@ -1685,13 +1565,13 @@ public class BallandpaddleLexer extends Lexer {
         try {
             int _type = LINEBREAK;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // Ballandpaddle.g:4751:10: ( ( ( '\\r\\n' | '\\r' | '\\n' ) ) )
-            // Ballandpaddle.g:4752:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
+            // Ballandpaddle.g:4780:10: ( ( ( '\\r\\n' | '\\r' | '\\n' ) ) )
+            // Ballandpaddle.g:4781:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
             {
-            // Ballandpaddle.g:4752:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
-            // Ballandpaddle.g:4752:2: ( '\\r\\n' | '\\r' | '\\n' )
+            // Ballandpaddle.g:4781:2: ( ( '\\r\\n' | '\\r' | '\\n' ) )
+            // Ballandpaddle.g:4781:2: ( '\\r\\n' | '\\r' | '\\n' )
             {
-            // Ballandpaddle.g:4752:2: ( '\\r\\n' | '\\r' | '\\n' )
+            // Ballandpaddle.g:4781:2: ( '\\r\\n' | '\\r' | '\\n' )
             int alt11=3;
             int LA11_0 = input.LA(1);
 
@@ -1717,7 +1597,7 @@ public class BallandpaddleLexer extends Lexer {
             }
             switch (alt11) {
                 case 1 :
-                    // Ballandpaddle.g:4752:3: '\\r\\n'
+                    // Ballandpaddle.g:4781:3: '\\r\\n'
                     {
                     match("\r\n"); 
 
@@ -1726,14 +1606,14 @@ public class BallandpaddleLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // Ballandpaddle.g:4752:12: '\\r'
+                    // Ballandpaddle.g:4781:12: '\\r'
                     {
                     match('\r'); 
 
                     }
                     break;
                 case 3 :
-                    // Ballandpaddle.g:4752:19: '\\n'
+                    // Ballandpaddle.g:4781:19: '\\n'
                     {
                     match('\n'); 
 
@@ -1760,8 +1640,8 @@ public class BallandpaddleLexer extends Lexer {
     // $ANTLR end "LINEBREAK"
 
     public void mTokens() throws RecognitionException {
-        // Ballandpaddle.g:1:8: ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | COMMENT | INTEGER | FLOAT | CHAR | LEVELLINE | ANDOR | TEXT | WHITESPACE | LINEBREAK )
-        int alt12=55;
+        // Ballandpaddle.g:1:8: ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | COMMENT | INTEGER | FLOAT | CHAR | LEVELLINE | ANDOR | TEXT | WHITESPACE | LINEBREAK )
+        int alt12=50;
         alt12 = dfa12.predict(input);
         switch (alt12) {
             case 1 :
@@ -2093,111 +1973,71 @@ public class BallandpaddleLexer extends Lexer {
                 }
                 break;
             case 42 :
-                // Ballandpaddle.g:1:256: T__54
-                {
-                mT__54(); 
-
-
-                }
-                break;
-            case 43 :
-                // Ballandpaddle.g:1:262: T__55
-                {
-                mT__55(); 
-
-
-                }
-                break;
-            case 44 :
-                // Ballandpaddle.g:1:268: T__56
-                {
-                mT__56(); 
-
-
-                }
-                break;
-            case 45 :
-                // Ballandpaddle.g:1:274: T__57
-                {
-                mT__57(); 
-
-
-                }
-                break;
-            case 46 :
-                // Ballandpaddle.g:1:280: T__58
-                {
-                mT__58(); 
-
-
-                }
-                break;
-            case 47 :
-                // Ballandpaddle.g:1:286: COMMENT
+                // Ballandpaddle.g:1:256: COMMENT
                 {
                 mCOMMENT(); 
 
 
                 }
                 break;
-            case 48 :
-                // Ballandpaddle.g:1:294: INTEGER
+            case 43 :
+                // Ballandpaddle.g:1:264: INTEGER
                 {
                 mINTEGER(); 
 
 
                 }
                 break;
-            case 49 :
-                // Ballandpaddle.g:1:302: FLOAT
+            case 44 :
+                // Ballandpaddle.g:1:272: FLOAT
                 {
                 mFLOAT(); 
 
 
                 }
                 break;
-            case 50 :
-                // Ballandpaddle.g:1:308: CHAR
+            case 45 :
+                // Ballandpaddle.g:1:278: CHAR
                 {
                 mCHAR(); 
 
 
                 }
                 break;
-            case 51 :
-                // Ballandpaddle.g:1:313: LEVELLINE
+            case 46 :
+                // Ballandpaddle.g:1:283: LEVELLINE
                 {
                 mLEVELLINE(); 
 
 
                 }
                 break;
-            case 52 :
-                // Ballandpaddle.g:1:323: ANDOR
+            case 47 :
+                // Ballandpaddle.g:1:293: ANDOR
                 {
                 mANDOR(); 
 
 
                 }
                 break;
-            case 53 :
-                // Ballandpaddle.g:1:329: TEXT
+            case 48 :
+                // Ballandpaddle.g:1:299: TEXT
                 {
                 mTEXT(); 
 
 
                 }
                 break;
-            case 54 :
-                // Ballandpaddle.g:1:334: WHITESPACE
+            case 49 :
+                // Ballandpaddle.g:1:304: WHITESPACE
                 {
                 mWHITESPACE(); 
 
 
                 }
                 break;
-            case 55 :
-                // Ballandpaddle.g:1:345: LINEBREAK
+            case 50 :
+                // Ballandpaddle.g:1:315: LINEBREAK
                 {
                 mLINEBREAK(); 
 
@@ -2212,107 +2052,97 @@ public class BallandpaddleLexer extends Lexer {
 
     protected DFA12 dfa12 = new DFA12(this);
     static final String DFA12_eotS =
-        "\1\uffff\1\46\5\uffff\1\50\1\53\1\55\1\uffff\1\57\15\42\1\104\1"+
-        "\105\3\uffff\2\110\1\112\10\uffff\1\42\6\uffff\24\42\3\uffff\1\110"+
-        "\3\uffff\1\41\26\42\1\170\21\42\1\u008a\3\42\1\uffff\1\u008e\1\42"+
-        "\1\uffff\3\42\1\uffff\1\42\1\u0094\3\42\1\u0099\2\42\1\u009c\1\42"+
-        "\1\uffff\1\u009e\2\42\1\uffff\1\u00a1\2\42\1\u00a5\1\42\1\uffff"+
-        "\2\42\1\u00a9\1\42\1\uffff\2\42\3\uffff\1\u00ad\1\42\1\uffff\2\42"+
-        "\1\u00b1\1\uffff\1\42\1\uffff\1\42\1\uffff\3\42\1\uffff\2\42\1\u00b9"+
-        "\1\uffff\1\u00ba\4\42\1\u00bf\1\u00c0\2\uffff\2\42\1\u00c3\1\42"+
-        "\2\uffff\2\42\1\uffff\1\42\1\u00c8\1\42\2\uffff\1\42\4\uffff\3\42"+
-        "\1\u00d2\1\uffff";
+        "\1\uffff\1\45\5\uffff\1\47\1\52\1\54\1\uffff\1\56\14\41\1\100\1"+
+        "\101\3\uffff\2\104\1\106\10\uffff\1\41\6\uffff\21\41\3\uffff\1\104"+
+        "\3\uffff\1\40\21\41\1\152\16\41\1\171\1\41\1\uffff\1\173\1\uffff"+
+        "\3\41\1\uffff\1\41\1\u0080\3\41\1\u0085\2\41\1\uffff\1\u0088\1\uffff"+
+        "\2\41\1\u008c\1\41\1\uffff\2\41\1\u0090\1\41\1\uffff\1\41\2\uffff"+
+        "\2\41\1\u0095\1\uffff\1\41\1\uffff\1\41\1\uffff\3\41\1\u009b\1\uffff"+
+        "\1\u009c\3\41\1\u00a0\2\uffff\3\41\1\uffff\3\41\1\u00a7\1\41\2\uffff"+
+        "\1\41\4\uffff\3\41\1\u00b1\1\uffff";
     static final String DFA12_eofS =
-        "\u00d3\uffff";
+        "\u00b2\uffff";
     static final String DFA12_minS =
-        "\1\11\1\75\5\uffff\1\55\1\57\1\75\1\uffff\1\75\1\141\2\151\1\146"+
-        "\1\151\1\141\1\145\1\157\1\162\1\141\1\145\1\150\1\162\2\55\3\uffff"+
-        "\3\55\10\uffff\1\56\6\uffff\1\154\1\157\1\162\1\154\2\162\1\146"+
-        "\2\162\1\166\1\162\1\151\1\144\1\167\1\143\1\141\1\172\1\145\1\165"+
-        "\1\151\3\uffff\1\55\3\uffff\1\55\1\154\2\143\1\144\1\145\1\141\2"+
-        "\145\1\144\1\145\1\155\1\145\1\144\1\145\1\164\1\151\1\160\1\143"+
-        "\2\145\2\141\1\55\1\153\1\154\1\40\1\143\1\164\1\143\1\40\1\156"+
-        "\1\154\1\141\1\156\1\154\1\162\1\141\1\163\1\145\1\153\1\55\1\144"+
-        "\1\162\1\156\1\uffff\1\55\1\145\1\uffff\1\164\1\151\1\164\1\uffff"+
-        "\1\145\1\55\1\154\1\164\1\145\1\55\1\156\1\164\1\55\1\40\1\uffff"+
-        "\1\55\1\145\1\147\1\uffff\1\55\1\151\1\157\1\55\1\163\1\uffff\1"+
-        "\40\1\141\1\55\1\160\1\uffff\1\147\1\141\3\uffff\1\55\1\154\1\uffff"+
-        "\1\157\1\156\1\55\1\uffff\1\163\1\uffff\1\164\1\uffff\1\141\1\154"+
-        "\1\156\1\uffff\1\145\1\156\1\55\1\uffff\1\55\1\151\1\167\1\145\1"+
-        "\143\2\55\2\uffff\1\157\1\156\1\55\1\145\2\uffff\1\156\1\103\1\uffff"+
-        "\1\40\1\55\1\150\1\143\1\uffff\1\141\4\uffff\1\156\1\143\1\145\1"+
-        "\55\1\uffff";
+        "\1\11\1\75\5\uffff\1\55\1\57\1\75\1\uffff\1\75\1\141\1\157\1\151"+
+        "\1\146\1\151\1\141\1\145\1\157\1\162\1\141\1\145\1\150\2\55\3\uffff"+
+        "\3\55\10\uffff\1\56\6\uffff\1\154\1\157\1\154\2\162\1\146\2\162"+
+        "\1\166\1\162\1\151\1\144\1\167\1\163\1\157\1\172\1\145\3\uffff\1"+
+        "\55\3\uffff\1\55\1\154\1\143\1\144\1\145\1\141\2\145\1\144\1\145"+
+        "\1\155\1\145\1\144\1\145\1\151\1\143\2\145\1\55\1\153\1\40\1\143"+
+        "\1\164\1\143\1\40\1\156\1\154\1\141\1\156\1\154\1\162\1\163\1\153"+
+        "\1\55\1\144\1\uffff\1\55\1\uffff\1\164\1\151\1\164\1\uffff\1\145"+
+        "\1\55\1\154\1\164\1\145\1\55\1\164\1\40\1\uffff\1\55\1\uffff\1\151"+
+        "\1\157\1\55\1\163\1\uffff\1\40\1\141\1\55\1\160\1\uffff\1\141\2"+
+        "\uffff\1\157\1\156\1\55\1\uffff\1\163\1\uffff\1\164\1\uffff\1\141"+
+        "\2\156\1\55\1\uffff\1\55\1\151\1\167\1\143\1\55\2\uffff\1\157\1"+
+        "\156\1\145\1\uffff\1\156\1\103\1\40\1\55\1\150\1\143\1\uffff\1\141"+
+        "\4\uffff\1\156\1\143\1\145\1\55\1\uffff";
     static final String DFA12_maxS =
         "\1\175\1\75\5\uffff\1\172\1\57\1\75\1\uffff\1\75\1\154\1\157\1\165"+
-        "\1\146\1\151\1\141\1\145\1\157\1\162\1\157\1\145\1\161\1\162\2\172"+
-        "\3\uffff\3\172\10\uffff\1\56\6\uffff\1\154\1\157\1\162\1\154\2\162"+
-        "\1\146\2\162\1\166\1\162\1\151\1\144\1\167\1\163\1\157\1\172\1\145"+
-        "\1\165\1\151\3\uffff\1\172\3\uffff\1\172\1\154\2\143\1\144\1\145"+
-        "\1\141\2\145\1\144\1\145\1\155\1\145\1\144\1\145\1\164\1\151\1\160"+
-        "\1\143\2\145\2\141\1\172\1\153\1\154\1\40\1\143\1\164\1\143\1\40"+
-        "\1\156\1\154\1\141\1\156\1\154\1\162\1\141\1\163\1\145\1\153\1\172"+
-        "\1\144\1\162\1\156\1\uffff\1\172\1\145\1\uffff\1\164\1\151\1\164"+
-        "\1\uffff\1\145\1\172\1\154\1\164\1\145\1\172\1\156\1\164\1\172\1"+
-        "\40\1\uffff\1\172\1\145\1\147\1\uffff\1\172\1\151\1\157\1\172\1"+
-        "\163\1\uffff\1\40\1\141\1\172\1\160\1\uffff\1\147\1\141\3\uffff"+
-        "\1\172\1\154\1\uffff\1\157\1\156\1\172\1\uffff\1\163\1\uffff\1\164"+
-        "\1\uffff\1\141\1\154\1\156\1\uffff\1\145\1\156\1\172\1\uffff\1\172"+
-        "\1\151\1\167\1\145\1\143\2\172\2\uffff\1\157\1\156\1\172\1\145\2"+
-        "\uffff\1\156\1\103\1\uffff\1\40\1\172\1\150\1\163\1\uffff\1\141"+
-        "\4\uffff\1\156\1\143\1\145\1\172\1\uffff";
+        "\1\146\1\151\1\141\1\145\1\157\1\162\1\157\1\145\1\160\2\172\3\uffff"+
+        "\3\172\10\uffff\1\56\6\uffff\1\154\1\157\1\154\2\162\1\146\2\162"+
+        "\1\166\1\162\1\151\1\144\1\167\1\163\1\157\1\172\1\145\3\uffff\1"+
+        "\172\3\uffff\1\172\1\154\1\143\1\144\1\145\1\141\2\145\1\144\1\145"+
+        "\1\155\1\145\1\144\1\145\1\151\1\143\2\145\1\172\1\153\1\40\1\143"+
+        "\1\164\1\143\1\40\1\156\1\154\1\141\1\156\1\154\1\162\1\163\1\153"+
+        "\1\172\1\144\1\uffff\1\172\1\uffff\1\164\1\151\1\164\1\uffff\1\145"+
+        "\1\172\1\154\1\164\1\145\1\172\1\164\1\40\1\uffff\1\172\1\uffff"+
+        "\1\151\1\157\1\172\1\163\1\uffff\1\40\1\141\1\172\1\160\1\uffff"+
+        "\1\141\2\uffff\1\157\1\156\1\172\1\uffff\1\163\1\uffff\1\164\1\uffff"+
+        "\1\141\2\156\1\172\1\uffff\1\172\1\151\1\167\1\143\1\172\2\uffff"+
+        "\1\157\1\156\1\145\1\uffff\1\156\1\103\1\40\1\172\1\150\1\163\1"+
+        "\uffff\1\141\4\uffff\1\156\1\143\1\145\1\172\1\uffff";
     static final String DFA12_acceptS =
-        "\2\uffff\1\3\1\4\1\5\1\6\1\7\3\uffff\1\14\20\uffff\1\54\1\55\1\56"+
-        "\3\uffff\1\63\1\65\1\66\1\67\1\2\1\1\1\3\1\10\1\uffff\1\57\1\11"+
-        "\1\13\1\12\1\16\1\15\24\uffff\1\52\1\53\1\55\1\uffff\1\60\1\61\1"+
-        "\62\55\uffff\1\17\2\uffff\1\22\3\uffff\1\27\12\uffff\1\46\3\uffff"+
-        "\1\20\5\uffff\1\31\4\uffff\1\35\2\uffff\1\44\1\45\1\47\2\uffff\1"+
-        "\21\3\uffff\1\25\1\uffff\1\32\1\uffff\1\34\3\uffff\1\50\3\uffff"+
-        "\1\26\7\uffff\1\24\1\30\4\uffff\1\51\1\23\2\uffff\1\37\4\uffff\1"+
-        "\33\1\uffff\1\40\1\41\1\42\1\43\4\uffff\1\36";
+        "\2\uffff\1\3\1\4\1\5\1\6\1\7\3\uffff\1\14\17\uffff\1\47\1\50\1\51"+
+        "\3\uffff\1\56\1\60\1\61\1\62\1\2\1\1\1\3\1\10\1\uffff\1\52\1\11"+
+        "\1\13\1\12\1\16\1\15\21\uffff\1\45\1\46\1\50\1\uffff\1\53\1\54\1"+
+        "\55\43\uffff\1\17\1\uffff\1\21\3\uffff\1\26\10\uffff\1\43\1\uffff"+
+        "\1\20\4\uffff\1\30\4\uffff\1\34\1\uffff\1\42\1\44\3\uffff\1\24\1"+
+        "\uffff\1\31\1\uffff\1\33\4\uffff\1\25\5\uffff\1\23\1\27\3\uffff"+
+        "\1\22\6\uffff\1\32\1\uffff\1\36\1\37\1\40\1\41\4\uffff\1\35";
     static final String DFA12_specialS =
-        "\u00d3\uffff}>";
+        "\u00b2\uffff}>";
     static final String[] DFA12_transitionS = {
-            "\1\43\1\44\1\uffff\1\43\1\44\22\uffff\1\43\1\1\4\uffff\1\2\1"+
-            "\uffff\1\3\1\4\1\5\1\6\1\uffff\1\7\1\41\1\10\1\37\11\36\2\uffff"+
-            "\1\11\1\12\1\13\2\uffff\32\40\4\uffff\1\42\1\uffff\1\42\1\14"+
-            "\1\15\1\16\1\17\1\20\1\42\1\21\3\42\1\22\1\42\1\23\1\24\1\25"+
-            "\1\42\1\26\1\27\1\30\3\42\1\31\1\32\1\42\1\33\1\34\1\35",
-            "\1\45",
+            "\1\42\1\43\1\uffff\1\42\1\43\22\uffff\1\42\1\1\4\uffff\1\2\1"+
+            "\uffff\1\3\1\4\1\5\1\6\1\uffff\1\7\1\40\1\10\1\36\11\35\2\uffff"+
+            "\1\11\1\12\1\13\2\uffff\32\37\4\uffff\1\41\1\uffff\1\41\1\14"+
+            "\1\15\1\16\1\17\1\20\1\41\1\21\3\41\1\22\1\41\1\23\1\24\1\25"+
+            "\1\41\1\26\1\27\4\41\1\30\1\31\1\41\1\32\1\33\1\34",
+            "\1\44",
             "",
             "",
             "",
             "",
             "",
-            "\1\42\2\uffff\1\51\11\36\7\uffff\32\42\4\uffff\1\42\1\uffff"+
-            "\32\42",
-            "\1\52",
-            "\1\54",
+            "\1\41\2\uffff\1\50\11\35\7\uffff\32\41\4\uffff\1\41\1\uffff"+
+            "\32\41",
+            "\1\51",
+            "\1\53",
             "",
-            "\1\56",
-            "\1\60\12\uffff\1\61",
-            "\1\62\5\uffff\1\63",
-            "\1\64\13\uffff\1\65",
+            "\1\55",
+            "\1\57\12\uffff\1\60",
+            "\1\61",
+            "\1\62\13\uffff\1\63",
+            "\1\64",
+            "\1\65",
             "\1\66",
             "\1\67",
             "\1\70",
             "\1\71",
-            "\1\72",
-            "\1\73",
-            "\1\74\15\uffff\1\75",
-            "\1\76",
-            "\1\77\1\100\6\uffff\1\101\1\102",
-            "\1\103",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\72\15\uffff\1\73",
+            "\1\74",
+            "\1\75\1\76\6\uffff\1\77",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "",
             "",
             "",
-            "\1\42\1\111\1\uffff\12\107\7\uffff\32\42\4\uffff\1\42\1\uffff"+
-            "\32\42",
-            "\1\42\1\111\1\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff"+
-            "\32\42",
-            "\1\42\1\41\1\uffff\12\42\7\uffff\32\113\4\uffff\1\42\1\uffff"+
-            "\32\42",
+            "\1\41\1\105\1\uffff\12\103\7\uffff\32\41\4\uffff\1\41\1\uffff"+
+            "\32\41",
+            "\1\41\1\105\1\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff"+
+            "\32\41",
+            "\1\41\1\40\1\uffff\12\41\7\uffff\32\107\4\uffff\1\41\1\uffff"+
+            "\32\41",
             "",
             "",
             "",
@@ -2321,13 +2151,17 @@ public class BallandpaddleLexer extends Lexer {
             "",
             "",
             "",
+            "\1\105",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\1\110",
             "\1\111",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
+            "\1\112",
+            "\1\113",
             "\1\114",
             "\1\115",
             "\1\116",
@@ -2341,23 +2175,25 @@ public class BallandpaddleLexer extends Lexer {
             "\1\126",
             "\1\127",
             "\1\130",
+            "",
+            "",
+            "",
+            "\1\41\1\105\1\uffff\12\103\7\uffff\32\41\4\uffff\1\41\1\uffff"+
+            "\32\41",
+            "",
+            "",
+            "",
+            "\1\41\2\uffff\12\41\7\uffff\32\107\4\uffff\1\41\1\uffff\32"+
+            "\41",
             "\1\131",
-            "\1\132\17\uffff\1\133",
-            "\1\134\15\uffff\1\135",
+            "\1\132",
+            "\1\133",
+            "\1\134",
+            "\1\135",
             "\1\136",
             "\1\137",
             "\1\140",
             "\1\141",
-            "",
-            "",
-            "",
-            "\1\42\1\111\1\uffff\12\107\7\uffff\32\42\4\uffff\1\42\1\uffff"+
-            "\32\42",
-            "",
-            "",
-            "",
-            "\1\42\2\uffff\12\42\7\uffff\32\113\4\uffff\1\42\1\uffff\32"+
-            "\42",
             "\1\142",
             "\1\143",
             "\1\144",
@@ -2366,7 +2202,7 @@ public class BallandpaddleLexer extends Lexer {
             "\1\147",
             "\1\150",
             "\1\151",
-            "\1\152",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "\1\153",
             "\1\154",
             "\1\155",
@@ -2380,120 +2216,82 @@ public class BallandpaddleLexer extends Lexer {
             "\1\165",
             "\1\166",
             "\1\167",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\171",
+            "\1\170",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "\1\172",
-            "\1\173",
+            "",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
             "\1\174",
             "\1\175",
             "\1\176",
+            "",
             "\1\177",
-            "\1\u0080",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "\1\u0081",
             "\1\u0082",
             "\1\u0083",
-            "\1\u0084",
-            "\1\u0085",
+            "\1\41\2\uffff\12\41\7\uffff\22\41\1\u0084\7\41\4\uffff\1\41"+
+            "\1\uffff\32\41",
             "\1\u0086",
             "\1\u0087",
-            "\1\u0088",
+            "",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
             "\1\u0089",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\u008b",
-            "\1\u008c",
+            "\1\u008a",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\22\41"+
+            "\1\u008b\7\41",
             "\1\u008d",
             "",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\u008e",
             "\1\u008f",
-            "",
-            "\1\u0090",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "\1\u0091",
+            "",
             "\1\u0092",
             "",
+            "",
             "\1\u0093",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\u0095",
+            "\1\u0094",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
             "\1\u0096",
+            "",
             "\1\u0097",
-            "\1\42\2\uffff\12\42\7\uffff\22\42\1\u0098\7\42\4\uffff\1\42"+
-            "\1\uffff\32\42",
+            "",
+            "\1\u0098",
+            "\1\u0099",
             "\1\u009a",
-            "\1\u009b",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
+            "",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "\1\u009d",
-            "",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\u009e",
             "\1\u009f",
-            "\1\u00a0",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "",
+            "\1\u00a1",
             "\1\u00a2",
             "\1\u00a3",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\22\42"+
-            "\1\u00a4\7\42",
+            "",
+            "\1\u00a4",
+            "\1\u00a5",
             "\1\u00a6",
-            "",
-            "\1\u00a7",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             "\1\u00a8",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\u00aa",
+            "\1\u00a9\2\uffff\1\u00aa\7\uffff\1\u00ab\4\uffff\1\u00ac",
             "",
-            "\1\u00ab",
-            "\1\u00ac",
+            "\1\u00ad",
             "",
             "",
             "",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "",
             "\1\u00ae",
-            "",
             "\1\u00af",
             "\1\u00b0",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "",
-            "\1\u00b2",
-            "",
-            "\1\u00b3",
-            "",
-            "\1\u00b4",
-            "\1\u00b5",
-            "\1\u00b6",
-            "",
-            "\1\u00b7",
-            "\1\u00b8",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\u00bb",
-            "\1\u00bc",
-            "\1\u00bd",
-            "\1\u00be",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "",
-            "",
-            "\1\u00c1",
-            "\1\u00c2",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\u00c4",
-            "",
-            "",
-            "\1\u00c5",
-            "\1\u00c6",
-            "",
-            "\1\u00c7",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
-            "\1\u00c9",
-            "\1\u00ca\2\uffff\1\u00cb\7\uffff\1\u00cc\4\uffff\1\u00cd",
-            "",
-            "\1\u00ce",
-            "",
-            "",
-            "",
-            "",
-            "\1\u00cf",
-            "\1\u00d0",
-            "\1\u00d1",
-            "\1\42\2\uffff\12\42\7\uffff\32\42\4\uffff\1\42\1\uffff\32\42",
+            "\1\41\2\uffff\12\41\7\uffff\32\41\4\uffff\1\41\1\uffff\32\41",
             ""
     };
 
@@ -2527,7 +2325,7 @@ public class BallandpaddleLexer extends Lexer {
             this.transition = DFA12_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | T__55 | T__56 | T__57 | T__58 | COMMENT | INTEGER | FLOAT | CHAR | LEVELLINE | ANDOR | TEXT | WHITESPACE | LINEBREAK );";
+            return "1:1: Tokens : ( T__13 | T__14 | T__15 | T__16 | T__17 | T__18 | T__19 | T__20 | T__21 | T__22 | T__23 | T__24 | T__25 | T__26 | T__27 | T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | COMMENT | INTEGER | FLOAT | CHAR | LEVELLINE | ANDOR | TEXT | WHITESPACE | LINEBREAK );";
         }
     }
  

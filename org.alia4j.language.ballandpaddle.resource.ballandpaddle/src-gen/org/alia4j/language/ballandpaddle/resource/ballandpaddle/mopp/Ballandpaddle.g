@@ -355,7 +355,7 @@ options {
 				break;
 			}
 		}
-		int followSetID = 141;
+		int followSetID = 140;
 		int i;
 		for (i = tokenIndexOfLastCompleteElement; i < tokenStream.size(); i++) {
 			org.antlr.runtime3_4_0.CommonToken nextToken = (org.antlr.runtime3_4_0.CommonToken) tokenStream.get(i);
@@ -1011,7 +1011,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 	}
 	
 	(
-		a5 = INTEGER		
+		a5 = FLOAT		
 		{
 			if (terminateParsing) {
 				throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
@@ -1021,7 +1021,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 				startIncompleteElement(element);
 			}
 			if (a5 != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				tokenResolver.setOptions(getOptions());
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
 				tokenResolver.resolve(a5.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__X), result);
@@ -1029,7 +1029,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 				if (resolvedObject == null) {
 					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a5).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a5).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a5).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a5).getStopIndex());
 				}
-				java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
+				java.lang.Double resolved = (java.lang.Double) resolvedObject;
 				if (resolved != null) {
 					Object value = resolved;
 					element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__X), value);
@@ -1075,7 +1075,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 	}
 	
 	(
-		a8 = INTEGER		
+		a8 = FLOAT		
 		{
 			if (terminateParsing) {
 				throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
@@ -1085,7 +1085,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 				startIncompleteElement(element);
 			}
 			if (a8 != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				tokenResolver.setOptions(getOptions());
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
 				tokenResolver.resolve(a8.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__Y), result);
@@ -1093,7 +1093,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 				if (resolvedObject == null) {
 					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a8).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a8).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a8).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a8).getStopIndex());
 				}
-				java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
+				java.lang.Double resolved = (java.lang.Double) resolvedObject;
 				if (resolved != null) {
 					Object value = resolved;
 					element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__Y), value);
@@ -1110,7 +1110,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[35]);
 	}
 	
-	a9 = 'shape' {
+	a9 = 'size' {
 		if (element == null) {
 			element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
 			startIncompleteElement(element);
@@ -1139,96 +1139,7 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 	}
 	
 	(
-		(
-			a11 = 'circle' {
-				if (element == null) {
-					element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
-					startIncompleteElement(element);
-				}
-				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_11, null, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a11, element);
-				// set value of enumeration attribute
-				Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getShape().getEEnumLiteral(org.alia4j.language.ballandpaddle.Shape.CIRCLE_VALUE).getInstance();
-				element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SHAPE), value);
-				completedElement(value, false);
-			}
-			|			a12 = 'triangle' {
-				if (element == null) {
-					element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
-					startIncompleteElement(element);
-				}
-				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_11, null, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a12, element);
-				// set value of enumeration attribute
-				Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getShape().getEEnumLiteral(org.alia4j.language.ballandpaddle.Shape.TRIANGLE_VALUE).getInstance();
-				element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SHAPE), value);
-				completedElement(value, false);
-			}
-			|			a13 = 'square' {
-				if (element == null) {
-					element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
-					startIncompleteElement(element);
-				}
-				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_11, null, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a13, element);
-				// set value of enumeration attribute
-				Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getShape().getEEnumLiteral(org.alia4j.language.ballandpaddle.Shape.SQUARE_VALUE).getInstance();
-				element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SHAPE), value);
-				completedElement(value, false);
-			}
-			|			a14 = 'rectangle' {
-				if (element == null) {
-					element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
-					startIncompleteElement(element);
-				}
-				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_11, null, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a14, element);
-				// set value of enumeration attribute
-				Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getShape().getEEnumLiteral(org.alia4j.language.ballandpaddle.Shape.RECTANGLE_VALUE).getInstance();
-				element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SHAPE), value);
-				completedElement(value, false);
-			}
-		)
-	)
-	{
-		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[38]);
-	}
-	
-	a17 = 'size' {
-		if (element == null) {
-			element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
-			startIncompleteElement(element);
-		}
-		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_12, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a17, element);
-	}
-	{
-		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[39]);
-	}
-	
-	a18 = '=' {
-		if (element == null) {
-			element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
-			startIncompleteElement(element);
-		}
-		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_13, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a18, element);
-	}
-	{
-		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[40]);
-	}
-	
-	(
-		a19 = INTEGER		
+		a11 = INTEGER		
 		{
 			if (terminateParsing) {
 				throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
@@ -1237,14 +1148,14 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 				element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
 				startIncompleteElement(element);
 			}
-			if (a19 != null) {
+			if (a11 != null) {
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				tokenResolver.setOptions(getOptions());
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
-				tokenResolver.resolve(a19.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SIZE), result);
+				tokenResolver.resolve(a11.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SIZE), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a19).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a19).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a19).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a19).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a11).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a11).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a11).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a11).getStopIndex());
 				}
 				java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 				if (resolved != null) {
@@ -1253,46 +1164,46 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 					completedElement(value, false);
 				}
 				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_14, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a19, element);
+				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_11, resolved, true);
+				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a11, element);
 			}
 		}
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[41]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[38]);
 	}
 	
-	a20 = 'orientation' {
+	a12 = 'orientation' {
 		if (element == null) {
 			element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_15, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a20, element);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_12, null, true);
+		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a12, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[42]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[39]);
 	}
 	
-	a21 = '=' {
+	a13 = '=' {
 		if (element == null) {
 			element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_16, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a21, element);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_13, null, true);
+		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a13, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[43]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[40]);
 	}
 	
 	(
-		a22 = INTEGER		
+		a14 = INTEGER		
 		{
 			if (terminateParsing) {
 				throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
@@ -1301,14 +1212,14 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 				element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
 				startIncompleteElement(element);
 			}
-			if (a22 != null) {
+			if (a14 != null) {
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				tokenResolver.setOptions(getOptions());
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
-				tokenResolver.resolve(a22.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__ORIENTATION), result);
+				tokenResolver.resolve(a14.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__ORIENTATION), result);
 				Object resolvedObject = result.getResolvedToken();
 				if (resolvedObject == null) {
-					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a22).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a22).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a22).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a22).getStopIndex());
+					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a14).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a14).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a14).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a14).getStopIndex());
 				}
 				java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 				if (resolved != null) {
@@ -1317,29 +1228,29 @@ parse_org_alia4j_language_ballandpaddle_Paddle returns [org.alia4j.language.ball
 					completedElement(value, false);
 				}
 				collectHiddenTokens(element);
-				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_17, resolved, true);
-				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a22, element);
+				retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_14, resolved, true);
+				copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a14, element);
 			}
 		}
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[44]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[41]);
 	}
 	
-	a23 = '}' {
+	a15 = '}' {
 		if (element == null) {
 			element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createPaddle();
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_18, null, true);
-		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a23, element);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_2_0_0_15, null, true);
+		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a15, element);
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[45]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[46]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[42]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[43]);
 	}
 	
 ;
@@ -1359,7 +1270,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[47]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[44]);
 	}
 	
 	(
@@ -1395,7 +1306,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[48]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[45]);
 	}
 	
 	a2 = '{' {
@@ -1409,7 +1320,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[49]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[46]);
 	}
 	
 	a3 = 'x' {
@@ -1423,7 +1334,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[50]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[47]);
 	}
 	
 	a4 = '=' {
@@ -1437,11 +1348,11 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[51]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[48]);
 	}
 	
 	(
-		a5 = INTEGER		
+		a5 = FLOAT		
 		{
 			if (terminateParsing) {
 				throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
@@ -1451,7 +1362,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 				startIncompleteElement(element);
 			}
 			if (a5 != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				tokenResolver.setOptions(getOptions());
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
 				tokenResolver.resolve(a5.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__X), result);
@@ -1459,7 +1370,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 				if (resolvedObject == null) {
 					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a5).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a5).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a5).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a5).getStopIndex());
 				}
-				java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
+				java.lang.Double resolved = (java.lang.Double) resolvedObject;
 				if (resolved != null) {
 					Object value = resolved;
 					element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__X), value);
@@ -1473,7 +1384,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[52]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[49]);
 	}
 	
 	a6 = 'y' {
@@ -1487,7 +1398,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[53]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[50]);
 	}
 	
 	a7 = '=' {
@@ -1501,11 +1412,11 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[54]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[51]);
 	}
 	
 	(
-		a8 = INTEGER		
+		a8 = FLOAT		
 		{
 			if (terminateParsing) {
 				throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
@@ -1515,7 +1426,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 				startIncompleteElement(element);
 			}
 			if (a8 != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				tokenResolver.setOptions(getOptions());
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
 				tokenResolver.resolve(a8.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__Y), result);
@@ -1523,7 +1434,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 				if (resolvedObject == null) {
 					addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a8).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a8).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a8).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a8).getStopIndex());
 				}
-				java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
+				java.lang.Double resolved = (java.lang.Double) resolvedObject;
 				if (resolved != null) {
 					Object value = resolved;
 					element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__Y), value);
@@ -1537,10 +1448,10 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	)
 	{
 		// expected elements (follow set)
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[52]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[53]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[54]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[55]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[56]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[57]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[58]);
 	}
 	
 	(
@@ -1556,7 +1467,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[59]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[56]);
 			}
 			
 			a10 = '=' {
@@ -1570,7 +1481,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[60]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[57]);
 			}
 			
 			(
@@ -1606,18 +1517,18 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[61]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[62]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[63]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[58]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[59]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[60]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[64]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[65]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[66]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[61]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[62]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[63]);
 	}
 	
 	(
@@ -1633,7 +1544,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[67]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[64]);
 			}
 			
 			a13 = '=' {
@@ -1647,7 +1558,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[68]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[65]);
 			}
 			
 			(
@@ -1683,16 +1594,16 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[69]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[70]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[66]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[67]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[71]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[72]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[68]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[69]);
 	}
 	
 	(
@@ -1708,7 +1619,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[73]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[70]);
 			}
 			
 			a16 = '=' {
@@ -1722,7 +1633,7 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[74]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[71]);
 			}
 			
 			(
@@ -1758,14 +1669,14 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[75]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[72]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[76]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[73]);
 	}
 	
 	a18 = '}' {
@@ -1779,10 +1690,10 @@ parse_org_alia4j_language_ballandpaddle_Ball returns [org.alia4j.language.ballan
 	}
 	{
 		// expected elements (follow set)
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[74]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[75]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[76]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[77]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[78]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[79]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[80]);
 	}
 	
 ;
@@ -1802,7 +1713,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[81]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[78]);
 	}
 	
 	(
@@ -1838,7 +1749,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[82]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[79]);
 	}
 	
 	a2 = '{' {
@@ -1852,7 +1763,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[83]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[80]);
 	}
 	
 	a3 = 'hardness' {
@@ -1866,7 +1777,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[84]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[81]);
 	}
 	
 	a4 = '=' {
@@ -1880,7 +1791,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[85]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[82]);
 	}
 	
 	(
@@ -1916,12 +1827,12 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 	)
 	{
 		// expected elements (follow set)
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[83]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[84]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[85]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[86]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[87]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[88]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[89]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[90]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[91]);
 	}
 	
 	(
@@ -1937,7 +1848,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[92]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[89]);
 			}
 			
 			a7 = '=' {
@@ -1951,7 +1862,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[93]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[90]);
 			}
 			
 			(
@@ -1987,22 +1898,22 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			)
 			{
 				// expected elements (follow set)
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[91]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[92]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[93]);
 				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[94]);
 				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[95]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[96]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[97]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[98]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[96]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[97]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[98]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[99]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[100]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[101]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[102]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[103]);
 	}
 	
 	(
@@ -2018,7 +1929,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[104]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[101]);
 			}
 			
 			a10 = '=' {
@@ -2032,7 +1943,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[105]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[102]);
 			}
 			
 			(
@@ -2068,20 +1979,20 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			)
 			{
 				// expected elements (follow set)
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[103]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[104]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[105]);
 				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[106]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[107]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[108]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[109]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[107]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[108]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[109]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[110]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[111]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[112]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[113]);
 	}
 	
 	(
@@ -2097,7 +2008,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[114]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[111]);
 			}
 			
 			a13 = '=' {
@@ -2111,7 +2022,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[115]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[112]);
 			}
 			
 			(
@@ -2147,18 +2058,18 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[116]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[117]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[118]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[113]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[114]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[115]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[119]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[120]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[121]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[116]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[117]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[118]);
 	}
 	
 	(
@@ -2174,7 +2085,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[122]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[119]);
 			}
 			
 			a16 = '=' {
@@ -2188,7 +2099,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[123]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[120]);
 			}
 			
 			(
@@ -2224,16 +2135,16 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[124]);
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[125]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[121]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[122]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[126]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[127]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[123]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[124]);
 	}
 	
 	(
@@ -2249,7 +2160,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[128]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[125]);
 			}
 			
 			a19 = '=' {
@@ -2263,7 +2174,7 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[129]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[126]);
 			}
 			
 			(
@@ -2303,14 +2214,14 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[130]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[127]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[131]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[128]);
 	}
 	
 	a21 = '}' {
@@ -2324,9 +2235,9 @@ parse_org_alia4j_language_ballandpaddle_Block returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[132]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[133]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[134]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[129]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[130]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[131]);
 	}
 	
 ;
@@ -2346,7 +2257,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[135]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[132]);
 	}
 	
 	(
@@ -2382,7 +2293,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[136]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[133]);
 	}
 	
 	a2 = '(' {
@@ -2396,9 +2307,9 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPower(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[137]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPower(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[138]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPower(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[139]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPower(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[134]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPower(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[135]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPower(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[136]);
 	}
 	
 	(
@@ -2424,7 +2335,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[140]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[137]);
 	}
 	
 	a4 = ')' {
@@ -2438,7 +2349,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[141]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[138]);
 	}
 	
 	a5 = '{' {
@@ -2452,7 +2363,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[142]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[139]);
 	}
 	
 	a6 = 'effects' {
@@ -2466,7 +2377,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[143]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[140]);
 	}
 	
 	a7 = '=' {
@@ -2480,7 +2391,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[144]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[141]);
 	}
 	
 	(
@@ -2520,7 +2431,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[145]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[142]);
 	}
 	
 	a9 = 'duration' {
@@ -2534,7 +2445,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[146]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[143]);
 	}
 	
 	a10 = '=' {
@@ -2548,7 +2459,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[147]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[144]);
 	}
 	
 	(
@@ -2584,8 +2495,8 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[148]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[149]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[145]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[146]);
 	}
 	
 	(
@@ -2601,7 +2512,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[150]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[147]);
 			}
 			
 			a13 = '=' {
@@ -2615,7 +2526,7 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 			}
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[151]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[148]);
 			}
 			
 			(
@@ -2651,14 +2562,14 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 			)
 			{
 				// expected elements (follow set)
-				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[152]);
+				addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[149]);
 			}
 			
 		)
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[153]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[150]);
 	}
 	
 	a15 = '}' {
@@ -2672,8 +2583,8 @@ parse_org_alia4j_language_ballandpaddle_Power returns [org.alia4j.language.balla
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[154]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[155]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[151]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[152]);
 	}
 	
 ;
@@ -2693,7 +2604,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[156]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[153]);
 	}
 	
 	(
@@ -2729,7 +2640,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[157]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[154]);
 	}
 	
 	a2 = '(' {
@@ -2743,10 +2654,10 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[158]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[159]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[160]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[161]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[155]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[156]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[157]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[158]);
 	}
 	
 	(
@@ -2774,7 +2685,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 		
 	)?	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[162]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[159]);
 	}
 	
 	a4 = ')' {
@@ -2788,7 +2699,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[163]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[160]);
 	}
 	
 	a5 = '{' {
@@ -2802,7 +2713,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[164]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[161]);
 	}
 	
 	(
@@ -2993,7 +2904,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[165]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[162]);
 	}
 	
 	a22 = '=' {
@@ -3007,10 +2918,11 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	}
 	{
 		// expected elements (follow set)
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[163]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[164]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[165]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[166]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[167]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[168]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEffect(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[169]);
 	}
 	
 	(
@@ -3036,7 +2948,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[170]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[168]);
 	}
 	
 	a24 = '}' {
@@ -3050,7 +2962,7 @@ parse_org_alia4j_language_ballandpaddle_Effect returns [org.alia4j.language.ball
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[171]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getRoot(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[169]);
 	}
 	
 ;
@@ -3096,8 +3008,8 @@ parse_org_alia4j_language_ballandpaddle_ObjectTarget returns [org.alia4j.languag
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[172]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[173]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[170]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[171]);
 	}
 	
 	
@@ -3138,8 +3050,8 @@ parse_org_alia4j_language_ballandpaddle_ObjectTarget returns [org.alia4j.languag
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[174]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[175]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[172]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[173]);
 	}
 	
 ;
@@ -3193,7 +3105,7 @@ parse_org_alia4j_language_ballandpaddle_TypeTarget returns [org.alia4j.language.
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[176]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[174]);
 	}
 	
 	a5 = '{' {
@@ -3207,10 +3119,11 @@ parse_org_alia4j_language_ballandpaddle_TypeTarget returns [org.alia4j.language.
 	}
 	{
 		// expected elements (follow set)
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getTypeTarget(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[175]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getTypeTarget(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[176]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getTypeTarget(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[177]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getTypeTarget(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[178]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getTypeTarget(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[179]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getTypeTarget(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[180]);
 	}
 	
 	(
@@ -3236,7 +3149,7 @@ parse_org_alia4j_language_ballandpaddle_TypeTarget returns [org.alia4j.language.
 	)
 	{
 		// expected elements (follow set)
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[181]);
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[180]);
 	}
 	
 	a7 = '}' {
@@ -3250,8 +3163,8 @@ parse_org_alia4j_language_ballandpaddle_TypeTarget returns [org.alia4j.language.
 	}
 	{
 		// expected elements (follow set)
+		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[181]);
 		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[182]);
-		addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[183]);
 	}
 	
 ;
@@ -3274,6 +3187,7 @@ parseop_Expression_level_1 returns [org.alia4j.language.ballandpaddle.Expression
 		}
 		{
 			// expected elements (follow set)
+			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMultExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[183]);
 			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMultExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[184]);
 			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMultExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[185]);
 			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMultExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[186]);
@@ -3337,6 +3251,7 @@ parseop_Expression_level_1 returns [org.alia4j.language.ballandpaddle.Expression
 			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getDivExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[189]);
 			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getDivExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[190]);
 			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getDivExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[191]);
+			addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getDivExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[192]);
 		}
 		
 		rightArg = parseop_Expression_level_2		{
@@ -3401,10 +3316,11 @@ leftArg = parseop_Expression_level_3((
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPlusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[192]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPlusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[193]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPlusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[194]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPlusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[195]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPlusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[196]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getPlusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[197]);
 	}
 	
 	rightArg = parseop_Expression_level_3	{
@@ -3460,10 +3376,11 @@ leftArg = parseop_Expression_level_3((
 	}
 	{
 		// expected elements (follow set)
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMinusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[196]);
-		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMinusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[197]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMinusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[198]);
 		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMinusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[199]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMinusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[200]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMinusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[201]);
+		addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getMinusExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[202]);
 	}
 	
 	rightArg = parseop_Expression_level_3	{
@@ -3525,10 +3442,11 @@ copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[200]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[201]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[202]);
 addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[203]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[204]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[205]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[206]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[207]);
 }
 
 arg = parseop_Expression_level_4{
@@ -3561,7 +3479,8 @@ parseop_Expression_level_4 returns [org.alia4j.language.ballandpaddle.Expression
 :
 c0 = parse_org_alia4j_language_ballandpaddle_BracketExpression{ element = c0; /* this is a subclass or primitive expression choice */ }
 |c1 = parse_org_alia4j_language_ballandpaddle_IntOperand{ element = c1; /* this is a subclass or primitive expression choice */ }
-|c2 = parse_org_alia4j_language_ballandpaddle_AttOperand{ element = c2; /* this is a subclass or primitive expression choice */ }
+|c2 = parse_org_alia4j_language_ballandpaddle_DoubleOperand{ element = c2; /* this is a subclass or primitive expression choice */ }
+|c3 = parse_org_alia4j_language_ballandpaddle_AttOperand{ element = c3; /* this is a subclass or primitive expression choice */ }
 ;
 
 parse_org_alia4j_language_ballandpaddle_BracketExpression returns [org.alia4j.language.ballandpaddle.BracketExpression element = null]
@@ -3579,10 +3498,11 @@ copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[204]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[205]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[206]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[207]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[208]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[209]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[210]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[211]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketExpression(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[212]);
 }
 
 (
@@ -3608,7 +3528,7 @@ a1_0 = parse_org_alia4j_language_ballandpaddle_Expression{
 )
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[208]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[213]);
 }
 
 a2 = ')' {
@@ -3622,12 +3542,12 @@ copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a2, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[209]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[210]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[211]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[212]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[213]);
 addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[214]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[215]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[216]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[217]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[218]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[219]);
 }
 
 ;
@@ -3669,12 +3589,59 @@ a0 = INTEGER
 )
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[215]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[216]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[217]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[218]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[219]);
 addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[220]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[221]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[222]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[223]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[224]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[225]);
+}
+
+;
+
+parse_org_alia4j_language_ballandpaddle_DoubleOperand returns [org.alia4j.language.ballandpaddle.DoubleOperand element = null]
+@init{
+}
+:
+(
+a0 = FLOAT
+{
+	if (terminateParsing) {
+		throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
+	}
+	if (element == null) {
+		element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createDoubleOperand();
+		startIncompleteElement(element);
+	}
+	if (a0 != null) {
+		org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("FLOAT");
+		tokenResolver.setOptions(getOptions());
+		org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
+		tokenResolver.resolve(a0.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_OPERAND__VALUE), result);
+		Object resolvedObject = result.getResolvedToken();
+		if (resolvedObject == null) {
+			addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a0).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a0).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a0).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a0).getStopIndex());
+		}
+		java.lang.Double resolved = (java.lang.Double) resolvedObject;
+		if (resolved != null) {
+			Object value = resolved;
+			element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_OPERAND__VALUE), value);
+			completedElement(value, false);
+		}
+		collectHiddenTokens(element);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, resolved, true);
+		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a0, element);
+	}
+}
+)
+{
+// expected elements (follow set)
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[226]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[227]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[228]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[229]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[230]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[231]);
 }
 
 ;
@@ -3691,7 +3658,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.X_VALUE).getInstance();
@@ -3704,7 +3671,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.Y_VALUE).getInstance();
@@ -3717,7 +3684,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a2, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.SIZE_VALUE).getInstance();
@@ -3730,7 +3697,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.ORIENTATION_VALUE).getInstance();
@@ -3743,7 +3710,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a4, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.SPEED_VALUE).getInstance();
@@ -3756,7 +3723,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.HARDNESS_VALUE).getInstance();
@@ -3769,7 +3736,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a6, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.NORMAL_RES_VALUE).getInstance();
@@ -3782,7 +3749,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a7, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.FIRE_RES_VALUE).getInstance();
@@ -3795,7 +3762,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a8, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.COLD_RES_VALUE).getInstance();
@@ -3808,7 +3775,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a9, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.SHOCK_RES_VALUE).getInstance();
@@ -3821,7 +3788,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a10, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.NORMAL_DAM_VALUE).getInstance();
@@ -3834,7 +3801,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a11, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.FIRE_DAM_VALUE).getInstance();
@@ -3847,7 +3814,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a12, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.COLD_DAM_VALUE).getInstance();
@@ -3860,7 +3827,7 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 			startIncompleteElement(element);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16_0_0_0, null, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, null, true);
 		copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a13, element);
 		// set value of enumeration attribute
 		Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.SHOCK_DAM_VALUE).getInstance();
@@ -3871,12 +3838,12 @@ parse_org_alia4j_language_ballandpaddle_AttOperand returns [org.alia4j.language.
 )
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[221]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[222]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[223]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[224]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[225]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[226]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[232]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[233]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[234]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[235]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[236]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[237]);
 }
 
 ;
@@ -3894,15 +3861,16 @@ a0 = '|' {
 		startIncompleteElement(element);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_23_0_0_1, null, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_24_0_0_1, null, true);
 	copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 	// expected elements (follow set)
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[227]);
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[228]);
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[229]);
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[230]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[238]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[239]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[240]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[241]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getOrParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[242]);
 }
 
 rightArg = parseop_BooleanExpression_level_2{
@@ -3920,7 +3888,7 @@ rightArg = parseop_BooleanExpression_level_2{
 			completedElement(value, true);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_23_0_0_0, leftArg, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_24_0_0_0, leftArg, true);
 		copyLocalizationInfos(leftArg, element);
 	}
 }
@@ -3939,7 +3907,7 @@ rightArg = parseop_BooleanExpression_level_2{
 			completedElement(value, true);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_23_0_0_2, rightArg, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_24_0_0_2, rightArg, true);
 		copyLocalizationInfos(rightArg, element);
 	}
 }
@@ -3953,15 +3921,16 @@ a0 = '&' {
 		startIncompleteElement(element);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_24_0_0_1, null, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_25_0_0_1, null, true);
 	copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 	// expected elements (follow set)
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[231]);
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[232]);
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[233]);
-	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[234]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[243]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[244]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[245]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[246]);
+	addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAndParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[247]);
 }
 
 rightArg = parseop_BooleanExpression_level_2{
@@ -3979,7 +3948,7 @@ rightArg = parseop_BooleanExpression_level_2{
 			completedElement(value, true);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_24_0_0_0, leftArg, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_25_0_0_0, leftArg, true);
 		copyLocalizationInfos(leftArg, element);
 	}
 }
@@ -3998,7 +3967,7 @@ rightArg = parseop_BooleanExpression_level_2{
 			completedElement(value, true);
 		}
 		collectHiddenTokens(element);
-		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_24_0_0_2, rightArg, true);
+		retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_25_0_0_2, rightArg, true);
 		copyLocalizationInfos(rightArg, element);
 	}
 }
@@ -4021,15 +3990,16 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_1, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_18_0_0_1, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[235]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[236]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[237]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[238]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[248]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[249]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[250]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[251]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getEqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[252]);
 }
 
 rightArg = parseop_BooleanExpression_level_3{
@@ -4047,7 +4017,7 @@ if (leftArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_0, leftArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_18_0_0_0, leftArg, true);
 	copyLocalizationInfos(leftArg, element);
 }
 }
@@ -4066,7 +4036,7 @@ if (rightArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17_0_0_2, rightArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_18_0_0_2, rightArg, true);
 	copyLocalizationInfos(rightArg, element);
 }
 }
@@ -4080,15 +4050,16 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_18_0_0_1, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_19_0_0_1, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[239]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[240]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[241]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[242]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[253]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[254]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[255]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[256]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSmthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[257]);
 }
 
 rightArg = parseop_BooleanExpression_level_3{
@@ -4106,7 +4077,7 @@ if (leftArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_18_0_0_0, leftArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_19_0_0_0, leftArg, true);
 	copyLocalizationInfos(leftArg, element);
 }
 }
@@ -4125,7 +4096,7 @@ if (rightArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_18_0_0_2, rightArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_19_0_0_2, rightArg, true);
 	copyLocalizationInfos(rightArg, element);
 }
 }
@@ -4139,15 +4110,16 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_19_0_0_1, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_20_0_0_1, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[243]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[244]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[245]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[246]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[258]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[259]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[260]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[261]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getSeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[262]);
 }
 
 rightArg = parseop_BooleanExpression_level_3{
@@ -4165,7 +4137,7 @@ if (leftArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_19_0_0_0, leftArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_20_0_0_0, leftArg, true);
 	copyLocalizationInfos(leftArg, element);
 }
 }
@@ -4184,7 +4156,7 @@ if (rightArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_19_0_0_2, rightArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_20_0_0_2, rightArg, true);
 	copyLocalizationInfos(rightArg, element);
 }
 }
@@ -4198,15 +4170,16 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_20_0_0_1, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_21_0_0_1, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[247]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[248]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[249]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[250]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[263]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[264]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[265]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[266]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLthParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[267]);
 }
 
 rightArg = parseop_BooleanExpression_level_3{
@@ -4224,7 +4197,7 @@ if (leftArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_20_0_0_0, leftArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_21_0_0_0, leftArg, true);
 	copyLocalizationInfos(leftArg, element);
 }
 }
@@ -4243,7 +4216,7 @@ if (rightArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_20_0_0_2, rightArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_21_0_0_2, rightArg, true);
 	copyLocalizationInfos(rightArg, element);
 }
 }
@@ -4257,15 +4230,16 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_21_0_0_1, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_22_0_0_1, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[251]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[252]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[253]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[254]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[268]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[269]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[270]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[271]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getLeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[272]);
 }
 
 rightArg = parseop_BooleanExpression_level_3{
@@ -4283,7 +4257,7 @@ if (leftArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_21_0_0_0, leftArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_22_0_0_0, leftArg, true);
 	copyLocalizationInfos(leftArg, element);
 }
 }
@@ -4302,7 +4276,7 @@ if (rightArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_21_0_0_2, rightArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_22_0_0_2, rightArg, true);
 	copyLocalizationInfos(rightArg, element);
 }
 }
@@ -4316,15 +4290,16 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_22_0_0_1, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_23_0_0_1, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[255]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[256]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[257]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[258]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[273]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[274]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[275]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[276]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNeqParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[277]);
 }
 
 rightArg = parseop_BooleanExpression_level_3{
@@ -4342,7 +4317,7 @@ if (leftArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_22_0_0_0, leftArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_23_0_0_0, leftArg, true);
 	copyLocalizationInfos(leftArg, element);
 }
 }
@@ -4361,7 +4336,7 @@ if (rightArg != null) {
 		completedElement(value, true);
 	}
 	collectHiddenTokens(element);
-	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_22_0_0_2, rightArg, true);
+	retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_23_0_0_2, rightArg, true);
 	copyLocalizationInfos(rightArg, element);
 }
 }
@@ -4381,15 +4356,16 @@ element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.creat
 startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_25_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_26_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[259]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[260]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[261]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[262]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[278]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[279]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[280]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[281]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getNegParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[282]);
 }
 
 arg = parseop_BooleanExpression_level_4{
@@ -4407,7 +4383,7 @@ element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandp
 completedElement(value, true);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_25_0_0_1, arg, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_26_0_0_1, arg, true);
 copyLocalizationInfos(arg, element);
 }
 }
@@ -4422,7 +4398,8 @@ parseop_BooleanExpression_level_4 returns [org.alia4j.language.ballandpaddle.Boo
 :
 c0 = parse_org_alia4j_language_ballandpaddle_BracketParameter{ element = c0; /* this is a subclass or primitive expression choice */ }
 |c1 = parse_org_alia4j_language_ballandpaddle_AttParameter{ element = c1; /* this is a subclass or primitive expression choice */ }
-|c2 = parse_org_alia4j_language_ballandpaddle_ValueParameter{ element = c2; /* this is a subclass or primitive expression choice */ }
+|c2 = parse_org_alia4j_language_ballandpaddle_IntValueParameter{ element = c2; /* this is a subclass or primitive expression choice */ }
+|c3 = parse_org_alia4j_language_ballandpaddle_DoubleValueParameter{ element = c3; /* this is a subclass or primitive expression choice */ }
 ;
 
 parse_org_alia4j_language_ballandpaddle_BracketParameter returns [org.alia4j.language.ballandpaddle.BracketParameter element = null]
@@ -4435,15 +4412,16 @@ element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.creat
 startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_26_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[263]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[264]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[265]);
-addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[266]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[283]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[284]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[285]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[286]);
+addExpectedElement(org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getBracketParameter(), org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[287]);
 }
 
 (
@@ -4462,14 +4440,14 @@ if (a1_0 != null) {
 	completedElement(value, true);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_26_0_0_1, a1_0, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_1, a1_0, true);
 copyLocalizationInfos(a1_0, element);
 }
 }
 )
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[267]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[288]);
 }
 
 a2 = ')' {
@@ -4478,21 +4456,21 @@ element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.creat
 startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_26_0_0_2, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_2, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a2, element);
 }
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[268]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[269]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[270]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[271]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[272]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[273]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[274]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[275]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[276]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[277]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[289]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[290]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[291]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[292]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[293]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[294]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[295]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[296]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[297]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[298]);
 }
 
 ;
@@ -4509,7 +4487,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a0, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.X_VALUE).getInstance();
@@ -4522,7 +4500,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a1, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.Y_VALUE).getInstance();
@@ -4535,7 +4513,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a2, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.SIZE_VALUE).getInstance();
@@ -4548,7 +4526,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a3, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.ORIENTATION_VALUE).getInstance();
@@ -4561,7 +4539,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a4, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.SPEED_VALUE).getInstance();
@@ -4574,7 +4552,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a5, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.HARDNESS_VALUE).getInstance();
@@ -4587,7 +4565,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a6, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.NORMAL_RES_VALUE).getInstance();
@@ -4600,7 +4578,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a7, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.FIRE_RES_VALUE).getInstance();
@@ -4613,7 +4591,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a8, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.COLD_RES_VALUE).getInstance();
@@ -4626,7 +4604,7 @@ if (element == null) {
 	startIncompleteElement(element);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27_0_0_0, null, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, null, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken)a9, element);
 // set value of enumeration attribute
 Object value = org.alia4j.language.ballandpaddle.BallandpaddlePackage.eINSTANCE.getAttribute().getEEnumLiteral(org.alia4j.language.ballandpaddle.Attribute.SHOCK_RES_VALUE).getInstance();
@@ -4637,21 +4615,21 @@ completedElement(value, false);
 )
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[278]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[279]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[280]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[281]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[282]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[283]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[284]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[285]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[286]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[287]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[299]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[300]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[301]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[302]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[303]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[304]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[305]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[306]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[307]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[308]);
 }
 
 ;
 
-parse_org_alia4j_language_ballandpaddle_ValueParameter returns [org.alia4j.language.ballandpaddle.ValueParameter element = null]
+parse_org_alia4j_language_ballandpaddle_IntValueParameter returns [org.alia4j.language.ballandpaddle.IntValueParameter element = null]
 @init{
 }
 :
@@ -4662,14 +4640,14 @@ if (terminateParsing) {
 throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
 }
 if (element == null) {
-element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createValueParameter();
+element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createIntValueParameter();
 startIncompleteElement(element);
 }
 if (a0 != null) {
 org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("INTEGER");
 tokenResolver.setOptions(getOptions());
 org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
-tokenResolver.resolve(a0.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.VALUE_PARAMETER__VALUE), result);
+tokenResolver.resolve(a0.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.INT_VALUE_PARAMETER__VALUE), result);
 Object resolvedObject = result.getResolvedToken();
 if (resolvedObject == null) {
 	addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a0).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a0).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a0).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a0).getStopIndex());
@@ -4677,27 +4655,78 @@ if (resolvedObject == null) {
 java.lang.Integer resolved = (java.lang.Integer) resolvedObject;
 if (resolved != null) {
 	Object value = resolved;
-	element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.VALUE_PARAMETER__VALUE), value);
+	element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.INT_VALUE_PARAMETER__VALUE), value);
 	completedElement(value, false);
 }
 collectHiddenTokens(element);
-retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28_0_0_0, resolved, true);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_29_0_0_0, resolved, true);
 copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a0, element);
 }
 }
 )
 {
 // expected elements (follow set)
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[288]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[289]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[290]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[291]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[292]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[293]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[294]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[295]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[296]);
-addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[297]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[309]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[310]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[311]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[312]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[313]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[314]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[315]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[316]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[317]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[318]);
+}
+
+;
+
+parse_org_alia4j_language_ballandpaddle_DoubleValueParameter returns [org.alia4j.language.ballandpaddle.DoubleValueParameter element = null]
+@init{
+}
+:
+(
+a0 = FLOAT
+{
+if (terminateParsing) {
+throw new org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleTerminateParsingException();
+}
+if (element == null) {
+element = org.alia4j.language.ballandpaddle.BallandpaddleFactory.eINSTANCE.createDoubleValueParameter();
+startIncompleteElement(element);
+}
+if (a0 != null) {
+org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver tokenResolver = tokenResolverFactory.createTokenResolver("FLOAT");
+tokenResolver.setOptions(getOptions());
+org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolveResult result = getFreshTokenResolveResult();
+tokenResolver.resolve(a0.getText(), element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_VALUE_PARAMETER__VALUE), result);
+Object resolvedObject = result.getResolvedToken();
+if (resolvedObject == null) {
+	addErrorToResource(result.getErrorMessage(), ((org.antlr.runtime3_4_0.CommonToken) a0).getLine(), ((org.antlr.runtime3_4_0.CommonToken) a0).getCharPositionInLine(), ((org.antlr.runtime3_4_0.CommonToken) a0).getStartIndex(), ((org.antlr.runtime3_4_0.CommonToken) a0).getStopIndex());
+}
+java.lang.Double resolved = (java.lang.Double) resolvedObject;
+if (resolved != null) {
+	Object value = resolved;
+	element.eSet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_VALUE_PARAMETER__VALUE), value);
+	completedElement(value, false);
+}
+collectHiddenTokens(element);
+retrieveLayoutInformation(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_30_0_0_0, resolved, true);
+copyLocalizationInfos((org.antlr.runtime3_4_0.CommonToken) a0, element);
+}
+}
+)
+{
+// expected elements (follow set)
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[319]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[320]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[321]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[322]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[323]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[324]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[325]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[326]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[327]);
+addExpectedElement(null, org.alia4j.language.ballandpaddle.resource.ballandpaddle.mopp.BallandpaddleExpectationConstants.EXPECTATIONS[328]);
 }
 
 ;

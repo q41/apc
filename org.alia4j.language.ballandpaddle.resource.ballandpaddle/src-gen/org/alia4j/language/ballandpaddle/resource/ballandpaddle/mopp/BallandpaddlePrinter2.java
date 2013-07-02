@@ -256,56 +256,64 @@ public class BallandpaddlePrinter2 implements org.alia4j.language.ballandpaddle.
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_15, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.AttOperand) {
+		if (element instanceof org.alia4j.language.ballandpaddle.DoubleOperand) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_16, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.EqParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.AttOperand) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_17, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.SmthParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.EqParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_18, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.SeqParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.SmthParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_19, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.LthParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.SeqParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_20, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.LeqParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.LthParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_21, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.NeqParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.LeqParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_22, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.OrParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.NeqParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_23, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.AndParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.OrParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_24, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.NegParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.AndParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_25, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.BracketParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.NegParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_26, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.AttParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.BracketParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_27, foundFormattingElements);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.ValueParameter) {
+		if (element instanceof org.alia4j.language.ballandpaddle.AttParameter) {
 			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_28, foundFormattingElements);
+			return;
+		}
+		if (element instanceof org.alia4j.language.ballandpaddle.IntValueParameter) {
+			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_29, foundFormattingElements);
+			return;
+		}
+		if (element instanceof org.alia4j.language.ballandpaddle.DoubleValueParameter) {
+			printInternal(element, org.alia4j.language.ballandpaddle.resource.ballandpaddle.grammar.BallandpaddleGrammarInformationProvider.BALLANDPADDLE_30, foundFormattingElements);
 			return;
 		}
 		

@@ -116,6 +116,10 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 			print_org_alia4j_language_ballandpaddle_IntOperand((org.alia4j.language.ballandpaddle.IntOperand) element, globaltab, out);
 			return;
 		}
+		if (element instanceof org.alia4j.language.ballandpaddle.DoubleOperand) {
+			print_org_alia4j_language_ballandpaddle_DoubleOperand((org.alia4j.language.ballandpaddle.DoubleOperand) element, globaltab, out);
+			return;
+		}
 		if (element instanceof org.alia4j.language.ballandpaddle.AttOperand) {
 			print_org_alia4j_language_ballandpaddle_AttOperand((org.alia4j.language.ballandpaddle.AttOperand) element, globaltab, out);
 			return;
@@ -164,8 +168,12 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 			print_org_alia4j_language_ballandpaddle_AttParameter((org.alia4j.language.ballandpaddle.AttParameter) element, globaltab, out);
 			return;
 		}
-		if (element instanceof org.alia4j.language.ballandpaddle.ValueParameter) {
-			print_org_alia4j_language_ballandpaddle_ValueParameter((org.alia4j.language.ballandpaddle.ValueParameter) element, globaltab, out);
+		if (element instanceof org.alia4j.language.ballandpaddle.IntValueParameter) {
+			print_org_alia4j_language_ballandpaddle_IntValueParameter((org.alia4j.language.ballandpaddle.IntValueParameter) element, globaltab, out);
+			return;
+		}
+		if (element instanceof org.alia4j.language.ballandpaddle.DoubleValueParameter) {
+			print_org_alia4j_language_ballandpaddle_DoubleValueParameter((org.alia4j.language.ballandpaddle.DoubleValueParameter) element, globaltab, out);
 			return;
 		}
 		
@@ -431,7 +439,7 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 		// the number of elements stored in each structural feature. For lists this is the
 		// list size. For non-multiple features it is either 1 (if the feature is set) or
 		// 0 (if the feature is null).
-		java.util.Map<String, Integer> printCountingMap = new java.util.LinkedHashMap<String, Integer>(6);
+		java.util.Map<String, Integer> printCountingMap = new java.util.LinkedHashMap<String, Integer>(5);
 		Object temp;
 		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__ID));
 		printCountingMap.put("id", temp == null ? 0 : 1);
@@ -439,8 +447,6 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 		printCountingMap.put("x", temp == null ? 0 : 1);
 		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__Y));
 		printCountingMap.put("y", temp == null ? 0 : 1);
-		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SHAPE));
-		printCountingMap.put("shape", temp == null ? 0 : 1);
 		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SIZE));
 		printCountingMap.put("size", temp == null ? 0 : 1);
 		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__ORIENTATION));
@@ -476,7 +482,7 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__X));
 			if (o != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__X), element));
 				out.print(" ");
@@ -494,26 +500,12 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__Y));
 			if (o != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__Y), element));
 				out.print(" ");
 			}
 			printCountingMap.put("y", count - 1);
-		}
-		// DEFINITION PART BEGINS (CsString)
-		out.print("shape");
-		out.print(" ");
-		// DEFINITION PART BEGINS (CsString)
-		out.print("=");
-		out.print(" ");
-		// DEFINITION PART BEGINS (EnumTerminal)
-		count = printCountingMap.get("shape");
-		if (count > 0) {
-			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.PADDLE__SHAPE));
-			if (o != null) {
-			}
-			printCountingMap.put("shape", count - 1);
 		}
 		// DEFINITION PART BEGINS (CsString)
 		out.print("size");
@@ -612,7 +604,7 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__X));
 			if (o != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__X), element));
 				out.print(" ");
@@ -630,7 +622,7 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 		if (count > 0) {
 			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__Y));
 			if (o != null) {
-				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("FLOAT");
 				resolver.setOptions(getOptions());
 				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.BALL__Y), element));
 				out.print(" ");
@@ -1548,6 +1540,33 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 	}
 	
 	
+	public void print_org_alia4j_language_ballandpaddle_DoubleOperand(org.alia4j.language.ballandpaddle.DoubleOperand element, String outertab, java.io.PrintWriter out) {
+		// The printCountingMap contains a mapping from feature names to the number of
+		// remaining elements that still need to be printed. The map is initialized with
+		// the number of elements stored in each structural feature. For lists this is the
+		// list size. For non-multiple features it is either 1 (if the feature is set) or
+		// 0 (if the feature is null).
+		java.util.Map<String, Integer> printCountingMap = new java.util.LinkedHashMap<String, Integer>(1);
+		Object temp;
+		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_OPERAND__VALUE));
+		printCountingMap.put("value", temp == null ? 0 : 1);
+		// print collected hidden tokens
+		int count;
+		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
+		count = printCountingMap.get("value");
+		if (count > 0) {
+			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_OPERAND__VALUE));
+			if (o != null) {
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("FLOAT");
+				resolver.setOptions(getOptions());
+				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_OPERAND__VALUE), element));
+				out.print(" ");
+			}
+			printCountingMap.put("value", count - 1);
+		}
+	}
+	
+	
 	public void print_org_alia4j_language_ballandpaddle_AttOperand(org.alia4j.language.ballandpaddle.AttOperand element, String outertab, java.io.PrintWriter out) {
 		// The printCountingMap contains a mapping from feature names to the number of
 		// remaining elements that still need to be printed. The map is initialized with
@@ -1965,7 +1984,7 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 	}
 	
 	
-	public void print_org_alia4j_language_ballandpaddle_ValueParameter(org.alia4j.language.ballandpaddle.ValueParameter element, String outertab, java.io.PrintWriter out) {
+	public void print_org_alia4j_language_ballandpaddle_IntValueParameter(org.alia4j.language.ballandpaddle.IntValueParameter element, String outertab, java.io.PrintWriter out) {
 		// The printCountingMap contains a mapping from feature names to the number of
 		// remaining elements that still need to be printed. The map is initialized with
 		// the number of elements stored in each structural feature. For lists this is the
@@ -1973,18 +1992,45 @@ public class BallandpaddlePrinter implements org.alia4j.language.ballandpaddle.r
 		// 0 (if the feature is null).
 		java.util.Map<String, Integer> printCountingMap = new java.util.LinkedHashMap<String, Integer>(1);
 		Object temp;
-		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.VALUE_PARAMETER__VALUE));
+		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.INT_VALUE_PARAMETER__VALUE));
 		printCountingMap.put("value", temp == null ? 0 : 1);
 		// print collected hidden tokens
 		int count;
 		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
 		count = printCountingMap.get("value");
 		if (count > 0) {
-			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.VALUE_PARAMETER__VALUE));
+			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.INT_VALUE_PARAMETER__VALUE));
 			if (o != null) {
 				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("INTEGER");
 				resolver.setOptions(getOptions());
-				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.VALUE_PARAMETER__VALUE), element));
+				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.INT_VALUE_PARAMETER__VALUE), element));
+				out.print(" ");
+			}
+			printCountingMap.put("value", count - 1);
+		}
+	}
+	
+	
+	public void print_org_alia4j_language_ballandpaddle_DoubleValueParameter(org.alia4j.language.ballandpaddle.DoubleValueParameter element, String outertab, java.io.PrintWriter out) {
+		// The printCountingMap contains a mapping from feature names to the number of
+		// remaining elements that still need to be printed. The map is initialized with
+		// the number of elements stored in each structural feature. For lists this is the
+		// list size. For non-multiple features it is either 1 (if the feature is set) or
+		// 0 (if the feature is null).
+		java.util.Map<String, Integer> printCountingMap = new java.util.LinkedHashMap<String, Integer>(1);
+		Object temp;
+		temp = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_VALUE_PARAMETER__VALUE));
+		printCountingMap.put("value", temp == null ? 0 : 1);
+		// print collected hidden tokens
+		int count;
+		// DEFINITION PART BEGINS (PlaceholderUsingSpecifiedToken)
+		count = printCountingMap.get("value");
+		if (count > 0) {
+			Object o = element.eGet(element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_VALUE_PARAMETER__VALUE));
+			if (o != null) {
+				org.alia4j.language.ballandpaddle.resource.ballandpaddle.IBallandpaddleTokenResolver resolver = tokenResolverFactory.createTokenResolver("FLOAT");
+				resolver.setOptions(getOptions());
+				out.print(resolver.deResolve((Object) o, element.eClass().getEStructuralFeature(org.alia4j.language.ballandpaddle.BallandpaddlePackage.DOUBLE_VALUE_PARAMETER__VALUE), element));
 				out.print(" ");
 			}
 			printCountingMap.put("value", count - 1);
