@@ -13,7 +13,6 @@ public class BallRenderer implements Renderer {
 	private double downscaleWidthRatio;
 	private double offsetX;
 	private double offsetY;
-	private double ballSize = 0.05;
 	
 	public BallRenderer(Ball ball, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
 		this.ball = ball;
@@ -22,12 +21,6 @@ public class BallRenderer implements Renderer {
 		this.downscaleWidthRatio = downscaleWidthRatio;
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
-	}
-
-	@Override
-	public void update(int delta) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

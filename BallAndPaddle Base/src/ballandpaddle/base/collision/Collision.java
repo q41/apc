@@ -22,32 +22,45 @@ public class Collision {
 	private static boolean hasCollided(Body moved, Body other){
 		if(moved instanceof CircleBody)
 			//check if the last collision of moved was with other, if so then it can't have collided with it again right away
+			//and thus there is no need to check if they collided
 			if(!lastCollision.containsKey(moved) || (lastCollision.containsKey(moved) && !lastCollision.get(moved).equals(other)))
 				return hasCollided((CircleBody)moved, other);				
 			else
 				return false;
 		else if(moved instanceof RectangleBody)
 			return hasCollided((RectangleBody)moved, other);
+		else if(moved instanceof SquareBody)
+			return hasCollided((SquareBody)moved, other);
 		return false;
 	}
 	
-	private static boolean hasCollided(CircleBody moved, Body other){
+	private static boolean hasCollided(CircleBody ball, Body other){
 		if(other instanceof Border)
-			return hasCollided(moved, (Border)other);
+			return hasCollided(ball, (Border)other);
 		else if(other instanceof RectangleBody)
-			return hasCollided(moved, (RectangleBody)other);
+			return hasCollided(ball, (RectangleBody)other);
 		else if(other instanceof SquareBody)
-			return hasCollided(moved, (SquareBody)other);
+			return hasCollided(ball, (SquareBody)other);
 		return false;
 	}
 	
-	private static boolean hasCollided(RectangleBody moved, Body other){
+	private static boolean hasCollided(RectangleBody paddle, Body other){
 		if(other instanceof Border)
-			return hasCollided(moved, (Border)other);
+			return hasCollided(paddle, (Border)other);
 		else if(other instanceof CircleBody)
-			return hasCollided(moved, (CircleBody)other);
+			return hasCollided(paddle, (CircleBody)other);
+		else if(other instanceof SquareBody)
+			return hasCollided((SquareBody)other, paddle);
 		return false;
 	}	
+	
+	private static boolean hasCollided(SquareBody power, Body other){
+		if(other instanceof Border)
+			return hasCollided(power, (Border)other);
+		else if(other instanceof RectangleBody)
+			return hasCollided(power, (RectangleBody)other);
+		return false;
+	}
 	
 	private static boolean hasCollided(CircleBody ball, Border border){
 		if(border.getStart().getX()==border.getEnd().getX())
@@ -105,6 +118,64 @@ public class Collision {
 	private static boolean hasCollided(RectangleBody paddle, CircleBody ball){
 		return hasCollided(ball, paddle);
 	}
+	
+	private static boolean hasCollided(SquareBody power, Border border){
+		return (border.getStart().getY()>power.getTopLeft().getY() && border.getEnd().getY()<power.getBottomRight().getY()) ||
+				(border.getEnd().getY()>power.getTopLeft().getY() && border.getStart().getY()<power.getBottomRight().getY());
+	}
+	
+	private static boolean hasCollided(SquareBody power, RectangleBody paddle){
+		return intersectsTop(power, paddle) || intersectsLeft(power, paddle) || intersectsRight(power, paddle);
+	}
+	
+	private static boolean intersectsTop(SquareBody power, RectangleBody paddle){
+		//power
+		double powerLX = power.getTopLeft().getX();
+		double powerRX = power.getBottomRight().getX();
+		double powerY = power.getBottomRight().getY();
+		
+		//paddle
+		double paddleLX = paddle.getTopLeft().getX();
+		double paddleRX = paddle.getBottomRight().getX();
+		double paddleTY = paddle.getTopLeft().getY();
+		double paddleBY = paddle.getBottomRight().getY();
+		
+		return ((powerLX>=paddleLX && powerLX<=paddleRX) || (powerRX>=paddleLX && powerRX<=paddleRX)) &&
+				powerY>=paddleTY && powerY<=paddleBY;
+	}
+	
+	private static boolean intersectsLeft(SquareBody power, RectangleBody paddle){
+		//power
+		double powerRX = power.getBottomRight().getX();
+		double powerTY = power.getTopLeft().getY();
+		double powerBY = power.getBottomRight().getY();
+		
+		//paddle
+		double paddleLX = paddle.getTopLeft().getX();
+		double paddleRX = paddle.getBottomRight().getX();
+		double paddleTY = paddle.getTopLeft().getY();
+		double paddleBY = paddle.getBottomRight().getY();
+		
+		return ((powerTY>=paddleTY && powerTY<=paddleBY) || (powerBY>=paddleTY && powerBY<=paddleBY)) 
+				&& powerRX>=paddleLX && powerRX<=paddleRX;
+	}
+	
+	private static boolean intersectsRight(SquareBody power, RectangleBody paddle){
+		//power
+		double powerLX = power.getTopLeft().getX();
+		double powerTY = power.getTopLeft().getY();
+		double powerBY = power.getBottomRight().getY();
+		
+		//paddle
+		double paddleLX = paddle.getTopLeft().getX();
+		double paddleRX = paddle.getBottomRight().getX();
+		double paddleTY = paddle.getTopLeft().getY();
+		double paddleBY = paddle.getBottomRight().getY();
+		
+		return ((powerTY>=paddleTY && powerTY<=paddleBY) || (powerBY>=paddleTY && powerBY<=paddleBY)) 
+				&& powerLX>=paddleLX && powerLX<=paddleRX;
+	}
+	
 	
 	private static boolean intersectsTop(CircleBody ball, RectangleBody paddle) {
 		double topLeftX = paddle.getTopLeft().getX();

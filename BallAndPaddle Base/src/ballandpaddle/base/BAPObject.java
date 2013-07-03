@@ -34,6 +34,8 @@ public abstract class BAPObject {
 	}
 	
 	public abstract void update();
+
+	public abstract void calculateMove(double d, Level level);
 	
 	
 }

@@ -24,12 +24,6 @@ public class PaddleRenderer implements Renderer {
 	}	
 	
 	@Override
-	public void update(int delta) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void renderGL() {
 		double topLeftX = offsetX+((RectangleBody)paddle.getBody()).getTopLeft().getX()*scale*downscaleWidthRatio;
 		double topLeftY = offsetY+((RectangleBody)paddle.getBody()).getTopLeft().getY()*scale*downscaleHeightRatio;

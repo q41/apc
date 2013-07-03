@@ -27,6 +27,7 @@ public class Game implements Observer {
 	private List<BlockRenderer> blockRenderers;
 	private List<BallRenderer> ballRenderers;
 	private List<PaddleRenderer> paddleRenderers;
+	private List<PowerRenderer> powerRenderers;
 	private boolean initializing;
 	
 	
@@ -74,10 +75,12 @@ public class Game implements Observer {
 			if(init<1.0)
 				init+=0.00125;
 		}
-		while(!Display.isCloseRequested()){
-			renderGL();			 
-			Display.update();
-			Display.sync(10); // cap fps to 30fps
+		if(level.gameOver()){
+			while(!Display.isCloseRequested()){
+				renderGL();			 
+				Display.update();
+				Display.sync(10); // cap fps to 10fps
+			}
 		}
  
 		Display.destroy();
@@ -105,6 +108,7 @@ public class Game implements Observer {
 		blockRenderers = new ArrayList<BlockRenderer>();
 		ballRenderers = new ArrayList<BallRenderer>();
 		paddleRenderers = new ArrayList<PaddleRenderer>();
+		powerRenderers = new ArrayList<PowerRenderer>();
 		
 		for(Block block : level.getBlocks()){
 			blockRenderers.add(new BlockRenderer(block, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
@@ -123,7 +127,7 @@ public class Game implements Observer {
 		//Check for keyboard input for moving the paddle and set the direction accordingly.
 		pollInput();
 		//Move all items that are currently moving, collisions, new items to be rendered, etc etc.
-		level.moveAll(delta);
+		level.update(delta);
 		//Check if all items that have renderers still exist, if not remove the renderer.
 		
 		
@@ -147,19 +151,14 @@ public class Game implements Observer {
 			GL11.glEnd();
 		GL11.glPopMatrix();
 
-		
-		//TODO render blocks
-		for(BlockRenderer block : blockRenderers){
+		for(BlockRenderer block : blockRenderers)
 			block.renderGL();
-		}
-		//TODO render balls
-		for(BallRenderer ball : ballRenderers){
-			ball.renderGL();
-		}
-		//TODO render paddles
-		for(PaddleRenderer paddle : paddleRenderers){
-			paddle.renderGL();
-		}		
+		for(BallRenderer ball : ballRenderers)
+			ball.renderGL();		
+		for(PaddleRenderer paddle : paddleRenderers)
+			paddle.renderGL();		
+		for(PowerRenderer power : powerRenderers)
+			power.renderGL();
 	}
 
 	public void updateFPS() {
@@ -219,6 +218,23 @@ public class Game implements Observer {
 				found = ballRenderers.get(i).getBall().equals(b);
 				if(found)
 					ballRenderers.remove(i);					
+			}
+		}
+		else if(arg1 instanceof SpawnedPower){
+			SpawnedPower p = (SpawnedPower) arg1;
+			boolean found = false;
+			for(int i = 0; i<powerRenderers.size() && !found; i++){
+				found = powerRenderers.get(i).getPower().equals(p);
+				if(found)
+					powerRenderers.remove(i);					
+			}
+		}
+		else if(arg1 instanceof List<?>){
+			//create renderers for these powers, but first clear the list
+			List<SpawnedPower> powers = (List<SpawnedPower>)arg1;
+			powerRenderers.clear();
+			for(SpawnedPower power : powers){
+				powerRenderers.add(new PowerRenderer(power, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 			}
 		}
 	}

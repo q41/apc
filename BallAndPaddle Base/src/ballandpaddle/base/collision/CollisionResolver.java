@@ -19,12 +19,15 @@ public class CollisionResolver {
 	
 	public void resolveCollision(BAPObject moved, BAPObject other) {
 		if(moved instanceof Ball)
-			resolveBallCollision((Ball) moved, other);
+			resolveCollision((Ball) moved, other);
 		else if(moved instanceof Paddle)
-			resolvePaddleCollision((Paddle) moved, other);
+			resolveCollision((Paddle) moved, other);
+		else if(moved instanceof SpawnedPower){
+			resolveCollision((SpawnedPower)moved, other);
+		}
 	}
 	
-	private void resolveBallCollision(Ball moved, BAPObject other){
+	protected void resolveCollision(Ball moved, BAPObject other){
 		if(other instanceof ballandpaddle.base.Border)
 			resolveCollision(moved, (ballandpaddle.base.Border)other);
 		else if(other instanceof Paddle)
@@ -33,12 +36,21 @@ public class CollisionResolver {
 			resolveCollision(moved, (Block)other);
 	}
 	
-	private void resolvePaddleCollision(Paddle moved, BAPObject other){
+	protected void resolveCollision(Paddle moved, BAPObject other){
 		if(other instanceof ballandpaddle.base.Border)
 			resolveCollision(moved, (ballandpaddle.base.Border)other);
 		else if(other instanceof Ball)
 			resolveCollision((Ball)other, moved);
+		else if(other instanceof SpawnedPower)
+			resolveCollision((SpawnedPower)other, moved);
 	}	
+	
+	protected void resolveCollision(SpawnedPower moved, BAPObject other){
+		if(other instanceof ballandpaddle.base.Border)
+			resolveCollision(moved, (ballandpaddle.base.Border)other);
+		else if(other instanceof Paddle)
+			resolveCollision(moved,(Paddle)other);
+	}
 	
 	protected void resolveCollision(Ball ball, ballandpaddle.base.Border border){
 		int newDirection = 0;
@@ -188,6 +200,16 @@ public class CollisionResolver {
 			paddle.getBody().moveBy(adjustX, 0);	
 		}		
 	}
+	
+	protected void resolveCollision(SpawnedPower power, ballandpaddle.base.Border border){
+		power.setDestroyed(true);
+	}
+	
+	protected void resolveCollision(SpawnedPower power, Paddle paddle){
+		power.setCaught(true);
+	}
+	
+
 	
 	
 }

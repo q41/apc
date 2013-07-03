@@ -12,6 +12,12 @@ public class Border extends BAPObject{
 	public final void update() {		
 	}
 
+	@Override
+	public void calculateMove(double d, Level level) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	

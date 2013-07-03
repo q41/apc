@@ -22,7 +22,7 @@ public class Block extends BAPObject {
 		this.fireRes = b.getFireRes();
 		this.coldRes = b.getColdRes();
 		this.shockRes = b.getShockRes();
-		//this.power = b.getPower();
+		this.power = b.getPower();
 	}
 	
 	public Block(String id, int hardness, int normalRes, int fireRes, int coldRes, int shockRes, Power power){
@@ -79,5 +79,11 @@ public class Block extends BAPObject {
 	public void setDestroyed(boolean b) {
 		if(b)
 			hardness = 0;		
+	}
+
+	@Override
+	public void calculateMove(double d, Level level) {
+		// TODO Auto-generated method stub
+		
 	}
 }
