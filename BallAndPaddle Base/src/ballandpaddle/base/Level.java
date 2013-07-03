@@ -175,6 +175,7 @@ public class Level extends Observable {
 						balls.remove(j);
 						j--;
 					}
+					manageBlocks();
 				}	
 				for(int j =0; j<spawnedPowers.size();j++){
 					handleBAPObjectUpdate(spawnedPowers.get(j), factor, stepsPerObject, maxSteps);					
@@ -192,7 +193,7 @@ public class Level extends Observable {
 	private void handleBAPObjectUpdate(BAPObject object, double factor, Map<BAPObject, Integer> stepsPerObject ,int maxSteps){
 		object.calculateMove(factor*stepsPerObject.get(object)/maxSteps, this);
 		object.update();
-		checkForCollision(object);
+//		checkForCollision(object);
 	}
 
 	private void SpawnPowers() {
@@ -204,31 +205,8 @@ public class Level extends Observable {
 		}
 	}
 	
-	private void checkForCollision(BAPObject object) {
-		if(object instanceof Ball)
-			checkForCollision((Ball)object);
-		else if(object instanceof SpawnedPower)
-			checkForCollision((SpawnedPower)object);
-		else if(object instanceof Paddle)
-			checkForCollision((Paddle)object);		
-	}
-
-	private void checkForCollision(SpawnedPower power) {
-		Collision.collision(power, borders[3], CollisionResolver.getInstance());
-		for(Paddle paddle : paddles){
-			Collision.collision(power, paddle, CollisionResolver.getInstance());
-		}	
-	}
-
-	public void checkForCollision(Ball ball) {
-		for(ballandpaddle.base.Border border : borders){
-			Collision.collision(ball, border, CollisionResolver.getInstance());
-		}
-		for(Paddle paddle : paddles){
-			Collision.collision(ball, paddle, CollisionResolver.getInstance());
-		}				
+	private void manageBlocks(){
 		for(int i = 0; i<blocks.size(); i++){
-			Collision.collision(ball, blocks.get(i), CollisionResolver.getInstance());
 			if(blocks.get(i).isDestroyed()){
 				this.setChanged();
 				this.notifyObservers(blocks.get(i));
@@ -239,7 +217,7 @@ public class Level extends Observable {
 					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
 					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
 					this.toBeSpawnedPowers.add(power);
-				}
+				}	
 				else if(Math.random()<=powerSpawnChance){
 					//spawn a random power
 					//sum up spawn chance of all powers
@@ -267,16 +245,85 @@ public class Level extends Observable {
 			}
 		}
 	}
-
-	public void checkForCollision(Paddle paddle) {
-		if(paddle.getDirection()>0)
-			Collision.collision(paddle, borders[2], CollisionResolver.getInstance());
-		else if(paddle.getDirection()<0)
-				Collision.collision(paddle, borders[1], CollisionResolver.getInstance());
-	}
+		
+//	private void checkForCollision(BAPObject object) {
+//		if(object instanceof Ball)
+//			checkForCollision((Ball)object);
+//		else if(object instanceof SpawnedPower)
+//			checkForCollision((SpawnedPower)object);
+//		else if(object instanceof Paddle)
+//			checkForCollision((Paddle)object);		
+//	}
+//
+//	private void checkForCollision(SpawnedPower power) {
+//		Collision.collision(power, borders[3], CollisionResolver.getInstance());
+//		for(Paddle paddle : paddles){
+//			Collision.collision(power, paddle, CollisionResolver.getInstance());
+//		}	
+//	}
+//
+//	public void checkForCollision(Ball ball) {
+//		for(ballandpaddle.base.Border border : borders){
+//			Collision.collision(ball, border, CollisionResolver.getInstance());
+//		}
+//		for(Paddle paddle : paddles){
+//			Collision.collision(ball, paddle, CollisionResolver.getInstance());
+//		}				
+//		for(int i = 0; i<blocks.size(); i++){
+//			Collision.collision(ball, blocks.get(i), CollisionResolver.getInstance());
+//			
+//			if(blocks.get(i).isDestroyed()){
+//				this.setChanged();
+//				this.notifyObservers(blocks.get(i));
+//				if(blocks.get(i).getPower()!=null){
+//					//spawn the power belonging to the block
+//					SquareBody body = (SquareBody)blocks.get(i).getBody();
+//					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
+//					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
+//					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
+//					this.toBeSpawnedPowers.add(power);
+//				}
+//				else if(Math.random()<=powerSpawnChance){
+//					//spawn a random power
+//					//sum up spawn chance of all powers
+//					double sumChance = 0.0;
+//					for(Power power : powers)
+//						sumChance += power.getPowerSpawnChance();					
+//					double result = (Math.random()*sumChance);
+//					//find which power matches the result.
+//					int index = 0;
+//					for(int j =0; j<powers.size(); j++){
+//						result -= powers.get(j).getPowerSpawnChance();
+//						if(result<=0){
+//							index = j;
+//							j = powers.size();
+//						}
+//					}					
+//					SquareBody body = (SquareBody)blocks.get(i).getBody();
+//					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
+//					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
+//					SpawnedPower power = new SpawnedPower(powers.get(index), x, y);
+//					this.toBeSpawnedPowers.add(power);
+//				}
+//				blocks.remove(i);
+//				i--;
+//			}
+//		}
+//	}
+//
+//	public void checkForCollision(Paddle paddle) {
+//		if(paddle.getDirection()>0)
+//			Collision.collision(paddle, borders[2], CollisionResolver.getInstance());
+//		else if(paddle.getDirection()<0)
+//				Collision.collision(paddle, borders[1], CollisionResolver.getInstance());
+//	}
 
 	public boolean gameOver() {
 		return balls.isEmpty() || blocks.isEmpty();
+	}
+
+	public ballandpaddle.base.Border[] getBorders() {
+		return borders;
 	}
 	
 	

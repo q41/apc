@@ -148,7 +148,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Creating attachments
 		//-----------------------
 		
-		createEffect();
+		createBaseCollision();
 
 		//-----------------------
 		// Deploy all definitions
@@ -185,5 +185,34 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
+	}	
+	
+	//Collision testing
+	
+	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.Collision"),
+			"checkForCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final MethodPattern LevelHandleBAPObjectUpdateMethodPattern = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("handleBAPObjectUpdate"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createBaseCollision(){		
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Specialization specialization = new Specialization(LevelHandleBAPObjectUpdateMethodPattern, null, Collections.singletonList(argumentContext));
+		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), checkForCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
 	}
+	
+
 }

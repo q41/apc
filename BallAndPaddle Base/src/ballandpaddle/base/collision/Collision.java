@@ -2,21 +2,77 @@ package ballandpaddle.base.collision;
 import java.util.*;
 
 import ballandpaddle.base.BAPObject;
+import ballandpaddle.base.Ball;
+import ballandpaddle.base.Block;
+import ballandpaddle.base.Level;
+import ballandpaddle.base.Paddle;
+import ballandpaddle.base.SpawnedPower;
 import ballandpaddle.base.collision.body.*;
 
 public class Collision {
 
 	private static Map<BAPObject, BAPObject> lastCollision;
 	
-	public static void collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
+	public static void checkForCollision(BAPObject object) {
+		if(object instanceof Ball)
+			checkForCollision((Ball)object);
+		else if(object instanceof SpawnedPower)
+			checkForCollision((SpawnedPower)object);
+		else if(object instanceof Paddle)
+			checkForCollision((Paddle)object);		
+	}
+	
+	public static void checkForCollision(SpawnedPower power) {
+		Level level = Level.getInstance();
+		collision(power, level.getBorders()[3], CollisionResolver.getInstance());
+		for(Paddle paddle : level.getPaddles()){
+			collision(power, paddle, CollisionResolver.getInstance());
+		}	
+	}
+
+	public static void checkForCollision(Ball ball) {
+		Level level = Level.getInstance();
+		for(ballandpaddle.base.Border border : level.getBorders()){
+			collision(ball, border, CollisionResolver.getInstance());
+		}
+		for(Paddle paddle : level.getPaddles()){
+			collision(ball, paddle, CollisionResolver.getInstance());
+		}				
+		for(Block block : level.getBlocks()){
+			collision(ball, block, CollisionResolver.getInstance());
+		}
+	}
+	
+	public static void checkForCollision(Paddle paddle) {
+		Level level = Level.getInstance();
+		if(paddle.getDirection()>0)
+			collision(paddle, level.getBorders()[2], CollisionResolver.getInstance());
+		else if(paddle.getDirection()<0)
+				collision(paddle, level.getBorders()[1], CollisionResolver.getInstance());
+	}	
+	
+//	public static void collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
+//		if(lastCollision == null)
+//			lastCollision = new HashMap<BAPObject, BAPObject>();
+//		Body first = moved.getBody();
+//		Body second = other.getBody();
+//		if(hasCollided(first, second)){			
+//			resolver.resolveCollision(moved, other);
+//			lastCollision.put(moved, other);			
+//		}
+//	}
+	
+	public static boolean collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
 		if(lastCollision == null)
 			lastCollision = new HashMap<BAPObject, BAPObject>();
 		Body first = moved.getBody();
 		Body second = other.getBody();
-		if(hasCollided(first, second)){			
+		if(hasCollided(first, second)){
 			resolver.resolveCollision(moved, other);
 			lastCollision.put(moved, other);			
+			return true;
 		}
+		return false;
 	}
 	
 	private static boolean hasCollided(Body moved, Body other){
