@@ -51,18 +51,17 @@ public class Importer implements org.alia4j.fial.Importer {
 	private List<Attachment> initialAttachments = new ArrayList<Attachment>();
 	private List<CompositionRule> initialCompositionRules = new ArrayList<CompositionRule>();
 	
-//	private static void initializeFactory(final String property,
-//			final String defaultValue) {
-//		try {
-//			final Class<?> factory = ClassLoader.getSystemClassLoader()
-//					.loadClass(
-//							java.lang.System
-//									.getProperty(property, defaultValue));
-//			factory.newInstance();
-//		} catch (final Exception e) {
-//			throw new Error("Cannot initialize factory", e);
-//		}
-//	}
+	/*
+	private static void initializeFactory(final String property, final String defaultValue) {
+		try {
+			final Class<?> factory = ClassLoader.getSystemClassLoader().loadClass(
+				java.lang.System.getProperty(property, defaultValue));
+			factory.newInstance();
+		} catch (final Exception e) {
+			throw new Error("Cannot initialize factory", e);
+		}
+	}
+	 */
 
 	private final ClassLoader systemClassLoader;
 
@@ -179,7 +178,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	);
 
 	private void createEffect() {
-		//Context calleeContex = ContextFactory.findOrCreateCalleeContext();
+		Context calleeContex = ContextFactory.findOrCreateCalleeContext();
 		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
 		AtomicPredicate pred = new isMethodFinalPredicate(resolvedMethodContext);
 		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), Collections.<Context>emptyList());
