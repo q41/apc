@@ -1,17 +1,14 @@
 package org.alia4j.languages.ballandpaddle.importer;
 
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.alia4j.hierarchy.TypeDescriptor;
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
+import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
 import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
 import org.alia4j.liam.AtomicPredicate;
@@ -24,11 +21,9 @@ import org.alia4j.liam.ScheduleInfo;
 import org.alia4j.liam.Specialization;
 import org.alia4j.liam.pattern.MethodPattern;
 import org.alia4j.liam.signature.ResolutionStrategy;
-import org.alia4j.liam.signature.Signed;
 import org.alia4j.patterns.ClassTypePattern;
 import org.alia4j.patterns.ExceptionsPattern;
 import org.alia4j.patterns.ModifiersPattern;
-import org.alia4j.patterns.NamePattern;
 import org.alia4j.patterns.ParametersPattern;
 import org.alia4j.patterns.TypePattern;
 import org.alia4j.patterns.modifiers.WildcardModifiersPattern;
@@ -36,7 +31,6 @@ import org.alia4j.patterns.names.ExactNamePattern;
 import org.alia4j.patterns.types.ExactClassTypePattern;
 import org.alia4j.patterns.types.ExactTypePattern;
 import org.alia4j.patterns.types.SubTypePattern;
-import org.alia4j.util.Maybe;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -48,7 +42,6 @@ import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
 import ballandpaddle.base.Paddle;
-import ballandpaddle.base.Power;
 
 public class Importer implements org.alia4j.fial.Importer {
 
@@ -166,94 +159,29 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 	}
 	
-	static class IsMethodFinalAtomicPredicate extends AtomicPredicate {
-	
-		public IsMethodFinalAtomicPredicate(Context ctx) {
-			super(Collections.singletonList(ctx));
-		}
-		
-		@Override
-		public int estimateRuntimeCost() {
-			return 1;
-		}
-		
-		@Override
-		public Maybe<Boolean> computeIsSatisfiedStatically(
-				List<? extends Signed<?>> callStack) {
-			return new Maybe<Boolean>();
-		}
-		
-		public boolean isSatisfied(Object o) {
-			Member m = (Member) o;
-			return Modifier.isFinal(m.getModifiers());
-		}
-	}
+	private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
+			"print",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC
+	);
+	private static final MethodPattern BAPObjectUpdateMethodPattern = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY,
+			new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(BAPObject.class))),
+			new ExactNamePattern("update"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
 
 	private void createEffect() {
 		//Context calleeContex = ContextFactory.findOrCreateCalleeContext();
 		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
-		AtomicPredicate pred = new IsMethodFinalAtomicPredicate(resolvedMethodContext);
+		AtomicPredicate pred = new isMethodFinalPredicate(resolvedMethodContext);
+		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), Collections.<Context>emptyList());
 		
-		Specialization specialization = new Specialization(BAPObjectUpdate, new BasicPredicate<AtomicPredicate>(pred, true), Collections.<Context>emptyList());
-		
-		Action action = ActionFactory.findOrCreateMethodCallAction(
-				TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
-				(CharSequence)"print",
-				TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
-				TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-				ResolutionStrategy.STATIC);
-		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private static final MethodPattern BAPObjectUpdate;
-	
-	static {
-		//modifier patterns
-		ModifiersPattern publicModifier = new WildcardModifiersPattern(WildcardModifiersPattern.PUBLIC);
-		ModifiersPattern finalModifier = new WildcardModifiersPattern(WildcardModifiersPattern.FINAL);
-		
-		//type patterns
-		TypePattern voidType = new ExactTypePattern(TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"));
-		
-		//class patterns
-		ClassTypePattern bapobjectClassType = new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(BAPObject.class));
-		
-		BAPObjectUpdate = new MethodPattern(
-				ModifiersPattern.ANY,
-				voidType,
-				bapobjectClassType,
-				new ExactNamePattern("update"),
-				ParametersPattern.ANY,
-				ExceptionsPattern.ANY
-		);
-//		BAPObjectUpdate = new MethodPattern(
-//				publicModifier.and(finalModifier),
-//				voidType,
-//				bapobjectClassType,
-//				new ExactNamePattern("update"),
-//				ParametersPattern.ANY,
-//				ExceptionsPattern.ANY
-//		);
-	}
-	
-	// testing code
-	private void announcePrint() {
-		MethodPattern pattern = new MethodPattern(ModifiersPattern.ANY,
-				TypePattern.ANY, ClassTypePattern.ANY, new ExactNamePattern("print"), ParametersPattern.ANY,
-				ExceptionsPattern.ANY);
-		
-		Specialization specialization = new Specialization(pattern, null, Collections.<Context>emptyList());
-			
-		Action action = ActionFactory.findOrCreateMethodCallAction(
-				TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
-				(CharSequence)"print",
-				TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
-				TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-				ResolutionStrategy.STATIC);
-		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
+		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
 }
