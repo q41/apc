@@ -13,42 +13,39 @@ public class Collision {
 
 	private static Map<BAPObject, BAPObject> lastCollision;
 	
-	public static void checkForCollision(BAPObject object) {
+	public static void checkForCollision(BAPObject object, Level level) {
 		if(object instanceof Ball)
-			checkForCollision((Ball)object);
+			checkForCollision((Ball)object, level);
 		else if(object instanceof SpawnedPower)
-			checkForCollision((SpawnedPower)object);
+			checkForCollision((SpawnedPower)object, level);
 		else if(object instanceof Paddle)
-			checkForCollision((Paddle)object);		
+			checkForCollision((Paddle)object, level);		
 	}
 	
-	public static void checkForCollision(SpawnedPower power) {
-		Level level = Level.getInstance();
-		collision(power, level.getBorders()[3], CollisionResolver.getInstance());
+	public static void checkForCollision(SpawnedPower power, Level level) {
+		collision(power, level.getBorders()[3]);
 		for(Paddle paddle : level.getPaddles()){
-			collision(power, paddle, CollisionResolver.getInstance());
+			collision(power, paddle);
 		}	
 	}
 
-	public static void checkForCollision(Ball ball) {
-		Level level = Level.getInstance();
+	public static void checkForCollision(Ball ball, Level level) {
 		for(ballandpaddle.base.Border border : level.getBorders()){
-			collision(ball, border, CollisionResolver.getInstance());
+			collision(ball, border);
 		}
 		for(Paddle paddle : level.getPaddles()){
-			collision(ball, paddle, CollisionResolver.getInstance());
+			collision(ball, paddle);
 		}				
 		for(Block block : level.getBlocks()){
-			collision(ball, block, CollisionResolver.getInstance());
+			collision(ball, block);
 		}
 	}
 	
-	public static void checkForCollision(Paddle paddle) {
-		Level level = Level.getInstance();
+	public static void checkForCollision(Paddle paddle, Level level) {
 		if(paddle.getDirection()>0)
-			collision(paddle, level.getBorders()[2], CollisionResolver.getInstance());
+			collision(paddle, level.getBorders()[2]);
 		else if(paddle.getDirection()<0)
-				collision(paddle, level.getBorders()[1], CollisionResolver.getInstance());
+				collision(paddle, level.getBorders()[1]);
 	}	
 	
 //	public static void collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
@@ -62,11 +59,11 @@ public class Collision {
 //		}
 //	}
 	
-	public static boolean collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
+	public static boolean collision(BAPObject moved, BAPObject other){
 		if(lastCollision == null)
 			lastCollision = new HashMap<BAPObject, BAPObject>();
 		if(hasCollided(moved, other)){
-			resolver.resolveCollision(moved, other);
+			StandardCollisionResolver.resolveCollision(moved, other);
 			lastCollision.put(moved, other);			
 			return true;
 		}
@@ -103,8 +100,8 @@ public class Collision {
 			return hasCollided(paddle, (ballandpaddle.base.Border)other);
 		else if(other instanceof Ball)
 			return hasCollided(paddle, (Ball)other);
-		else if(other instanceof Block)
-			return hasCollided((Block)other, paddle);
+		else if(other instanceof SpawnedPower)
+			return hasCollided((SpawnedPower)other, paddle);
 		return false;
 	}	
 	

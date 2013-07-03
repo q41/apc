@@ -8,6 +8,9 @@ import java.util.Map;
 
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
+import org.alia4j.languages.ballandpaddle.action.CollisionAction;
+import org.alia4j.languages.ballandpaddle.predicate.EqualsPredicate;
+import org.alia4j.languages.ballandpaddle.predicate.IsTruePredicate;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
 import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
@@ -148,7 +151,8 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Creating attachments
 		//-----------------------
 		
-		createBaseCollision();
+		createBaseCollisionDetection();
+		createStandardCollisionHandling();
 
 		//-----------------------
 		// Deploy all definitions
@@ -187,12 +191,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		initialAttachments.add(attachement);
 	}	
 	
-	//Collision testing
+	//Collision detection
 	
 	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.Collision"),
 			"checkForCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject", "ballandpaddle.base.Level"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
@@ -206,12 +210,45 @@ public class Importer implements org.alia4j.fial.Importer {
 			ExceptionsPattern.ANY
 	);
 	
-	private void createBaseCollision(){		
+	private void createBaseCollisionDetection(){		
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Specialization specialization = new Specialization(LevelHandleBAPObjectUpdateMethodPattern, null, Collections.singletonList(argumentContext));
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(LevelHandleBAPObjectUpdateMethodPattern, null, con);//Collections.singletonList(argumentContext));
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), checkForCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
+	}
+	
+	//Collision handling
+	private static final Action handleStandardCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.StandardCollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject","ballandpaddle.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final MethodPattern hasCollidedMethodPattern = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("hasCollided"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createStandardCollisionHandling(){
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
+		//TODO get context for return type, action should only happen if there was actually a collision
+		Context methodResultContext = ContextFactory.findOrCreateMethodResultContext();
+		AtomicPredicate pred = new IsTruePredicate(methodResultContext);		
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
+		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), handleStandardCollision, ScheduleInfo.AFTER);
+//		initialAttachments.add(attachement);
 	}
 	
 
