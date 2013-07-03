@@ -42,6 +42,7 @@ import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
 import ballandpaddle.base.Paddle;
+import ballandpaddle.base.Power;
 
 public class Importer implements org.alia4j.fial.Importer {
 
@@ -140,6 +141,8 @@ public class Importer implements org.alia4j.fial.Importer {
 		level.setImportedBlocks(root.getLevel().getBlocks());
 		level.setID(root.getLevel().getId());
 		level.generateBlocks(blocks);
+		level.setDeclaredPowers(new ArrayList<Power>());
+		
 		
 		
 		//-----------------------
