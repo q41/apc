@@ -65,9 +65,7 @@ public class Collision {
 	public static boolean collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
 		if(lastCollision == null)
 			lastCollision = new HashMap<BAPObject, BAPObject>();
-		Body first = moved.getBody();
-		Body second = other.getBody();
-		if(hasCollided(first, second)){
+		if(hasCollided(moved, other)){
 			resolver.resolveCollision(moved, other);
 			lastCollision.put(moved, other);			
 			return true;
@@ -75,78 +73,84 @@ public class Collision {
 		return false;
 	}
 	
-	private static boolean hasCollided(Body moved, Body other){
-		if(moved instanceof CircleBody)
+	private static boolean hasCollided(BAPObject moved, BAPObject other){
+		if(moved instanceof Ball)
 			//check if the last collision of moved was with other, if so then it can't have collided with it again right away
 			//and thus there is no need to check if they collided
 			if(!lastCollision.containsKey(moved) || (lastCollision.containsKey(moved) && !lastCollision.get(moved).equals(other)))
-				return hasCollided((CircleBody)moved, other);				
+				return hasCollided((Ball)moved, other);				
 			else
 				return false;
-		else if(moved instanceof RectangleBody)
-			return hasCollided((RectangleBody)moved, other);
-		else if(moved instanceof SquareBody)
-			return hasCollided((SquareBody)moved, other);
+		else if(moved instanceof Paddle)
+			return hasCollided((Paddle)moved, other);
+		else if(moved instanceof SpawnedPower)
+			return hasCollided((SpawnedPower)moved, other);
 		return false;
 	}
 	
-	private static boolean hasCollided(CircleBody ball, Body other){
-		if(other instanceof Border)
-			return hasCollided(ball, (Border)other);
-		else if(other instanceof RectangleBody)
-			return hasCollided(ball, (RectangleBody)other);
-		else if(other instanceof SquareBody)
-			return hasCollided(ball, (SquareBody)other);
+	private static boolean hasCollided(Ball ball, BAPObject other){
+		if(other instanceof ballandpaddle.base.Border)
+			return hasCollided(ball, (ballandpaddle.base.Border)other);
+		else if(other instanceof Paddle)
+			return hasCollided(ball, (Paddle)other);
+		else if(other instanceof Block)
+			return hasCollided(ball, (Block)other);
 		return false;
 	}
 	
-	private static boolean hasCollided(RectangleBody paddle, Body other){
-		if(other instanceof Border)
-			return hasCollided(paddle, (Border)other);
-		else if(other instanceof CircleBody)
-			return hasCollided(paddle, (CircleBody)other);
-		else if(other instanceof SquareBody)
-			return hasCollided((SquareBody)other, paddle);
+	private static boolean hasCollided(Paddle paddle, BAPObject other){
+		if(other instanceof ballandpaddle.base.Border)
+			return hasCollided(paddle, (ballandpaddle.base.Border)other);
+		else if(other instanceof Ball)
+			return hasCollided(paddle, (Ball)other);
+		else if(other instanceof Block)
+			return hasCollided((Block)other, paddle);
 		return false;
 	}	
 	
-	private static boolean hasCollided(SquareBody power, Body other){
-		if(other instanceof Border)
-			return hasCollided(power, (Border)other);
-		else if(other instanceof RectangleBody)
-			return hasCollided(power, (RectangleBody)other);
+	private static boolean hasCollided(SpawnedPower power, BAPObject other){
+		if(other instanceof ballandpaddle.base.Border)
+			return hasCollided(power, (ballandpaddle.base.Border)other);
+		else if(other instanceof Paddle)
+			return hasCollided(power, (Paddle)other);
 		return false;
 	}
 	
-	private static boolean hasCollided(CircleBody ball, Border border){
-		if(border.getStart().getX()==border.getEnd().getX())
-			return border.getStart().getX()> ball.getCenter().getX()-ball.getR() && border.getStart().getX()<ball.getCenter().getX()+ball.getR();
-		else if(border.getStart().getY()==border.getEnd().getY()){
-			return border.getStart().getY()> ball.getCenter().getY()-ball.getR() && border.getStart().getY()<ball.getCenter().getY()+ball.getR();
+	private static boolean hasCollided(Ball ball, ballandpaddle.base.Border border){
+		Border borderBody = (Border) border.getBody();
+		CircleBody ballBody = (CircleBody) ball.getBody();
+		if(borderBody.getStart().getX()==borderBody.getEnd().getX())
+			return borderBody.getStart().getX()> ballBody.getCenter().getX()-ballBody.getR() && borderBody.getStart().getX()<ballBody.getCenter().getX()+ballBody.getR();
+		else if(borderBody.getStart().getY()==borderBody.getEnd().getY()){
+			return borderBody.getStart().getY()> ballBody.getCenter().getY()-ballBody.getR() && borderBody.getStart().getY()<ballBody.getCenter().getY()+ballBody.getR();
 		}
 		else
 			return false;		
 	}
 	
-	private static boolean hasCollided(CircleBody ball, RectangleBody paddle){
-		return intersectsTop(ball, paddle) || intersectsLeft(ball, paddle) || intersectsBottom(ball, paddle) || intersectsRight(ball, paddle);
+	private static boolean hasCollided(Ball ball, Paddle paddle){
+		CircleBody ballBody = (CircleBody) ball.getBody();
+		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
+		return intersectsTop(ballBody, paddleBody) || intersectsLeft(ballBody, paddleBody) || intersectsBottom(ballBody, paddleBody) || intersectsRight(ballBody, paddleBody);
 	}
 	
-	private static boolean hasCollided(CircleBody ball, SquareBody block){
+	private static boolean hasCollided(Ball ball, Block block){
+		CircleBody ballBody = (CircleBody) ball.getBody();
+		SquareBody blockBody = (SquareBody) block.getBody();
 		//split up the square into 4 parts, bottom, left, right, top. 
 		//top
-		double topY = block.getTopLeft().getY();
+		double topY = blockBody.getTopLeft().getY();
 		//bottom
-		double bottomY = block.getBottomRight().getY();
+		double bottomY = blockBody.getBottomRight().getY();
 		//left
-		double leftX = block.getTopLeft().getX();
+		double leftX = blockBody.getTopLeft().getX();
 		//right
-		double rightX = block.getBottomRight().getX();
+		double rightX = blockBody.getBottomRight().getX();
 		//ball
-		double ballYBottom = ball.getCenter().getY()+ball.getR();
-		double ballYTop = ball.getCenter().getY()-ball.getR();
-		double ballXLeft = ball.getCenter().getX()-ball.getR();
-		double ballXRight = ball.getCenter().getX()+ball.getR();
+		double ballYBottom = ballBody.getCenter().getY()+ballBody.getR();
+		double ballYTop = ballBody.getCenter().getY()-ballBody.getR();
+		double ballXLeft = ballBody.getCenter().getX()-ballBody.getR();
+		double ballXRight = ballBody.getCenter().getX()+ballBody.getR();
 		//top hit?
 		boolean topHit = ballYBottom>topY && ballYBottom<bottomY && ballYTop<topY && ballYTop<bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
 		//bottom hit?
@@ -160,28 +164,34 @@ public class Collision {
 		return topHit||bottomHit||rightHit||leftHit;	
 	}
 	
-	private static boolean hasCollided(RectangleBody paddle, Border border){
-		if(border.getStart().getX()==border.getEnd().getX())
-			return (border.getStart().getX()>paddle.getTopLeft().getX() && border.getEnd().getX()<paddle.getBottomRight().getX()) ||
-					(border.getEnd().getX()>paddle.getTopLeft().getX() && border.getStart().getX()<paddle.getBottomRight().getX());
-		else if(border.getStart().getY()==border.getEnd().getY())
-			return (border.getStart().getY()>paddle.getTopLeft().getY() && border.getEnd().getY()<paddle.getBottomRight().getY()) ||
-					(border.getEnd().getY()>paddle.getTopLeft().getY() && border.getStart().getY()<paddle.getBottomRight().getY());
+	private static boolean hasCollided(Paddle paddle, ballandpaddle.base.Border border){
+		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
+		Border borderBody = (Border) border.getBody();
+		if(borderBody.getStart().getX()==borderBody.getEnd().getX())
+			return (borderBody.getStart().getX()>paddleBody.getTopLeft().getX() && borderBody.getEnd().getX()<paddleBody.getBottomRight().getX()) ||
+					(borderBody.getEnd().getX()>paddleBody.getTopLeft().getX() && borderBody.getStart().getX()<paddleBody.getBottomRight().getX());
+		else if(borderBody.getStart().getY()==borderBody.getEnd().getY())
+			return (borderBody.getStart().getY()>paddleBody.getTopLeft().getY() && borderBody.getEnd().getY()<paddleBody.getBottomRight().getY()) ||
+					(borderBody.getEnd().getY()>paddleBody.getTopLeft().getY() && borderBody.getStart().getY()<paddleBody.getBottomRight().getY());
 		else
 			return false;	
 	}
 	
-	private static boolean hasCollided(RectangleBody paddle, CircleBody ball){
+	private static boolean hasCollided(Paddle paddle, Ball ball){
 		return hasCollided(ball, paddle);
 	}
 	
-	private static boolean hasCollided(SquareBody power, Border border){
-		return (border.getStart().getY()>power.getTopLeft().getY() && border.getEnd().getY()<power.getBottomRight().getY()) ||
-				(border.getEnd().getY()>power.getTopLeft().getY() && border.getStart().getY()<power.getBottomRight().getY());
+	private static boolean hasCollided(SpawnedPower power, ballandpaddle.base.Border border){
+		Border borderBody = (Border) border.getBody();
+		SquareBody powerBody = (SquareBody) power.getBody();
+		return (borderBody.getStart().getY()>powerBody.getTopLeft().getY() && borderBody.getEnd().getY()<powerBody.getBottomRight().getY()) ||
+				(borderBody.getEnd().getY()>powerBody.getTopLeft().getY() && borderBody.getStart().getY()<powerBody.getBottomRight().getY());
 	}
 	
-	private static boolean hasCollided(SquareBody power, RectangleBody paddle){
-		return intersectsTop(power, paddle) || intersectsLeft(power, paddle) || intersectsRight(power, paddle);
+	private static boolean hasCollided(SpawnedPower power, Paddle paddle){
+		SquareBody powerBody = (SquareBody) power.getBody();
+		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
+		return intersectsTop(powerBody, paddleBody) || intersectsLeft(powerBody, paddleBody) || intersectsRight(powerBody, paddleBody);
 	}
 	
 	private static boolean intersectsTop(SquareBody power, RectangleBody paddle){
