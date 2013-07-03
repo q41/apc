@@ -240,10 +240,22 @@ public class Level extends Observable {
 					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
 					this.toBeSpawnedPowers.add(power);
 				}
-//				else if(Math.random()<=powerSpawnChance){
-				else if(true){
+				else if(Math.random()<=powerSpawnChance){
 					//spawn a random power
-					int index = (int) (Math.random()*(powers.size()-1));
+					//sum up spawn chance of all powers
+					double sumChance = 0.0;
+					for(Power power : powers)
+						sumChance += power.getPowerSpawnChance();					
+					double result = (Math.random()*sumChance);
+					//find which power matches the result.
+					int index = 0;
+					for(int j =0; j<powers.size(); j++){
+						result -= powers.get(j).getPowerSpawnChance();
+						if(result<=0){
+							index = j;
+							j = powers.size();
+						}
+					}					
 					SquareBody body = (SquareBody)blocks.get(i).getBody();
 					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
 					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;

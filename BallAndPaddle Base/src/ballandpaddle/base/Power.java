@@ -7,10 +7,10 @@ public class Power {
 	private String id;
 	private List<Effect> effects;
 	private int duration;
-	private float powerSpawnChance;
+	private double powerSpawnChance;
 	private List<BAPObject> targets;
 	
-	public Power(String id, List<Effect> effects, int duration, float powerSpawnChance, List<BAPObject> targets){
+	public Power(String id, List<Effect> effects, int duration, double powerSpawnChance, List<BAPObject> targets){
 		this(id, effects, duration, targets);
 		this.powerSpawnChance = powerSpawnChance;
 	}
@@ -20,9 +20,10 @@ public class Power {
 		this.effects = effects;
 		this.duration = duration;
 		this.targets = targets;
+		this.powerSpawnChance=1.0;
 	}	
 	
-	public float getPowerSpawnChance() {
+	public double getPowerSpawnChance() {
 		return powerSpawnChance;
 	}
 
