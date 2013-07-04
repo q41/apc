@@ -172,7 +172,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		createBaseCollisionDetection();
 		createStandardBallCollisionHandling();
 		createStandardOthersCollisionHandling();
-
+		createEffect();
 		//-----------------------
 		// Deploy all definitions
 		//-----------------------
@@ -213,7 +213,8 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
 		BasicPredicate<AtomicPredicate> isFinalPred = new BasicPredicate<AtomicPredicate>(new isMethodFinalPredicate(resolvedMethodContext), true);
 		
-		Predicate<AtomicPredicate> predicate = new AndPredicate<>(conditionPred, isFinalPred);
+		//contruct specialization
+		Predicate<AtomicPredicate> predicate = new AndPredicate<AtomicPredicate>(conditionPred, isFinalPred);
 		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, predicate, Collections.<Context>emptyList());
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
