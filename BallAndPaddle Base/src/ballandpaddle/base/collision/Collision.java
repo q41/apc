@@ -63,7 +63,7 @@ public class Collision {
 		if(lastCollision == null)
 			lastCollision = new HashMap<BAPObject, BAPObject>();
 		if(hasCollided(moved, other)){
-			StandardCollisionResolver.resolveCollision(moved, other);
+//			StandardCollisionResolver.resolveCollision(moved, other);
 			lastCollision.put(moved, other);			
 			return true;
 		}
@@ -71,19 +71,26 @@ public class Collision {
 	}
 	
 	private static boolean hasCollided(BAPObject moved, BAPObject other){
+		boolean collision;
 		if(moved instanceof Ball)
 			//check if the last collision of moved was with other, if so then it can't have collided with it again right away
 			//and thus there is no need to check if they collided
 			if(!lastCollision.containsKey(moved) || (lastCollision.containsKey(moved) && !lastCollision.get(moved).equals(other)))
-				return hasCollided((Ball)moved, other);				
+				collision = hasCollided((Ball)moved, other);				
 			else
-				return false;
+				collision = false;
 		else if(moved instanceof Paddle)
-			return hasCollided((Paddle)moved, other);
+			collision = hasCollided((Paddle)moved, other);
 		else if(moved instanceof SpawnedPower)
-			return hasCollided((SpawnedPower)moved, other);
-		return false;
+			collision = hasCollided((SpawnedPower)moved, other);
+		else
+			collision = false;
+		if(collision)
+			haveCollided(moved, other);
+		return collision;
 	}
+	
+	private static void haveCollided(BAPObject moved, BAPObject other){}
 	
 	private static boolean hasCollided(Ball ball, BAPObject other){
 		if(other instanceof ballandpaddle.base.Border)

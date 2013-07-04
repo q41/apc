@@ -7,14 +7,6 @@ import ballandpaddle.base.collision.body.RectangleBody;
 import ballandpaddle.base.collision.body.SquareBody;
 
 public abstract class CollisionResolver {
-
-//	private static CollisionResolver INSTANCE;
-//	
-//	public static CollisionResolver getInstance() {
-//		if (INSTANCE == null)
-//			INSTANCE = new CollisionResolver();
-//		return INSTANCE;
-//	}
 	
 	protected static void resolveCollision(Ball ball, ballandpaddle.base.Border border){
 		int newDirection = 0;
