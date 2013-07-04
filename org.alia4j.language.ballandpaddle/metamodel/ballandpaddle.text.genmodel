@@ -82,6 +82,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//TypeTarget/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//TypeTarget/params"/>
     </genClasses>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//ThisTarget">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//ThisTarget/item"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//ThisTarget/params"/>
+    </genClasses>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//BooleanExpression"/>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//BooleanBinaryExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//BooleanBinaryExpression/left"/>

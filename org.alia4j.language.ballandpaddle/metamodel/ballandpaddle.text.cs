@@ -16,6 +16,7 @@ TOKENS {
 	DEFINE CHAR $('A'..'Z')$;
 	DEFINE LEVELLINE $(('A'..'Z')|('.'))+$;
 	DEFINE ANDOR $('|')|('&')$;
+	DEFINE THIS $'t''h''i''s'$;
 	//regex: ('A'..'Z' | 'a'..'z' | '0'..'9' | '_' | '-' )+
 }
 
@@ -53,6 +54,7 @@ RULES {
 
 	ObjectTarget ::= item[CHAR] | item[];
 	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"]"{" params "}";
+	ThisTarget ::= item[THIS] "{" params "}";
 	
 	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
 	MultExpression ::= left "*" right;

@@ -47,6 +47,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
+import ballandpaddle.base.Effect;
 import ballandpaddle.base.Paddle;
 import ballandpaddle.base.Power;
 
@@ -118,7 +119,21 @@ public class Importer implements org.alia4j.fial.Importer {
 		List<Block> blocks = new ArrayList<Block>();
 		EList<org.alia4j.language.ballandpaddle.Block> tempBlocks = root.getBlocks();
 		
+		//create powers
+		
+		
+		//create effects
+		List<Effect> effects = new ArrayList<Effects>();
+		
+		
 		for(org.alia4j.language.ballandpaddle.Block b : tempBlocks){
+			if(b.getPower()!= null){
+				//create power
+				org.alia4j.language.ballandpaddle.Power p = b.getPower();
+				
+				
+				Power power = new Power(p.getId(), null/*effects*/, p.getDuration(), p.getPowerSpawnChance());
+			}
 			Block block = new Block(b.getId(), b.getHardness(), b.getNormalRes(), b.getFireRes(), b.getColdRes(), b.getShockRes(), null);
 			blocks.add(block);
 		}		
@@ -137,7 +152,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		for(org.alia4j.language.ballandpaddle.Ball b : tempBalls){
 			Ball ball = new Ball(b.getId(), b.getX(), b.getY(), b.getSize(), b.getDirection(), b.getSpeed());
 			balls.add(ball);
-		}
+		}		
 		
 		//set up the level
 		level.setBalls(balls);

@@ -63,6 +63,11 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		containment reference BooleanExpression params (1..1);
 	}
 	
+	class ThisTarget extends Target{
+		attribute EString item(1..1);
+		containment reference BooleanExpression params (1..1);
+	}
+	
 	abstract class BooleanExpression{}
 	
 	abstract class BooleanBinaryExpression extends BooleanExpression{
