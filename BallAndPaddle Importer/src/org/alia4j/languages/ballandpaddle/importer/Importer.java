@@ -8,10 +8,11 @@ import java.util.Map;
 
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
-import org.alia4j.languages.ballandpaddle.action.CollisionAction;
+import org.alia4j.languages.ballandpaddle.context.LocalVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.EqualsPredicate;
 import org.alia4j.languages.ballandpaddle.predicate.IsTruePredicate;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
+import org.alia4j.liam.Predicate;
 import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
 import org.alia4j.liam.AtomicPredicate;
@@ -22,6 +23,7 @@ import org.alia4j.liam.CompositionRule;
 import org.alia4j.liam.Context;
 import org.alia4j.liam.ContextFactory;
 import org.alia4j.liam.ScheduleInfo;
+import org.alia4j.liam.AndPredicate;
 import org.alia4j.liam.Specialization;
 import org.alia4j.liam.pattern.MethodPattern;
 import org.alia4j.liam.predicate.ContextValuePredicate;
@@ -169,26 +171,36 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
-			"print",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC
+		TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
+		"print",
+		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
+		TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+		ResolutionStrategy.STATIC
 	);
 	private static final MethodPattern BAPObjectUpdateMethodPattern = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY,
-			new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(BAPObject.class))),
-			new ExactNamePattern("update"),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
+		ModifiersPattern.ANY,
+		TypePattern.ANY,
+		new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(BAPObject.class))),
+		new ExactNamePattern("update"),
+		ParametersPattern.ANY,
+		ExceptionsPattern.ANY
 	);
 
 	private void createEffect() {
-		Context calleeContex = ContextFactory.findOrCreateCalleeContext();
+		//Context calleeContex = ContextFactory.findOrCreateCalleeContext();
+		
+		//check for speed threshold
+		Context speedContext = new LocalVariableContext("speed");
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(0.8);
+		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
+		BasicPredicate<AtomicPredicate> conditionPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+		
+		//check for final
 		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
-		AtomicPredicate pred = new isMethodFinalPredicate(resolvedMethodContext);
-		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), Collections.<Context>emptyList());
+		BasicPredicate<AtomicPredicate> isFinalPred = new BasicPredicate<AtomicPredicate>(new isMethodFinalPredicate(resolvedMethodContext), true);
+		
+		Predicate<AtomicPredicate> predicate = new AndPredicate<>(conditionPred, isFinalPred);
+		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, predicate, Collections.<Context>emptyList());
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);

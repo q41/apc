@@ -15,7 +15,7 @@ public final class LocalVariableContext extends Context {
 	
 	public static final Object LOCAL_VARIABLE_NOT_FOUND = "LOCAL_VARIABLE_NOT_FOUND";
 
-	LocalVariableContext(String localVariableName) {
+	public LocalVariableContext(String localVariableName) {
 		super(Collections.<Context> emptyList());
 		this.localVariableName = localVariableName;
 	}
