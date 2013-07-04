@@ -8,34 +8,14 @@ import java.util.Map;
 
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
-import org.alia4j.languages.ballandpaddle.context.LocalVariableContext;
-import org.alia4j.languages.ballandpaddle.predicate.EqualsPredicate;
+import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
-import org.alia4j.liam.Predicate;
-import org.alia4j.liam.Action;
-import org.alia4j.liam.ActionFactory;
-import org.alia4j.liam.AtomicPredicate;
-import org.alia4j.liam.AtomicPredicateFactory;
-import org.alia4j.liam.Attachment;
-import org.alia4j.liam.BasicPredicate;
-import org.alia4j.liam.CompositionRule;
-import org.alia4j.liam.Context;
-import org.alia4j.liam.ContextFactory;
-import org.alia4j.liam.ScheduleInfo;
-import org.alia4j.liam.AndPredicate;
-import org.alia4j.liam.Specialization;
+import org.alia4j.liam.*;
 import org.alia4j.liam.pattern.MethodPattern;
-import org.alia4j.liam.predicate.ContextValuePredicate;
 import org.alia4j.liam.signature.ResolutionStrategy;
-import org.alia4j.patterns.ClassTypePattern;
-import org.alia4j.patterns.ExceptionsPattern;
-import org.alia4j.patterns.ModifiersPattern;
-import org.alia4j.patterns.ParametersPattern;
-import org.alia4j.patterns.TypePattern;
-import org.alia4j.patterns.modifiers.WildcardModifiersPattern;
+import org.alia4j.patterns.*;
 import org.alia4j.patterns.names.ExactNamePattern;
 import org.alia4j.patterns.types.ExactClassTypePattern;
-import org.alia4j.patterns.types.ExactTypePattern;
 import org.alia4j.patterns.types.SubTypePattern;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -43,32 +23,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-
-import ballandpaddle.base.BAPObject;
-import ballandpaddle.base.Ball;
-import ballandpaddle.base.Block;
-import ballandpaddle.base.Paddle;
-import ballandpaddle.base.Power;
+import ballandpaddle.base.*;
 
 public class Importer implements org.alia4j.fial.Importer {
 
 	private boolean initialized = false;
-
 	private List<Attachment> initialAttachments = new ArrayList<Attachment>();
 	private List<CompositionRule> initialCompositionRules = new ArrayList<CompositionRule>();
-	
-	/*
-	private static void initializeFactory(final String property, final String defaultValue) {
-		try {
-			final Class<?> factory = ClassLoader.getSystemClassLoader().loadClass(
-				java.lang.System.getProperty(property, defaultValue));
-			factory.newInstance();
-		} catch (final Exception e) {
-			throw new Error("Cannot initialize factory", e);
-		}
-	}
-	 */
-
 	private final ClassLoader systemClassLoader;
 
 	public Importer(ClassLoader systemClassLoader) {
@@ -77,12 +38,10 @@ public class Importer implements org.alia4j.fial.Importer {
 
 	@Override
 	public void performImport() {
-		if (initialized)
-			throw new Error("Importer has already been executed.");
+		if (initialized) throw new Error("Importer has already been executed.");
 		initialized = true;
 
 		URL mainFile = systemClassLoader.getResource(System.getProperty("ballandpaddle.main") + ".xmi");
-		//mainFile = systemClassLoader.getResource("SampleLevel.xmi");
 		if (mainFile == null) {
 			System.out.println("No BAP level file specified (use VM argument -Dballandpaddle.main=<class-path-relative-file-name>");
 		}
@@ -149,7 +108,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		level.setDeclaredPowers(new ArrayList<Power>());
 		
 		
-		
 		//-----------------------
 		// Creating attachments
 		//-----------------------
@@ -158,6 +116,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		createStandardBallCollisionHandling();
 		createStandardOthersCollisionHandling();
 		createEffect();
+		
 		//-----------------------
 		// Deploy all definitions
 		//-----------------------
@@ -188,17 +147,17 @@ public class Importer implements org.alia4j.fial.Importer {
 	private void createEffect() {		
 		//check for speed threshold
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Context speedContext = new LocalVariableContext(calleeContext, "speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(0.8);
+		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(0.5);
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
-		BasicPredicate<AtomicPredicate> conditionPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 		
 		//check for final
 		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
 		BasicPredicate<AtomicPredicate> isFinalPred = new BasicPredicate<AtomicPredicate>(new isMethodFinalPredicate(resolvedMethodContext), true);
 		
 		//contruct specialization
-		Predicate<AtomicPredicate> predicate = new AndPredicate<AtomicPredicate>(conditionPred, isFinalPred);
+		Predicate<AtomicPredicate> predicate = new AndPredicate<AtomicPredicate>(speedPred, isFinalPred);
 		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, predicate, Collections.<Context>emptyList());
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
