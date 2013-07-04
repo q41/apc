@@ -10,7 +10,6 @@ import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
 import org.alia4j.languages.ballandpaddle.context.LocalVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.EqualsPredicate;
-import org.alia4j.languages.ballandpaddle.predicate.IsTruePredicate;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
 import org.alia4j.liam.Predicate;
 import org.alia4j.liam.Action;
@@ -271,6 +270,16 @@ public class Importer implements org.alia4j.fial.Importer {
 		initialAttachments.add(attachement);
 	}
 	
+	private void createStandardBallCollisionHandling(AtomicPredicate pred){
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
+		//TODO get context for return type, action should only happen if there was actually a collision	
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
 	private void createStandardOthersCollisionHandling(){
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
@@ -282,11 +291,10 @@ public class Importer implements org.alia4j.fial.Importer {
 		initialAttachments.add(attachement);
 	}
 	
-	private void createImmaterialBallCollisionHandling(){
+	private void createImmaterialBallCollisionHandling(AtomicPredicate pred){
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
 		//TODO get context for return type, action should only happen if there was actually a collision	
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
 		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleImmaterialCollision, ScheduleInfo.AFTER);
