@@ -2,34 +2,55 @@ package ballandpaddle.base;
 
 public class Effect {
 
-	//if TargetType is This, then target is ""
-	//if TargetType is Type then target is the class name of the target
-	//if TargetType is Object then target is the id of the target
-	private String target;
-	private TargetType type;
 	private String id;
+	private OperatorType op;
+	private int duration;
+	private Object value;
+	private EffectTarget effectTarget;
+	private EffectedAttribute effectedAttribute;
 
 	public enum TargetType{
-		THIS, TYPE, OBJECT;
+		TYPE, OBJECT;
 	}
 	
-	public Effect(String id, TargetType type, String target){
+	public enum OperatorType{
+		INC, DEC, SET;
+	}
+	
+	public enum EffectTarget{
+		BALL, BLOCK, PADDLE;
+	}
+	
+	public enum EffectedAttribute{
+		HARDNESS, IMMATERIAL, SIZE, SPEED, DIRECTION, DAMAGE, RESISTANCE;
+	}
+	
+	public Effect(String id){
 		this.id = id;
-		this.type = type; 
-		this.target = target;
-	}
-	
-	public String getTarget(){
-		return target;
-	}
-	
-	public TargetType getType(){
-		return type;
 	}
 	
 	public String getId(){
 		return id;
 	}
 	
+	public void setOperator(OperatorType op){
+		this.op=op;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;		
+	}
+
+	public void setValue(Object value) {
+		this.value = value;
+	}
+	
+	public void setEffectTarget(EffectTarget effectTarget){
+		this.effectTarget = effectTarget;
+	}
+	
+	public void setModifiedAttribute(EffectedAttribute effectedAttribute){
+		this.effectedAttribute = effectedAttribute;
+	}
 	
 }

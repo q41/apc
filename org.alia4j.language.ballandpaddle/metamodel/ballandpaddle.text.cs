@@ -12,6 +12,7 @@ TOKENS {
 	DEFINE FRAGMENT DIGIT $('1'..'9')$;
 	DEFINE INTEGER $('-')?('1'..'9')('0'..'9')*|'0'$;
 	DEFINE FLOAT $('-')?(('1'..'9') ('0'..'9')* | '0') '.' ('0'..'9')+ $;
+	DEFINE BOOLEAN $('t''r''u''e')|('f''a''l''s''e')$;
 	//DEFINE SINGLE $($ + CHAR + $|$ + DIGIT + $)$ ;
 	DEFINE CHAR $('A'..'Z')$;
 	DEFINE LEVELLINE $(('A'..'Z')|('.'))+$;
@@ -39,6 +40,8 @@ TOKENSTYLES {
 	"NonDamageEffect" COLOR #7F0055, BOLD;
 	"DamageEffect" COLOR #7F0055, BOLD;
 	"with" COLOR #7F0055, BOLD;
+	"true" COLOR #7F0055, BOLD;
+	"false" COLOR #7F0055, BOLD;
 }
 
 
@@ -56,34 +59,37 @@ RULES {
 	EffectType ::= (target[Block:"block",Paddle:"paddle",Ball:"ball"]".")? type[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial"] adjustmentOperator[Inc:"+=", Dec:"-=", Set:"="] expression ("duration" "=" duration[INTEGER])?;
 	
 	ObjectTarget ::= item[CHAR] | item[];
-	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("{" params "}")?;
+	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" params ")")?;
 	
-	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
-	MultExpression ::= left "*" right;
+//	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
+//	MultExpression ::= left "*" right;
 
-	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
-	DivExpression ::= left "/" right;
+//	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
+//	DivExpression ::= left "/" right;
 	
-	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
-	PlusExpression ::= left "+" right;
+//	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
+//	PlusExpression ::= left "+" right;
 
-	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
-	MinusExpression ::= left "-" right;
+//	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
+//	MinusExpression ::= left "-" right;
 	
-	@Operator(type="unary_prefix", weight="3", superclass="Expression")
-	NegExpression ::= "-"body;
+//	@Operator(type="unary_prefix", weight="3", superclass="Expression")
+//	NegExpression ::= "-"body;
 	
-	@Operator(type="primitive", weight="4", superclass="Expression")
-	BracketExpression ::= "(" body ")";
+//	@Operator(type="primitive", weight="4", superclass="Expression")
+//	BracketExpression ::= "(" body ")";
 
 	@Operator(type="primitive", weight="4", superclass="Expression")
 	IntOperand ::= value[INTEGER];
 	
 	@Operator(type="primitive", weight="4", superclass="Expression")
 	DoubleOperand ::= value[FLOAT];
-
+	
 	@Operator(type="primitive", weight="4", superclass="Expression")
-	AttOperand ::= (target[Block:"block",Paddle:"paddle",Ball:"ball"]".")?att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial", X:"x", Y:"y"];
+	BoolOperand ::= value[BOOLEAN];
+
+//	@Operator(type="primitive", weight="4", superclass="Expression")
+//	AttOperand ::= (target[Block:"block",Paddle:"paddle",Ball:"ball"]".")?att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial", X:"x", Y:"y"];
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
 	EqParameter ::= left "=" right;

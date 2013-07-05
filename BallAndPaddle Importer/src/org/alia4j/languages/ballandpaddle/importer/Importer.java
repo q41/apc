@@ -9,7 +9,10 @@ import java.util.Map;
 
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.*;
+import org.alia4j.language.ballandpaddle.CollisionEffect;
+import org.alia4j.language.ballandpaddle.GeneralEffect;
 import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
+import org.alia4j.languages.ballandpaddle.context.LocalIntegerVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
 import org.alia4j.liam.*;
 import org.alia4j.liam.pattern.*;
@@ -83,79 +86,176 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create powers before creating blocks since some blocks can have powers!
 		//create unique blocks
 		List<Block> blocks = new ArrayList<Block>();
-		EList<org.alia4j.language.ballandpaddle.Block> tempBlocks = root.getBlocks();
-		
-		//create powers
-		
+		EList<org.alia4j.language.ballandpaddle.Block> tempBlocks = root.getBlocks();		
 		
 		//create effects
-//		Map<Effect, Predicate> effectPredicates = new HashMap<Effect, Predicate>();
-//		List<Effect> effects = new ArrayList<Effect>();
-//		for(org.alia4j.language.ballandpaddle.Effect e : root.getEffects()){
-//			//name of the effect
-//			e.getId();
-//			
-//			
-//			//target of the effect -> for predicate
-//			EffectType type = e.getTypes();
-//			//the attribute that it is affecting, if any
-//			TargetType t = type.getTarget();
-//			t.get
-//			Effect.TargetType type;
-//			Predicate pred = null;
-//			String target = "";
-//			if(t instanceof TypeTarget){
-//				//target is an object of the given type
-//				type = Effect.TargetType.TYPE;
-//				TypeTarget tar = (TypeTarget)t;
-//				tar.getType();				
-//				target = getBAPObjectType(tar.getType());
-//				pred = getTargetPredicate(tar.getParams());
-//			}
-//			else{
-//				//object is an actual item, match on object id.
-//				type = Effect.TargetType.OBJECT;
-//				ObjectTarget tar = (ObjectTarget)t;
-//				target = tar.getItem().getId();
-//			}
-//			
-//			
-//			//keyword of what aspect it wants to change
-//			e.getType();
-//			//expression of how it is changed
-//			e.getExpression();
-//			
-//			
-//			
-//			
-//			
-//			
-//			
-//			Effect effect = new Effect(e.getId(), type, target);
-//			effects.add(effect);
-//			effectPredicates.put(effect, pred);			
-//		}
+		Map<Effect, Predicate> effectPredicates = new HashMap<Effect, Predicate>();
+		List<Effect> effects = new ArrayList<Effect>();
+		for(org.alia4j.language.ballandpaddle.Effect e : root.getEffects()){
+			Effect effect;
+			//name of the effect
+			String id = e.getId();
+			Predicate pred = null;
+			//go through target stuff
+			if(e instanceof GeneralEffect){
+				Effect.TargetType type;
+				String target = "";
+				GeneralEffect gE = (GeneralEffect) e;
+				Target t = gE.getTarget();
+				if(t instanceof TypeTarget){
+					//target is an object of the given type
+					type = Effect.TargetType.TYPE;
+					TypeTarget tar = (TypeTarget)t;
+					tar.getType();				
+					target = getBAPObjectType(tar.getType());
+					if(tar.getParams()!=null)
+						pred = getTargetPredicate(tar.getParams());
+					System.out.println(pred);
+				}
+				else{
+					//object is an actual item, match on object id.
+					type = Effect.TargetType.OBJECT;
+					ObjectTarget tar = (ObjectTarget)t;
+					//id of the item, for later matching
+					target = tar.getItem().getId();
+				}
+				effect = new ballandpaddle.base.GeneralEffect(id, type, target);
+			}
+			else{
+				//e instanceof CollisionEffect
+				Effect.TargetType leftType;
+				String leftTarget = "";
+				Effect.TargetType rightType;
+				String rightTarget = "";
+				CollisionEffect cE = (CollisionEffect) e;
+				Target leftT = cE.getLeftTarget();
+				Target rightT = cE.getRightTarget();
+				if(leftT instanceof TypeTarget){
+					//target is an object of the given type
+					leftType = Effect.TargetType.TYPE;
+					TypeTarget tar = (TypeTarget)leftT;
+					tar.getType();				
+					leftTarget = getBAPObjectType(tar.getType());
+					if(tar.getParams()!=null)
+						pred = getTargetPredicate(tar.getParams());
+					System.out.println(pred);
+				}
+				else{
+					//object is an actual item, match on object id.
+					leftType = Effect.TargetType.OBJECT;
+					ObjectTarget tar = (ObjectTarget)leftT;
+					//id of the item, for later matching
+					leftTarget = tar.getItem().getId();
+				}
+				if(rightT instanceof TypeTarget){
+					//target is an object of the given type
+					rightType = Effect.TargetType.TYPE;
+					TypeTarget tar = (TypeTarget)rightT;
+					tar.getType();				
+					rightTarget = getBAPObjectType(tar.getType());
+					if(tar.getParams()!=null)
+						pred = getTargetPredicate(tar.getParams());
+					System.out.println(pred);
+				}
+				else{
+					//object is an actual item, match on object id.
+					rightType = Effect.TargetType.OBJECT;
+					ObjectTarget tar = (ObjectTarget)rightT;
+					//id of the item, for later matching
+					rightTarget = tar.getItem().getId();
+				}
+				effect = new ballandpaddle.base.CollisionEffect(id, leftType, leftTarget, rightType, rightTarget);
+			}
+			EffectType effectType = e.getTypes();
+
+			//value change of the effect
+			Expression expr = effectType.getExpression();
+			if(expr instanceof IntOperand){
+				IntOperand intOp = (IntOperand)expr;
+				effect.setValue(intOp.getValue());
+			}
+			else if(expr instanceof DoubleOperand){
+				DoubleOperand doubleOp = (DoubleOperand)expr;
+				effect.setValue(doubleOp.getValue());
+			}
+			else{
+				BoolOperand boolOp = (BoolOperand)expr;
+				effect.setValue(boolOp.isValue());
+			}
+				
+			//owner of the affected attribute
+			TargetType target = effectType.getTarget();
+			if(target.getValue()==TargetType.BALL_VALUE){
+				effect.setEffectTarget(Effect.EffectTarget.BALL);
+			}
+			else if(target.getValue()==TargetType.BLOCK_VALUE){
+				effect.setEffectTarget(Effect.EffectTarget.BLOCK);
+			}
+			else if(target.getValue()==TargetType.PADDLE_VALUE){
+				effect.setEffectTarget(Effect.EffectTarget.PADDLE);
+			}			
+			
+			//attribute that is modified
+			Attribute modifiedAttribute = effectType.getType();
+			if(modifiedAttribute.getValue()==Attribute.HARDNESS_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.HARDNESS);
+			else if(modifiedAttribute.getValue()==Attribute.IMMATERIAL_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.IMMATERIAL);
+			else if(modifiedAttribute.getValue()==Attribute.NORMAL_DAM_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.DAMAGE);
+			else if(modifiedAttribute.getValue()==Attribute.NORMAL_RES_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.RESISTANCE);
+			else if(modifiedAttribute.getValue()==Attribute.ORIENTATION_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.DIRECTION);
+			else if(modifiedAttribute.getValue()==Attribute.SIZE_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.SIZE);
+			else if(modifiedAttribute.getValue()==Attribute.SPEED_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.SPEED);
+			
+			//duration of the effect
+			effect.setDuration(effectType.getDuration());
+			//how the attribute is modified, += or -= or =
+			AdjustmentOperator op = effectType.getAdjustmentOperator();
+			if(op.getValue()==AdjustmentOperator.DEC_VALUE){
+				effect.setOperator(Effect.OperatorType.DEC);
+			}
+			else if(op.getValue()==AdjustmentOperator.INC_VALUE){
+				effect.setOperator(Effect.OperatorType.INC);
+			}
+			else if(op.getValue()==AdjustmentOperator.SET_VALUE){
+				effect.setOperator(Effect.OperatorType.SET);
+			}		
+			
+			effects.add(effect);
+			if(pred != null)
+				effectPredicates.put(effect, pred);			
+		}		
+
+		//import powers
+		List<Power> powers = new ArrayList<Power>();
+		for(org.alia4j.language.ballandpaddle.Power p : root.getPowers()){			
+			String id = p.getId();
+			double powerSpawnChance = p.getPowerSpawnChance();
+			List<Effect> eff = new ArrayList<Effect>();
+			for(org.alia4j.language.ballandpaddle.Effect e : p.getEffects()){
+				for(Effect effect : effects){
+					if(effect.getId().equals(e.getId()))
+						eff.add(effect);					
+				}				
+			}
+			powers.add(new Power(id, eff, powerSpawnChance));			
+		}
+		
 		
 		for(org.alia4j.language.ballandpaddle.Block b : tempBlocks){
-//			if(b.getPower()!= null){
-//				//create power
-//				org.alia4j.language.ballandpaddle.Power p = b.getPower();
-//				Target t = p.getTarget();
-////				if(t instanceof ThisTarget)
-//					//not allowed!
-//				if(t instanceof TypeTarget){					
-//					TypeTarget tar = (TypeTarget)t;
-//					tar.getType();
-//					tar.getParams();
-//				}
-//				else if(t instanceof ObjectTarget){
-//					ObjectTarget tar = (ObjectTarget)t;
-//					tar.getItem().getId();
-//				}
-//				
-//				Power power = new Power(p.getId(), null/*effects*/, p.getDuration(), p.getPowerSpawnChance());
-//			}
-			Block block = new Block(b.getId(), b.getHardness(), b.getResistance(), null);
+			Power power = null;
+			if(b.getPower()!= null){
+				for(Power pow : powers){
+					if(pow.getId().equals(b.getPower().getId()))
+						power = pow;
+				}
+			}
+			Block block = new Block(b.getId(), b.getHardness(), b.getResistance(), power);
 			blocks.add(block);
 		}		
 		
@@ -182,7 +282,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		level.setImportedBlocks(root.getLevel().getBlocks());
 		level.setID(root.getLevel().getId());
 		level.generateBlocks(blocks);
-		level.setDeclaredPowers(new ArrayList<Power>());
+		level.setDeclaredPowers(powers);
 		
 		
 		//-----------------------
@@ -273,8 +373,24 @@ public class Importer implements org.alia4j.fial.Importer {
 		///TODO, far from finished
 		if(param instanceof AttParameter){
 			AttParameter attPar = (AttParameter)param;
-//			return new LocalVariableContext(attPar.getAtt().getName());
-			return null;
+			Attribute att = attPar.getAtt();
+			Context con = null;
+			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+			if(att.getValue()==att.HARDNESS_VALUE)
+				con = new LocalIntegerVariableContext(calleeContext, "hardness");
+			else if(att.getValue()==att.IMMATERIAL_VALUE)
+				con = null; //con = new LocalDoubleIntegerVariableContext(calleeContext, "immaterial");
+			else if(att.getValue()==att.NORMAL_DAM_VALUE)
+				con = new LocalIntegerVariableContext(calleeContext, "damage");
+			else if(att.getValue()==att.NORMAL_RES_VALUE)
+				con = new LocalIntegerVariableContext(calleeContext, "resistance");
+			else if(att.getValue()==att.ORIENTATION_VALUE)
+				con = new LocalIntegerVariableContext(calleeContext, "direction");
+			else if(att.getValue()==att.SIZE_VALUE)
+				con = new LocalIntegerVariableContext(calleeContext, "size");
+			else if(att.getValue()==att.SPEED_VALUE)
+				con = new LocalDoubleVariableContext(calleeContext, "speed");
+			return con;
 		}
 		else if(param instanceof IntValueParameter){
 			IntValueParameter intPar = (IntValueParameter)param;

@@ -135,32 +135,32 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 	abstract class Expression{	
 	}
 	
-	abstract class BinaryExpression extends Expression{		
-		containment reference Expression left(1..1);
-		containment reference Expression right(1..1);	
-	}
+//	abstract class BinaryExpression extends Expression{		
+//		containment reference Expression left(1..1);
+//		containment reference Expression right(1..1);	
+//	}
 	
-	abstract class UnaryExpression extends Expression{		
-		containment reference Expression body(1..1);		
-	}
+//	abstract class UnaryExpression extends Expression{		
+//		containment reference Expression body(1..1);		
+//	}
 	
-	class MultExpression extends BinaryExpression{
-	}
+//	class MultExpression extends BinaryExpression{
+//	}
+//	
+//	class DivExpression extends BinaryExpression {
+//	}
 	
-	class DivExpression extends BinaryExpression {
-	}
+//	class PlusExpression extends BinaryExpression{
+//	}
 	
-	class PlusExpression extends BinaryExpression{
-	}
+//	class MinusExpression extends BinaryExpression{
+//	}
 	
-	class MinusExpression extends BinaryExpression{
-	}
+//	class BracketExpression extends UnaryExpression{				
+//	}
 	
-	class BracketExpression extends UnaryExpression{				
-	}
-	
-	class NegExpression extends UnaryExpression{			
-	}
+//	class NegExpression extends UnaryExpression{			
+//	}
 	
 	class IntOperand extends Expression{
 		attribute EInt value (1..1);	
@@ -169,11 +169,14 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 	class DoubleOperand extends Expression{
 		attribute EDouble value (1..1);		
 	}
-	
-	class AttOperand extends Expression{
-		attribute TargetType target(0..1);		
-		attribute Attribute att(1..1);				
+	class BoolOperand extends Expression{
+		attribute EBoolean value (1..1);
 	}
+	
+//	class AttOperand extends Expression{
+//		attribute TargetType target(0..1);		
+//		attribute Attribute att(1..1);				
+//	}
 	
 	serializable enum Attribute{
 		1 : Size = "size";

@@ -12,10 +12,7 @@ public class Ball extends BAPObject {
 	private double speed;
 	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
-	private int normalDamage;
-	private int fireDamage;
-	private int coldDamage;
-	private int shockDamage;
+	private int damage;
 	private boolean alive;
 	private double movementVectorX;
 	private double movementVectorY;
@@ -31,6 +28,8 @@ public class Ball extends BAPObject {
 			this.speed = 4;
 		else if(speed>2)
 			this.speed = 2;
+		if(damage==0)
+			damage = 1;
 	}
 	
 	public Ball(String id, double x, double y){
@@ -41,11 +40,6 @@ public class Ball extends BAPObject {
 		super(id, x, y, new CircleBody(new Point(x,y), 1*0.05));
 		this.size = size;
 		direction = 360-125;
-		speed = 1;
-		normalDamage = 1;
-		fireDamage = 0;
-		coldDamage = 0;
-		shockDamage = 0;
 		alive = true;
 	}
 	
@@ -101,19 +95,7 @@ public class Ball extends BAPObject {
 	}
 	
 	public int getNormalDamage(){
-		return normalDamage;
-	}
-	
-	public int getFireDamage(){
-		return fireDamage;
-	}
-	
-	public int getColdDamage(){
-		return coldDamage;
-	}
-	
-	public int getShockDamage(){
-		return shockDamage;
+		return damage;
 	}
 	
 	public void setDestroyed(boolean destroyed){
