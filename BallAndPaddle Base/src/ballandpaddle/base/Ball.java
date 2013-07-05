@@ -73,11 +73,15 @@ public class Ball extends BAPObject {
 		return speed;
 	}
 	
+	public void multSpeed(double mult){
+		speed*=mult;
+	}
+	
 	@Override
 	public final void update(){
 		body.moveBy(movementVectorX, movementVectorY);
 		System.out.println(speed);
-		this.speed = speed*1.025;
+		multSpeed(1.025);
 	}
 
 	public void calculateMove(double factor, Level level) {
