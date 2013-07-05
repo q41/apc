@@ -12,6 +12,8 @@ public class Ball extends BAPObject {
 	private double speed;
 	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
+	private final int upperSizeLimit = 3;
+	private final int lowerSizeLimit = 1;
 	private int damage;
 	private boolean alive;
 	private double movementVectorX;
@@ -37,14 +39,23 @@ public class Ball extends BAPObject {
 	}
 	
 	public Ball(String id, double x, double y, int size) {
-		super(id, x, y, new CircleBody(new Point(x,y), 1*0.05));
+		super(id, x, y, new CircleBody(new Point(x,y), size*0.05));
 		this.size = size;
+		if(size>upperSizeLimit)
+			((CircleBody)super.getBody()).setR(upperSizeLimit*0.05);		
+		if(size<lowerSizeLimit)
+			((CircleBody)super.getBody()).setR(upperSizeLimit*0.05);	
 		direction = 360-125;
 		alive = true;
 	}
 	
 	public int getSize(){
 		return size;
+	}
+	
+	public void setSize(int size){
+		this.size = Math.max(lowerSizeLimit, Math.min(upperSizeLimit, size));
+		((CircleBody)super.getBody()).setR(size*0.05);		
 	}
 	
 	public int getDirection(){
@@ -55,8 +66,6 @@ public class Ball extends BAPObject {
 		if(direction<0)
 			direction+=360;
 		this.direction = direction%360;
-		
-		
 	}
 	
 	public double speed(){
