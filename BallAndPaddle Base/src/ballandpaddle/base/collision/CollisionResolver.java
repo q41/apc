@@ -50,51 +50,51 @@ public abstract class CollisionResolver {
 		if(ball.getDirection()>=180 && ball.getDirection() <=270 && paddle.getDirection() >= 180 && paddle.getDirection() <= 270){
 			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
 			if(matchDir<10){
-				ball.setSpeed(ball.getSpeed()*1.1);
+				ball.multSpeed(1.1);
 			}
 			else if(matchDir<25){
-				ball.setSpeed(ball.getSpeed()*1.05);
+				ball.multSpeed(1.05);
 			}					
 		}
 		else if(ball.getDirection()>=270 && ball.getDirection() <=359 && paddle.getDirection() >= 270 && paddle.getDirection() <= 359){
 			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
 			if(matchDir<10){
-				ball.setSpeed(ball.getSpeed()*1.1);
+				ball.multSpeed(1.1);
 			}
 			else if(matchDir<25){
-				ball.setSpeed(ball.getSpeed()*1.05);
+				ball.multSpeed(1.05);
 			}
 		}
 		else if(ball.getDirection()>=0 && ball.getDirection() <=90 && paddle.getDirection() >= 0 && paddle.getDirection() <= 90){
 			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
 			if(matchDir<10){
-				ball.setSpeed(ball.getSpeed()*1.1);
+				ball.multSpeed(1.1);
 			}
 			else if(matchDir<25){
-				ball.setSpeed(ball.getSpeed()*1.05);
+				ball.multSpeed(1.05);
 			}
 		}
 		else if(ball.getDirection()>=90 && ball.getDirection() <=180 && paddle.getDirection() >= 90 && paddle.getDirection() <= 180){
 			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
 			if(matchDir<10){
-				ball.setSpeed(ball.getSpeed()*1.1);
+				ball.multSpeed(1.1);
 			}
 			else if(matchDir<25){
-				ball.setSpeed(ball.getSpeed()*1.05);
+				ball.multSpeed(1.05);
 			}
 		}
 		if(Math.abs(ball.getDirection()-270)<10)
-			ball.setSpeed(ball.getSpeed()*0.80);
+			ball.multSpeed(0.80);
 		else if(Math.abs(ball.getDirection()-270)<20)
-			ball.setSpeed(ball.getSpeed()*0.90);
+			ball.multSpeed(0.90);
 		else if(Math.abs(ball.getDirection()-270)<25)
-			ball.setSpeed(ball.getSpeed()*0.95);
+			ball.multSpeed(0.95);
 		else if(Math.abs(ball.getDirection()-270)>65)
-			ball.setSpeed(ball.getSpeed()*1.05);
+			ball.multSpeed(1.05);
 		else if(Math.abs(ball.getDirection()-270)>70)
-			ball.setSpeed(ball.getSpeed()*1.10);
+			ball.multSpeed(1.10);
 		else if(Math.abs(ball.getDirection()-270)>80)
-			ball.setSpeed(ball.getSpeed()*1.20);	
+			ball.multSpeed(1.20);	
 	}
 	
 	protected static void resolveCollision(Paddle paddle, ballandpaddle.base.Border border){
