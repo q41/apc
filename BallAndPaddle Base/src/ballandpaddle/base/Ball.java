@@ -26,12 +26,13 @@ public class Ball extends BAPObject {
 		if(this.direction>=0 && this.direction<=180)
 			this.direction=270;
 		this.speed = speed;
-		if(speed<1)
-			this.speed = 4;
-		else if(speed>2)
-			this.speed = 2;
+		if(speed<lowerSpeedLimit)
+			this.speed = lowerSpeedLimit;
+		else if(speed>upperSpeedLimit)
+			this.speed = upperSpeedLimit;
 		if(damage==0)
 			damage = 1;
+		System.out.println("starting speed "+this.speed+" "+speed);
 	}
 	
 	public Ball(String id, double x, double y){
@@ -75,6 +76,8 @@ public class Ball extends BAPObject {
 	@Override
 	public final void update(){
 		body.moveBy(movementVectorX, movementVectorY);
+		System.out.println(speed);
+		this.speed = speed*1.025;
 	}
 
 	public void calculateMove(double factor, Level level) {
