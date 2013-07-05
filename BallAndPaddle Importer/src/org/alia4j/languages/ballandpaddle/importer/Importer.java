@@ -37,6 +37,7 @@ import org.alia4j.language.ballandpaddle.Target;
 import org.alia4j.language.ballandpaddle.TargetType;
 import org.alia4j.language.ballandpaddle.TypeTarget;
 import org.alia4j.languages.ballandpaddle.context.LocalBooleanVariableContext;
+import org.alia4j.languages.ballandpaddle.action.ApplyEffect;
 import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
 import org.alia4j.languages.ballandpaddle.context.LocalIntegerVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
@@ -54,6 +55,7 @@ import org.alia4j.liam.OrPredicate;
 import org.alia4j.liam.Predicate;
 import org.alia4j.liam.ScheduleInfo;
 import org.alia4j.liam.Specialization;
+import org.alia4j.liam.pattern.FieldReadPattern;
 import org.alia4j.liam.pattern.MethodPattern;
 import org.alia4j.liam.signature.ResolutionStrategy;
 import org.alia4j.patterns.ClassTypePattern;
@@ -452,18 +454,16 @@ public class Importer implements org.alia4j.fial.Importer {
 		TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 		ResolutionStrategy.STATIC
 	);
-	private static final MethodPattern BAPObjectUpdateMethodPattern = new MethodPattern(
-		ModifiersPattern.ANY,
-		TypePattern.ANY,
-		new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(BAPObject.class))),
-		new ExactNamePattern("update"),
-		ParametersPattern.ANY,
-		ExceptionsPattern.ANY
-	);
-
+	private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
+	
 	private void createEffect() {
 		//match on speed member 
-		
+		FieldReadPattern ballSpeedAccess = new FieldReadPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY,
+			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(Ball.class)),
+			new ExactNamePattern("speed")
+		);
 		
 		//check for speed threshold
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
@@ -471,19 +471,23 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(0.5);
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
 		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+
+		//update speed
+		Action growBall = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromClass(ApplyEffect.class),
+			"apply",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] {"double"}),
+			TypeHierarchyProvider.findOrCreateFromClass(double.class),
+			ResolutionStrategy.STATIC
+		);
 		
-		//check for final
-		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
-		BasicPredicate<AtomicPredicate> isFinalPred = new BasicPredicate<AtomicPredicate>(new isMethodFinalPredicate(resolvedMethodContext), true);
+		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(4); 
 		
 		//contruct specialization
-		BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
+		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
+		Specialization specialization = new Specialization(ballSpeedAccess, speedPred, Collections.singletonList(newSize));
 		
-		Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-		
-		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, isFinalPred, Collections.<Context>emptyList());
-		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
+		Attachment attachement = new Attachment(Collections.singleton(specialization), growBall, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
 	}	
 	
