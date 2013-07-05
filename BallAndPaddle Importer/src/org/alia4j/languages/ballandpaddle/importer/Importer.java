@@ -9,8 +9,7 @@ import java.util.Map;
 
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.ballandpaddle.*;
-import org.alia4j.languages.ballandpaddle.context.LocalVariableContext;
-import org.alia4j.languages.ballandpaddle.predicate.EqualsPredicate;
+import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
 import org.alia4j.liam.*;
 import org.alia4j.liam.pattern.*;
@@ -26,33 +25,13 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-
-import ballandpaddle.base.BAPObject;
-import ballandpaddle.base.Ball;
-import ballandpaddle.base.Block;
-import ballandpaddle.base.Effect;
-import ballandpaddle.base.Paddle;
-import ballandpaddle.base.Power;
+import ballandpaddle.base.*;
 
 public class Importer implements org.alia4j.fial.Importer {
 
 	private boolean initialized = false;
-
 	private List<Attachment> initialAttachments = new ArrayList<Attachment>();
 	private List<CompositionRule> initialCompositionRules = new ArrayList<CompositionRule>();
-	
-	/*
-	private static void initializeFactory(final String property, final String defaultValue) {
-		try {
-			final Class<?> factory = ClassLoader.getSystemClassLoader().loadClass(
-				java.lang.System.getProperty(property, defaultValue));
-			factory.newInstance();
-		} catch (final Exception e) {
-			throw new Error("Cannot initialize factory", e);
-		}
-	}
-	 */
-
 	private final ClassLoader systemClassLoader;
 
 	public Importer(ClassLoader systemClassLoader) {
@@ -61,12 +40,10 @@ public class Importer implements org.alia4j.fial.Importer {
 
 	@Override
 	public void performImport() {
-		if (initialized)
-			throw new Error("Importer has already been executed.");
+		if (initialized) throw new Error("Importer has already been executed.");
 		initialized = true;
 
 		URL mainFile = systemClassLoader.getResource(System.getProperty("ballandpaddle.main") + ".xmi");
-		//mainFile = systemClassLoader.getResource("SampleLevel.xmi");
 		if (mainFile == null) {
 			System.out.println("No BAP level file specified (use VM argument -Dballandpaddle.main=<class-path-relative-file-name>");
 		}
@@ -193,7 +170,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		for(org.alia4j.language.ballandpaddle.Ball b : tempBalls){
 			Ball ball = new Ball(b.getId(), b.getX(), b.getY(), b.getSize(), b.getDirection(), b.getSpeed());
 			balls.add(ball);
-		}		
+		}
 		
 		//set up the level
 		level.setBalls(balls);
@@ -205,7 +182,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		level.setDeclaredPowers(new ArrayList<Power>());
 		
 		
-		
 		//-----------------------
 		// Creating attachments
 		//-----------------------
@@ -213,7 +189,8 @@ public class Importer implements org.alia4j.fial.Importer {
 		createBaseCollisionDetection();
 		createStandardBallCollisionHandling();
 		createStandardOthersCollisionHandling();
-
+		createEffect();
+		
 		//-----------------------
 		// Deploy all definitions
 		//-----------------------
@@ -322,20 +299,20 @@ public class Importer implements org.alia4j.fial.Importer {
 		ExceptionsPattern.ANY
 	);
 
-	private void createEffect() {
-		//Context calleeContex = ContextFactory.findOrCreateCalleeContext();
-		
+	private void createEffect() {		
 		//check for speed threshold
-		Context speedContext = new LocalVariableContext("speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(0.8);
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(0.5);
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
-		BasicPredicate<AtomicPredicate> conditionPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 		
 		//check for final
 		Context resolvedMethodContext = ContextFactory.findOrCreateActualMemberContext();
 		BasicPredicate<AtomicPredicate> isFinalPred = new BasicPredicate<AtomicPredicate>(new isMethodFinalPredicate(resolvedMethodContext), true);
 		
-		Predicate<AtomicPredicate> predicate = new AndPredicate<>(conditionPred, isFinalPred);
+		//contruct specialization
+		Predicate<AtomicPredicate> predicate = new AndPredicate<AtomicPredicate>(speedPred, isFinalPred);
 		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, predicate, Collections.<Context>emptyList());
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
