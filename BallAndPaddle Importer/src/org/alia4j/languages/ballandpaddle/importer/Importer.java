@@ -3,40 +3,23 @@ package org.alia4j.languages.ballandpaddle.importer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.alia4j.hierarchy.TypeHierarchyProvider;
-import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
+import org.alia4j.language.ballandpaddle.*;
 import org.alia4j.languages.ballandpaddle.context.LocalVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.EqualsPredicate;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
-import org.alia4j.liam.Predicate;
-import org.alia4j.liam.Action;
-import org.alia4j.liam.ActionFactory;
-import org.alia4j.liam.AtomicPredicate;
-import org.alia4j.liam.AtomicPredicateFactory;
-import org.alia4j.liam.Attachment;
-import org.alia4j.liam.BasicPredicate;
-import org.alia4j.liam.CompositionRule;
-import org.alia4j.liam.Context;
-import org.alia4j.liam.ContextFactory;
-import org.alia4j.liam.ScheduleInfo;
-import org.alia4j.liam.AndPredicate;
-import org.alia4j.liam.Specialization;
-import org.alia4j.liam.pattern.MethodPattern;
-import org.alia4j.liam.predicate.ContextValuePredicate;
-import org.alia4j.liam.signature.ResolutionStrategy;
-import org.alia4j.patterns.ClassTypePattern;
-import org.alia4j.patterns.ExceptionsPattern;
-import org.alia4j.patterns.ModifiersPattern;
-import org.alia4j.patterns.ParametersPattern;
-import org.alia4j.patterns.TypePattern;
-import org.alia4j.patterns.modifiers.WildcardModifiersPattern;
-import org.alia4j.patterns.names.ExactNamePattern;
-import org.alia4j.patterns.types.ExactClassTypePattern;
-import org.alia4j.patterns.types.ExactTypePattern;
-import org.alia4j.patterns.types.SubTypePattern;
+import org.alia4j.liam.*;
+import org.alia4j.liam.pattern.*;
+import org.alia4j.liam.predicate.*;
+import org.alia4j.liam.signature.*;
+import org.alia4j.patterns.*;
+import org.alia4j.patterns.modifiers.*;
+import org.alia4j.patterns.names.*;
+import org.alia4j.patterns.types.*;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -123,14 +106,72 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		
 		//create effects
-		List<Effect> effects = new ArrayList<Effects>();
-		
+		Map<Effect, Predicate> effectPredicates = new HashMap<Effect, Predicate>();
+		List<Effect> effects = new ArrayList<Effect>();
+		for(org.alia4j.language.ballandpaddle.Effect e : root.getEffects()){
+			//name of the effect
+			e.getId();
+			
+			
+			//target of the effect -> for predicate
+			Target t = e.getTarget();
+			Effect.TargetType type;
+			Predicate pred = null;
+			String target = "";
+			if(t instanceof ThisTarget){
+				//this target with given booleanexpression
+				type = Effect.TargetType.THIS;
+				ThisTarget tar = (ThisTarget)t;
+				pred = getTargetPredicate(tar.getParams());
+			}
+			else if(t instanceof TypeTarget){
+				//target is an object of the given type
+				type = Effect.TargetType.TYPE;
+				TypeTarget tar = (TypeTarget)t;
+				tar.getType();				
+				target = getBAPObjectType(tar.getType());
+				pred = getTargetPredicate(tar.getParams());
+			}
+			else{
+				//object is an actual item, match on object id.
+				type = Effect.TargetType.OBJECT;
+				ObjectTarget tar = (ObjectTarget)t;
+				target = tar.getItem().getId();
+			}
+			
+			
+			//keyword of what aspect it wants to change
+			e.getType();
+			//expression of how it is changed
+			e.getExpression();
+			
+			
+			
+			
+			
+			
+			
+			Effect effect = new Effect(e.getId(), type, target);
+			effects.add(effect);
+			effectPredicates.put(effect, pred);			
+		}
 		
 		for(org.alia4j.language.ballandpaddle.Block b : tempBlocks){
 			if(b.getPower()!= null){
 				//create power
 				org.alia4j.language.ballandpaddle.Power p = b.getPower();
-				
+				Target t = p.getTarget();
+//				if(t instanceof ThisTarget)
+					//not allowed!
+				if(t instanceof TypeTarget){					
+					TypeTarget tar = (TypeTarget)t;
+					tar.getType();
+					tar.getParams();
+				}
+				else if(t instanceof ObjectTarget){
+					ObjectTarget tar = (ObjectTarget)t;
+					tar.getItem().getId();
+				}
 				
 				Power power = new Power(p.getId(), null/*effects*/, p.getDuration(), p.getPowerSpawnChance());
 			}
@@ -182,8 +223,89 @@ public class Importer implements org.alia4j.fial.Importer {
 		Attachment[] toDeploy = new Attachment[initialAttachments.size()];
 		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
 		
+	}	
+	
+	private String getBAPObjectType(TargetType type) {
+		String result = "";
+		if(type.getValue()==TargetType.BALL_VALUE)
+			result = "ballandpaddle.base.Ball";
+		else if(type.getValue()==TargetType.BLOCK_VALUE)
+			result = "ballandpaddle.base.Block";
+		else if(type.getValue()==TargetType.PADDLE_VALUE)
+			result = "ballandpaddle.base.Paddle";
+		return result;
+	}
+
+	private static final Predicate<AtomicPredicate> getTargetPredicate(BooleanExpression param){
+		if(param instanceof AndParameter){
+			AndParameter andPar = (AndParameter) param;
+				return new AndPredicate<>(getTargetPredicate(andPar.getLeft()), getTargetPredicate(andPar.getRight()));
+		}
+		else if(param instanceof OrParameter){
+			OrParameter orPar = (OrParameter) param;
+			return new OrPredicate<>(getTargetPredicate(orPar.getLeft()), getTargetPredicate(orPar.getRight()));
+		}
+		else if(param instanceof EqParameter){
+			EqParameter eqPar = (EqParameter) param;
+			Context equalsContext = ContextFactory.findOrCreateEqualContext(getTargetContext(eqPar.getLeft()), getTargetContext(eqPar.getRight()));
+			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(equalsContext), true);
+		}
+		else if(param instanceof SmthParameter){
+			SmthParameter smthPar = (SmthParameter) param;
+			//switch right and left so that this is actually a SmallerContext
+			Context smallerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(smthPar.getRight()), getTargetContext(smthPar.getLeft()));
+			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerContext), true);
+		}
+		else if(param instanceof SeqParameter){
+			SeqParameter seqPar = (SeqParameter) param;
+			//switch right and left so that this is actually a SmallerEqualContext
+			Context smallerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(seqPar.getRight()), getTargetContext(seqPar.getLeft()));
+			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerOrEqualContext), true);
+		}
+		else if(param instanceof LthParameter){
+			LthParameter lthPar = (LthParameter) param;
+			Context largerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(lthPar.getLeft()), getTargetContext(lthPar.getRight()));
+			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerContext), true);
+		}
+		else if(param instanceof LeqParameter){
+			LeqParameter leqPar = (LeqParameter) param;
+			Context largerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(leqPar.getLeft()), getTargetContext(leqPar.getRight()));
+			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerOrEqualContext), true);
+		}
+		else if(param instanceof NeqParameter){
+			NeqParameter neqPar = (NeqParameter) param;
+			Context notEqualContext = ContextFactory.findOrCreateEqualContext(getTargetContext(neqPar.getLeft()), getTargetContext(neqPar.getRight()));
+			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(notEqualContext), false);
+		}
+		else if(param instanceof NegParameter){
+			NegParameter negPar = (NegParameter) param;
+			return getTargetPredicate(negPar.getBody()).negate();
+		}
+		else if(param instanceof BracketParameter){
+			BracketParameter brackPar = (BracketParameter) param;
+			//brackets, so just recursively continue for it's body
+			return getTargetPredicate(brackPar.getBody());
+		}			
+		return null;
 	}
 	
+	private static Context getTargetContext(BooleanExpression param) {		
+		///TODO, far from finished
+		if(param instanceof AttParameter){
+			AttParameter attPar = (AttParameter)param;
+			return new LocalVariableContext(attPar.getAtt().getName());
+		}
+		else if(param instanceof IntValueParameter){
+			IntValueParameter intPar = (IntValueParameter)param;
+			return ContextFactory.findOrCreateDoubleConstantContext(intPar.getValue());
+		}
+		else if(param instanceof DoubleValueParameter){
+			DoubleValueParameter doubPar = (DoubleValueParameter)param;
+			return ContextFactory.findOrCreateDoubleConstantContext(doubPar.getValue());
+		}	
+		return null;
+	}
+
 	private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(
 		TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
 		"print",

@@ -46,15 +46,17 @@ RULES {
 	Root ::= level paddles+ balls+ blocks* powers* effects*;	
 	Level ::= "level" id[] "{" blocks[LEVELLINE]* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";	
 	Paddle ::= "paddle" id[] "{" "x" "=" x[FLOAT] "y" "=" y[FLOAT] "size" "=" size[INTEGER]  "orientation" "=" orientation[INTEGER] "}";
-	Ball ::= "ball" id[] "{" "x" "=" x[FLOAT] "y" "=" y[FLOAT] ("size" "=" size[INTEGER])? ("direction" "=" direction[INTEGER])? ("speed" "=" speed[INTEGER])? "}";
-	Block ::= "block" id[CHAR] "{" "hardness" "=" hardness[INTEGER] ("resistance normal" "=" normalRes[INTEGER])? ("resistance fire" "=" fireRes[INTEGER])? ("resistance cold" "=" coldRes[INTEGER])?  ("resistance shock" "=" shockRes[INTEGER])?  ("power" "=" power[])? "}";	
-	Power ::= "power" id[]"("target")" "{" "effects" "=" effects[] "duration" "=" duration[INTEGER] ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
+	Ball ::= "ball" id[] "{" "x" "=" x[FLOAT] "y" "=" y[FLOAT] ("size" "=" size[INTEGER])? ("damage" "=" damage[INTEGER])? ("direction" "=" direction[INTEGER])? ("speed" "=" speed[INTEGER])? "}";
+	Block ::= "block" id[CHAR] "{" "hardness" "=" hardness[INTEGER] ("resistance" "=" resistance[INTEGER])? ("power" "=" power[])? "}";	
+	Power ::= "power" id[] "{" "effects" "=" effects[] ("," effects[])* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
 	
-	Effect ::= "effect" id[]"("target?")" "{" type[X:"x",Y:"y",Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance normal", FireRes:"resistance fire",ColdRes:"resistance cold",ShockRes:"resistance shock", NormalDam:"normal damage", FireDam:"fire damage", ColdDam:"cold damage", ShockDam:"shock damage"] "=" expression "}";
-
+	GeneralEffect ::= "effect" id[] "on" target "{" types "}";
+	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" types "}";
+	
+	EffectType ::= (target[Block:"block",Paddle:"paddle",Ball:"ball"]".")? type[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial"] adjustmentOperator[Inc:"+=", Dec:"-=", Set:"="] expression ("duration" "=" duration[INTEGER])?;
+	
 	ObjectTarget ::= item[CHAR] | item[];
-	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"]"{" params "}";
-	ThisTarget ::= item[THIS] "{" params "}";
+	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("{" params "}")?;
 	
 	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
 	MultExpression ::= left "*" right;
@@ -81,7 +83,7 @@ RULES {
 	DoubleOperand ::= value[FLOAT];
 
 	@Operator(type="primitive", weight="4", superclass="Expression")
-	AttOperand ::= att[X:"x",Y:"y",Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance normal", FireRes:"resistance fire",ColdRes:"resistance cold",ShockRes:"resistance shock", NormalDam:"normal damage", FireDam:"fire damage", ColdDam:"cold damage", ShockDam:"shock damage"];
+	AttOperand ::= (target[Block:"block",Paddle:"paddle",Ball:"ball"]".")?att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial", X:"x", Y:"y"];
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
 	EqParameter ::= left "=" right;
@@ -114,7 +116,7 @@ RULES {
 	BracketParameter ::= "(" body ")";
 	
 	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
-	AttParameter ::= att[X:"x",Y:"y",Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance normal", FireRes:"resistance fire",ColdRes:"resistance cold",ShockRes:"resistance shock"];
+	AttParameter ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial", X:"x", Y:"y"];
 	
 	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
 	IntValueParameter ::= value[INTEGER];

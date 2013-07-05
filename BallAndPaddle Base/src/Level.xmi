@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ASCII"?>
+<ballandpaddle:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ballandpaddle="http://www.alia4j.org/language/ballandpaddle">
+  <level id="first" powerSpawnChance="1.0">
+    <blocks>...AAA...</blocks>
+    <blocks>...BBB...</blocks>
+    <blocks>...CCC...</blocks>
+  </level>
+  <paddles id="Paddle" x="4.0" y="4.0" size="1" orientation="270"/>
+  <balls id="Ball" x="3.0" y="4.0"/>
+  <blocks id="A" hardness="1"/>
+  <blocks id="B" hardness="5" power="//@powers.0"/>
+  <effects xsi:type="ballandpaddle:CollisionEffect" id="MoreSpeed">
+    <types target="ball" type="speed" duration="5">
+      <expression xsi:type="ballandpaddle:DoubleOperand" value="2.5"/>
+    </types>
+    <leftTarget xsi:type="ballandpaddle:ObjectTarget" item="//@balls.0"/>
+    <rightTarget xsi:type="ballandpaddle:ObjectTarget" item="//@paddles.0"/>
+  </effects>
+  <effects xsi:type="ballandpaddle:GeneralEffect" id="EvenMoreSpeed">
+    <types target="ball" type="speed" adjustmentOperator="=" duration="10">
+      <expression xsi:type="ballandpaddle:IntOperand" value="3"/>
+    </types>
+    <target xsi:type="ballandpaddle:ObjectTarget" item="//@balls.0"/>
+  </effects>
+  <effects xsi:type="ballandpaddle:CollisionEffect" id="MoreDamage">
+    <types type="hardness" adjustmentOperator="-=" duration="10">
+      <expression xsi:type="ballandpaddle:IntOperand" value="2"/>
+    </types>
+    <leftTarget xsi:type="ballandpaddle:TypeTarget" type="ball"/>
+    <rightTarget xsi:type="ballandpaddle:TypeTarget"/>
+  </effects>
+  <effects xsi:type="ballandpaddle:GeneralEffect" id="MoreResistance">
+    <types type="resistance" duration="5">
+      <expression xsi:type="ballandpaddle:IntOperand" value="2"/>
+    </types>
+    <target xsi:type="ballandpaddle:TypeTarget">
+      <params xsi:type="ballandpaddle:SmthParameter">
+        <left xsi:type="ballandpaddle:AttParameter" att="resistance"/>
+        <right xsi:type="ballandpaddle:IntValueParameter" value="5"/>
+      </params>
+    </target>
+  </effects>
+  <powers id="Speed" effects="//@effects.0 //@effects.1"/>
+  <powers id="MostlyUseless" effects="//@effects.2 //@effects.3"/>
+</ballandpaddle:Root>

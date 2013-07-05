@@ -7,28 +7,25 @@
   <genPackages prefix="Ballandpaddle" basePackage="org.alia4j.language" disposableProviderFactory="true"
       ecorePackage="ballandpaddle.text.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="ballandpaddle.text.ecore#//Attribute">
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/X"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/Y"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/Size"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/Orientation"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/Speed"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/Hardness"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/NormalRes"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/FireRes"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/ColdRes"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/ShockRes"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/NormalDam"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/FireDam"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/ColdDam"/>
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/ShockDam"/>
-    </genEnums>
-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ballandpaddle.text.ecore#//DamageEffectType">
-      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//DamageEffectType/Damage"/>
+      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/Immaterial"/>
+      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/X"/>
+      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//Attribute/Y"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="ballandpaddle.text.ecore#//TargetType">
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//TargetType/Block"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//TargetType/Paddle"/>
       <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//TargetType/Ball"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ballandpaddle.text.ecore#//AdjustmentOperator">
+      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//AdjustmentOperator/Inc"/>
+      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//AdjustmentOperator/Dec"/>
+      <genEnumLiterals ecoreEnumLiteral="ballandpaddle.text.ecore#//AdjustmentOperator/Set"/>
     </genEnums>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//Root">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Root/level"/>
@@ -57,22 +54,18 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Ball/y"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Ball/size"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Ball/direction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Ball/damage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Ball/speed"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//Block">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Block/hardness"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Block/normalRes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Block/fireRes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Block/coldRes"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Block/shockRes"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Block/resistance"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Block/power"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//Power">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Power/id"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Power/effects"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Power/duration"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Power/powerSpawnChance"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Power/target"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//Target"/>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//ObjectTarget">
@@ -81,10 +74,6 @@
     <genClasses ecoreClass="ballandpaddle.text.ecore#//TypeTarget">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//TypeTarget/type"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//TypeTarget/params"/>
-    </genClasses>
-    <genClasses ecoreClass="ballandpaddle.text.ecore#//ThisTarget">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//ThisTarget/item"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//ThisTarget/params"/>
     </genClasses>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//BooleanExpression"/>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//BooleanBinaryExpression">
@@ -115,9 +104,21 @@
     </genClasses>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//Effect">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Effect/id"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Effect/target"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Effect/type"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Effect/expression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Effect/types"/>
+    </genClasses>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//GeneralEffect">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//GeneralEffect/target"/>
+    </genClasses>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//CollisionEffect">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//CollisionEffect/leftTarget"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//CollisionEffect/rightTarget"/>
+    </genClasses>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectType/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectType/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectType/adjustmentOperator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//EffectType/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectType/duration"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//Expression"/>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//BinaryExpression">
@@ -140,6 +141,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//DoubleOperand/value"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//AttOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//AttOperand/target"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//AttOperand/att"/>
     </genClasses>
   </genPackages>

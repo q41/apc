@@ -28,7 +28,7 @@ public class Ball extends BAPObject {
 			this.direction=270;
 		this.speed = speed;
 		if(speed<1)
-			this.speed = 1;
+			this.speed = 4;
 		else if(speed>2)
 			this.speed = 2;
 	}
