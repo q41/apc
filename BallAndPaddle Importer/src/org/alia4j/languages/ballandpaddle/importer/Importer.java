@@ -37,7 +37,7 @@ import org.alia4j.language.ballandpaddle.Target;
 import org.alia4j.language.ballandpaddle.TargetType;
 import org.alia4j.language.ballandpaddle.TypeTarget;
 import org.alia4j.languages.ballandpaddle.context.LocalBooleanVariableContext;
-import org.alia4j.languages.ballandpaddle.action.ApplyEffect;
+import org.alia4j.languages.ballandpaddle.action.AttributeUpdateAction;
 import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
 import org.alia4j.languages.ballandpaddle.context.LocalIntegerVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
@@ -476,18 +476,18 @@ public class Importer implements org.alia4j.fial.Importer {
 
 		//update speed
 		Action growBall = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromClass(ApplyEffect.class),
+			TypeHierarchyProvider.findOrCreateFromClass(AttributeUpdateAction.class),
 			"apply",
 			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] {"double"}),
 			TypeHierarchyProvider.findOrCreateFromClass(double.class),
 			ResolutionStrategy.STATIC
 		);
 		
-		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(1); 
+		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(2); 
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-		Specialization specialization = new Specialization(ballSpeedAccess, null, Collections.singletonList(newSize));
+		Specialization specialization = new Specialization(ballSpeedAccess, speedPred, Collections.singletonList(newSize));
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), growBall, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);

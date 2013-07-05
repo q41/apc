@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ApplyEffect {
+public class AttributeUpdateAction {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static double apply(double inc) throws Throwable {
