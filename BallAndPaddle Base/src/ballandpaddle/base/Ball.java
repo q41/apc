@@ -32,7 +32,6 @@ public class Ball extends BAPObject {
 			this.speed = upperSpeedLimit;
 		if(damage==0)
 			damage = 1;
-		System.out.println("starting speed "+this.speed+" "+speed);
 	}
 	
 	public Ball(String id, double x, double y){
@@ -80,7 +79,6 @@ public class Ball extends BAPObject {
 	@Override
 	public final void update(){
 		body.moveBy(movementVectorX, movementVectorY);
-		System.out.println(speed);
 		multSpeed(1.025);
 	}
 

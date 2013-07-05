@@ -483,7 +483,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			ResolutionStrategy.STATIC
 		);
 		
-		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(3); 
+		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(1); 
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);

@@ -11,13 +11,19 @@ public class Paddle extends BAPObject {
 	private int size;
 	private int orientation;
 	private int direction; //-1 for left, 1 for right, 0 for none
-	private double speed = 4;
+	private final double upperSpeedLimit = 10;
+	private final double lowerSpeedLimit = 1;
+	private final double upperSizeLimit = 3;
+	private final double lowerSizeLimit = 1;
+	private double speed;
 	private final double increment = 0.25;
 	private double movementVectorX;
 	
-	public Paddle(String id, double d, double e, int orientation, int size) {
-		super(id, d, e, new RectangleBody(new Point(d,e), new Point(d+0.5*size, e+0.05)));
+	public Paddle(String id, double x, double y, int orientation, int size) {
+		super(id, x, y, null);
+		super.setBody(new RectangleBody(new Point(x,y), new Point(x, y+0.05), this));
 		this.orientation = orientation;
+		this.speed = 4;
 		this.size = 3;
 	}
 	
