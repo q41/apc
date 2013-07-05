@@ -316,8 +316,11 @@ public class Importer implements org.alia4j.fial.Importer {
 		BasicPredicate<AtomicPredicate> isFinalPred = new BasicPredicate<AtomicPredicate>(new isMethodFinalPredicate(resolvedMethodContext), true);
 		
 		//contruct specialization
-		Predicate<AtomicPredicate> predicate = new AndPredicate<AtomicPredicate>(speedPred, isFinalPred);
-		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, predicate, Collections.<Context>emptyList());
+		BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
+		
+		Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(speedPred, speedPred);
+		
+		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, andPredicate, Collections.<Context>emptyList());
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
