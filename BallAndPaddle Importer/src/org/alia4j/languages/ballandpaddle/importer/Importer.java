@@ -458,11 +458,13 @@ public class Importer implements org.alia4j.fial.Importer {
 	
 	private void createEffect() {
 		//match on speed member 
-		FieldReadPattern ballSpeedAccess = new FieldReadPattern(
+		MethodPattern ballSpeedAccess = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
 			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(Ball.class)),
-			new ExactNamePattern("size")
+			new ExactNamePattern("getSpeed"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
 		);
 		
 		//check for speed threshold
@@ -485,7 +487,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-		Specialization specialization = new Specialization(ballSpeedAccess, speedPred, Collections.singletonList(newSize));
+		Specialization specialization = new Specialization(ballSpeedAccess, null, Collections.singletonList(newSize));
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), growBall, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
