@@ -462,13 +462,13 @@ public class Importer implements org.alia4j.fial.Importer {
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
 			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(Ball.class)),
-			new ExactNamePattern("speed")
+			new ExactNamePattern("size")
 		);
 		
 		//check for speed threshold
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(5);
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(2);
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
 		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 
@@ -481,7 +481,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			ResolutionStrategy.STATIC
 		);
 		
-		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(1); 
+		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(2); 
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
