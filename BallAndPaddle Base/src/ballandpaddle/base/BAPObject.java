@@ -1,6 +1,7 @@
 package ballandpaddle.base;
 
 import ballandpaddle.base.collision.body.Body;
+import ballandpaddle.base.collision.body.CircleBody;
 import ballandpaddle.base.collision.body.SquareBody;
 
 public abstract class BAPObject {
@@ -36,6 +37,10 @@ public abstract class BAPObject {
 	public abstract void update();
 
 	public abstract void calculateMove(double d, Level level);
+
+	public void setBody(Body body) {
+		this.body = body;		
+	}
 	
 	
 }

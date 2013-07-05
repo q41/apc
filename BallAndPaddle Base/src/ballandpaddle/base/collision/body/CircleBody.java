@@ -1,14 +1,16 @@
 package ballandpaddle.base.collision.body;
 
+import ballandpaddle.base.Ball;
+
 public class CircleBody implements Body {
 
 	private Point center;
-	private double r;
 	private CircleBody previousState;
+	private Ball ball;
 	
-	public CircleBody(Point center, double r){
+	public CircleBody(Point center, Ball ball){
 		this.center = center;
-		this.r = r;
+		this.ball = ball;
 		previousState = this;
 	}
 	
@@ -17,16 +19,12 @@ public class CircleBody implements Body {
 	}
 	
 	public double getR(){
-		return r;
-	}
-	
-	public void setR(double r){
-		this.r = r;
+		return ball.getSize()*0.05;
 	}
 
 	@Override
 	public void moveBy(double x, double y) {
-		previousState = new CircleBody(new Point(center.getX(), center.getY()), r);
+		previousState = new CircleBody(new Point(center.getX(), center.getY()), ball);
 		center.moveBy(x,y);		
 	}
 	
