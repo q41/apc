@@ -7,20 +7,20 @@ import ballandpaddle.base.collision.body.Point;
 
 public class Ball extends BAPObject {
 
-	private int size;
+	private double size;
 	private int direction; //0-360
 	private double speed;
 	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
-	private final int upperSizeLimit = 3;
-	private final int lowerSizeLimit = 1;
+	private final double upperSizeLimit = 3;
+	private final double lowerSizeLimit = 1;
 	private int damage;
 	private boolean alive;
 	private double movementVectorX;
 	private double movementVectorY;
 	private final double increment = 0.25;
 	
-	public Ball(String id, double x, double y, int size, int direction, int speed){
+	public Ball(String id, double x, double y, double size, int direction, int speed){
 		this(id, x, y, size);
 		this.direction = direction;
 		if(this.direction>=0 && this.direction<=180)
@@ -39,7 +39,7 @@ public class Ball extends BAPObject {
 		this(id, x, y, 1);
 	}
 	
-	public Ball(String id, double x, double y, int size) {
+	public Ball(String id, double x, double y, double size) {
 		super(id, x, y, null);
 		super.setBody(new CircleBody(new Point(x,y), this));
 		this.size = size;
@@ -51,7 +51,7 @@ public class Ball extends BAPObject {
 		alive = true;
 	}
 	
-	public int getSize(){
+	public double getSize(){
 		return size;
 	}
 	
@@ -74,7 +74,7 @@ public class Ball extends BAPObject {
 	}
 	
 	public void multSpeed(double mult){
-		speed*=mult;
+		speed = Math.max(Math.min(speed*mult, upperSpeedLimit), lowerSpeedLimit);
 	}
 	
 	@Override
