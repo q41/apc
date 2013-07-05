@@ -462,7 +462,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
 			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(Ball.class)),
-			new ExactNamePattern("getSpeed"),
+			new ExactNamePattern("getSize"),
 			ParametersPattern.ANY,
 			ExceptionsPattern.ANY
 		);
@@ -483,7 +483,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			ResolutionStrategy.STATIC
 		);
 		
-		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(2); 
+		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(3); 
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
