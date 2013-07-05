@@ -5,10 +5,7 @@ import ballandpaddle.base.collision.body.*;
 public class Block extends BAPObject {
 
 	private int hardness;
-	private int normalRes;
-	private int fireRes;
-	private int coldRes;
-	private int shockRes;
+	private int resistance;
 	private Power power;
 	
 	public Block(String id, double x, double y) {
@@ -18,20 +15,14 @@ public class Block extends BAPObject {
 	public Block(double x, double y, Block b){
 		this(b.getId(), x, y);
 		this.hardness = b.getHardness();
-		this.normalRes = b.getNormalRes();
-		this.fireRes = b.getFireRes();
-		this.coldRes = b.getColdRes();
-		this.shockRes = b.getShockRes();
+		this.resistance = b.getResistance();
 		this.power = b.getPower();
 	}
 	
-	public Block(String id, int hardness, int normalRes, int fireRes, int coldRes, int shockRes, Power power){
+	public Block(String id, int hardness, int resistance, Power power){
 		this(id,-1,-1);
 		this.hardness = hardness;
-		this.normalRes = normalRes;
-		this.fireRes = fireRes;
-		this.coldRes = coldRes;
-		this.shockRes = shockRes;
+		this.resistance = resistance;
 		this.power = power;
 	}
 	
@@ -39,20 +30,8 @@ public class Block extends BAPObject {
 		return hardness;
 	}
 	
-	public int getNormalRes(){
-		return normalRes;
-	}
-	
-	public int getFireRes(){
-		return fireRes;
-	}
-	
-	public int getColdRes(){
-		return coldRes;
-	}
-	
-	public int getShockRes(){
-		return shockRes;
+	public int getResistance(){
+		return resistance;
 	}
 	
 	public Power getPower(){
@@ -60,10 +39,7 @@ public class Block extends BAPObject {
 	}
 
 	public void takeDamageFrom(Ball ball) {
-		hardness -= Math.max(0, ball.getNormalDamage()-normalRes);
-		hardness -= Math.max(0, ball.getFireDamage()-fireRes);
-		hardness -= Math.max(0, ball.getColdDamage()-coldRes);
-		hardness -= Math.max(0, ball.getShockDamage()-shockRes);	
+		hardness -= Math.max(0, ball.getNormalDamage()-resistance);
 	}
 	
 	public boolean isDestroyed(){

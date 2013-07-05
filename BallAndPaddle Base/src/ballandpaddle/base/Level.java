@@ -218,7 +218,7 @@ public class Level extends Observable {
 					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
 					this.toBeSpawnedPowers.add(power);
 				}	
-				else if(Math.random()<=powerSpawnChance){
+				else if(Math.random()<=powerSpawnChance && powers.size()>0){
 					//spawn a random power
 					//sum up spawn chance of all powers
 					double sumChance = 0.0;

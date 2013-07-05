@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="ASCII"?>
 <ballandpaddle:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ballandpaddle="http://www.alia4j.org/language/ballandpaddle">
   <level id="first" powerSpawnChance="1.0">
-    <blocks>...AAA...</blocks>
-    <blocks>...BBB...</blocks>
-    <blocks>...CCC...</blocks>
+    <blocks>.......</blocks>
+    <blocks>...A...</blocks>
+    <blocks>..BAB..</blocks>
+	<blocks>.......</blocks>
+	<blocks>.......</blocks>
   </level>
   <paddles id="Paddle" x="4.0" y="4.0" size="1" orientation="270"/>
   <balls id="Ball" x="3.0" y="4.0"/>

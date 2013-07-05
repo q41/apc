@@ -26,6 +26,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import ballandpaddle.base.*;
+import ballandpaddle.base.BAPObject;
+import ballandpaddle.base.Ball;
+import ballandpaddle.base.Block;
+import ballandpaddle.base.Effect;
+import ballandpaddle.base.Paddle;
+import ballandpaddle.base.Power;
 
 public class Importer implements org.alia4j.fial.Importer {
 
@@ -83,76 +89,73 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		
 		//create effects
-		Map<Effect, Predicate> effectPredicates = new HashMap<Effect, Predicate>();
-		List<Effect> effects = new ArrayList<Effect>();
-		for(org.alia4j.language.ballandpaddle.Effect e : root.getEffects()){
-			//name of the effect
-			e.getId();
-			
-			
-			//target of the effect -> for predicate
-			Target t = e.getTarget();
-			Effect.TargetType type;
-			Predicate pred = null;
-			String target = "";
-			if(t instanceof ThisTarget){
-				//this target with given booleanexpression
-				type = Effect.TargetType.THIS;
-				ThisTarget tar = (ThisTarget)t;
-				pred = getTargetPredicate(tar.getParams());
-			}
-			else if(t instanceof TypeTarget){
-				//target is an object of the given type
-				type = Effect.TargetType.TYPE;
-				TypeTarget tar = (TypeTarget)t;
-				tar.getType();				
-				target = getBAPObjectType(tar.getType());
-				pred = getTargetPredicate(tar.getParams());
-			}
-			else{
-				//object is an actual item, match on object id.
-				type = Effect.TargetType.OBJECT;
-				ObjectTarget tar = (ObjectTarget)t;
-				target = tar.getItem().getId();
-			}
-			
-			
-			//keyword of what aspect it wants to change
-			e.getType();
-			//expression of how it is changed
-			e.getExpression();
-			
-			
-			
-			
-			
-			
-			
-			Effect effect = new Effect(e.getId(), type, target);
-			effects.add(effect);
-			effectPredicates.put(effect, pred);			
-		}
+//		Map<Effect, Predicate> effectPredicates = new HashMap<Effect, Predicate>();
+//		List<Effect> effects = new ArrayList<Effect>();
+//		for(org.alia4j.language.ballandpaddle.Effect e : root.getEffects()){
+//			//name of the effect
+//			e.getId();
+//			
+//			
+//			//target of the effect -> for predicate
+//			EffectType type = e.getTypes();
+//			//the attribute that it is affecting, if any
+//			TargetType t = type.getTarget();
+//			t.get
+//			Effect.TargetType type;
+//			Predicate pred = null;
+//			String target = "";
+//			if(t instanceof TypeTarget){
+//				//target is an object of the given type
+//				type = Effect.TargetType.TYPE;
+//				TypeTarget tar = (TypeTarget)t;
+//				tar.getType();				
+//				target = getBAPObjectType(tar.getType());
+//				pred = getTargetPredicate(tar.getParams());
+//			}
+//			else{
+//				//object is an actual item, match on object id.
+//				type = Effect.TargetType.OBJECT;
+//				ObjectTarget tar = (ObjectTarget)t;
+//				target = tar.getItem().getId();
+//			}
+//			
+//			
+//			//keyword of what aspect it wants to change
+//			e.getType();
+//			//expression of how it is changed
+//			e.getExpression();
+//			
+//			
+//			
+//			
+//			
+//			
+//			
+//			Effect effect = new Effect(e.getId(), type, target);
+//			effects.add(effect);
+//			effectPredicates.put(effect, pred);			
+//		}
 		
 		for(org.alia4j.language.ballandpaddle.Block b : tempBlocks){
-			if(b.getPower()!= null){
-				//create power
-				org.alia4j.language.ballandpaddle.Power p = b.getPower();
-				Target t = p.getTarget();
-//				if(t instanceof ThisTarget)
-					//not allowed!
-				if(t instanceof TypeTarget){					
-					TypeTarget tar = (TypeTarget)t;
-					tar.getType();
-					tar.getParams();
-				}
-				else if(t instanceof ObjectTarget){
-					ObjectTarget tar = (ObjectTarget)t;
-					tar.getItem().getId();
-				}
-				
-				Power power = new Power(p.getId(), null/*effects*/, p.getDuration(), p.getPowerSpawnChance());
-			}
-			Block block = new Block(b.getId(), b.getHardness(), b.getNormalRes(), b.getFireRes(), b.getColdRes(), b.getShockRes(), null);
+//			if(b.getPower()!= null){
+//				//create power
+//				org.alia4j.language.ballandpaddle.Power p = b.getPower();
+//				Target t = p.getTarget();
+////				if(t instanceof ThisTarget)
+//					//not allowed!
+//				if(t instanceof TypeTarget){					
+//					TypeTarget tar = (TypeTarget)t;
+//					tar.getType();
+//					tar.getParams();
+//				}
+//				else if(t instanceof ObjectTarget){
+//					ObjectTarget tar = (ObjectTarget)t;
+//					tar.getItem().getId();
+//				}
+//				
+//				Power power = new Power(p.getId(), null/*effects*/, p.getDuration(), p.getPowerSpawnChance());
+//			}
+			Block block = new Block(b.getId(), b.getHardness(), b.getResistance(), null);
 			blocks.add(block);
 		}		
 		
@@ -270,7 +273,8 @@ public class Importer implements org.alia4j.fial.Importer {
 		///TODO, far from finished
 		if(param instanceof AttParameter){
 			AttParameter attPar = (AttParameter)param;
-			return new LocalVariableContext(attPar.getAtt().getName());
+//			return new LocalVariableContext(attPar.getAtt().getName());
+			return null;
 		}
 		else if(param instanceof IntValueParameter){
 			IntValueParameter intPar = (IntValueParameter)param;
