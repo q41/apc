@@ -37,7 +37,7 @@ import org.alia4j.language.ballandpaddle.Target;
 import org.alia4j.language.ballandpaddle.TargetType;
 import org.alia4j.language.ballandpaddle.TypeTarget;
 import org.alia4j.languages.ballandpaddle.context.LocalBooleanVariableContext;
-import org.alia4j.languages.ballandpaddle.action.AttributeUpdateAction;
+import org.alia4j.languages.ballandpaddle.action.AttributeIncreaseAction;
 import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
 import org.alia4j.languages.ballandpaddle.context.LocalIntegerVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
@@ -336,7 +336,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		createBaseCollisionDetection();
 		createStandardBallCollisionHandling();
 		createStandardOthersCollisionHandling();
-		createEffect();
+		createEffect(Ball.class, "size", AttributeType.DOUBLE);
 		
 		//-----------------------
 		// Deploy all definitions
@@ -456,40 +456,45 @@ public class Importer implements org.alia4j.fial.Importer {
 	);
 	private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
 	
-	private void createEffect() {
-		//match on speed member 
-		MethodPattern ballSpeedAccess = new MethodPattern(
+	enum AttributeType {
+		DOUBLE,
+		INT,
+		BOOLEAN
+	}
+	
+	private void createEffect(Class<? extends BAPObject> bapobject, String attribute, AttributeType attributeType) {
+		//create attribute getter pattern 
+		MethodPattern attributeGetter = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
-			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(Ball.class)),
-			new ExactNamePattern("getSize"),
+			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bapobject)),
+			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
 			ParametersPattern.ANY,
 			ExceptionsPattern.ANY
 		);
 		
-		//check for speed threshold
+		//create pattern matching predicate
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
 		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(2);
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
 		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 
-		//update speed
-		Action growBall = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromClass(AttributeUpdateAction.class),
-			"apply",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] {"double"}),
-			TypeHierarchyProvider.findOrCreateFromClass(double.class),
-			ResolutionStrategy.STATIC
-		);
+		//create attribute update action
+		Action attributeIncreaseAction = null;
+		switch(attributeType) {
+		case DOUBLE: attributeIncreaseAction = AttributeIncreaseAction.DOUBLE_INSTANCE.methodCallAction; break;
+		case INT: attributeIncreaseAction = AttributeIncreaseAction.DOUBLE_INSTANCE.methodCallAction; break;
+		case BOOLEAN: attributeIncreaseAction = AttributeIncreaseAction.DOUBLE_INSTANCE.methodCallAction; break;
+		}
 		
 		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(2); 
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-		Specialization specialization = new Specialization(ballSpeedAccess, speedPred, Collections.singletonList(newSize));
+		Specialization specialization = new Specialization(attributeGetter, speedPred, Collections.singletonList(newSize));
 		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), growBall, ScheduleInfo.AROUND);
+		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncreaseAction, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
 	}	
 	
