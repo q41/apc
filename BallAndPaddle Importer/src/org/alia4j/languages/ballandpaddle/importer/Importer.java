@@ -3,33 +3,62 @@ package org.alia4j.languages.ballandpaddle.importer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.alia4j.hierarchy.TypeHierarchyProvider;
-import org.alia4j.language.ballandpaddle.*;
+import org.alia4j.language.ballandpaddle.AndParameter;
+import org.alia4j.language.ballandpaddle.AttParameter;
+import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
+import org.alia4j.language.ballandpaddle.BooleanExpression;
+import org.alia4j.language.ballandpaddle.BracketParameter;
+import org.alia4j.language.ballandpaddle.DoubleValueParameter;
+import org.alia4j.language.ballandpaddle.EqParameter;
+import org.alia4j.language.ballandpaddle.IntValueParameter;
+import org.alia4j.language.ballandpaddle.LeqParameter;
+import org.alia4j.language.ballandpaddle.LthParameter;
+import org.alia4j.language.ballandpaddle.NegParameter;
+import org.alia4j.language.ballandpaddle.NeqParameter;
+import org.alia4j.language.ballandpaddle.OrParameter;
+import org.alia4j.language.ballandpaddle.SeqParameter;
+import org.alia4j.language.ballandpaddle.SmthParameter;
+import org.alia4j.language.ballandpaddle.TargetType;
 import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
 import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
-import org.alia4j.liam.*;
-import org.alia4j.liam.pattern.*;
-import org.alia4j.liam.predicate.*;
-import org.alia4j.liam.signature.*;
-import org.alia4j.patterns.*;
-import org.alia4j.patterns.modifiers.*;
-import org.alia4j.patterns.names.*;
-import org.alia4j.patterns.types.*;
+import org.alia4j.liam.Action;
+import org.alia4j.liam.ActionFactory;
+import org.alia4j.liam.AndPredicate;
+import org.alia4j.liam.AtomicPredicate;
+import org.alia4j.liam.AtomicPredicateFactory;
+import org.alia4j.liam.Attachment;
+import org.alia4j.liam.BasicPredicate;
+import org.alia4j.liam.CompositionRule;
+import org.alia4j.liam.Context;
+import org.alia4j.liam.ContextFactory;
+import org.alia4j.liam.OrPredicate;
+import org.alia4j.liam.Predicate;
+import org.alia4j.liam.ScheduleInfo;
+import org.alia4j.liam.Specialization;
+import org.alia4j.liam.pattern.MethodPattern;
+import org.alia4j.liam.signature.ResolutionStrategy;
+import org.alia4j.patterns.ClassTypePattern;
+import org.alia4j.patterns.ExceptionsPattern;
+import org.alia4j.patterns.ModifiersPattern;
+import org.alia4j.patterns.ParametersPattern;
+import org.alia4j.patterns.TypePattern;
+import org.alia4j.patterns.names.ExactNamePattern;
+import org.alia4j.patterns.types.ExactClassTypePattern;
+import org.alia4j.patterns.types.SubTypePattern;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import ballandpaddle.base.*;
+
 import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
-import ballandpaddle.base.Effect;
 import ballandpaddle.base.Paddle;
 import ballandpaddle.base.Power;
 
@@ -303,7 +332,10 @@ public class Importer implements org.alia4j.fial.Importer {
 		ExceptionsPattern.ANY
 	);
 
-	private void createEffect() {		
+	private void createEffect() {
+		//match on speed member 
+		
+		
 		//check for speed threshold
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
@@ -318,9 +350,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		//contruct specialization
 		BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
 		
-		Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(speedPred, speedPred);
+		Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
 		
-		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, andPredicate, Collections.<Context>emptyList());
+		Specialization specialization = new Specialization(BAPObjectUpdateMethodPattern, isFinalPred, Collections.<Context>emptyList());
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), testAction, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
