@@ -10,7 +10,6 @@ public abstract class Effect {
 	private Object value;
 	protected EffectTarget effectTarget;
 	private EffectedAttribute effectedAttribute;
-	protected List<EffectedAttribute> targetAttributes;
 
 	public enum TargetType{
 		TYPE, OBJECT;
@@ -25,7 +24,7 @@ public abstract class Effect {
 	}
 	
 	public enum EffectedAttribute{
-		HARDNESS, IMMATERIAL, SIZE, SPEED, DIRECTION, DAMAGE, RESISTANCE;
+		HARDNESS, IMMATERIAL, SIZE, SPEED, DIRECTION, RESISTANCE;
 	}
 	
 	public Effect(String id){
@@ -58,7 +57,4 @@ public abstract class Effect {
 
 	public abstract boolean isLegal(Level level);
 
-	public void setTargetAttributes(List<EffectedAttribute> targetAttributes) {
-		this.targetAttributes = targetAttributes;		
-	}
 }

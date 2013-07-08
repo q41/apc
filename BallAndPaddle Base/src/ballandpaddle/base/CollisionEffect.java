@@ -1,17 +1,22 @@
 package ballandpaddle.base;
 
+import java.util.List;
+
 import ballandpaddle.base.Effect.EffectTarget;
+import ballandpaddle.base.Effect.EffectedAttribute;
 import ballandpaddle.base.Effect.TargetType;
 
 public class CollisionEffect extends Effect {
 
-		//if TargetType is This, then target is ""
 		//if TargetType is Type then target is the class name of the target
 		//if TargetType is Object then target is the id of the target
 		private String leftTarget;
 		private TargetType leftType;
 		private String rightTarget;
 		private TargetType rightType;
+		
+		private List<EffectedAttribute> rightTargetAttributes;
+		private List<EffectedAttribute> leftTargetAttributes;
 	
 	
 	public CollisionEffect(String id, TargetType leftType, String leftTarget, TargetType rightType, String rightTarget) {
@@ -20,6 +25,16 @@ public class CollisionEffect extends Effect {
 		this.leftType=leftType;
 		this.rightTarget=rightTarget;
 		this.rightType=rightType;
+	}
+	
+	public void setLeftTargetAttributes(
+			List<EffectedAttribute> leftTargetAttributes) {
+		this.leftTargetAttributes = leftTargetAttributes;		
+	}
+	
+	public void setRightTargetAttributes(
+			List<EffectedAttribute> rightTargetAttributes) {
+		this.rightTargetAttributes = rightTargetAttributes;
 	}
 	
 	@Override
@@ -65,22 +80,46 @@ public class CollisionEffect extends Effect {
 				return false;
 		}
 		else{
-			if(leftTarget.contains("Ball"))
+			if(rightTarget.contains("Ball"))
 				targetTypeRight = EffectTarget.BALL;
-			else if(leftTarget.contains("Block"))
+			else if(rightTarget.contains("Block"))
 				targetTypeRight = EffectTarget.BLOCK;
 			else
 				targetTypeRight = EffectTarget.PADDLE;
-		}
+		}			
 		//now the types are known, check if the effect target matches one of them.
 		//the variable that is targeted does not have to be checked, the parser already does this
 		correct &= targetTypeLeft.equals(effectTarget) || targetTypeRight.equals(effectTarget);
 		//check if all the parameters used with the target are legal for these types
+		for(EffectedAttribute attr : leftTargetAttributes){
+			if(leftTarget.equals(EffectTarget.BALL)){
+				correct &= !attr.equals(EffectedAttribute.HARDNESS) && !attr.equals(EffectedAttribute.RESISTANCE);
+			}
+			else if(leftTarget.equals(EffectTarget.BLOCK)){
+				correct &= attr.equals(EffectedAttribute.HARDNESS) || attr.equals(EffectedAttribute.RESISTANCE);
+			}
+			else{
+				correct &= !attr.equals(EffectedAttribute.SIZE) && !attr.equals(EffectedAttribute.SPEED);
+			}
+		}
+		for(EffectedAttribute attr : rightTargetAttributes){
+			if(rightTarget.equals(EffectTarget.BALL)){
+				correct &= !attr.equals(EffectedAttribute.HARDNESS) && !attr.equals(EffectedAttribute.RESISTANCE);
+			}
+			else if(rightTarget.equals(EffectTarget.BLOCK)){
+				correct &= attr.equals(EffectedAttribute.HARDNESS) || attr.equals(EffectedAttribute.RESISTANCE);
+			}
+			else{
+				correct &= !attr.equals(EffectedAttribute.SIZE) && !attr.equals(EffectedAttribute.SPEED);
+			}
+		}
+		
 		
 		//check if all the parameters used in the expression for the effect are legal for these types
-		
-		
+		System.out.println(correct);
 		return correct;
 	}
+
+
 
 }

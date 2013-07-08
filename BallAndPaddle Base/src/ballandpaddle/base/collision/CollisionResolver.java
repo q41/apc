@@ -11,23 +11,19 @@ public abstract class CollisionResolver {
 	protected static void resolveCollision(Ball ball, ballandpaddle.base.Border border){
 		int newDirection = 0;
 		if(border.getId().equals("left") && ball.getDirection()>90 && ball.getDirection()<270){
-			newDirection = 180-ball.getDirection();
-			ball.setDirection(newDirection);
+			ball.OneEightyDirection();
 			ball.getBody().undoMove();
 		}
 		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0))){
-			newDirection = 180-ball.getDirection();
-			ball.setDirection(newDirection);
+			ball.OneEightyDirection();
 			ball.getBody().undoMove();
 		}
 		else if(border.getId().equals("top") && ball.getDirection()>180 && ball.getDirection()<360){
-			newDirection = 360-ball.getDirection();		
-			ball.setDirection(newDirection);
+			ball.threeSixtyDirection();
 			ball.getBody().undoMove();
 		}
 		else if(border.getId().equals("bottom") && ball.getDirection()>0 && ball.getDirection()<180){
-			newDirection = 360-ball.getDirection();			
-			ball.setDirection(newDirection);
+			ball.threeSixtyDirection();
 			ball.getBody().undoMove();
 			ball.setDestroyed(true);
 		}		

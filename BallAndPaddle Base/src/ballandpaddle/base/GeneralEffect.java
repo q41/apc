@@ -1,5 +1,8 @@
 package ballandpaddle.base;
 
+import java.util.List;
+
+import ballandpaddle.base.Effect.EffectedAttribute;
 import ballandpaddle.base.Effect.TargetType;
 
 public class GeneralEffect extends Effect {
@@ -9,12 +12,18 @@ public class GeneralEffect extends Effect {
 	//if TargetType is Object then target is the id of the target
 	private String target;
 	private TargetType type;
-	
+	//attributes used in the target line
+	private List<EffectedAttribute> targetAttributes;
 
 	public GeneralEffect(String id, TargetType type, String target) {
 		super(id);
 		this.target=target;
 		this.type=type;
+	}
+	
+
+	public void setTargetAttributes(List<EffectedAttribute> targetAttributes) {
+		this.targetAttributes = targetAttributes;		
 	}
 
 
@@ -49,10 +58,19 @@ public class GeneralEffect extends Effect {
 		//the variable that is targeted does not have to be checked, the parser already does this
 		correct &= targetType.equals(effectTarget);
 		//check if all the parameters used with the target are legal for this type
-		
+		for(EffectedAttribute attr : targetAttributes){
+			if(targetType.equals(EffectTarget.BALL)){
+				correct &= !attr.equals(EffectedAttribute.HARDNESS) && !attr.equals(EffectedAttribute.RESISTANCE);
+			}
+			else if(targetType.equals(EffectTarget.BLOCK)){
+				correct &= attr.equals(EffectedAttribute.HARDNESS) || attr.equals(EffectedAttribute.RESISTANCE);
+			}
+			else{
+				correct &= !attr.equals(EffectedAttribute.SIZE) && !attr.equals(EffectedAttribute.SPEED);
+			}
+		}
 		//check if all the parameters used in the expression for the effect are legal for this type
-		
-		
+		System.out.println(correct);
 		return correct;
 	}
 }

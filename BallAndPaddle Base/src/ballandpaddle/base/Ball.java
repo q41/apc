@@ -119,4 +119,12 @@ public class Ball extends BAPObject {
 	public boolean isDestroyed(){
 		return !alive;
 	}
+
+	public void threeSixtyDirection() {
+		setDirection(360-direction);		
+	}
+	
+	public void OneEightyDirection() {
+		setDirection(180-direction);		
+	}
 }

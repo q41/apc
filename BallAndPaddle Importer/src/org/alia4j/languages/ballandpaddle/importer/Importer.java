@@ -17,6 +17,7 @@ import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
 import org.alia4j.language.ballandpaddle.BoolOperand;
 import org.alia4j.language.ballandpaddle.BooleanBinaryExpression;
 import org.alia4j.language.ballandpaddle.BooleanExpression;
+import org.alia4j.language.ballandpaddle.BooleanUnaryExpression;
 import org.alia4j.language.ballandpaddle.BracketParameter;
 import org.alia4j.language.ballandpaddle.CollisionEffect;
 import org.alia4j.language.ballandpaddle.DoubleOperand;
@@ -155,7 +156,7 @@ public class Importer implements org.alia4j.fial.Importer {
 					target = tar.getItem().getId();
 				}
 				effect = new ballandpaddle.base.GeneralEffect(id, type, target);
-				effect.setTargetAttributes(targetAttributes);
+				((ballandpaddle.base.GeneralEffect)effect).setTargetAttributes(targetAttributes);
 			}
 			else{
 				//e instanceof CollisionEffect
@@ -166,7 +167,8 @@ public class Importer implements org.alia4j.fial.Importer {
 				CollisionEffect cE = (CollisionEffect) e;
 				Target leftT = cE.getLeftTarget();
 				Target rightT = cE.getRightTarget();
-				List<EffectedAttribute> targetAttributes = new ArrayList<EffectedAttribute>();
+				List<EffectedAttribute> leftTargetAttributes = new ArrayList<EffectedAttribute>();
+				List<EffectedAttribute> rightTargetAttributes = new ArrayList<EffectedAttribute>();
 				if(leftT instanceof TypeTarget){
 					//target is an object of the given type
 					leftType = Effect.TargetType.TYPE;
@@ -175,7 +177,7 @@ public class Importer implements org.alia4j.fial.Importer {
 					leftTarget = getBAPObjectType(tar.getType());
 					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
-						targetAttributes.addAll(getTargetAttributes(tar.getParams()));
+						rightTargetAttributes.addAll(getTargetAttributes(tar.getParams()));
 					}
 				}
 				else{
@@ -193,7 +195,7 @@ public class Importer implements org.alia4j.fial.Importer {
 					rightTarget = getBAPObjectType(tar.getType());
 					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
-						targetAttributes.addAll(getTargetAttributes(tar.getParams()));
+						leftTargetAttributes.addAll(getTargetAttributes(tar.getParams()));
 					}
 				}
 				else{
@@ -204,7 +206,8 @@ public class Importer implements org.alia4j.fial.Importer {
 					rightTarget = tar.getItem().getId();
 				}
 				effect = new ballandpaddle.base.CollisionEffect(id, leftType, leftTarget, rightType, rightTarget);
-				effect.setTargetAttributes(targetAttributes);
+				((ballandpaddle.base.CollisionEffect)effect).setLeftTargetAttributes(leftTargetAttributes);
+				((ballandpaddle.base.CollisionEffect)effect).setRightTargetAttributes(rightTargetAttributes);
 			}
 			EffectType effectType = e.getTypes();
 
@@ -246,8 +249,6 @@ public class Importer implements org.alia4j.fial.Importer {
 				effect.setModifiedAttribute(Effect.EffectedAttribute.HARDNESS);
 			else if(attribute.getValue()==Attribute.IMMATERIAL_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.IMMATERIAL);
-			else if(attribute.getValue()==Attribute.NORMAL_DAM_VALUE)
-				effect.setModifiedAttribute(Effect.EffectedAttribute.DAMAGE);
 			else if(attribute.getValue()==Attribute.NORMAL_RES_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.RESISTANCE);
 			else if(attribute.getValue()==Attribute.ORIENTATION_VALUE)
@@ -338,7 +339,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		createBaseCollisionDetection();
 		createStandardBallCollisionHandling();
 		createStandardOthersCollisionHandling();
-		createEffect(Ball.class, "direction", AttributeType.INT);
+//		createEffect(Ball.class, "direction", AttributeType.INT);
 		
 		//-----------------------
 		// Deploy all definitions
@@ -351,21 +352,32 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 	}	
 	
-	private List<EffectedAttribute> getTargetAttributes(BooleanExpression params) {
+	private List<EffectedAttribute> getTargetAttributes(BooleanExpression param) {
 		List<EffectedAttribute> result = new ArrayList<EffectedAttribute>();
-		if(params instanceof BooleanBinaryExpression){
-			BooleanBinaryExpression par = (BooleanBinaryExpression) params;
+		if(param instanceof BooleanBinaryExpression){
+			BooleanBinaryExpression par = (BooleanBinaryExpression) param;
 			result.addAll(getTargetAttributes(par.getLeft())); result.addAll(getTargetAttributes(par.getRight()));
 		}
-		if(params instanceof BooleanBinaryExpression){
-			BooleanBinaryExpression par = (BooleanBinaryExpression) params;
-			result.addAll(getTargetAttributes(par.getLeft())); result.addAll(getTargetAttributes(par.getRight()));
+		if(param instanceof BooleanUnaryExpression){
+			BooleanUnaryExpression par = (BooleanUnaryExpression) param;
+			result.addAll(getTargetAttributes(par.getBody()));
 		}
-		
-		
-		
-		
-		
+		if(param instanceof AttParameter){
+			AttParameter attPar = (AttParameter)param;
+			Attribute att = attPar.getAtt();
+			if(att.getValue()==att.HARDNESS_VALUE)
+				result.add(EffectedAttribute.HARDNESS);
+			else if(att.getValue()==att.IMMATERIAL_VALUE)
+				result.add(EffectedAttribute.IMMATERIAL);
+			else if(att.getValue()==att.NORMAL_RES_VALUE)
+				result.add(EffectedAttribute.RESISTANCE);
+			else if(att.getValue()==att.ORIENTATION_VALUE)
+				result.add(EffectedAttribute.DIRECTION);
+			else if(att.getValue()==att.SIZE_VALUE)
+				result.add(EffectedAttribute.SIZE);
+			else if(att.getValue()==att.SPEED_VALUE)
+				result.add(EffectedAttribute.SPEED);
+		}		
 		return result;
 	}
 
@@ -444,8 +456,6 @@ public class Importer implements org.alia4j.fial.Importer {
 				con = new LocalIntegerVariableContext(calleeContext, "hardness");
 			else if(att.getValue()==att.IMMATERIAL_VALUE)
 				con = new LocalBooleanVariableContext(calleeContext, "immaterial");
-			else if(att.getValue()==att.NORMAL_DAM_VALUE)
-				con = new LocalIntegerVariableContext(calleeContext, "damage");
 			else if(att.getValue()==att.NORMAL_RES_VALUE)
 				con = new LocalIntegerVariableContext(calleeContext, "resistance");
 			else if(att.getValue()==att.ORIENTATION_VALUE)

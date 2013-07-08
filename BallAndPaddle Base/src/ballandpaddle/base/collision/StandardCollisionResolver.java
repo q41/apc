@@ -63,32 +63,30 @@ public class StandardCollisionResolver extends CollisionResolver{
 		double ballXLeft = moved.getCenter().getX()-moved.getR();
 		double ballXRight = moved.getCenter().getX()+moved.getR();
 		//hit right side?
-		int newDirection = ball.getDirection();
 		if(ball.getDirection()>90 && ball.getDirection()<270){
 			boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
 			if(rightHit)
-				newDirection = 180-newDirection;			
+				ball.OneEightyDirection();		
 		}
 		//hit left side?
 		if((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0)){
 			boolean leftHit = ballXRight<rightX && ballXRight>leftX && ballXLeft<rightX && ballXLeft<leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
 			if(leftHit)
-				newDirection = 180-newDirection;
+				ball.OneEightyDirection();
 		}
 		//hit bottom side?
 		
 		if(ball.getDirection()>180 && ball.getDirection()<360){
 			boolean bottomHit = ballYTop>topY && ballYTop<bottomY && ballYBottom>topY && ballYBottom>bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
 			if(bottomHit)
-				newDirection = 360-newDirection;			
+				ball.threeSixtyDirection();
 		}
 		//hit top side?
 		if(ball.getDirection()>0 && ball.getDirection()<180){
 			boolean topHit = ballYBottom>topY && ballYBottom<bottomY && ballYTop<topY && ballYTop<bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
 			if(topHit)
-				newDirection = 360-newDirection;				
+				ball.threeSixtyDirection();			
 		}		
-			ball.setDirection(newDirection);
 			block.takeDamageFrom(ball);
 			moved.undoMove();		
 	}
