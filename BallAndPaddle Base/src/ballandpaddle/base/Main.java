@@ -1,9 +1,5 @@
 package ballandpaddle.base;
 
-import java.lang.reflect.Field;
-import java.util.*;
-
-
 import ballandpaddle.base.renderer.Game;
 
 public class Main {
@@ -48,15 +44,8 @@ public class Main {
 		game.start();
 	}
 
-	private static double print() {
-		try {
-			org.alia4j.fial.System.proceed();
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private static void print() {
 		System.out.println("Printing stuff...");
-		return 2.0;
 	}
 	
 	

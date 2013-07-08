@@ -8,5 +8,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/ALIA4J libraries"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ALIA4J NOIRIn libraries"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
