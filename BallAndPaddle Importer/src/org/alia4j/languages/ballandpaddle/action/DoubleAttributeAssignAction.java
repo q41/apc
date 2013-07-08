@@ -5,7 +5,7 @@ import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
 import org.alia4j.liam.signature.ResolutionStrategy;
 
-public class DoubleAttributeAssignAction<X> {
+public class DoubleAttributeAssignAction {
 	
 	public static final Action methodCallAction = ActionFactory.findOrCreateMethodCallAction(
 		TypeHierarchyProvider.findOrCreateFromClass(DoubleAttributeAssignAction.class),

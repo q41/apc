@@ -5,17 +5,17 @@ import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
 import org.alia4j.liam.signature.ResolutionStrategy;
 
-public class BooleanAttributeAssignAction<X> {
+public class BooleanAttributeAssignAction {
 	
 	public static final Action methodCallAction = ActionFactory.findOrCreateMethodCallAction(
 		TypeHierarchyProvider.findOrCreateFromClass(BooleanAttributeAssignAction.class),
 		"apply",
-		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] {"double"}),
-		TypeHierarchyProvider.findOrCreateFromClass(double.class),
+		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] {"boolean"}),
+		TypeHierarchyProvider.findOrCreateFromClass(boolean.class),
 		ResolutionStrategy.STATIC
 	);
 	
-	public static double apply(double newValue) throws Throwable {
+	public static boolean apply(boolean newValue) throws Throwable {
 		org.alia4j.fial.System.proceed();
 		return newValue;
 	}
