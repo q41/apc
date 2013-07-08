@@ -515,7 +515,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case BOOLEAN: assert(false);
 		}
 		
-		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(90); 
+		Context newSize = ContextFactory.findOrCreateIntegerConstantContext(90);
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
