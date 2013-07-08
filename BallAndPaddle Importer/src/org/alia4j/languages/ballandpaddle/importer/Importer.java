@@ -22,11 +22,7 @@ import org.alia4j.language.ballandpaddle.BracketParameter;
 import org.alia4j.language.ballandpaddle.CollisionEffect;
 import org.alia4j.language.ballandpaddle.DoubleOperand;
 import org.alia4j.language.ballandpaddle.DoubleValueParameter;
-import org.alia4j.language.ballandpaddle.EffectType;
-import org.alia4j.language.ballandpaddle.EffectingAttribute;
-import org.alia4j.language.ballandpaddle.EffectingBallAttribute;
-import org.alia4j.language.ballandpaddle.EffectingBlockAttribute;
-import org.alia4j.language.ballandpaddle.EffectingPaddleAttribute;
+import org.alia4j.language.ballandpaddle.*;
 import org.alia4j.language.ballandpaddle.EqParameter;
 import org.alia4j.language.ballandpaddle.Expression;
 import org.alia4j.language.ballandpaddle.GeneralEffect;
@@ -128,8 +124,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		for(org.alia4j.language.ballandpaddle.Effect e : root.getEffects()){
 			Effect effect;
 			//name of the effect
-			String id = e.getId();
-			Predicate pred = null;
+			e.setId(e.getId());
 			//go through target stuff
 			if(e instanceof GeneralEffect){
 				Effect.TargetType type;
@@ -504,11 +499,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		);
 		
 		//create pattern matching predicate
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
-		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
-		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+		BasicPredicate<AtomicPredicate> predicate = createEffectPredicate();
 
 		//create attribute assign action
 		Action attributeAssignAction = null;
@@ -529,11 +520,19 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-		Specialization specialization = new Specialization(attributeGetter, speedPred, Collections.singletonList(newSize));
+		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(newSize));
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
-	}	
+	}
+	
+	private BasicPredicate<AtomicPredicate> createEffectPredicate() {
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
+		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
+		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+	}
 	
 	//Collision detection
 	

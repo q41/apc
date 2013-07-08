@@ -53,16 +53,16 @@ RULES {
 	Block ::= "block" id[CHAR] "{" "hardness" "=" hardness[INTEGER] ("resistance" "=" resistance[INTEGER])? ("power" "=" power[])? "}";	
 	Power ::= "power" id[] "{" "effects" "=" effects[] ("," effects[])* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
 	
-	GeneralEffect ::= "effect" id[] "on" target "{" types "}";
-	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" types "}";
+	GeneralEffect ::= "effect" id[] "on" target "{" body "}";
+	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" body "}";
 	
-	EffectType ::= effectingAttribute adjustmentOperator[Inc:"+=", Dec:"-=", Set:"="] expression ("duration" "=" duration[INTEGER])?;
+	AttributeAdjustment ::= effectedAttribute adjustmentOperator[Inc:"+=", Dec:"-=", Set:"="] expression ("duration" "=" duration[INTEGER])?;
 	
-	EffectingBallAttribute ::= "ball." type[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial"];
+	EffectedBallAttribute ::= "ball." type[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial"];
 	
-	EffectingPaddleAttribute ::= "paddle." type[Size:"size",Speed:"speed"];
+	EffectedPaddleAttribute ::= "paddle." type[Size:"size",Speed:"speed"];
 	
-	EffectingBlockAttribute ::= "block."type[NormalRes:"resistance", Hardness:"hardness"];
+	EffectedBlockAttribute ::= "block."type[NormalRes:"resistance", Hardness:"hardness"];
 	
 	ObjectTarget ::= item[CHAR] | item[];
 	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" params ")")?;

@@ -2,6 +2,8 @@ package ballandpaddle.base;
 
 import java.util.List;
 
+import org.alia4j.liam.Attachment;
+
 public abstract class Effect {
 
 	private String id;
@@ -10,6 +12,7 @@ public abstract class Effect {
 	private Object value;
 	protected EffectTarget effectTarget;
 	private EffectedAttribute effectedAttribute;
+	private Attachment attachment = null;
 
 	public enum TargetType{
 		TYPE, OBJECT;

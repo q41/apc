@@ -102,7 +102,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//Effect">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//Effect/id"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Effect/types"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//Effect/body"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//GeneralEffect">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//GeneralEffect/target"/>
@@ -111,21 +111,21 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//CollisionEffect/leftTarget"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//CollisionEffect/rightTarget"/>
     </genClasses>
-    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectType">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//EffectType/effectingAttribute"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectType/adjustmentOperator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//EffectType/expression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectType/duration"/>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//AttributeAdjustment">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//AttributeAdjustment/effectedAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//AttributeAdjustment/adjustmentOperator"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ballandpaddle.text.ecore#//AttributeAdjustment/expression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//AttributeAdjustment/duration"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//EffectingAttribute"/>
-    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectingBallAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectingBallAttribute/type"/>
+    <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//EffectedAttribute"/>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectedBallAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectedBallAttribute/type"/>
     </genClasses>
-    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectingPaddleAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectingPaddleAttribute/type"/>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectedPaddleAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectedPaddleAttribute/type"/>
     </genClasses>
-    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectingBlockAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectingBlockAttribute/type"/>
+    <genClasses ecoreClass="ballandpaddle.text.ecore#//EffectedBlockAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ballandpaddle.text.ecore#//EffectedBlockAttribute/type"/>
     </genClasses>
     <genClasses ecoreClass="ballandpaddle.text.ecore#//Expression"/>
     <genClasses image="false" ecoreClass="ballandpaddle.text.ecore#//BinaryExpression">

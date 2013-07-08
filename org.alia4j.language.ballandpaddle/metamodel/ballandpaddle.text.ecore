@@ -34,17 +34,17 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		attribute EInt damage (0..1);
 		attribute EInt speed (0..1);
 	}
-		
+	
 	class Block extends BAPObject{
 		attribute EInt hardness (1..1);
 		attribute EInt resistance (0..1);
-		reference Power power (0..1);		
+		reference Power power (0..1);
 	}
 	
 	class Power{
-		attribute EString id (1..1);	
-		reference Effect effects (1..-1);	
-		attribute EFloat powerSpawnChance (0..1);	
+		attribute EString id (1..1);
+		reference Effect effects (1..-1);
+		attribute EFloat powerSpawnChance (0..1);
 	}
 	
 	abstract class Target{
@@ -54,7 +54,7 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		reference BAPObject item (1..1);
 	}
 	
-	class TypeTarget extends Target{		
+	class TypeTarget extends Target{
 		attribute TargetType type (1..1);
 		containment reference BooleanExpression params (0..1);
 	}
@@ -63,7 +63,7 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 	
 	abstract class BooleanBinaryExpression extends BooleanExpression{
 		containment reference BooleanExpression left (1..1);
-		containment reference BooleanExpression right (1..1);		
+		containment reference BooleanExpression right (1..1);
 	}
 	
 	abstract class BooleanUnaryExpression extends BooleanExpression{
@@ -112,7 +112,7 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 	
 	abstract class Effect{
 		attribute EString id (1..1);
-		containment reference EffectType types (1..1);
+		containment reference AttributeAdjustment body (1..1);
 	}
 	
 	class GeneralEffect extends Effect{
@@ -124,25 +124,25 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		containment reference Target rightTarget (1..1);
 	}
 	
-	class EffectType{
-		containment reference EffectingAttribute effectingAttribute (1..1);		
+	class AttributeAdjustment{
+		containment reference EffectedAttribute effectedAttribute (1..1);		
 		attribute AdjustmentOperator adjustmentOperator(1..1);
 		containment reference Expression expression (1..1);
 		attribute EInt duration(0..1);
 	}
 	
-	abstract class EffectingAttribute{
+	abstract class EffectedAttribute{
 	}
 	
-	class EffectingBallAttribute extends EffectingAttribute{
+	class EffectedBallAttribute extends EffectedAttribute{
 		attribute Attribute type (1..1);	
 	}
 	
-	class EffectingPaddleAttribute extends EffectingAttribute{
+	class EffectedPaddleAttribute extends EffectedAttribute{
 		attribute Attribute type (1..1);	
 	}
 	
-	class EffectingBlockAttribute extends EffectingAttribute{
+	class EffectedBlockAttribute extends EffectedAttribute{
 		attribute Attribute type (1..1);	
 	}
 	
