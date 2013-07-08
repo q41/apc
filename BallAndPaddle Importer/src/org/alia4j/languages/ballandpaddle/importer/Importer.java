@@ -37,32 +37,14 @@ import org.alia4j.language.ballandpaddle.Target;
 import org.alia4j.language.ballandpaddle.TargetType;
 import org.alia4j.language.ballandpaddle.TypeTarget;
 import org.alia4j.languages.ballandpaddle.context.LocalBooleanVariableContext;
-import org.alia4j.languages.ballandpaddle.action.AttributeIncreaseAction;
-import org.alia4j.languages.ballandpaddle.context.LocalDoubleVariableContext;
-import org.alia4j.languages.ballandpaddle.context.LocalIntegerVariableContext;
-import org.alia4j.languages.ballandpaddle.predicate.isMethodFinalPredicate;
-import org.alia4j.liam.Action;
-import org.alia4j.liam.ActionFactory;
-import org.alia4j.liam.AndPredicate;
-import org.alia4j.liam.AtomicPredicate;
-import org.alia4j.liam.AtomicPredicateFactory;
-import org.alia4j.liam.Attachment;
-import org.alia4j.liam.BasicPredicate;
-import org.alia4j.liam.CompositionRule;
-import org.alia4j.liam.Context;
-import org.alia4j.liam.ContextFactory;
-import org.alia4j.liam.OrPredicate;
-import org.alia4j.liam.Predicate;
-import org.alia4j.liam.ScheduleInfo;
-import org.alia4j.liam.Specialization;
+import org.alia4j.languages.ballandpaddle.action.*;
+import org.alia4j.languages.ballandpaddle.context.*;
+import org.alia4j.languages.ballandpaddle.predicate.*;
+import org.alia4j.liam.*;
 import org.alia4j.liam.pattern.FieldReadPattern;
 import org.alia4j.liam.pattern.MethodPattern;
 import org.alia4j.liam.signature.ResolutionStrategy;
-import org.alia4j.patterns.ClassTypePattern;
-import org.alia4j.patterns.ExceptionsPattern;
-import org.alia4j.patterns.ModifiersPattern;
-import org.alia4j.patterns.ParametersPattern;
-import org.alia4j.patterns.TypePattern;
+import org.alia4j.patterns.*;
 import org.alia4j.patterns.names.ExactNamePattern;
 import org.alia4j.patterns.types.ExactClassTypePattern;
 import org.alia4j.patterns.types.SubTypePattern;
@@ -336,7 +318,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		createBaseCollisionDetection();
 		createStandardBallCollisionHandling();
 		createStandardOthersCollisionHandling();
-		createEffect(Ball.class, "size", AttributeType.DOUBLE);
+		createEffect(Ball.class, "direction", AttributeType.INT);
 		
 		//-----------------------
 		// Deploy all definitions
@@ -476,25 +458,32 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create pattern matching predicate
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(2);
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
 		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 
-		//create attribute update action
-		Action attributeIncreaseAction = null;
+		//create attribute assign action
+//		Action attributeAssignAction = null;
+//		switch(attributeType) {
+//		case DOUBLE: attributeAssignAction = AttributeAssignAction.DOUBLE_INSTANCE.methodCallAction; break;
+//		case INT: attributeAssignAction = AttributeAssignAction.DOUBLE_INSTANCE.methodCallAction; break;
+//		case BOOLEAN: attributeAssignAction = AttributeAssignAction.DOUBLE_INSTANCE.methodCallAction; break;
+//		}
+		
+		Action attributeIncAction = null;
 		switch(attributeType) {
-		case DOUBLE: attributeIncreaseAction = AttributeIncreaseAction.DOUBLE_INSTANCE.methodCallAction; break;
-		case INT: attributeIncreaseAction = AttributeIncreaseAction.DOUBLE_INSTANCE.methodCallAction; break;
-		case BOOLEAN: attributeIncreaseAction = AttributeIncreaseAction.DOUBLE_INSTANCE.methodCallAction; break;
+		case DOUBLE: attributeIncAction = DoubleAttributeIncAction.methodCallAction; break;
+		case INT: attributeIncAction = IntAttributeIncAction.methodCallAction; break;
+		case BOOLEAN: assert(false);
 		}
 		
-		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(2); 
+		Context newSize = ContextFactory.findOrCreateDoubleConstantContext(90); 
 		
 		//contruct specialization
 		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
 		Specialization specialization = new Specialization(attributeGetter, speedPred, Collections.singletonList(newSize));
 		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncreaseAction, ScheduleInfo.AROUND);
+		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
 	}	
 	
