@@ -511,12 +511,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		BasicPredicate<AtomicPredicate> speedPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 
 		//create attribute assign action
-//		Action attributeAssignAction = null;
-//		switch(attributeType) {
-//		case DOUBLE: attributeAssignAction = AttributeAssignAction.DOUBLE_INSTANCE.methodCallAction; break;
-//		case INT: attributeAssignAction = AttributeAssignAction.DOUBLE_INSTANCE.methodCallAction; break;
-//		case BOOLEAN: attributeAssignAction = AttributeAssignAction.DOUBLE_INSTANCE.methodCallAction; break;
-//		}
+		Action attributeAssignAction = null;
+		switch(attributeType) {
+		case DOUBLE: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		case INT: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		case BOOLEAN: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		}
 		
 		Action attributeIncAction = null;
 		switch(attributeType) {
