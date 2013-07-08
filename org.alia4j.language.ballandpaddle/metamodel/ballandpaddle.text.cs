@@ -56,28 +56,34 @@ RULES {
 	GeneralEffect ::= "effect" id[] "on" target "{" types "}";
 	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" types "}";
 	
-	EffectType ::= (target[Block:"block",Paddle:"paddle",Ball:"ball"]".")? type[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial"] adjustmentOperator[Inc:"+=", Dec:"-=", Set:"="] expression ("duration" "=" duration[INTEGER])?;
+	EffectType ::= effectingAttribute adjustmentOperator[Inc:"+=", Dec:"-=", Set:"="] expression ("duration" "=" duration[INTEGER])?;
+	
+	EffectingBallAttribute ::= "ball." type[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial"];
+	
+	EffectingPaddleAttribute ::= "paddle." type[Size:"size",Speed:"speed"];
+	
+	EffectingBlockAttribute ::= "block."type[NormalRes:"resistance", Hardness:"hardness"];
 	
 	ObjectTarget ::= item[CHAR] | item[];
 	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" params ")")?;
 	
-//	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
-//	MultExpression ::= left "*" right;
+	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
+	MultExpression ::= left "*" right;
 
-//	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
-//	DivExpression ::= left "/" right;
+	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
+	DivExpression ::= left "/" right;
 	
-//	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
-//	PlusExpression ::= left "+" right;
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
+	PlusExpression ::= left "+" right;
 
-//	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
-//	MinusExpression ::= left "-" right;
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
+	MinusExpression ::= left "-" right;
 	
-//	@Operator(type="unary_prefix", weight="3", superclass="Expression")
-//	NegExpression ::= "-"body;
+	@Operator(type="unary_prefix", weight="3", superclass="Expression")
+	NegExpression ::= "-"body;
 	
-//	@Operator(type="primitive", weight="4", superclass="Expression")
-//	BracketExpression ::= "(" body ")";
+	@Operator(type="primitive", weight="4", superclass="Expression")
+	BracketExpression ::= "(" body ")";
 
 	@Operator(type="primitive", weight="4", superclass="Expression")
 	IntOperand ::= value[INTEGER];
@@ -88,8 +94,14 @@ RULES {
 	@Operator(type="primitive", weight="4", superclass="Expression")
 	BoolOperand ::= value[BOOLEAN];
 
-//	@Operator(type="primitive", weight="4", superclass="Expression")
-//	AttOperand ::= (target[Block:"block",Paddle:"paddle",Ball:"ball"]".")?att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial", X:"x", Y:"y"];
+	@Operator(type="primitive", weight="4", superclass="Expression")
+	AttBallOperand ::= "ball."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial"];
+
+	@Operator(type="primitive", weight="4", superclass="Expression")
+	AttBlockOperand ::= "block."att[Hardness:"hardness",NormalRes:"resistance"];
+
+	@Operator(type="primitive", weight="4", superclass="Expression")
+	AttPaddleOperand ::= "paddle."att[Size:"size",Speed:"speed"];
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
 	EqParameter ::= left "=" right;
@@ -122,7 +134,7 @@ RULES {
 	BracketParameter ::= "(" body ")";
 	
 	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
-	AttParameter ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", NormalDam:"damage", Immaterial:"immaterial", X:"x", Y:"y"];
+	AttParameter ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", Immaterial:"immaterial"];
 	
 	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
 	IntValueParameter ::= value[INTEGER];

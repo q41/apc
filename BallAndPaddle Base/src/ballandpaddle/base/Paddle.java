@@ -13,7 +13,7 @@ public class Paddle extends BAPObject {
 	private int direction; //-1 for left, 1 for right, 0 for none
 	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
-	private final double upperSizeLimit = 3;
+	private final double upperSizeLimit = 10;
 	private final double lowerSizeLimit = 1;
 	private double speed;
 	private final double increment = 0.25;
@@ -21,7 +21,7 @@ public class Paddle extends BAPObject {
 	
 	public Paddle(String id, double x, double y, int orientation, int size) {
 		super(id, x, y, null);
-		super.setBody(new RectangleBody(new Point(x,y), new Point(x, y+0.05), this));
+		super.setBody(new RectangleBody(new Point(x,y), new Point(x, y+0.26), this));
 		this.orientation = orientation;
 		this.speed = 4;
 		this.size = 3;
@@ -45,19 +45,19 @@ public class Paddle extends BAPObject {
 	
 	public void calculateMove(double factor, Level level){
 		//calculate distance to travel this update
-		double distance = speed*factor;
+		double distance = Math.pow(getSpeed(), 0.65)*factor;
 		if(distance>=increment)
-			movementVectorX = increment*direction;			
+			movementVectorX = increment*getDirection();			
 		else
-			movementVectorX = distance*direction;
+			movementVectorX = distance*getDirection();
 	}
 	
 	
 	
 	public int getNeededSteps(double factor){
 		double distance = 0;
-		if(direction!=0)
-			distance = speed*factor;
+		if(getDirection()!=0)
+			distance = Math.pow(getSpeed(), 0.65)*factor;
 		return (int) Math.ceil((distance/increment));		
 	}
 	

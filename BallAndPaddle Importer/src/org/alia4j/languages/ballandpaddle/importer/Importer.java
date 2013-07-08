@@ -2,6 +2,7 @@ package org.alia4j.languages.ballandpaddle.importer;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +15,17 @@ import org.alia4j.language.ballandpaddle.AttParameter;
 import org.alia4j.language.ballandpaddle.Attribute;
 import org.alia4j.language.ballandpaddle.BallandpaddlePackage;
 import org.alia4j.language.ballandpaddle.BoolOperand;
+import org.alia4j.language.ballandpaddle.BooleanBinaryExpression;
 import org.alia4j.language.ballandpaddle.BooleanExpression;
 import org.alia4j.language.ballandpaddle.BracketParameter;
 import org.alia4j.language.ballandpaddle.CollisionEffect;
 import org.alia4j.language.ballandpaddle.DoubleOperand;
 import org.alia4j.language.ballandpaddle.DoubleValueParameter;
 import org.alia4j.language.ballandpaddle.EffectType;
+import org.alia4j.language.ballandpaddle.EffectingAttribute;
+import org.alia4j.language.ballandpaddle.EffectingBallAttribute;
+import org.alia4j.language.ballandpaddle.EffectingBlockAttribute;
+import org.alia4j.language.ballandpaddle.EffectingPaddleAttribute;
 import org.alia4j.language.ballandpaddle.EqParameter;
 import org.alia4j.language.ballandpaddle.Expression;
 import org.alia4j.language.ballandpaddle.GeneralEffect;
@@ -77,6 +83,7 @@ import ballandpaddle.base.BAPObject;
 import ballandpaddle.base.Ball;
 import ballandpaddle.base.Block;
 import ballandpaddle.base.Effect;
+import ballandpaddle.base.Effect.EffectedAttribute;
 import ballandpaddle.base.Paddle;
 import ballandpaddle.base.Power;
 
@@ -143,18 +150,20 @@ public class Importer implements org.alia4j.fial.Importer {
 			//go through target stuff
 			if(e instanceof GeneralEffect){
 				Effect.TargetType type;
-				String target = "";
+				String target;
 				GeneralEffect gE = (GeneralEffect) e;
 				Target t = gE.getTarget();
+				List<EffectedAttribute> targetAttributes = new ArrayList<EffectedAttribute>();
 				if(t instanceof TypeTarget){
 					//target is an object of the given type
 					type = Effect.TargetType.TYPE;
 					TypeTarget tar = (TypeTarget)t;
 					tar.getType();				
 					target = getBAPObjectType(tar.getType());
-					if(tar.getParams()!=null)
+					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
-					System.out.println(pred);
+						targetAttributes.addAll(getTargetAttributes(tar.getParams()));
+					}
 				}
 				else{
 					//object is an actual item, match on object id.
@@ -164,6 +173,7 @@ public class Importer implements org.alia4j.fial.Importer {
 					target = tar.getItem().getId();
 				}
 				effect = new ballandpaddle.base.GeneralEffect(id, type, target);
+				effect.setTargetAttributes(targetAttributes);
 			}
 			else{
 				//e instanceof CollisionEffect
@@ -174,15 +184,17 @@ public class Importer implements org.alia4j.fial.Importer {
 				CollisionEffect cE = (CollisionEffect) e;
 				Target leftT = cE.getLeftTarget();
 				Target rightT = cE.getRightTarget();
+				List<EffectedAttribute> targetAttributes = new ArrayList<EffectedAttribute>();
 				if(leftT instanceof TypeTarget){
 					//target is an object of the given type
 					leftType = Effect.TargetType.TYPE;
 					TypeTarget tar = (TypeTarget)leftT;
 					tar.getType();				
 					leftTarget = getBAPObjectType(tar.getType());
-					if(tar.getParams()!=null)
+					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
-					System.out.println(pred);
+						targetAttributes.addAll(getTargetAttributes(tar.getParams()));
+					}
 				}
 				else{
 					//object is an actual item, match on object id.
@@ -197,9 +209,10 @@ public class Importer implements org.alia4j.fial.Importer {
 					TypeTarget tar = (TypeTarget)rightT;
 					tar.getType();				
 					rightTarget = getBAPObjectType(tar.getType());
-					if(tar.getParams()!=null)
+					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
-					System.out.println(pred);
+						targetAttributes.addAll(getTargetAttributes(tar.getParams()));
+					}
 				}
 				else{
 					//object is an actual item, match on object id.
@@ -209,51 +222,57 @@ public class Importer implements org.alia4j.fial.Importer {
 					rightTarget = tar.getItem().getId();
 				}
 				effect = new ballandpaddle.base.CollisionEffect(id, leftType, leftTarget, rightType, rightTarget);
+				effect.setTargetAttributes(targetAttributes);
 			}
 			EffectType effectType = e.getTypes();
 
-			//value change of the effect
+			//value change of the effect TODO
 			Expression expr = effectType.getExpression();
-			if(expr instanceof IntOperand){
-				IntOperand intOp = (IntOperand)expr;
-				effect.setValue(intOp.getValue());
-			}
-			else if(expr instanceof DoubleOperand){
-				DoubleOperand doubleOp = (DoubleOperand)expr;
-				effect.setValue(doubleOp.getValue());
-			}
-			else{
-				BoolOperand boolOp = (BoolOperand)expr;
-				effect.setValue(boolOp.isValue());
-			}
+//			if(expr instanceof IntOperand){
+//				IntOperand intOp = (IntOperand)expr;
+//				effect.setValue(intOp.getValue());
+//			}
+//			else if(expr instanceof DoubleOperand){
+//				DoubleOperand doubleOp = (DoubleOperand)expr;
+//				effect.setValue(doubleOp.getValue());
+//			}
+//			else{
+//				BoolOperand boolOp = (BoolOperand)expr;
+//				effect.setValue(boolOp.isValue());
+//			}
 				
 			//owner of the affected attribute
-			TargetType target = effectType.getTarget();
-			if(target.getValue()==TargetType.BALL_VALUE){
+			//and attribute that is modified
+			EffectingAttribute attr = effectType.getEffectingAttribute();
+			Attribute attribute;
+			if(attr instanceof EffectingBallAttribute){
+				EffectingBallAttribute ballAttr = (EffectingBallAttribute) attr;
 				effect.setEffectTarget(Effect.EffectTarget.BALL);
+				attribute = ballAttr.getType();
 			}
-			else if(target.getValue()==TargetType.BLOCK_VALUE){
+			else if(attr instanceof EffectingBlockAttribute){
+				EffectingBlockAttribute blockAttr = (EffectingBlockAttribute) attr;
 				effect.setEffectTarget(Effect.EffectTarget.BLOCK);
+				attribute = blockAttr.getType();
 			}
-			else if(target.getValue()==TargetType.PADDLE_VALUE){
+			else{
+				EffectingPaddleAttribute paddleAttr = (EffectingPaddleAttribute) attr;
 				effect.setEffectTarget(Effect.EffectTarget.PADDLE);
-			}			
-			
-			//attribute that is modified
-			Attribute modifiedAttribute = effectType.getType();
-			if(modifiedAttribute.getValue()==Attribute.HARDNESS_VALUE)
+				attribute = paddleAttr.getType();
+			}
+			if(attribute.getValue()==Attribute.HARDNESS_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.HARDNESS);
-			else if(modifiedAttribute.getValue()==Attribute.IMMATERIAL_VALUE)
+			else if(attribute.getValue()==Attribute.IMMATERIAL_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.IMMATERIAL);
-			else if(modifiedAttribute.getValue()==Attribute.NORMAL_DAM_VALUE)
+			else if(attribute.getValue()==Attribute.NORMAL_DAM_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.DAMAGE);
-			else if(modifiedAttribute.getValue()==Attribute.NORMAL_RES_VALUE)
+			else if(attribute.getValue()==Attribute.NORMAL_RES_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.RESISTANCE);
-			else if(modifiedAttribute.getValue()==Attribute.ORIENTATION_VALUE)
+			else if(attribute.getValue()==Attribute.ORIENTATION_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.DIRECTION);
-			else if(modifiedAttribute.getValue()==Attribute.SIZE_VALUE)
+			else if(attribute.getValue()==Attribute.SIZE_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.SIZE);
-			else if(modifiedAttribute.getValue()==Attribute.SPEED_VALUE)
+			else if(attribute.getValue()==Attribute.SPEED_VALUE)
 				effect.setModifiedAttribute(Effect.EffectedAttribute.SPEED);
 			
 			//duration of the effect
@@ -269,10 +288,9 @@ public class Importer implements org.alia4j.fial.Importer {
 			else if(op.getValue()==AdjustmentOperator.SET_VALUE){
 				effect.setOperator(Effect.OperatorType.SET);
 			}		
-			
 			effects.add(effect);
 			if(pred != null)
-				effectPredicates.put(effect, pred);			
+				effectPredicates.put(effect, pred);				
 		}		
 
 		//import powers
@@ -287,7 +305,7 @@ public class Importer implements org.alia4j.fial.Importer {
 						eff.add(effect);					
 				}				
 			}
-			powers.add(new Power(id, eff, powerSpawnChance));			
+				powers.add(new Power(id, eff, powerSpawnChance));	
 		}
 		
 		
@@ -327,7 +345,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		level.setID(root.getLevel().getId());
 		level.generateBlocks(blocks);
 		level.setDeclaredPowers(powers);
-		
+		//now check if all the effects were correctly declared
+		//effects that were not should be removed, as should the powers that have them.
+		level.removeIllegalEffects();
 		
 		//-----------------------
 		// Creating attachments
@@ -349,6 +369,24 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 	}	
 	
+	private List<EffectedAttribute> getTargetAttributes(BooleanExpression params) {
+		List<EffectedAttribute> result = new ArrayList<EffectedAttribute>();
+		if(params instanceof BooleanBinaryExpression){
+			BooleanBinaryExpression par = (BooleanBinaryExpression) params;
+			result.addAll(getTargetAttributes(par.getLeft())); result.addAll(getTargetAttributes(par.getRight()));
+		}
+		if(params instanceof BooleanBinaryExpression){
+			BooleanBinaryExpression par = (BooleanBinaryExpression) params;
+			result.addAll(getTargetAttributes(par.getLeft())); result.addAll(getTargetAttributes(par.getRight()));
+		}
+		
+		
+		
+		
+		
+		return result;
+	}
+
 	private String getBAPObjectType(TargetType type) {
 		String result = "";
 		if(type.getValue()==TargetType.BALL_VALUE)

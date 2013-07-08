@@ -1,13 +1,16 @@
 package ballandpaddle.base;
 
-public class Effect {
+import java.util.List;
+
+public abstract class Effect {
 
 	private String id;
 	private OperatorType op;
 	private int duration;
 	private Object value;
-	private EffectTarget effectTarget;
+	protected EffectTarget effectTarget;
 	private EffectedAttribute effectedAttribute;
+	protected List<EffectedAttribute> targetAttributes;
 
 	public enum TargetType{
 		TYPE, OBJECT;
@@ -52,5 +55,10 @@ public class Effect {
 	public void setModifiedAttribute(EffectedAttribute effectedAttribute){
 		this.effectedAttribute = effectedAttribute;
 	}
-	
+
+	public abstract boolean isLegal(Level level);
+
+	public void setTargetAttributes(List<EffectedAttribute> targetAttributes) {
+		this.targetAttributes = targetAttributes;		
+	}
 }

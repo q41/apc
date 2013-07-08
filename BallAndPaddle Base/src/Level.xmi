@@ -4,35 +4,42 @@
     <blocks>.......</blocks>
     <blocks>...A...</blocks>
     <blocks>..BAB..</blocks>
-	<blocks>.......</blocks>
-	<blocks>.......</blocks>
+    <blocks>.......</blocks>
+    <blocks>.......</blocks>
   </level>
   <paddles id="Paddle" x="4.0" y="4.0" size="1" orientation="270"/>
   <balls id="Ball" x="3.0" y="4.0"/>
   <blocks id="A" hardness="1"/>
   <blocks id="B" hardness="5" power="//@powers.0"/>
   <effects xsi:type="ballandpaddle:CollisionEffect" id="MoreSpeed">
-    <types target="ball" type="speed" duration="5">
+    <types duration="5">
+      <effectingAttribute xsi:type="ballandpaddle:EffectingBallAttribute" type="speed"/>
       <expression xsi:type="ballandpaddle:DoubleOperand" value="2.5"/>
     </types>
     <leftTarget xsi:type="ballandpaddle:ObjectTarget" item="//@balls.0"/>
     <rightTarget xsi:type="ballandpaddle:ObjectTarget" item="//@paddles.0"/>
   </effects>
   <effects xsi:type="ballandpaddle:GeneralEffect" id="EvenMoreSpeed">
-    <types target="ball" type="speed" adjustmentOperator="=" duration="10">
+    <types adjustmentOperator="=" duration="10">
+      <effectingAttribute xsi:type="ballandpaddle:EffectingBallAttribute" type="speed"/>
       <expression xsi:type="ballandpaddle:IntOperand" value="3"/>
     </types>
     <target xsi:type="ballandpaddle:ObjectTarget" item="//@balls.0"/>
   </effects>
   <effects xsi:type="ballandpaddle:CollisionEffect" id="MoreDamage">
-    <types type="hardness" adjustmentOperator="-=" duration="10">
-      <expression xsi:type="ballandpaddle:IntOperand" value="2"/>
+    <types adjustmentOperator="-=" duration="10">
+      <effectingAttribute xsi:type="ballandpaddle:EffectingBlockAttribute" type="hardness"/>
+      <expression xsi:type="ballandpaddle:MultExpression">
+        <left xsi:type="ballandpaddle:IntOperand" value="2"/>
+        <right xsi:type="ballandpaddle:AttBlockOperand" att="resistance"/>
+      </expression>
     </types>
     <leftTarget xsi:type="ballandpaddle:TypeTarget" type="ball"/>
     <rightTarget xsi:type="ballandpaddle:TypeTarget"/>
   </effects>
   <effects xsi:type="ballandpaddle:GeneralEffect" id="MoreResistance">
-    <types type="resistance" duration="5">
+    <types duration="5">
+      <effectingAttribute xsi:type="ballandpaddle:EffectingBlockAttribute" type="resistance"/>
       <expression xsi:type="ballandpaddle:IntOperand" value="2"/>
     </types>
     <target xsi:type="ballandpaddle:TypeTarget">

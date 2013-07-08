@@ -37,8 +37,8 @@ public abstract class CollisionResolver {
 	protected static void resolveCollision(Ball ball, Paddle paddle){
 		CircleBody moved = (CircleBody) ball.getBody();
 		RectangleBody other = (RectangleBody) paddle.getBody();		
-		double topLeftX = other.getTopLeft().getX();
-		double bottomRightX = other.getBottomRight().getX();
+		double topLeftX = other.getTopLeftX();
+		double bottomRightX = other.getBottomRightX();
 		double length = bottomRightX-topLeftX;		
 		if(ball.getDirection()<180)			
 			ball.setDirection((int) (200+(moved.getCenter().getX() - topLeftX)/length*140));	
@@ -100,11 +100,11 @@ public abstract class CollisionResolver {
 	protected static void resolveCollision(Paddle paddle, ballandpaddle.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
 		if(paddle.getDirection()>0){
-			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRight().getX();
+			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRightX();
 			paddle.getBody().moveBy(adjustX, 0);			
 		}
 		else{
-			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeft().getX();
+			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeftX();
 			paddle.getBody().moveBy(adjustX, 0);	
 		}		
 	}

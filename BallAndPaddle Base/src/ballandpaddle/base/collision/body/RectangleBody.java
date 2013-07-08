@@ -25,15 +25,19 @@ public class RectangleBody implements Body {
 	}
 	
 	public double getBottomRightX(){
-		System.out.println(paddle.getSize());
-		System.out.println("leftx "+topLeft.getX());
-		System.out.println("rightx "+bottomRight.getX()+paddle.getSize()*0.5);
-		System.out.println(topLeft.getX()-(bottomRight.getX()+paddle.getSize()*0.5));
-		return bottomRight.getX()+paddle.getSize()*0.5;
+		return bottomRight.getX()+0.4+paddle.getSize()*0.1;
 	}
 	
 	public double getBottomRightY(){
 		return bottomRight.getY();
+	}
+	
+	public double getTopLeftX(){
+		return topLeft.getX();
+	}
+	
+	public double getTopLeftY(){
+		return topLeft.getY();
 	}
 
 	public void moveBy(double x, double y) {

@@ -29,7 +29,6 @@ public class PaddleRenderer implements Renderer {
 		double topLeftY = offsetY+((RectangleBody)paddle.getBody()).getTopLeft().getY()*scale*downscaleHeightRatio;
 		double bottomRightX = offsetX+((RectangleBody)paddle.getBody()).getBottomRightX()*scale*downscaleWidthRatio;
 		double bottomRightY = offsetY+((RectangleBody)paddle.getBody()).getBottomRightY()*scale*downscaleHeightRatio;
-		System.out.println(topLeftX+" "+bottomRightX);
 		GL11.glColor3f(0.5f, 0.5f, 0.5f);
 		GL11.glPushMatrix();
 			GL11.glBegin(GL11.GL_QUADS);

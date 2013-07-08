@@ -64,6 +64,9 @@ public class Game implements Observer {
 		getDelta(); // call once before loop to initialise lastFrame
 		lastFPS = getTime(); // call before loop to initialise fps timer
 		double init = 0.0;
+		int maxFPS = 30;
+		int initialFPS = maxFPS;
+		int ticks = 0;
 		while (!Display.isCloseRequested() && !level.gameOver()) {		
 			int delta = getDelta();					
 			
@@ -71,15 +74,24 @@ public class Game implements Observer {
 			renderGL();
  
 			Display.update();
-			Display.sync(30); // cap fps to 30fps
+			Display.sync(maxFPS); // cap fps to 30fps
 			if(init<1.0)
 				init+=0.00125;
+			if(1000/delta<maxFPS-5)
+				maxFPS-=1;
+			if(ticks>=maxFPS && maxFPS < initialFPS){
+				maxFPS+=1;
+				ticks=0;
+			}
+			ticks++;			
+//			System.out.println("fps "+maxFPS);
 		}
 		if(level.gameOver()){
 			while(!Display.isCloseRequested()){
+				maxFPS = 10;
 				renderGL();			 
 				Display.update();
-				Display.sync(10); // cap fps to 10fps
+				Display.sync(maxFPS); // cap fps to 10fps
 			}
 		}
  

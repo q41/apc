@@ -325,6 +325,29 @@ public class Level extends Observable {
 	public ballandpaddle.base.Border[] getBorders() {
 		return borders;
 	}
+
+	public void removeIllegalEffects() {
+		//create list of all effects	
+		List<Effect> effects = new ArrayList<Effect>();
+		for(Power power : powers)
+			for(Effect effect : power.getEffects())
+				if(!effects.contains(effect))
+					effects.add(effect);
+		List<Power> illegalPowers = new ArrayList<Power>();
+		//create a list of all powers containing illegal effects
+		for(Effect effect : effects)
+			if(!effect.isLegal(this))
+				for(Power power : powers)
+					if(power.getEffects().contains(effect))
+						illegalPowers.add(power);
+		//remove illegal powers from the blocks that have them
+		for(Block block : blocks)
+			if(illegalPowers.contains(block.getPower()))
+				block.setPower(null);
+		//remove the illegal powers from the list of powers
+		blocks.removeAll(illegalPowers);		
+		System.out.println("illegal powers removed: "+illegalPowers);
+	}
 	
 	
 }

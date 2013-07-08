@@ -12,13 +12,13 @@ public class Ball extends BAPObject {
 	private double speed;
 	private final double upperSpeedLimit = 10;
 	private final double lowerSpeedLimit = 1;
-	private final double upperSizeLimit = 3;
+	private final double upperSizeLimit = 10;
 	private final double lowerSizeLimit = 1;
 	private int damage;
 	private boolean alive;
 	private double movementVectorX;
 	private double movementVectorY;
-	private final double increment = 0.25;
+	private final double increment = 0.250;
 	
 	public Ball(String id, double x, double y, double size, int direction, int speed){
 		this(id, x, y, size);
@@ -83,8 +83,8 @@ public class Ball extends BAPObject {
 	}
 
 	public void calculateMove(double factor, Level level) {
-		double distance = speed * factor;
-		double radDir = direction*Math.PI/180;
+		double distance = Math.pow(getSpeed(), 0.65) * factor;
+		double radDir = getDirection()*Math.PI/180;
 		if(distance>=increment){			
 			movementVectorX = increment*Math.cos(radDir);
 			movementVectorY = increment*Math.sin(radDir);
@@ -100,7 +100,7 @@ public class Ball extends BAPObject {
 	}
 	
 	public int getNeededSteps(double factor){
-		double distance = speed*factor;
+		double distance = Math.pow(getSpeed(), 0.65)*factor;
 		return (int) Math.ceil((distance/increment));		
 	}
 	

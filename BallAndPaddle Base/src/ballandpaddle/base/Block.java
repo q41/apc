@@ -62,4 +62,8 @@ public class Block extends BAPObject {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setPower(Power power) {
+		this.power = power;		
+	}
 }

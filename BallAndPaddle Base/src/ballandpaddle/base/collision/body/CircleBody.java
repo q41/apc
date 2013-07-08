@@ -19,7 +19,7 @@ public class CircleBody implements Body {
 	}
 	
 	public double getR(){
-		return ball.getSize()*0.05;
+		return 0.04+ball.getSize()*0.01;
 	}
 
 	@Override

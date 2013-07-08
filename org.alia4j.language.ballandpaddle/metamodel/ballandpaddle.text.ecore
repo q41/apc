@@ -125,42 +125,56 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 	}
 	
 	class EffectType{
-		attribute TargetType target(0..1);	
-		attribute Attribute type (1..1);	
+		containment reference EffectingAttribute effectingAttribute (1..1);		
 		attribute AdjustmentOperator adjustmentOperator(1..1);
 		containment reference Expression expression (1..1);
 		attribute EInt duration(0..1);
 	}
 	
+	abstract class EffectingAttribute{
+	}
+	
+	class EffectingBallAttribute extends EffectingAttribute{
+		attribute Attribute type (1..1);	
+	}
+	
+	class EffectingPaddleAttribute extends EffectingAttribute{
+		attribute Attribute type (1..1);	
+	}
+	
+	class EffectingBlockAttribute extends EffectingAttribute{
+		attribute Attribute type (1..1);	
+	}
+	
 	abstract class Expression{	
 	}
 	
-//	abstract class BinaryExpression extends Expression{		
-//		containment reference Expression left(1..1);
-//		containment reference Expression right(1..1);	
-//	}
+	abstract class BinaryExpression extends Expression{		
+		containment reference Expression left(1..1);
+		containment reference Expression right(1..1);	
+	}
 	
-//	abstract class UnaryExpression extends Expression{		
-//		containment reference Expression body(1..1);		
-//	}
+	abstract class UnaryExpression extends Expression{		
+		containment reference Expression body(1..1);		
+	}
 	
-//	class MultExpression extends BinaryExpression{
-//	}
-//	
-//	class DivExpression extends BinaryExpression {
-//	}
+	class MultExpression extends BinaryExpression{
+	}
 	
-//	class PlusExpression extends BinaryExpression{
-//	}
+	class DivExpression extends BinaryExpression {
+	}
 	
-//	class MinusExpression extends BinaryExpression{
-//	}
+	class PlusExpression extends BinaryExpression{
+	}
 	
-//	class BracketExpression extends UnaryExpression{				
-//	}
+	class MinusExpression extends BinaryExpression{
+	}
 	
-//	class NegExpression extends UnaryExpression{			
-//	}
+	class BracketExpression extends UnaryExpression{				
+	}
+	
+	class NegExpression extends UnaryExpression{			
+	}
 	
 	class IntOperand extends Expression{
 		attribute EInt value (1..1);	
@@ -173,10 +187,17 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		attribute EBoolean value (1..1);
 	}
 	
-//	class AttOperand extends Expression{
-//		attribute TargetType target(0..1);		
-//		attribute Attribute att(1..1);				
-//	}
+	class AttBallOperand extends Expression{	
+		attribute Attribute att(1..1);				
+	}
+	
+	class AttBlockOperand extends Expression{	
+		attribute Attribute att(1..1);				
+	}
+	
+	class AttPaddleOperand extends Expression{	
+		attribute Attribute att(1..1);				
+	}
 	
 	serializable enum Attribute{
 		1 : Size = "size";
@@ -186,8 +207,6 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 		5 : NormalRes = "resistance";
 		6 : NormalDam = "damage";
 		7 : Immaterial = "immaterial";
-		8 : X = "x";
-		9 : Y = "y";
 	}
 	
 	serializable enum TargetType{		
