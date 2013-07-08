@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
             uri="http://www.alia4j.org/language/ballandpaddle"
-            class="org.alia4j.language.ballandpaddle.BallandpaddlePackage"
+            class="org.alia4j.language.bp.BallandpaddlePackage"
             genModel="metamodel/ballandpaddle.text.genmodel"/>
    </extension>
 

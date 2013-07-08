@@ -1,0 +1,41 @@
+package ballandpaddle bp "http://www.emftext.org/language/ballandpaddle" {
+
+	abstract
+	
+		class NamedElement {
+			attribute EString name (1..1);
+	}
+
+	abstract
+	
+		class Type extends NamedElement {
+	}
+
+	class DataType extends Type {
+	}
+
+	class Entity extends Type {
+			attribute EBoolean _abstract (1..1);
+			containment
+					reference Feature features (0..-1);
+	}
+
+	class EntityModel {
+			containment
+					reference Type types (0..-1);
+	}
+
+	class Feature extends NamedElement {
+			attribute FeatureKind kind (1..1);
+			reference Type type (1..1);
+	}
+
+		serializable
+		
+				enum FeatureKind  {
+					0 : _attribute = "attribute";
+					1 : _reference = "reference";
+					2 : _containment = "containment";
+		}
+
+}

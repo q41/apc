@@ -16,7 +16,7 @@ TOKENS {
 	//DEFINE SINGLE $($ + CHAR + $|$ + DIGIT + $)$ ;
 	DEFINE CHAR $('A'..'Z')$;
 	DEFINE LEVELLINE $(('A'..'Z')|('.'))+$;
-	DEFINE ANDOR $('|')|('&')$;
+	//DEFINE ANDOR $('|')|('&')$;
 	DEFINE THIS $'t''h''i''s'$;
 	//regex: ('A'..'Z' | 'a'..'z' | '0'..'9' | '_' | '-' )+
 }

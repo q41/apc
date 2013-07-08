@@ -1,0 +1,46 @@
+package bp.base;
+
+import bp.base.collision.body.Body;
+import bp.base.collision.body.CircleBody;
+import bp.base.collision.body.SquareBody;
+
+public abstract class BAPObject {
+
+	private String id;
+	protected double x;
+	protected double y;
+	protected Body body;
+	
+	public BAPObject(String id, double x, double y, Body body){
+		this.id = id;
+		this.x = x;
+		this.y = y;
+		this.body = body;
+	}
+	
+	public String getId(){
+		return this.id;
+	}
+	
+	public double getX(){
+		return x;
+	}
+	
+	public double getY(){
+		return y;
+	}		
+	
+	public Body getBody(){
+		return body;
+	}
+	
+	public abstract void update();
+
+	public abstract void calculateMove(double d, Level level);
+
+	public void setBody(Body body) {
+		this.body = body;		
+	}
+	
+	
+}

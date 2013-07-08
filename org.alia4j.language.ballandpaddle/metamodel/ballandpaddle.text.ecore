@@ -149,13 +149,13 @@ package ballandpaddle ballandpaddle "http://www.alia4j.org/language/ballandpaddl
 	abstract class Expression{	
 	}
 	
-	abstract class BinaryExpression extends Expression{		
+	abstract class BinaryExpression extends Expression{
 		containment reference Expression left(1..1);
-		containment reference Expression right(1..1);	
+		containment reference Expression right(1..1);
 	}
 	
-	abstract class UnaryExpression extends Expression{		
-		containment reference Expression body(1..1);		
+	abstract class UnaryExpression extends Expression{
+		containment reference Expression body(1..1);
 	}
 	
 	class MultExpression extends BinaryExpression{
