@@ -144,7 +144,7 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	
 	abstract class EffectAttribute{
 		attribute AdjustmentOperator op (1..1);				
-		attribute Attribute type (1..1);
+		attribute Attribute name (1..1);
 	}
 	
 	class GeneralEffectAttribute extends EffectAttribute{
@@ -156,21 +156,6 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		containment reference CollisionExpression expression (1..1);
 	}
 		
-	abstract class EffectedAttribute{
-	}
-	
-	class EffectedBallAttribute extends EffectedAttribute{
-		attribute Attribute type (1..1);	
-	}
-	
-	class EffectedPaddleAttribute extends EffectedAttribute{
-		attribute Attribute type (1..1);	
-	}
-	
-	class EffectedBlockAttribute extends EffectedAttribute{
-		attribute Attribute type (1..1);	
-	}
-	
 	abstract class Expression{	
 	}
 	
@@ -269,9 +254,10 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		2 : Orientation = "orientation";
 		3 : Speed = "speed";
 		4 : Hardness = "hardness";
-		5 : NormalRes = "resistance";
-		6 : NormalDam = "damage";
-		7 : Immaterial = "immaterial";
+		5 : Resistance = "resistance";
+		6 : Immaterial = "immaterial";
+		7 : X = "x";
+		8 : Y = "y";
 	}
 	
 	serializable enum TargetType{		
@@ -282,8 +268,7 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	
 	serializable enum AdjustmentOperator{
 		0 : Inc = "+=";
-		1 : Dec = "-=";
-		2 : Set = "=";	
+		1 : Set = "=";	
 	}
 		
 }

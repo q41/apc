@@ -11,9 +11,10 @@
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Orientation"/>
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Speed"/>
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Hardness"/>
-      <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/NormalRes"/>
-      <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/NormalDam"/>
+      <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Resistance"/>
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Immaterial"/>
+      <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/X"/>
+      <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Y"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="bp.text.ecore#//TargetType">
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//TargetType/Block"/>
@@ -22,7 +23,6 @@
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="bp.text.ecore#//AdjustmentOperator">
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//AdjustmentOperator/Inc"/>
-      <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//AdjustmentOperator/Dec"/>
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//AdjustmentOperator/Set"/>
     </genEnums>
     <genClasses ecoreClass="bp.text.ecore#//Root">
@@ -123,7 +123,7 @@
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//EffectAttribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectAttribute/op"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectAttribute/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectAttribute/name"/>
     </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//GeneralEffectAttribute">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//GeneralEffectAttribute/expression"/>
@@ -131,16 +131,6 @@
     <genClasses ecoreClass="bp.text.ecore#//CollisionEffectAttribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//CollisionEffectAttribute/classType"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectAttribute/expression"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//EffectedAttribute"/>
-    <genClasses ecoreClass="bp.text.ecore#//EffectedBallAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectedBallAttribute/type"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//EffectedPaddleAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectedPaddleAttribute/type"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//EffectedBlockAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectedBlockAttribute/type"/>
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//Expression"/>
     <genClasses image="false" ecoreClass="bp.text.ecore#//BinaryExpression">
