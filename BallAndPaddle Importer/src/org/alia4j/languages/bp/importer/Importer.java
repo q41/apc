@@ -2,7 +2,6 @@ package org.alia4j.languages.bp.importer;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -25,14 +24,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-
-import bp.base.BAPObject;
-import bp.base.Ball;
-import bp.base.Block;
-import bp.base.Effect;
-import bp.base.Paddle;
-import bp.base.Power;
-import bp.base.Effect.EffectedAttribute;
 
 public class Importer implements org.alia4j.fial.Importer {
 
@@ -71,18 +62,79 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Process the AST by traversing the syntax tree and visiting each model element
 		visit(root);
 	}
+	
+	//Main game objects
+	private Map<String, bp.base.Paddle> paddles = new HashMap<String, bp.base.Paddle>();
+	private Map<String, bp.base.Ball> balls = new HashMap<String, bp.base.Ball>();
+	private Map<String, bp.base.Block> blocks = new HashMap<String, bp.base.Block>();
+	private Map<String, bp.base.Effect> effects = new HashMap<String, bp.base.Effect>();
+	private Map<String, bp.base.Power> powers = new HashMap<String, bp.base.Power>();
+	private bp.base.Level level;
 
 	private void visit(Root root) {
-		//TODO
 		
-		visit(root.getLevel());
+		for(Paddle paddle: root.getPaddles()) {
+			paddles.put(paddle.getId(), visit(paddle));
+		}
+		for(Ball ball: root.getBalls()) {
+			balls.put(ball.getId(), visit(ball));
+		}
+		for(Power power: root.getPowers()) {
+			powers.put(power.getId(), visit(power));
+		}
+		for(Effect effect: root.getEffects()) {
+			effects.put(effect.getId(), visit(effect));
+		}
+		for(Block block: root.getBlocks()) {
+			blocks.put(block.getId(), visit(block));
+		}
+		level = visit(root.getLevel());
+	}
+
+	private bp.base.Paddle visit(Paddle paddle) {
+		return new bp.base.Paddle(paddle.getId(), paddle.getX(), paddle.getY(), paddle.getOrientation(), paddle.getOrientation());
+	}
+
+	private bp.base.Ball visit(Ball ball) {
+		return new bp.base.Ball(ball.getId(), ball.getX(), ball.getY(), ball.getSize(), ball.getDirection(), ball.getSpeed());
 	}
 	
+	private bp.base.Power visit(Power power) {
+		List<bp.base.Effect> powerEffects = new ArrayList<bp.base.Effect>();
+		for(Effect effect: power.getEffects()) {
+			powerEffects.add(effects.get(effect.getId()));
+		}
+		return new bp.base.Power(power.getId(), powerEffects, power.getPowerSpawnChance());
+	}
+	
+	private bp.base.Block visit(Block block) {
+		return new bp.base.Block(block.getId(), block.getHardness(), block.getResistance(), powers.get(block.getPower().getId()));
+	}
+
 	private bp.base.Level visit(Level level) {
-		//TODO
-		bp.base.Level gameLevel = new bp.base.Level(level.getId(), null, null, null);
-		gameLevel.generateBlocks(null);
+		bp.base.Level gameLevel = new bp.base.Level(level.getId(), new ArrayList<bp.base.Paddle>(paddles.values()), new ArrayList<bp.base.Ball>(balls.values()), level.getBlocks(), level.getPowerSpawnChance());
+		gameLevel.generateBlocks(new ArrayList<bp.base.Block>(blocks.values()));
 		return gameLevel;
+	}
+	
+	private bp.base.Effect visit(Effect effect) {
+		//bp.base.Effect gameEffect;
+		if(effect instanceof GeneralEffect) {
+			return visit((GeneralEffect) effect);
+		} else {
+			return visit((CollisionEffect) effect);
+		}
+	}
+	
+	private bp.base.GeneralEffect visit(GeneralEffect effect) {
+		bp.base.GeneralEffect gameEffect = new bp.base.GeneralEffect(generalEffect.getId(), generalEffect.getBody(), generalEffect.getTarget());
+		return null;
+	}
+	
+	private bp.base.CollisionEffect visit(CollisionEffect effect) {
+		//GeneralEffect generalEffect = (GeneralEffect) effect;
+		//gameEffect = new bp.base.GeneralEffect(generalEffect.getId(), generalEffect.getBody(), generalEffect.getTarget())
+		return null;
 	}
 
 	private void oldASTprocesser(Root root){
