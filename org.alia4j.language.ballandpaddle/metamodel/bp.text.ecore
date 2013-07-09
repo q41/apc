@@ -133,13 +133,13 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	
 	class GeneralEffect extends Effect{
 		containment reference Target target (1..1);		
-		containment reference GeneralEffectAttribute body (1..1);
+		containment reference GeneralEffectBody body (1..1);
 	}
 	
 	class CollisionEffect extends Effect{
 		containment reference Target leftTarget (1..1);
 		containment reference Target rightTarget (1..1);
-		containment reference CollisionEffectAttribute body (1..1);
+		containment reference CollisionEffectBody body (1..1);
 	}
 	
 	abstract class EffectBody{ //TODO rename to EffectBody
