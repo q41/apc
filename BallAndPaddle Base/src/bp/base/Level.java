@@ -10,6 +10,7 @@ import bp.base.collision.body.Body;
 import bp.base.collision.body.Border;
 import bp.base.collision.body.Point;
 import bp.base.collision.body.SquareBody;
+import bp.base.exception.IllegalEffectException;
 
 
 public class Level extends Observable implements Runnable {
@@ -216,26 +217,34 @@ public class Level extends Observable implements Runnable {
 		return balls;
 	}
 	
+	/**
+	 * The height of this level
+	 * @return the height
+	 */
 	public int getHeight(){
 		return height;
 	}
 	
+	/**
+	 * The width of this level
+	 * @return the width
+	 */
 	public int getWidth(){
 		return width;
 	}
 
-	public String toString() {
-		return "level: "+id+". Contains paddles: "+paddles+". Contains blocks: "+blocks+". Contains balls: "+balls+". Contains powers: "+powers;
-	}
-
+	/**
+	 * Moves all the moving objects for the given timeframe
+	 * And notifies the observers
+	 * @param delta the amount of ms that have passed since the last update
+	 */
 	public void update(int delta) {
 		if(delta>0){
 			SpawnPowers();			
 			double factor = 1.0/1000*delta;
-			System.out.println(delta+" "+factor);
 			int maxSteps = 0;
 			Map<BAPObject, Integer> stepsPerObject = new HashMap<BAPObject, Integer>();
-			//get steps needed
+			//calculate the maximum amount of steps required by the objects
 			for(Paddle pad : paddles){
 				int steps = pad.getNeededSteps(factor);
 				stepsPerObject.put(pad, steps);
@@ -254,6 +263,7 @@ public class Level extends Observable implements Runnable {
 				if(steps>maxSteps)
 					maxSteps = steps;
 			}
+			//move the objects
 			for(int i = 0; i<maxSteps; i++){
 				for(Paddle pad : paddles){
 					if(pad.getDirection()!=0){
@@ -286,11 +296,21 @@ public class Level extends Observable implements Runnable {
 		this.notifyObservers(objects);
 	}
 	
+	/**
+	 * Lets the object calculate the variables for it's next move and then executes that move
+	 * @param object the object to be moved
+	 * @param factor The amount of time that this move represents
+	 * @param stepsPerObject The map containing the amount of steps the object needs to take to complete it's move
+	 * @param maxSteps the maximum amount of steps needed for all objects to complete their moves
+	 */
 	private void handleBAPObjectUpdate(MovingBAPObject object, double factor, Map<BAPObject, Integer> stepsPerObject ,int maxSteps){
 		object.calculateMove(factor*stepsPerObject.get(object)/maxSteps, this);
 		object.update();
 	}
 
+	/**
+	 * spawns the powers that are waiting to be spawned
+	 */
 	private void SpawnPowers() {
 		if(toBeSpawnedPowers.size()>0){
 			spawnedPowers.addAll(toBeSpawnedPowers);
@@ -298,6 +318,12 @@ public class Level extends Observable implements Runnable {
 		}
 	}
 	
+	/**
+	 * Runs through all blocks to check if any were destroyed during the last move
+	 * If so then they are removed. If they had a power then this power is spawned,
+	 * otherwise a random roll is made to determine if one of the powers from this level
+	 * should be spawned. If a power is to be spawned then it is added to the list of powers to be spawned.
+	 */
 	private void manageBlocks(){
 		for(int i = 0; i<blocks.size(); i++){
 			if(blocks.get(i).isDestroyed()){
@@ -337,37 +363,43 @@ public class Level extends Observable implements Runnable {
 		}
 	}
 
+	/**
+	 * Returns if the game has ended
+	 * @return if all balls all blocks are gone
+	 */
 	public boolean gameOver() {
 		return balls.isEmpty() || blocks.isEmpty();
 	}
 
+	/**
+	 * Returns the borders of this level
+	 * @return the borders
+	 */
 	public bp.base.Border[] getBorders() {
 		return borders;
 	}
 
-	public void removeIllegalEffects() {
+	/**
+	 * checks if all effects used in the game are correctly declared,
+	 * If an incorrect one is found then an exception is thrown
+	 * @throws IllegalEffectException 
+	 */
+	public void removeIllegalEffects() throws IllegalEffectException {
 		//create list of all effects	
 		List<Effect> effects = new ArrayList<Effect>();
 		for(Power power : powers)
 			for(Effect effect : power.getEffects())
 				if(!effects.contains(effect))
 					effects.add(effect);
-		List<Power> illegalPowers = new ArrayList<Power>();
-		//create a list of all powers containing illegal effects
+		//check if all effects are legal
 		for(Effect effect : effects)
 			if(!effect.isLegal(this))
-				for(Power power : powers)
-					if(power.getEffects().contains(effect))
-						illegalPowers.add(power);
-		//remove illegal powers from the blocks that have them
-		for(Block block : blocks)
-			if(illegalPowers.contains(block.getPower()))
-				block.setPower(null);
-		//remove the illegal powers from the list of powers
-		blocks.removeAll(illegalPowers);		
-		System.out.println("illegal powers removed: "+illegalPowers);
+				throw new IllegalEffectException("Error 514.b");
 	}
 	
+	/**
+	 * Updates the fps
+	 */
 	public void updateFPS() {
 	    if (getTime() - lastFPS > 1000) {
 	        Display.setTitle("FPS: " + fps);
@@ -377,10 +409,18 @@ public class Level extends Observable implements Runnable {
 	    fps++;
 	}	
 	
+	/**
+	 * Returns the current time
+	 * @return the current time
+	 */
 	public long getTime() {
 	    return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	
+	/**
+	 * Returns the amount of time that has passed since the last update
+	 * @return the delta time
+	 */
 	public int getDelta() {
 	    long time = getTime();
 	    int delta = (int) (time - lastFrame);
@@ -388,6 +428,9 @@ public class Level extends Observable implements Runnable {
 	    return delta;
 	}	
 	
+	/**
+	 * Checks the keyboard for input, changing the direction of the paddles accordingly.
+	 */
 	public void pollInput() {  
 		if (Keyboard.isKeyDown(205) && !Keyboard.isKeyDown(203)) {
 			for(Paddle pad : getPaddles())
@@ -405,8 +448,8 @@ public class Level extends Observable implements Runnable {
 
 	@Override
 	public void run() {
-		getDelta(); // call once before loop to initialise lastFrame
-		lastFPS = getTime(); // call before loop to initialise fps timer
+		getDelta(); // call once before loop to initialize lastFrame
+		lastFPS = getTime(); // call before loop to initialize the fps timer
 		double init = 0.0;
 		int maxFPS = 30;
 		int initialFPS = maxFPS;
@@ -417,7 +460,9 @@ public class Level extends Observable implements Runnable {
 			update((int) (delta*init));
 			Display.sync(maxFPS);
 			if(init<1.0)
+				//let the game start slowly since alia4j turns the game into a mess otherwise
 				init+=0.00125;
+			//inc/reduce fps when necessary
 			if(1000/delta<maxFPS-5)
 				maxFPS-=1;
 			if(ticks>=maxFPS && maxFPS < initialFPS){
@@ -425,10 +470,9 @@ public class Level extends Observable implements Runnable {
 				ticks=0;
 			}
 			ticks++;	
-			System.out.println(maxFPS);
 		}
 		while(gameOver() && !Display.isCloseRequested()){
-			//wait for player to close the game
+			//wait for player to close the game once the game has ended
 			int delta = getDelta();			
 			update((int) (delta*init));
 			Display.sync(10);

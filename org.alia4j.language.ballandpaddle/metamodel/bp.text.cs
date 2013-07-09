@@ -99,42 +99,57 @@ RULES {
 	AttPaddleOperand ::= "paddle."att[Size:"size",Speed:"speed"];
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
-	EqParameter ::= left "=" right;
+	EqExpression ::= left "=" right;
 
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
-	SmthParameter ::= left "<" right;
+	SmthExpression ::= left "<" right;
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
-	SeqParameter ::= left "<=" right;
+	SeqExpression ::= left "<=" right;
 
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
-	LthParameter ::= left ">" right;
+	LthExpression ::= left ">" right;
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
-	LeqParameter ::= left ">=" right;
+	LeqExpression ::= left ">=" right;
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
-	NeqParameter ::= left "!=" right;
+	NeqExpression ::= left "!=" right;
 
 	@Operator(type="binary_left_associative", weight="1", superclass="BooleanExpression")
-	OrParameter ::= left "|" right;
+	OrExpression ::= left "|" right;
 	
 	@Operator(type="binary_left_associative", weight="1", superclass="BooleanExpression")
-	AndParameter ::= left "&" right;
+	AndExpression ::= left "&" right;
 	
-	@Operator(type="unary_prefix", weight="3", superclass="BooleanExpression")
-	NegParameter ::= "!"body;	
+	@Operator(type="binary_left_associative", weight="3", superclass="BooleanExpression")
+	MultBoolExpression ::= left "*" right;
+
+	@Operator(type="binary_left_associative", weight="3", superclass="BooleanExpression")
+	DivBoolExpression ::= left "/" right;
+	
+	@Operator(type="binary_left_associative", weight="4", superclass="BooleanExpression")
+	PlusBoolExpression ::= left "+" right;
+
+	@Operator(type="binary_left_associative", weight="4", superclass="BooleanExpression")
+	MinusBoolExpression ::= left "-" right;
+	
+	@Operator(type="unary_prefix", weight="5", superclass="BooleanExpression")
+	NegBoolExpression ::= ("!"|"-") body;		
 		
-	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
-	BracketParameter ::= "(" body ")";
+	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
+	BracketBoolExpression ::= "(" body ")";
 	
-	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
-	AttParameter ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", Immaterial:"immaterial"];
+	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
+	AttBoolOperand ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",NormalRes:"resistance", Immaterial:"immaterial"];
 	
-	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
-	IntValueParameter ::= value[INTEGER];
+	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
+	IntBoolOperand ::= value[INTEGER];
 	
-	@Operator(type="primitive", weight="4", superclass="BooleanExpression")
-	DoubleValueParameter ::= value[FLOAT];
+	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
+	DoubleBoolOperand ::= value[FLOAT];
+	
+	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
+	BooleanBoolOperand ::= value[BOOLEAN];
 	
 }

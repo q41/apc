@@ -11,8 +11,24 @@ import bp.base.collision.body.*;
 
 public class Collision {
 
+	/**
+	 * This is a naive collision detection implementation,
+	 * A ball is checked against all borders, paddles and blocks
+	 * to see if it has collided, even if some of them are nowhere near it's trajectory
+	 */
+	
+	
+	/**
+	 * A mapping ob BAPObjects to BAPObjects, 
+	 * representing which BAPObject the key last collided with
+	 */
 	private static Map<BAPObject, BAPObject> lastCollision;
 	
+	/**
+	 * Checks if the object has collided with any items from level
+	 * @param object The object that moved
+	 * @param level The level
+	 */
 	public static void checkForCollision(BAPObject object, Level level) {
 		if(object instanceof Ball)
 			checkForCollision((Ball)object, level);
@@ -22,6 +38,11 @@ public class Collision {
 			checkForCollision((Paddle)object, level);		
 	}
 	
+	/**
+	 * Checks if the SpawnedPower collided with any paddles, or the bottom border
+	 * @param power The power that moved
+	 * @param level The level
+	 */
 	public static void checkForCollision(SpawnedPower power, Level level) {
 		collision(power, level.getBorders()[3]);
 		for(Paddle paddle : level.getPaddles()){
@@ -29,6 +50,11 @@ public class Collision {
 		}	
 	}
 
+	/**
+	 * Checks if the ball collided with a border, paddle or block
+	 * @param ball The ball that moved
+	 * @param level The level
+	 */
 	public static void checkForCollision(Ball ball, Level level) {
 		for(bp.base.Border border : level.getBorders()){
 			collision(ball, border);
@@ -41,6 +67,11 @@ public class Collision {
 		}
 	}
 	
+	/**
+	 * Checks if the paddle collided with a border
+	 * @param paddle The paddle that moved
+	 * @param level The level
+	 */
 	public static void checkForCollision(Paddle paddle, Level level) {
 		if(paddle.getDirection()>0)
 			collision(paddle, level.getBorders()[2]);
@@ -48,28 +79,29 @@ public class Collision {
 				collision(paddle, level.getBorders()[1]);
 	}	
 	
-//	public static void collision(BAPObject moved, BAPObject other, CollisionResolver resolver){
-//		if(lastCollision == null)
-//			lastCollision = new HashMap<BAPObject, BAPObject>();
-//		Body first = moved.getBody();
-//		Body second = other.getBody();
-//		if(hasCollided(first, second)){			
-//			resolver.resolveCollision(moved, other);
-//			lastCollision.put(moved, other);			
-//		}
-//	}
-	
+	/**
+	 * Checks if the given two objects collided
+	 * @param moved The moved object
+	 * @param other The object it's being checked against
+	 * @return If the two objects collided
+	 */
 	public static boolean collision(BAPObject moved, BAPObject other){
 		if(lastCollision == null)
 			lastCollision = new HashMap<BAPObject, BAPObject>();
 		if(hasCollided(moved, other)){
-//			StandardCollisionResolver.resolveCollision(moved, other);
 			lastCollision.put(moved, other);			
 			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * Checks if the two objects collided, but only if the
+	 * last collision of the moved object wasn't also with the other object.
+	 * @param moved The object that moved
+	 * @param other The other object
+	 * @return if there was a collision
+	 */
 	private static boolean hasCollided(BAPObject moved, BAPObject other){
 		boolean collision;
 		if(moved instanceof Ball)
@@ -90,8 +122,19 @@ public class Collision {
 		return collision;
 	}
 	
+	/**
+	 * Called when a collision has been detected
+	 * @param moved The moved object
+	 * @param other The other object
+	 */
 	private static void haveCollided(BAPObject moved, BAPObject other){}
 	
+	/**
+	 * Checks if the ball has collided
+	 * @param ball The ball that moved
+	 * @param other The other object
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(Ball ball, BAPObject other){
 		if(other instanceof bp.base.Border)
 			return hasCollided(ball, (bp.base.Border)other);
@@ -102,6 +145,12 @@ public class Collision {
 		return false;
 	}
 	
+	/**
+	 * Checks if the paddle has collided
+	 * @param paddle The paddle that moved
+	 * @param other The other object
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(Paddle paddle, BAPObject other){
 		if(other instanceof bp.base.Border)
 			return hasCollided(paddle, (bp.base.Border)other);
@@ -112,6 +161,12 @@ public class Collision {
 		return false;
 	}	
 	
+	/**
+	 * Checks if the power has collided
+	 * @param power The spawned power that moved
+	 * @param other The other object
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(SpawnedPower power, BAPObject other){
 		if(other instanceof bp.base.Border)
 			return hasCollided(power, (bp.base.Border)other);
@@ -120,6 +175,12 @@ public class Collision {
 		return false;
 	}
 	
+	/**
+	 * Checks if there was a collision between the ball and border
+	 * @param ball The ball that moved
+	 * @param border The border
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(Ball ball, bp.base.Border border){
 		Border borderBody = (Border) border.getBody();
 		CircleBody ballBody = (CircleBody) ball.getBody();
@@ -147,12 +208,24 @@ public class Collision {
 			return false;		
 	}
 	
+	/**
+	 * Checks if there was a collision between the ball and paddle
+	 * @param ball The ball that moved
+	 * @param paddle The paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(Ball ball, Paddle paddle){
 		CircleBody ballBody = (CircleBody) ball.getBody();
 		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
 		return intersectsTop(ballBody, paddleBody) || intersectsLeft(ballBody, paddleBody) || intersectsBottom(ballBody, paddleBody) || intersectsRight(ballBody, paddleBody);
 	}
 	
+	/**
+	 * Checks if there was a collision between the ball and block
+	 * @param ball The ball that moved
+	 * @param block The block
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(Ball ball, Block block){
 		CircleBody ballBody = (CircleBody) ball.getBody();
 		SquareBody blockBody = (SquareBody) block.getBody();
@@ -178,11 +251,16 @@ public class Collision {
 		boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
 		//left hit?
 		boolean leftHit = ballXRight<rightX && ballXRight>leftX && ballXLeft<rightX && ballXLeft<leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
-						
 		//check which the ball has collided with, if any	
 		return topHit||bottomHit||rightHit||leftHit;	
 	}
 	
+	/**
+	 * Checks if there was a collision between the paddle and border
+	 * @param paddle The paddle that moved
+	 * @param border The border
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(Paddle paddle, bp.base.Border border){
 		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
 		Border borderBody = (Border) border.getBody();
@@ -196,10 +274,22 @@ public class Collision {
 			return false;	
 	}
 	
+	/**
+	 * Checks if the ball collided with the paddle
+	 * @param paddle The paddle
+	 * @param ball The ball
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(Paddle paddle, Ball ball){
 		return hasCollided(ball, paddle);
 	}
 	
+	/**
+	 * Checks if the power collided with the border
+	 * @param power The spawned power that moved
+	 * @param border the border
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(SpawnedPower power, bp.base.Border border){
 		Border borderBody = (Border) border.getBody();
 		SquareBody powerBody = (SquareBody) power.getBody();
@@ -207,12 +297,24 @@ public class Collision {
 				(borderBody.getEnd().getY()>powerBody.getTopLeft().getY() && borderBody.getStart().getY()<powerBody.getBottomRight().getY());
 	}
 	
+	/**
+	 * Checks if the power collided with the paddle
+	 * @param power The spawned power that moved
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean hasCollided(SpawnedPower power, Paddle paddle){
 		SquareBody powerBody = (SquareBody) power.getBody();
 		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
 		return intersectsTop(powerBody, paddleBody) || intersectsLeft(powerBody, paddleBody) || intersectsRight(powerBody, paddleBody);
 	}
 	
+	/**
+	 * Checks if the power hit the top of the paddle
+	 * @param power the spawned power
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean intersectsTop(SquareBody power, RectangleBody paddle){
 		//power
 		double powerLX = power.getTopLeft().getX();
@@ -229,6 +331,12 @@ public class Collision {
 				powerY>=paddleTY && powerY<=paddleBY;
 	}
 	
+	/**
+	 * Checks if the power hit the left side of the paddle
+	 * @param power the spawned power
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean intersectsLeft(SquareBody power, RectangleBody paddle){
 		//power
 		double powerRX = power.getBottomRight().getX();
@@ -245,6 +353,12 @@ public class Collision {
 				&& powerRX>=paddleLX && powerRX<=paddleRX;
 	}
 	
+	/**
+	 * Checks if the power hit the right side of the paddle
+	 * @param power the spawned power
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean intersectsRight(SquareBody power, RectangleBody paddle){
 		//power
 		double powerLX = power.getTopLeft().getX();
@@ -261,7 +375,12 @@ public class Collision {
 				&& powerLX>=paddleLX && powerLX<=paddleRX;
 	}
 	
-	
+	/**
+	 * Checks if the ball hit the top of the paddle
+	 * @param ball the ball
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean intersectsTop(CircleBody ball, RectangleBody paddle) {
 		double topLeftX = paddle.getTopLeftX();
 		double topLeftY = paddle.getTopLeftY();
@@ -273,6 +392,12 @@ public class Collision {
 		return (centerHitTop || leftHitTop || rightHitTop) && ball.getCenter().getY()+ball.getR()>topLeftY && ball.getCenter().getY()+ball.getR()<bottomRightY;
 	}
 	
+	/**
+	 * Checks if the ball hit the left side of the paddle
+	 * @param ball the ball
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean intersectsLeft(CircleBody ball, RectangleBody paddle) {
 		double topLeftX = paddle.getTopLeftX();
 		double topLeftY = paddle.getTopLeftY();
@@ -284,6 +409,12 @@ public class Collision {
 		return (centerHitLeft || leftHitLeft || rightHitLeft) && ball.getCenter().getX()-ball.getR()<bottomRightX && ball.getCenter().getX()-ball.getR()>topLeftX;
 	}
 
+	/**
+	 * Checks if the ball hit the bottom side of the paddle
+	 * @param ball the ball
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean intersectsBottom(CircleBody ball, RectangleBody paddle) {
 		double topLeftX = paddle.getTopLeftX();
 		double topLeftY = paddle.getTopLeftY();
@@ -295,6 +426,12 @@ public class Collision {
 		return (centerHitBottom || leftHitBottom || rightHitBottom) && ball.getCenter().getY()-ball.getR()<bottomRightY && ball.getCenter().getY()-ball.getR()>topLeftY;
 	}
 
+	/**
+	 * Checks if the ball hit the right side of the paddle
+	 * @param ball the ball
+	 * @param paddle the paddle
+	 * @return if the two objects collided
+	 */
 	private static boolean intersectsRight(CircleBody ball, RectangleBody paddle) {
 		double topLeftX = paddle.getTopLeftX();
 		double topLeftY = paddle.getTopLeftY();

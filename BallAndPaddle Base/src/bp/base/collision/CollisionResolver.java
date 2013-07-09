@@ -7,27 +7,37 @@ import bp.base.collision.body.RectangleBody;
 
 public abstract class CollisionResolver {
 	
+	/**
+	 * Resolves a collision that happened between the ball and border,
+	 * modifying the collision of the ball so it changes course
+	 * @param ball the ball
+	 * @param border the border
+	 */
 	protected static void resolveCollision(Ball ball, bp.base.Border border){
 		if(border.getId().equals("left") && ball.getDirection()>90 && ball.getDirection()<270){
 			ball.OneEightyDirection();
-			ball.getBody().undoMove();
 		}
 		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<=360) || (ball.getDirection()<90 && ball.getDirection()>=0))){
 			ball.OneEightyDirection();
-			ball.getBody().undoMove();
 		}
 		else if(border.getId().equals("top") && ball.getDirection()>180 && ball.getDirection()<360){
 			ball.threeSixtyDirection();
-			ball.getBody().undoMove();
 		}
 		else if(border.getId().equals("bottom") && ball.getDirection()>0 && ball.getDirection()<180){
 			ball.threeSixtyDirection();
-			ball.getBody().undoMove();
 			ball.setDestroyed(true);
 		}		
+		ball.getBody().undoMove();
 		
 	}
 	
+	/**
+	 * Resolves the collision that happened between the ball and paddle.
+	 * The closer the ball hit the paddle in the center the more straight it is launched upwards and slowed.
+	 * Collisions near the side of the paddle result in a steeper launch at a faster speed.
+	 * @param ball the ball
+	 * @param paddle the paddle
+	 */
 	protected static void resolveCollision(Ball ball, Paddle paddle){
 		CircleBody moved = (CircleBody) ball.getBody();
 		RectangleBody other = (RectangleBody) paddle.getBody();		
@@ -91,22 +101,40 @@ public abstract class CollisionResolver {
 			ball.multSpeed(1.20);	
 	}
 	
+	/**
+	 * Resolves the collision between the paddle and border,
+	 * by setting the paddle right next to the border
+	 * @param paddle the paddle
+	 * @param border the border
+	 */
 	protected static void resolveCollision(Paddle paddle, bp.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
 		if(paddle.getDirection()>0){
 			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRightX();
 			paddle.getBody().moveBy(adjustX, 0);			
 		}
-		else{
+		else if(paddle.getDirection()<0){
 			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeftX();
 			paddle.getBody().moveBy(adjustX, 0);	
 		}		
 	}
 	
+	/**
+	 * Resolves the collision between the power and border,
+	 * by destroying the power
+	 * @param power the power
+	 * @param border the border
+	 */
 	protected static void resolveCollision(SpawnedPower power, bp.base.Border border){
 		power.setDestroyed(true);
 	}
 	
+	/**
+	 * Resolves the collision between the power and paddle,
+	 * by setting the power as caught
+	 * @param power the power
+	 * @param paddle the paddle
+	 */
 	protected static void resolveCollision(SpawnedPower power, Paddle paddle){
 		power.setCaught(true);
 	}
