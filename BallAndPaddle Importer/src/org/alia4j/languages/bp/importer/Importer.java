@@ -67,7 +67,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Map<String, bp.base.Paddle> paddles = new HashMap<String, bp.base.Paddle>();
 	private Map<String, bp.base.Ball> balls = new HashMap<String, bp.base.Ball>();
 	private Map<String, bp.base.Block> blocks = new HashMap<String, bp.base.Block>();
-	private Map<String, bp.base.Effect> effects = new HashMap<String, bp.base.Effect>();
+	private Map<String, Attachment> effects = new HashMap<String, Attachment>();
 	private Map<String, bp.base.Power> powers = new HashMap<String, bp.base.Power>();
 	private bp.base.Level level;
 
@@ -118,24 +118,92 @@ public class Importer implements org.alia4j.fial.Importer {
 		return gameLevel;
 	}
 	
-	private bp.base.Effect visit(Effect effect) {
+	private Attachment visit(Effect effect) {
 		//bp.base.Effect gameEffect;
-		if(effect instanceof GeneralEffect) {
-			return visit((GeneralEffect) effect);
-		} else {
-			return visit((CollisionEffect) effect);
+		if(effect instanceof GeneralEffect) return visit((GeneralEffect) effect);
+		else return visit((CollisionEffect) effect);
+	}
+	
+//	private void generateAttachment() {
+//		//create attribute getter pattern 
+//		MethodPattern attributeGetter = new MethodPattern(
+//			ModifiersPattern.ANY,
+//			TypePattern.ANY,
+//			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass)),
+//			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
+//			ParametersPattern.ANY,
+//			ExceptionsPattern.ANY
+//		);
+//		
+//		//create pattern matching predicate
+//		BasicPredicate<AtomicPredicate> predicate = generatePredicate();
+//		
+//		//contruct specialization
+//		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
+//		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(valueContext));
+//		
+//		attachment = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
+//	}
+	
+	private Attachment visit(GeneralEffect effect) {
+		AttributeAdjustment attrAdjustment = effect.getBody();
+		
+		Pattern pattern = createPattern(null, attrAdjustment.getEffectedAttribute());
+		Action action = createAction(attrAdjustment);
+		Context context = visit(attrAdjustment.getExpression());
+		
+		Target target = effect.getTarget();
+		Context filter = visit(target.getFilter());
+		
+		
+		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+	}
+	
+	private MethodPattern createPattern(Class<? extends BAPObject> bpObjectClass, EffectedAttribute attribute) {
+		String attrName = EffectedAttribute.toString();
+		return new MethodPattern(	
+			ModifiersPattern.ANY,
+			TypePattern.ANY,
+			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass)),
+			new ExactNamePattern("get"+Character.toUpperCase(attrName.charAt(0))+attrName.substring(1).toLowerCase()),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+		);
+	}
+	
+	private Attachment visit(CollisionEffect effect) {
+		return null;
+	}
+	
+	private Action createAction(AttributeAdjustment attributeAdjustment) {
+		AdjustmentOperator op = attributeAdjustment.getAdjustmentOperator();
+		EffectedAttribute attr = attributeAdjustment.getEffectedAttribute();
+		switch(attr) {
+		case SPEED:
+		case SIZE:
+			if(op==AdjustmentOperator.SET) return DoubleAttributeAssignAction.methodCallAction;
+			else return DoubleAttributeIncAction.methodCallAction;
+		case HARDNESS:
+		case NORMAL_RES:
+		case ORIENTATION:
+		case X:
+		case Y:
+			if(op==AdjustmentOperator.SET) return IntAttributeAssignAction.methodCallAction;
+			else return IntAttributeIncAction.methodCallAction;
+		case IMMATERIAL:
+			return BooleanAttributeAssignAction.methodCallAction;
 		}
 	}
 	
-	private bp.base.GeneralEffect visit(GeneralEffect effect) {
-		bp.base.GeneralEffect gameEffect = new bp.base.GeneralEffect(generalEffect.getId(), generalEffect.getBody(), generalEffect.getTarget());
-		return null;
-	}
-	
-	private bp.base.CollisionEffect visit(CollisionEffect effect) {
-		//GeneralEffect generalEffect = (GeneralEffect) effect;
-		//gameEffect = new bp.base.GeneralEffect(generalEffect.getId(), generalEffect.getBody(), generalEffect.getTarget())
-		return null;
+	private Context visit(Expression expression) {
+		//TODO
+		//ContextFactory.findOrCreateIntegerConstantContext(90);
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
+		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
+		return exceedsContext;
 	}
 
 	private void oldASTprocesser(Root root){
@@ -416,7 +484,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		return result;
 	}
 
-	private static final Predicate<AtomicPredicate> getTargetPredicate(BooleanExpression param){
+	private Predicate<AtomicPredicate> getTargetPredicate(BooleanExpression param){
 		if(param instanceof AndParameter){
 			AndParameter andPar = (AndParameter) param;
 				return new AndPredicate<>(getTargetPredicate(andPar.getLeft()), getTargetPredicate(andPar.getRight()));
@@ -465,11 +533,11 @@ public class Importer implements org.alia4j.fial.Importer {
 			BracketParameter brackPar = (BracketParameter) param;
 			//brackets, so just recursively continue for it's body
 			return getTargetPredicate(brackPar.getBody());
-		}			
+		}
 		return null;
 	}
 	
-	private static Context getTargetContext(BooleanExpression param) {		
+	private static Context getTargetContext(BooleanExpression param) {
 		///TODO, far from finished
 		if(param instanceof AttParameter){
 			AttParameter attPar = (AttParameter)param;
