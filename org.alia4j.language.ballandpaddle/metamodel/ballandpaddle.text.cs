@@ -6,21 +6,17 @@ OPTIONS {
 	overrideBuilder = "false";
 }
 
-
 TOKENS {
 	DEFINE COMMENT $'//'(~('\n'|'\r'|'\uffff'))*$;
 	DEFINE FRAGMENT DIGIT $('1'..'9')$;
 	DEFINE INTEGER $('-')?('1'..'9')('0'..'9')*|'0'$;
 	DEFINE FLOAT $('-')?(('1'..'9') ('0'..'9')* | '0') '.' ('0'..'9')+ $;
 	DEFINE BOOLEAN $('t''r''u''e')|('f''a''l''s''e')$;
-	//DEFINE SINGLE $($ + CHAR + $|$ + DIGIT + $)$ ;
 	DEFINE CHAR $('A'..'Z')$;
 	DEFINE LEVELLINE $(('A'..'Z')|('.'))+$;
-	//DEFINE ANDOR $('|')|('&')$;
 	DEFINE THIS $'t''h''i''s'$;
 	//regex: ('A'..'Z' | 'a'..'z' | '0'..'9' | '_' | '-' )+
 }
-
 
 TOKENSTYLES {
 	"game" COLOR #7F0055, BOLD;
@@ -43,7 +39,6 @@ TOKENSTYLES {
 	"true" COLOR #7F0055, BOLD;
 	"false" COLOR #7F0055, BOLD;
 }
-
 
 RULES {
 	Root ::= level paddles+ balls+ blocks* powers* effects*;	
