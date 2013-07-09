@@ -1,9 +1,114 @@
 package bp.base;
 
+import java.util.Collections;
 import java.util.List;
+
+import org.alia4j.hierarchy.TypeHierarchyProvider;
+import org.alia4j.languages.bp.action.DoubleAttributeAssignAction;
+import org.alia4j.languages.bp.action.DoubleAttributeIncAction;
+import org.alia4j.languages.bp.action.IntAttributeIncAction;
+import org.alia4j.languages.bp.context.LocalDoubleVariableContext;
+import org.alia4j.liam.Action;
+import org.alia4j.liam.AtomicPredicate;
+import org.alia4j.liam.AtomicPredicateFactory;
+import org.alia4j.liam.Attachment;
+import org.alia4j.liam.BasicPredicate;
+import org.alia4j.liam.Context;
+import org.alia4j.liam.ContextFactory;
+import org.alia4j.liam.ScheduleInfo;
+import org.alia4j.liam.Specialization;
+import org.alia4j.liam.pattern.MethodPattern;
+import org.alia4j.patterns.ExceptionsPattern;
+import org.alia4j.patterns.ModifiersPattern;
+import org.alia4j.patterns.ParametersPattern;
+import org.alia4j.patterns.TypePattern;
+import org.alia4j.patterns.names.ExactNamePattern;
+import org.alia4j.patterns.types.ExactClassTypePattern;
 
 public class GeneralEffect extends Effect {
 
+	private Attachment attachment;
+	private AttributeType attributeType;
+	private String attribute;
+	
+	//target
+	private TargetType targetType;
+	private Class<? extends BAPObject> bpObjectClass;
+	private BAPObject bpObject;
+	
+	public GeneralEffect(String id, Class<? extends BAPObject> bpObjectClass) {
+		super(id);
+		targetType = TargetType.TYPE;
+		this.bpObjectClass = bpObjectClass;
+	}
+	
+	public GeneralEffect(String id, BAPObject bpObject) {
+		super(id);
+		targetType = TargetType.TYPE;
+		this.bpObject = bpObject;
+	}
+	
+	public enum AttributeType {
+		DOUBLE,
+		INT,
+		BOOLEAN
+	}
+	
+	private void generateAttachment() {
+		//create attribute getter pattern 
+		MethodPattern attributeGetter = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY,
+			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass)),
+			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+		);
+		
+		//create pattern matching predicate
+		BasicPredicate<AtomicPredicate> predicate = generatePredicate();
+
+		//create attribute assign action
+		Action attributeAssignAction = null;
+		switch(attributeType) {
+		case DOUBLE: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		case INT: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		case BOOLEAN: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		}
+		
+		Action attributeIncAction = null;
+		switch(attributeType) {
+		case DOUBLE: attributeIncAction = DoubleAttributeIncAction.methodCallAction; break;
+		case INT: attributeIncAction = IntAttributeIncAction.methodCallAction; break;
+		case BOOLEAN: assert(false);
+		}
+		
+		Context newSize = ContextFactory.findOrCreateIntegerConstantContext(90);
+		
+		//contruct specialization
+		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
+		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(newSize));
+		
+		attachment = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
+	}
+	
+	private BasicPredicate<AtomicPredicate> generatePredicate() {
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
+		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
+		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+	}
+	
+	
+	
+	
+	///--------------------------------------------------------------------------------------------------
+	
+	
+	
+	
+	
 	//if TargetType is TargetType.Type then target is the class name of the target
 	//if TargetType is TargetType.Object then target is the id of the target
 	private String target;

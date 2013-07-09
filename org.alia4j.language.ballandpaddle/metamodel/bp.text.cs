@@ -59,8 +59,8 @@ RULES {
 	
 	EffectedBlockAttribute ::= "block."type[NormalRes:"resistance", Hardness:"hardness"];
 	
-	ObjectTarget ::= item[CHAR] | item[];
-	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" params ")")?;
+	ObjectTarget ::= item[] ("(" filter ")")?;
+	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" filter ")")?;
 	
 	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
 	MultExpression ::= left "*" right;

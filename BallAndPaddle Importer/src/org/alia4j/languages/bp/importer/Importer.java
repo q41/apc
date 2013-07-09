@@ -510,58 +510,52 @@ public class Importer implements org.alia4j.fial.Importer {
 	);
 	private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
 	
-	enum AttributeType {
-		DOUBLE,
-		INT,
-		BOOLEAN
-	}
-	
-	private void createEffect(Class<? extends BAPObject> bapobject, String attribute, AttributeType attributeType) {
-		//create attribute getter pattern 
-		MethodPattern attributeGetter = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY,
-			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bapobject)),
-			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-		);
-		
-		//create pattern matching predicate
-		BasicPredicate<AtomicPredicate> predicate = createEffectPredicate();
-
-		//create attribute assign action
-		Action attributeAssignAction = null;
-		switch(attributeType) {
-		case DOUBLE: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-		case INT: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-		case BOOLEAN: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-		}
-		
-		Action attributeIncAction = null;
-		switch(attributeType) {
-		case DOUBLE: attributeIncAction = DoubleAttributeIncAction.methodCallAction; break;
-		case INT: attributeIncAction = IntAttributeIncAction.methodCallAction; break;
-		case BOOLEAN: assert(false);
-		}
-		
-		Context newSize = ContextFactory.findOrCreateIntegerConstantContext(90);
-		
-		//contruct specialization
-		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(newSize));
-		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
-	
-	private BasicPredicate<AtomicPredicate> createEffectPredicate() {
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
-		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
-		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
-	}
+//	private void createEffect(Class<? extends BAPObject> bapobject, String attribute, AttributeType attributeType) {
+//		//create attribute getter pattern 
+//		MethodPattern attributeGetter = new MethodPattern(
+//			ModifiersPattern.ANY,
+//			TypePattern.ANY,
+//			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bapobject)),
+//			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
+//			ParametersPattern.ANY,
+//			ExceptionsPattern.ANY
+//		);
+//		
+//		//create pattern matching predicate
+//		BasicPredicate<AtomicPredicate> predicate = createEffectPredicate();
+//
+//		//create attribute assign action
+//		Action attributeAssignAction = null;
+//		switch(attributeType) {
+//		case DOUBLE: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+//		case INT: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+//		case BOOLEAN: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+//		}
+//		
+//		Action attributeIncAction = null;
+//		switch(attributeType) {
+//		case DOUBLE: attributeIncAction = DoubleAttributeIncAction.methodCallAction; break;
+//		case INT: attributeIncAction = IntAttributeIncAction.methodCallAction; break;
+//		case BOOLEAN: assert(false);
+//		}
+//		
+//		Context newSize = ContextFactory.findOrCreateIntegerConstantContext(90);
+//		
+//		//contruct specialization
+//		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
+//		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(newSize));
+//		
+//		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
+//		initialAttachments.add(attachement);
+//	}
+//	
+//	private BasicPredicate<AtomicPredicate> createEffectPredicate() {
+//		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+//		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
+//		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
+//		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
+//		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+//	}
 	
 	//Collision detection
 	

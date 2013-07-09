@@ -65,13 +65,14 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference bp.text.ecore#//Power/effects"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Power/powerSpawnChance"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//Target"/>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//Target">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//Target/filter"/>
+    </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//ObjectTarget">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference bp.text.ecore#//ObjectTarget/item"/>
     </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//TypeTarget">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//TypeTarget/type"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//TypeTarget/params"/>
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanExpression"/>
     <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanBinaryExpression">
