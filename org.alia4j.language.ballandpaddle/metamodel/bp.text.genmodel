@@ -121,16 +121,16 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffect/rightTarget"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffect/body"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//EffectAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectAttribute/op"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectAttribute/name"/>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//EffectBody">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectBody/op"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectBody/name"/>
     </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//GeneralEffectAttribute">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//GeneralEffectAttribute/expression"/>
+    <genClasses ecoreClass="bp.text.ecore#//GeneralEffectBody">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//GeneralEffectBody/expression"/>
     </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//CollisionEffectAttribute">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//CollisionEffectAttribute/classType"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectAttribute/expression"/>
+    <genClasses ecoreClass="bp.text.ecore#//CollisionEffectBody">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//CollisionEffectBody/classType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectBody/expression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//Expression"/>
     <genClasses image="false" ecoreClass="bp.text.ecore#//BinaryExpression">

@@ -49,10 +49,10 @@ RULES {
 	Power ::= "power" id[] "{" "effects" "=" effects[] ("," effects[])* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
 	
 	GeneralEffect ::= "effect" id[] "on" target "{" body ("duration""="duration[INTEGER])? "}";
-	GeneralEffectAttribute ::= name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
+	GeneralEffectBody ::= name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
 	
 	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" body ("duration""="duration[INTEGER])? "}";
-	CollisionEffectAttribute ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
+	CollisionEffectBody ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
 	
 	ObjectTarget ::= item[] ("(" filter ")")?;
 	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" filter ")")?;

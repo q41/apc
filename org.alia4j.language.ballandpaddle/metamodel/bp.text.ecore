@@ -142,7 +142,7 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		containment reference CollisionEffectBody body (1..1);
 	}
 	
-	abstract class EffectBody{ //TODO rename to EffectBody
+	abstract class EffectBody{
 		attribute AdjustmentOperator op (1..1);				
 		attribute Attribute name (1..1);
 	}
