@@ -7,10 +7,9 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: org.alia4j.language.ballandpaddle,
- org.alia4j.language.ballandpaddle.impl,
- org.alia4j.language.ballandpaddle.util
+Export-Package: org.alia4j.language.bp,
+ org.alia4j.language.bp.impl,
+ org.alia4j.language.bp.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.emf.ecore.xmi;bundle-version="2.8.1"
+ org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
