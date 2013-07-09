@@ -142,16 +142,16 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		containment reference CollisionEffectAttribute body (1..1);
 	}
 	
-	abstract class EffectAttribute{
+	abstract class EffectBody{ //TODO rename to EffectBody
 		attribute AdjustmentOperator op (1..1);				
 		attribute Attribute name (1..1);
 	}
 	
-	class GeneralEffectAttribute extends EffectAttribute{
+	class GeneralEffectBody extends EffectBody{
 		containment reference Expression expression (1..1);		
 	}
 	
-	class CollisionEffectAttribute extends EffectAttribute{
+	class CollisionEffectBody extends EffectBody{
 		attribute TargetType classType (1..1);
 		containment reference CollisionExpression expression (1..1);
 	}
