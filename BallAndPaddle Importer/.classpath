@@ -7,6 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/BallAndPaddle Base"/>
 	<classpathentry kind="lib" path="/lwjgl2.9/lwjgl-2.9.0/jar/lwjgl.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ALIA4J NOIRIn libraries"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.alia4j.language.bp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.alia4j.language.ballandpaddle"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
