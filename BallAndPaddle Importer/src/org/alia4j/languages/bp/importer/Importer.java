@@ -25,6 +25,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import bp.base.Effect.EffectedAttribute;
+
 public class Importer implements org.alia4j.fial.Importer {
 
 	private boolean initialized = false;
@@ -100,7 +102,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private bp.base.Power visit(Power power) {
-		List<bp.base.Effect> powerEffects = new ArrayList<bp.base.Effect>();
+		List<Attachment> powerEffects = new ArrayList<Attachment>();
 		for(Effect effect: power.getEffects()) {
 			powerEffects.add(effects.get(effect.getId()));
 		}
@@ -112,9 +114,13 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 
 	private bp.base.Level visit(Level level) {
-		//TODO instance
-		bp.base.Level gameLevel = new bp.base.Level(level.getId(), new ArrayList<bp.base.Paddle>(paddles.values()), new ArrayList<bp.base.Ball>(balls.values()), level.getBlocks(), level.getPowerSpawnChance());
+		bp.base.Level gameLevel = bp.base.Level.getInstance();
+		gameLevel.setID(level.getId());
+		gameLevel.setPaddles(new ArrayList<bp.base.Paddle>(paddles.values()));
+		gameLevel.setBalls(new ArrayList<bp.base.Ball>(balls.values()));
+		gameLevel.setDeclaredPowers(new ArrayList<bp.base.Power>(powers.values()));
 		gameLevel.generateBlocks(new ArrayList<bp.base.Block>(blocks.values()));
+		gameLevel.setPowerSpawnChance(level.getPowerSpawnChance());
 		return gameLevel;
 	}
 	
@@ -146,7 +152,7 @@ public class Importer implements org.alia4j.fial.Importer {
 //	}
 	
 	private Attachment visit(GeneralEffect effect) {
-		AttributeAdjustment attrAdjustment = effect.getBody();
+		GeneralEffectBody body = effect.getBody();
 		
 		Pattern pattern = createPattern(null, attrAdjustment.getEffectedAttribute());
 		Action action = createAction(attrAdjustment);
@@ -196,7 +202,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		}
 	}
 	
-	private Context visit(Expression expression) {
+	private Context visit(BooleanExpression expression) {
 		//TODO
 		//ContextFactory.findOrCreateIntegerConstantContext(90);
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();

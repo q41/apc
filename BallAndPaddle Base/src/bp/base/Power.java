@@ -2,6 +2,8 @@ package bp.base;
 
 import java.util.*;
 
+import org.alia4j.liam.Attachment;
+
 public class Power {
 
 	/**
@@ -11,7 +13,7 @@ public class Power {
 	/**
 	 * The effects that this power has
 	 */
-	private List<Effect> effects;
+	private List<Attachment> effects;
 	/**
 	 * The chance that this power will be spawned, from 0.0 to 1.0
 	 */
@@ -23,7 +25,7 @@ public class Power {
 	 * @param effects the effects that this power has
 	 * @param powerSpawnChance the chance that this power will be spawned
 	 */
-	public Power(String id, List<Effect> effects, double powerSpawnChance){
+	public Power(String id, List<Attachment> effects, double powerSpawnChance){
 		this(id, effects);
 		this.powerSpawnChance = powerSpawnChance;
 	}
@@ -33,7 +35,7 @@ public class Power {
 	 * @param id the id of this power
 	 * @param effects the effects that this power has
 	 */
-	public Power(String id, List<Effect> effects){
+	public Power(String id, List<Attachment> effects){
 		this.id = id;
 		this.effects = effects;
 		this.powerSpawnChance=1.0;
@@ -51,7 +53,7 @@ public class Power {
 	 * Returns the effects that this power has
 	 * @return the effects of this power
 	 */
-	public List<Effect> getEffects() {
+	public List<Attachment> getEffects() {
 		return effects;
 	}
 

@@ -387,14 +387,15 @@ public class Level extends Observable implements Runnable {
 	public void removeIllegalEffects() throws IllegalEffectException {
 		//create list of all effects	
 		List<Effect> effects = new ArrayList<Effect>();
-		for(Power power : powers)
-			for(Effect effect : power.getEffects())
-				if(!effects.contains(effect))
-					effects.add(effect);
-		//check if all effects are legal
-		for(Effect effect : effects)
-			if(!effect.isLegal(this))
-				throw new IllegalEffectException("Error 514.b");
+		//TODO: replace old code
+//		for(Power power : powers)
+//			for(Effect effect : power.getEffects())
+//				if(!effects.contains(effect))
+//					effects.add(effect);
+//		//check if all effects are legal
+//		for(Effect effect : effects)
+//			if(!effect.isLegal(this))
+//				throw new IllegalEffectException("Error 514.b");
 	}
 	
 	/**
