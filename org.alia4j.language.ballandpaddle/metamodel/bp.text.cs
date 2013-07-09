@@ -48,16 +48,11 @@ RULES {
 	Block ::= "block" id[CHAR] "{" "hardness" "=" hardness[INTEGER] ("resistance" "=" resistance[INTEGER])? ("power" "=" power[])? "}";	
 	Power ::= "power" id[] "{" "effects" "=" effects[] ("," effects[])* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
 	
-	GeneralEffect ::= "effect" id[] "on" target "{" body "}";
-	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" body "}";
+	GeneralEffect ::= "effect" id[] "on" target "{" body ("duration""="duration[INTEGER])? "}";
+	GeneralEffectAttribute ::= type[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",NormalRes:"resistance"] op[Inc:"+=", Dec:"-=", Set:"="] expression;
 	
-	AttributeAdjustment ::= effectedAttribute adjustmentOperator[Inc:"+=", Dec:"-=", Set:"="] expression ("duration" "=" duration[INTEGER])?;
-	
-	EffectedBallAttribute ::= "ball." type[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial"];
-	
-	EffectedPaddleAttribute ::= "paddle." type[Size:"size",Speed:"speed"];
-	
-	EffectedBlockAttribute ::= "block."type[NormalRes:"resistance", Hardness:"hardness"];
+	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" body ("duration""="duration[INTEGER])? "}";
+	CollisionEffectAttribute ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."type[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",NormalRes:"resistance"] op[Inc:"+=", Dec:"-=", Set:"="] expression;
 	
 	ObjectTarget ::= item[] ("(" filter ")")?;
 	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" filter ")")?;
@@ -90,13 +85,7 @@ RULES {
 	BoolOperand ::= value[BOOLEAN];
 
 	@Operator(type="primitive", weight="4", superclass="Expression")
-	AttBallOperand ::= "ball."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial"];
-
-	@Operator(type="primitive", weight="4", superclass="Expression")
-	AttBlockOperand ::= "block."att[Hardness:"hardness",NormalRes:"resistance"];
-
-	@Operator(type="primitive", weight="4", superclass="Expression")
-	AttPaddleOperand ::= "paddle."att[Size:"size",Speed:"speed"];
+	AttOperand ::= att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",NormalRes:"resistance"];
 	
 	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
 	EqExpression ::= left "=" right;
@@ -151,5 +140,36 @@ RULES {
 	
 	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
 	BooleanBoolOperand ::= value[BOOLEAN];
+	
+	@Operator(type="binary_left_associative", weight="1", superclass="CollisionExpression")
+	MultCollisionExpression ::= left "*" right;
+
+	@Operator(type="binary_left_associative", weight="1", superclass="CollisionExpression")
+	DivCollisionExpression ::= left "/" right;
+	
+	@Operator(type="binary_left_associative", weight="2", superclass="CollisionExpression")
+	PlusCollisionExpression ::= left "+" right;
+
+	@Operator(type="binary_left_associative", weight="2", superclass="CollisionExpression")
+	MinusCollisionExpression ::= left "-" right;
+	
+	@Operator(type="unary_prefix", weight="3", superclass="CollisionExpression")
+	NegCollisionExpression ::= "-"body;
+	
+	@Operator(type="primitive", weight="4", superclass="CollisionExpression")
+	BracketCollisionExpression ::= "(" body ")";
+
+	@Operator(type="primitive", weight="4", superclass="CollisionExpression")
+	IntCollisionOperand ::= value[INTEGER];
+	
+	@Operator(type="primitive", weight="4", superclass="CollisionExpression")
+	DoubleCollisionOperand ::= value[FLOAT];
+	
+	@Operator(type="primitive", weight="4", superclass="CollisionExpression")
+	BoolCollisionOperand ::= value[BOOLEAN];
+
+	@Operator(type="primitive", weight="4", superclass="CollisionExpression")
+	AttCollisionOperand ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",NormalRes:"resistance"];
+	
 	
 }

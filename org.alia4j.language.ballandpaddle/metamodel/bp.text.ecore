@@ -128,25 +128,34 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	
 	abstract class Effect{
 		attribute EString id (1..1);
-		containment reference AttributeAdjustment body (1..1);
+		attribute EInt duration(0..1);
 	}
 	
 	class GeneralEffect extends Effect{
 		containment reference Target target (1..1);		
+		containment reference GeneralEffectAttribute body (1..1);
 	}
 	
 	class CollisionEffect extends Effect{
 		containment reference Target leftTarget (1..1);
 		containment reference Target rightTarget (1..1);
+		containment reference CollisionEffectAttribute body (1..1);
 	}
 	
-	class AttributeAdjustment{
-		containment reference EffectedAttribute effectedAttribute (1..1);		
-		attribute AdjustmentOperator adjustmentOperator(1..1);
-		containment reference Expression expression (1..1);
-		attribute EInt duration(0..1);
+	abstract class EffectAttribute{
+		attribute AdjustmentOperator op (1..1);				
+		attribute Attribute type (1..1);
 	}
 	
+	class GeneralEffectAttribute extends EffectAttribute{
+		containment reference Expression expression (1..1);		
+	}
+	
+	class CollisionEffectAttribute extends EffectAttribute{
+		attribute TargetType classType (1..1);
+		containment reference CollisionExpression expression (1..1);
+	}
+		
 	abstract class EffectedAttribute{
 	}
 	
@@ -204,15 +213,54 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		attribute EBoolean value (1..1);
 	}
 	
-	class AttBallOperand extends Expression{	
+	class AttOperand extends Expression{	
 		attribute Attribute att(1..1);				
 	}
 	
-	class AttBlockOperand extends Expression{	
-		attribute Attribute att(1..1);				
+	abstract class CollisionExpression{	
 	}
 	
-	class AttPaddleOperand extends Expression{	
+	abstract class BinaryCollisionExpression extends CollisionExpression{
+		containment reference CollisionExpression left(1..1);
+		containment reference CollisionExpression right(1..1);
+	}
+	
+	abstract class UnaryCollisionExpression extends CollisionExpression{
+		containment reference CollisionExpression body(1..1);
+	}
+	
+	class MultCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class DivCollisionExpression extends BinaryCollisionExpression {
+	}
+	
+	class PlusCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class MinusCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class BracketCollisionExpression extends UnaryCollisionExpression{				
+	}
+	
+	class NegCollisionExpression extends UnaryCollisionExpression{			
+	}
+	
+	class IntCollisionOperand extends CollisionExpression{
+		attribute EInt value (1..1);	
+	}
+	
+	class DoubleCollisionOperand extends CollisionExpression{
+		attribute EDouble value (1..1);		
+	}
+	
+	class BoolCollisionOperand extends CollisionExpression{
+		attribute EBoolean value (1..1);
+	}
+	
+	class AttCollisionOperand extends CollisionExpression{	
+		attribute TargetType classType(1..1);
 		attribute Attribute att(1..1);				
 	}
 	

@@ -110,20 +110,27 @@
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//Effect">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Effect/id"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//Effect/body"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Effect/duration"/>
     </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//GeneralEffect">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//GeneralEffect/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//GeneralEffect/body"/>
     </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//CollisionEffect">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffect/leftTarget"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffect/rightTarget"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffect/body"/>
     </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//AttributeAdjustment">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//AttributeAdjustment/effectedAttribute"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttributeAdjustment/adjustmentOperator"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//AttributeAdjustment/expression"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttributeAdjustment/duration"/>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//EffectAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectAttribute/op"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//EffectAttribute/type"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//GeneralEffectAttribute">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//GeneralEffectAttribute/expression"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//CollisionEffectAttribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//CollisionEffectAttribute/classType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectAttribute/expression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//EffectedAttribute"/>
     <genClasses ecoreClass="bp.text.ecore#//EffectedBallAttribute">
@@ -158,14 +165,35 @@
     <genClasses ecoreClass="bp.text.ecore#//BoolOperand">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//BoolOperand/value"/>
     </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//AttBallOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttBallOperand/att"/>
+    <genClasses ecoreClass="bp.text.ecore#//AttOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttOperand/att"/>
     </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//AttBlockOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttBlockOperand/att"/>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//CollisionExpression"/>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//BinaryCollisionExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BinaryCollisionExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BinaryCollisionExpression/right"/>
     </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//AttPaddleOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttPaddleOperand/att"/>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//UnaryCollisionExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//UnaryCollisionExpression/body"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//MultCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//DivCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//PlusCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//MinusCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//BracketCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//NegCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//IntCollisionOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//IntCollisionOperand/value"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//DoubleCollisionOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//DoubleCollisionOperand/value"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//BoolCollisionOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//BoolCollisionOperand/value"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//AttCollisionOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttCollisionOperand/classType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttCollisionOperand/att"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
