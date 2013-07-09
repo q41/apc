@@ -128,13 +128,13 @@ public class Collision {
 				//check if the ball has collided with the left border
 				return ballBody.getCenter().getX()-ballBody.getR()<=borderBody.getStart().getX() && borderBody.getStart().getX()==0;
 			}
-			else{
+			else{	
 				//check if the ball has collided with the right border, make sure it isn't the left border
 				return ballBody.getCenter().getX()+ballBody.getR()>=borderBody.getStart().getX() && borderBody.getStart().getX()!=0;
 			}
 		}
-		else if(borderBody.getStart().getY()==borderBody.getEnd().getY()){
-			if(ball.getDirection()>180){
+		else if(borderBody.getStart().getY()==borderBody.getEnd().getY()){			
+			if(ball.getDirection()>180 && ball.getDirection()<360){
 				//check if ball has collided with the top border
 				return ballBody.getCenter().getY()-ballBody.getR()<=borderBody.getStart().getY() && borderBody.getStart().getY()==0;
 			}

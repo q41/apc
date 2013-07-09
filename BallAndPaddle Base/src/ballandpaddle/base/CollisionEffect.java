@@ -3,22 +3,31 @@ package ballandpaddle.base;
 import java.util.List;
 
 import ballandpaddle.base.Effect.EffectTarget;
-import ballandpaddle.base.Effect.EffectedAttribute;
+import ballandpaddle.base.Effect.EffectAttribute;
 import ballandpaddle.base.Effect.TargetType;
 
 public class CollisionEffect extends Effect {
 
-		//if TargetType is Type then target is the class name of the target
-		//if TargetType is Object then target is the id of the target
+		//if TargetType is TargetType.Type then target is the class name of the target
+		//if TargetType is TargetType.Object then target is the id of the target
 		private String leftTarget;
 		private TargetType leftType;
 		private String rightTarget;
 		private TargetType rightType;
 		
-		private List<EffectedAttribute> rightTargetAttributes;
-		private List<EffectedAttribute> leftTargetAttributes;
+		//the attributes part of the right target, if any
+		private List<EffectAttribute> rightTargetAttributes;
+		//the attributes part of the left target, if any
+		private List<EffectAttribute> leftTargetAttributes;
 	
-	
+	/**
+	 * Creates a new collision effect
+	 * @param id the id of the effect
+	 * @param leftType the kind of the left target, Object or Type
+	 * @param leftTarget the left target, an id or class
+	 * @param rightType the kind of the right target, Object or Type
+	 * @param rightTarget the right target, an id or class
+	 */
 	public CollisionEffect(String id, TargetType leftType, String leftTarget, TargetType rightType, String rightTarget) {
 		super(id);
 		this.leftTarget=leftTarget;
@@ -27,13 +36,21 @@ public class CollisionEffect extends Effect {
 		this.rightType=rightType;
 	}
 	
+	/**
+	 * Sets the target attributes for the left target
+	 * @param leftTargetAttributes the left target's target attributes
+	 */
 	public void setLeftTargetAttributes(
-			List<EffectedAttribute> leftTargetAttributes) {
+			List<EffectAttribute> leftTargetAttributes) {
 		this.leftTargetAttributes = leftTargetAttributes;		
 	}
 	
+	/**
+	 * Sets the target attributes for the right target
+	 * @param rightTargetAttributes the right target's target attributes
+	 */
 	public void setRightTargetAttributes(
-			List<EffectedAttribute> rightTargetAttributes) {
+			List<EffectAttribute> rightTargetAttributes) {
 		this.rightTargetAttributes = rightTargetAttributes;
 	}
 	
@@ -91,26 +108,26 @@ public class CollisionEffect extends Effect {
 		//the variable that is targeted does not have to be checked, the parser already does this
 		correct &= targetTypeLeft.equals(effectTarget) || targetTypeRight.equals(effectTarget);
 		//check if all the parameters used with the target are legal for these types
-		for(EffectedAttribute attr : leftTargetAttributes){
+		for(EffectAttribute attr : leftTargetAttributes){
 			if(leftTarget.equals(EffectTarget.BALL)){
-				correct &= !attr.equals(EffectedAttribute.HARDNESS) && !attr.equals(EffectedAttribute.RESISTANCE);
+				correct &= !attr.equals(EffectAttribute.HARDNESS) && !attr.equals(EffectAttribute.RESISTANCE);
 			}
 			else if(leftTarget.equals(EffectTarget.BLOCK)){
-				correct &= attr.equals(EffectedAttribute.HARDNESS) || attr.equals(EffectedAttribute.RESISTANCE);
+				correct &= attr.equals(EffectAttribute.HARDNESS) || attr.equals(EffectAttribute.RESISTANCE);
 			}
 			else{
-				correct &= !attr.equals(EffectedAttribute.SIZE) && !attr.equals(EffectedAttribute.SPEED);
+				correct &= !attr.equals(EffectAttribute.SIZE) && !attr.equals(EffectAttribute.SPEED);
 			}
 		}
-		for(EffectedAttribute attr : rightTargetAttributes){
+		for(EffectAttribute attr : rightTargetAttributes){
 			if(rightTarget.equals(EffectTarget.BALL)){
-				correct &= !attr.equals(EffectedAttribute.HARDNESS) && !attr.equals(EffectedAttribute.RESISTANCE);
+				correct &= !attr.equals(EffectAttribute.HARDNESS) && !attr.equals(EffectAttribute.RESISTANCE);
 			}
 			else if(rightTarget.equals(EffectTarget.BLOCK)){
-				correct &= attr.equals(EffectedAttribute.HARDNESS) || attr.equals(EffectedAttribute.RESISTANCE);
+				correct &= attr.equals(EffectAttribute.HARDNESS) || attr.equals(EffectAttribute.RESISTANCE);
 			}
 			else{
-				correct &= !attr.equals(EffectedAttribute.SIZE) && !attr.equals(EffectedAttribute.SPEED);
+				correct &= !attr.equals(EffectAttribute.SIZE) && !attr.equals(EffectAttribute.SPEED);
 			}
 		}
 		

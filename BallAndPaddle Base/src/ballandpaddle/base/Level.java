@@ -1,6 +1,10 @@
 package ballandpaddle.base;
 import java.util.*;
 
+import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+
 import ballandpaddle.base.collision.*;
 import ballandpaddle.base.collision.body.Body;
 import ballandpaddle.base.collision.body.Border;
@@ -8,73 +12,141 @@ import ballandpaddle.base.collision.body.Point;
 import ballandpaddle.base.collision.body.SquareBody;
 
 
-public class Level extends Observable {
+public class Level extends Observable implements Runnable {
 
+	/**
+	 * The instance of this singleton
+	 */
 	private static Level INSTANCE;
+	/**
+	 * The id of this level
+	 */
 	private String id;
+	/**
+	 * The chance a power will be spawned when a block without a power is destroyed
+	 */
 	private float powerSpawnChance;
+	/**
+	 * The imported grid for this level
+	 */
 	private List<String> importedBlocks;
 	
+	/**
+	 * The paddles of this game
+	 */
 	private List<Paddle> paddles;
+	/**
+	 * The balls of this game
+	 */
 	private List<Ball> balls;
+	/**
+	 * The blocks of this game
+	 */
 	private List<Block> blocks;
+	/**
+	 * All currently spawned powers
+	 */
 	private List<SpawnedPower> spawnedPowers;
+	/**
+	 * All powers that are waiting to be spawned
+	 */
 	private List<SpawnedPower> toBeSpawnedPowers;
+	/**
+	 * All powers of this game
+	 */
 	private List<Power> powers;
+	/**
+	 * The four borders of the level
+	 */
 	private ballandpaddle.base.Border[] borders;
+	/**
+	 * The  height of the level
+	 */
 	private int height;
+	/**
+	 * The width of the level
+	 */
 	private int width;
 	
+	/**
+	 * Frame information for keeping the amount of updates well divided over the second
+	 */
+	private long lastFrame;
+	private long lastFPS;
+	private int fps;
+	
+	/**
+	 * Returns the level, creates one if it doesn't yet exist
+	 * @return the level
+	 */
 	public static Level getInstance() {
 		if (INSTANCE == null)
 			INSTANCE = new Level();
 		return INSTANCE;
 	}
 	
+	/**
+	 * Creates a new level
+	 */
 	public Level(){}
 	
+	/**
+	 * Sets the id of this level	
+	 * @param id the id of the level
+	 */
 	public void setID(String id){
 		this.id = id;
 	}
 	
+	/**
+	 * Sets the paddles of the level
+	 * @param paddles the paddles of this level
+	 */
 	public void setPaddles(List<Paddle> paddles){
 		this.paddles = paddles;
 	}
 	
+	/**
+	 * Sets the balls of the level
+	 * @param balls the balls of the level
+	 */
 	public void setBalls(List<Ball> balls){
 		this.balls = balls;
 	}
 	
+	/**
+	 * Sets the imported grid for this level,
+	 * used later to generate all the blocks that are in the level itself
+	 * @param impBlocks the imported grid of blocks
+	 */
 	public void setImportedBlocks(List<String> impBlocks){
 		importedBlocks = impBlocks;
 	}
 	
+	/**
+	 * Sets the chance for a power to spawn
+	 * @param pSC the power spawn chance
+	 */
 	public void setPowerSpawnChance(float pSC){
 		powerSpawnChance = pSC;
 	}
-	
-	public float getPowerSpawnChance(){
-		return powerSpawnChance;
-	}
-	
+
+	/**
+	 * Sets the powers that can be spawned
+	 * @param powers the powers that can be spawned
+	 */
 	public void setDeclaredPowers(List<Power> powers){
 		this.powers = powers;
 		spawnedPowers = new ArrayList<SpawnedPower>();
 		toBeSpawnedPowers = new ArrayList<SpawnedPower>();
 	}
-	
-	public Level(String id, List<Paddle> paddles, List<Ball> balls, List<String> impBlocks, float pSC){
-		this(id, paddles, balls, impBlocks);
-		powerSpawnChance = pSC;
-	}
-	
-	public Level(String id, List<Paddle> paddles, List<Ball> balls, List<String> impBlocks){
-		this.id = id;
-		this.paddles = paddles;
-		this.balls = balls;
-		importedBlocks = impBlocks;
-	}
-	
+
+	/**
+	 * Creates the actual blocks for this level,
+	 * from the imported grid importedBlocks and a list of block types.
+	 * Also creates the four borders once the height and width of the level is known
+	 * @param b the list of block types
+	 */
 	public void generateBlocks(List<Block> b){
 		blocks = new ArrayList<Block>();
 		height = importedBlocks.size();
@@ -100,6 +172,14 @@ public class Level extends Observable {
 		borders[3] = new ballandpaddle.base.Border("bottom", new ballandpaddle.base.collision.body.Border(new Point(0,height), new Point(width,height)));
 	}
 	
+	/**
+	 * Creates a new block by looking for a block with matching id in the list of block types.
+	 * @param b The list of block types
+	 * @param cur The id we are looking for
+	 * @param x the x coordinate for the block
+	 * @param y the y coordinate for the block
+	 * @return the new block, or null if none was found (with horrible crashes later down the line)
+	 */
 	private Block generateBlock(List<Block> b, char cur, int x, int y){
 		Block kind = null;
 		int i = 0;
@@ -112,14 +192,26 @@ public class Level extends Observable {
 		return new Block(x,y,kind);
 	}
 	
+	/**
+	 * The blocks of this level
+	 * @return the blocks
+	 */
 	public List<Block> getBlocks(){
 		return blocks;
 	}
 	
+	/**
+	 * The paddles of this level
+	 * @return the paddles
+	 */
 	public List<Paddle> getPaddles(){
 		return paddles;
 	}
 	
+	/**
+	 * The balls of this level
+	 * @return the balls
+	 */
 	public List<Ball> getBalls(){
 		return balls;
 	}
@@ -140,6 +232,7 @@ public class Level extends Observable {
 		if(delta>0){
 			SpawnPowers();			
 			double factor = 1.0/1000*delta;
+			System.out.println(delta+" "+factor);
 			int maxSteps = 0;
 			Map<BAPObject, Integer> stepsPerObject = new HashMap<BAPObject, Integer>();
 			//get steps needed
@@ -170,8 +263,6 @@ public class Level extends Observable {
 				for(int j =0; j<balls.size(); j++){
 					handleBAPObjectUpdate(balls.get(j), factor, stepsPerObject, maxSteps);	
 					if(balls.get(j).isDestroyed()){
-						this.setChanged();
-						this.notifyObservers(balls.get(j));
 						balls.remove(j);
 						j--;
 					}
@@ -179,37 +270,37 @@ public class Level extends Observable {
 				}	
 				for(int j =0; j<spawnedPowers.size();j++){
 					handleBAPObjectUpdate(spawnedPowers.get(j), factor, stepsPerObject, maxSteps);					
-					if(spawnedPowers.get(j).caught()||spawnedPowers.get(j).destroyed()){
-						this.setChanged();
-						this.notifyObservers(spawnedPowers.get(j));
+					if(spawnedPowers.get(j).caught()||spawnedPowers.get(j).destroyed()){						
 						spawnedPowers.remove(j);
 						j--;
 					}					
 				}
 			}
-		}		
+		}	
+		List<BAPObject> objects = new ArrayList<BAPObject>();
+		objects.addAll(spawnedPowers);
+		objects.addAll(blocks);
+		objects.addAll(balls);
+		objects.addAll(paddles);
+		this.setChanged();
+		this.notifyObservers(objects);
 	}
 	
-	private void handleBAPObjectUpdate(BAPObject object, double factor, Map<BAPObject, Integer> stepsPerObject ,int maxSteps){
+	private void handleBAPObjectUpdate(MovingBAPObject object, double factor, Map<BAPObject, Integer> stepsPerObject ,int maxSteps){
 		object.calculateMove(factor*stepsPerObject.get(object)/maxSteps, this);
 		object.update();
-//		checkForCollision(object);
 	}
 
 	private void SpawnPowers() {
 		if(toBeSpawnedPowers.size()>0){
 			spawnedPowers.addAll(toBeSpawnedPowers);
 			toBeSpawnedPowers.clear();
-			this.setChanged();
-			this.notifyObservers(spawnedPowers);
 		}
 	}
 	
 	private void manageBlocks(){
 		for(int i = 0; i<blocks.size(); i++){
 			if(blocks.get(i).isDestroyed()){
-				this.setChanged();
-				this.notifyObservers(blocks.get(i));
 				if(blocks.get(i).getPower()!=null){
 					//spawn the power belonging to the block
 					SquareBody body = (SquareBody)blocks.get(i).getBody();
@@ -245,78 +336,6 @@ public class Level extends Observable {
 			}
 		}
 	}
-		
-//	private void checkForCollision(BAPObject object) {
-//		if(object instanceof Ball)
-//			checkForCollision((Ball)object);
-//		else if(object instanceof SpawnedPower)
-//			checkForCollision((SpawnedPower)object);
-//		else if(object instanceof Paddle)
-//			checkForCollision((Paddle)object);		
-//	}
-//
-//	private void checkForCollision(SpawnedPower power) {
-//		Collision.collision(power, borders[3], CollisionResolver.getInstance());
-//		for(Paddle paddle : paddles){
-//			Collision.collision(power, paddle, CollisionResolver.getInstance());
-//		}	
-//	}
-//
-//	public void checkForCollision(Ball ball) {
-//		for(ballandpaddle.base.Border border : borders){
-//			Collision.collision(ball, border, CollisionResolver.getInstance());
-//		}
-//		for(Paddle paddle : paddles){
-//			Collision.collision(ball, paddle, CollisionResolver.getInstance());
-//		}				
-//		for(int i = 0; i<blocks.size(); i++){
-//			Collision.collision(ball, blocks.get(i), CollisionResolver.getInstance());
-//			
-//			if(blocks.get(i).isDestroyed()){
-//				this.setChanged();
-//				this.notifyObservers(blocks.get(i));
-//				if(blocks.get(i).getPower()!=null){
-//					//spawn the power belonging to the block
-//					SquareBody body = (SquareBody)blocks.get(i).getBody();
-//					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
-//					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
-//					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
-//					this.toBeSpawnedPowers.add(power);
-//				}
-//				else if(Math.random()<=powerSpawnChance){
-//					//spawn a random power
-//					//sum up spawn chance of all powers
-//					double sumChance = 0.0;
-//					for(Power power : powers)
-//						sumChance += power.getPowerSpawnChance();					
-//					double result = (Math.random()*sumChance);
-//					//find which power matches the result.
-//					int index = 0;
-//					for(int j =0; j<powers.size(); j++){
-//						result -= powers.get(j).getPowerSpawnChance();
-//						if(result<=0){
-//							index = j;
-//							j = powers.size();
-//						}
-//					}					
-//					SquareBody body = (SquareBody)blocks.get(i).getBody();
-//					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
-//					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
-//					SpawnedPower power = new SpawnedPower(powers.get(index), x, y);
-//					this.toBeSpawnedPowers.add(power);
-//				}
-//				blocks.remove(i);
-//				i--;
-//			}
-//		}
-//	}
-//
-//	public void checkForCollision(Paddle paddle) {
-//		if(paddle.getDirection()>0)
-//			Collision.collision(paddle, borders[2], CollisionResolver.getInstance());
-//		else if(paddle.getDirection()<0)
-//				Collision.collision(paddle, borders[1], CollisionResolver.getInstance());
-//	}
 
 	public boolean gameOver() {
 		return balls.isEmpty() || blocks.isEmpty();
@@ -349,5 +368,71 @@ public class Level extends Observable {
 		System.out.println("illegal powers removed: "+illegalPowers);
 	}
 	
+	public void updateFPS() {
+	    if (getTime() - lastFPS > 1000) {
+	        Display.setTitle("FPS: " + fps);
+		fps = 0;
+		lastFPS += 1000;
+	    }
+	    fps++;
+	}	
+	
+	public long getTime() {
+	    return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	}
+	
+	public int getDelta() {
+	    long time = getTime();
+	    int delta = (int) (time - lastFrame);
+	    lastFrame = time;	 
+	    return delta;
+	}	
+	
+	public void pollInput() {  
+		if (Keyboard.isKeyDown(205) && !Keyboard.isKeyDown(203)) {
+			for(Paddle pad : getPaddles())
+				pad.setDirection(1);
+		}
+		else if (Keyboard.isKeyDown(203) && !Keyboard.isKeyDown(205)) {
+			for(Paddle pad : getPaddles())
+				pad.setDirection(-1);
+		}
+		else{
+			for(Paddle pad : getPaddles())			
+				pad.setDirection(0);
+		}
+    }
+
+	@Override
+	public void run() {
+		getDelta(); // call once before loop to initialise lastFrame
+		lastFPS = getTime(); // call before loop to initialise fps timer
+		double init = 0.0;
+		int maxFPS = 30;
+		int initialFPS = maxFPS;
+		int ticks = 0;
+		while(!gameOver() && !Display.isCloseRequested()){
+			pollInput();
+			int delta = getDelta();			
+			update((int) (delta*init));
+			Display.sync(maxFPS);
+			if(init<1.0)
+				init+=0.00125;
+			if(1000/delta<maxFPS-5)
+				maxFPS-=1;
+			if(ticks>=maxFPS && maxFPS < initialFPS){
+				maxFPS+=1;
+				ticks=0;
+			}
+			ticks++;	
+			System.out.println(maxFPS);
+		}
+		while(gameOver() && !Display.isCloseRequested()){
+			//wait for player to close the game
+			int delta = getDelta();			
+			update((int) (delta*init));
+			Display.sync(10);
+		}
+	}
 	
 }

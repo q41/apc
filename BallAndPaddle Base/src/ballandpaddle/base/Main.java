@@ -41,7 +41,7 @@ public class Main {
 		
 		System.out.println(level.toString());
 		Game game = new Game(level, 100.0);
-		game.start();
+		level.run();
 	}
 
 	private static void print() {

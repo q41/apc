@@ -9,12 +9,11 @@ import ballandpaddle.base.collision.body.SquareBody;
 public abstract class CollisionResolver {
 	
 	protected static void resolveCollision(Ball ball, ballandpaddle.base.Border border){
-		int newDirection = 0;
-		if(border.getId().equals("left") && ball.getDirection()>90 && ball.getDirection()<270){
+		if(border.getId().equals("left") && ball.getDirection()>=90 && ball.getDirection()<=270){
 			ball.OneEightyDirection();
 			ball.getBody().undoMove();
 		}
-		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0))){
+		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<=360) || (ball.getDirection()<90 && ball.getDirection()>=0))){
 			ball.OneEightyDirection();
 			ball.getBody().undoMove();
 		}
