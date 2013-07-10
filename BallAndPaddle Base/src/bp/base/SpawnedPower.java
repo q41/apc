@@ -1,5 +1,11 @@
 package bp.base;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.alia4j.liam.Attachment;
 
 import bp.base.collision.body.*;
@@ -103,9 +109,17 @@ public class SpawnedPower extends MovingBAPObject {
 	 */
 	public void setCaught(boolean caught) {
 		this.caught = caught;
-		System.out.println(power.getEffects());
+		List<Attachment> unDeployedEffects = new ArrayList<Attachment>();
+		
+		Iterator<Entry<String, Attachment>> it = power.getEffects().entrySet().iterator();
+	    while (it.hasNext()) {
+	        Entry<String, Attachment> pairs = it.next();
+	        if(!Level.isDeployed(pairs.getKey())) unDeployedEffects.add(pairs.getValue());
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+		
 		Attachment[] toDeploy = new Attachment[power.getEffects().size()];
-		org.alia4j.fial.System.deploy(power.getEffects().toArray(toDeploy));
+		org.alia4j.fial.System.deploy(power.getEffects().values().toArray(toDeploy));
 	}
 	
 	/**

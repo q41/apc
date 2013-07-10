@@ -11,9 +11,9 @@ public class Power {
 	 */
 	private String id;
 	/**
-	 * The effects that this power has
+	 * The effects that this power has, mappend by their id
 	 */
-	private List<Attachment> effects;
+	private Map<String, Attachment> effects;
 	/**
 	 * The chance that this power will be spawned, from 0.0 to 1.0
 	 */
@@ -25,7 +25,7 @@ public class Power {
 	 * @param effects the effects that this power has
 	 * @param powerSpawnChance the chance that this power will be spawned
 	 */
-	public Power(String id, List<Attachment> effects, double powerSpawnChance){
+	public Power(String id, Map<String, Attachment> effects, double powerSpawnChance){
 		this(id, effects);
 		this.powerSpawnChance = powerSpawnChance;
 	}
@@ -35,7 +35,7 @@ public class Power {
 	 * @param id the id of this power
 	 * @param effects the effects that this power has
 	 */
-	public Power(String id, List<Attachment> effects){
+	public Power(String id, Map<String, Attachment> effects){
 		this.id = id;
 		this.effects = effects;
 		this.powerSpawnChance=1.0;
@@ -53,7 +53,7 @@ public class Power {
 	 * Returns the effects that this power has
 	 * @return the effects of this power
 	 */
-	public List<Attachment> getEffects() {
+	public Map<String, Attachment> getEffects() {
 		return effects;
 	}
 
