@@ -1,5 +1,7 @@
 package bp.base;
 
+import org.alia4j.liam.Attachment;
+
 import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 
@@ -33,7 +35,11 @@ public class SpawnedPower extends MovingBAPObject {
 	 * The size of this spawnedPower
 	 */
 	private final double size = 0.25;
-
+	/**
+	 * The type of power of this spawned power
+	 */
+	private Power power;
+	
 	/**
 	 * Creates a new SpawnedPower, a container on the field which contains a power
 	 * @param power the power contained within
@@ -42,6 +48,7 @@ public class SpawnedPower extends MovingBAPObject {
 	 */
 	public SpawnedPower(Power power, double x, double y){
 		super(power.getId(), x, y);
+		this.power = power;
 		super.setBody(new RectangleBody(this));
 		alive = true;
 		caught = false;
@@ -95,7 +102,9 @@ public class SpawnedPower extends MovingBAPObject {
 	 * @param caught if this power has been caught
 	 */
 	public void setCaught(boolean caught) {
-		this.caught = caught;		
+		this.caught = caught;
+		Attachment[] toDeploy = new Attachment[power.getEffects().size()];
+		org.alia4j.fial.System.deploy(power.getEffects().toArray(toDeploy));
 	}
 	
 	/**

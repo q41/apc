@@ -132,6 +132,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		gameLevel.setPaddles(new ArrayList<bp.base.Paddle>(paddles.values()));
 		gameLevel.setBalls(new ArrayList<bp.base.Ball>(balls.values()));
 		gameLevel.setDeclaredPowers(new ArrayList<bp.base.Power>(powers.values()));
+		gameLevel.setEffects(effects);
 		gameLevel.setImportedBlocks(level.getBlocks());
 		gameLevel.generateBlocks(new ArrayList<bp.base.Block>(blocks.values()));
 		gameLevel.setPowerSpawnChance(level.getPowerSpawnChance());

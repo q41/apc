@@ -2,6 +2,7 @@ package bp.base;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.alia4j.liam.Attachment;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
@@ -55,6 +56,10 @@ public class Level extends Observable implements Runnable {
 	 * All powers of this game
 	 */
 	private List<Power> powers;
+	/**
+	 * All effects of this game
+	 */
+	private Map<String, Attachment> effects;
 	/**
 	 * The four borders of the level
 	 */
@@ -139,6 +144,14 @@ public class Level extends Observable implements Runnable {
 		this.powers = powers;
 		spawnedPowers = new ArrayList<SpawnedPower>();
 		toBeSpawnedPowers = new ArrayList<SpawnedPower>();
+	}
+	
+	/**
+	 * Sets the effects that can be deployed
+	 * @param effects the effects, mapped by their id
+	 */
+	public void setEffects(Map<String, Attachment> effects){
+		this.effects = effects;
 	}
 
 	/**
