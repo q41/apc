@@ -145,11 +145,11 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Attachment visit(GeneralEffect effect) {
 		GeneralEffectBody body = effect.getBody();
 		Target target = effect.getTarget();
+		boolean isTypeTarget = target instanceof TypeTarget;
 		
 		//create pattern
-		MethodPattern pattern;
 		Class<?> bpObjectClass = null;
-		if(target instanceof TypeTarget) {
+		if(isTypeTarget) {
 			bpObjectClass = getBPObjectClass((TypeTarget) target);
 		} else {
 			ObjectTarget otarget = (ObjectTarget) target;
@@ -164,13 +164,26 @@ public class Importer implements org.alia4j.fial.Importer {
 				bpObjectClass = bp.base.Paddle.class;
 			}
 		}
-		pattern = createPattern(bpObjectClass, body.getName().toString());
+		MethodPattern pattern = createPattern(bpObjectClass, body.getName().toString());
 		
-		Action action = createAction(body);
-		Context context = visit(body.getExpression());
-		Context filter = visit(target.getFilter());
+		//create predicate
+		Context filter = (target.getFilter()!=null)?visit(target.getFilter()):null;
+		if(!isTypeTarget) {
+			String id = ((ObjectTarget) target).getItem().getId();
+			Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
+			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+			Context actualId = new LocalObjectVariableContext(calleeContext, "id");
+			Context isTargetInstance = ContextFactory.findOrCreateEqualContext(actualId,targetId);
+			if(filter==null) filter = isTargetInstance;
+			else filter = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
+		}
 		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true);
-		//TODO predicate for instance object targets
+		
+		//create context
+		Context context = visit(body.getExpression());
+				
+		//create action
+		Action action = createAction(body);
 		
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
@@ -181,7 +194,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case BALL: return bp.base.Ball.class;
 		case BLOCK: return bp.base.Block.class;
 		case PADDLE: return bp.base.Block.class;
-		default: assert(false); return null;
+		default: handleError(); return null;
 		}
 	}
 
@@ -197,7 +210,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private Attachment visit(CollisionEffect effect) {
-		assert(false);
+		//handleError();
 		return null;
 	}
 	
@@ -218,7 +231,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case BOOL:
 			return BooleanAttributeAssignAction.methodCallAction;
 		default:
-			assert(false);
+			handleError();
 			return null;
 		}
 	}
@@ -237,7 +250,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case IMMATERIAL:
 			return AttributeType.BOOL;
 		default:
-			assert(false);
+			handleError();
 			return null;
 		}
 	}
@@ -263,9 +276,13 @@ public class Importer implements org.alia4j.fial.Importer {
 			return visit((AttBoolOperand) e);
 		}
 		else {
-			assert(false);
+			handleError();
 			return null;
 		}
+	}
+	
+	private Object handleError() {
+		throw new NullPointerException();
 	}
 	
 	private Context visit(AttBoolOperand e) {
@@ -275,7 +292,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case DOUBLE: return new LocalDoubleVariableContext(calleeContext, attr.toString());
 		case INT: return new LocalIntegerVariableContext(calleeContext, attr.toString());
 		case BOOL: return new LocalBooleanVariableContext(calleeContext, attr.toString());
-		default: assert(false); return null;
+		default: handleError(); return null;
 		}
 	}
 	
@@ -320,7 +337,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			return ContextFactory.findOrCreateSubtractContext(left, right);
 		}
 		else {
-			assert(false);
+			handleError();
 			return null;
 		}
 	}
@@ -337,13 +354,14 @@ public class Importer implements org.alia4j.fial.Importer {
 			return body;
 		}
 		else {
-			assert(false);
+			handleError();
 			return null;
 		}
 	}
 	
 	private Context visit(CollisionExpression expression) {
 		//TODO
+		handleError();
 		return null;
 	}
 	
