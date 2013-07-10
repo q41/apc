@@ -106,4 +106,9 @@ public class Paddle extends MovingBAPObject {
 		body.moveBy(movementVectorX,0);			
 	}
 
+	@Override
+	public double getSize() {
+		return size;
+	}
+
 }
