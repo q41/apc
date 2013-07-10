@@ -1,6 +1,7 @@
 package bp.base;
 
 import bp.base.collision.body.*;
+import bp.base.exception.IllegalBodyException;
 
 public abstract class MovingBAPObject extends BAPObject {
 
@@ -17,8 +18,9 @@ public abstract class MovingBAPObject extends BAPObject {
 	
 	/**
 	 * Updates the object
+	 * @throws IllegalBodyException if body is  not a MovableBody
 	 */
-	public abstract void update();
+	public abstract void update() throws IllegalBodyException;
 
 	/**
 	 * calculates the next move for this object

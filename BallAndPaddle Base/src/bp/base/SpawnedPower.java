@@ -1,7 +1,9 @@
 package bp.base;
 
+import bp.base.collision.body.MovableBody;
 import bp.base.collision.body.Point;
 import bp.base.collision.body.SquareBody;
+import bp.base.exception.IllegalBodyException;
 
 public class SpawnedPower extends MovingBAPObject {
 
@@ -70,8 +72,12 @@ public class SpawnedPower extends MovingBAPObject {
 	}
 
 	@Override
-	public final void update() {
-		body.moveBy(0,movementVectorY);			
+	public final void update() throws IllegalBodyException {
+		try{
+			((MovableBody)body).moveBy(0, movementVectorY);		
+		}catch(Exception e){
+			throw new IllegalBodyException("Error 412.7");
+		}	
 	}
 
 	/**

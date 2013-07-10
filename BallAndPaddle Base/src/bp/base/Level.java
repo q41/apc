@@ -10,6 +10,7 @@ import bp.base.collision.body.Body;
 import bp.base.collision.body.Border;
 import bp.base.collision.body.Point;
 import bp.base.collision.body.SquareBody;
+import bp.base.exception.IllegalBodyException;
 import bp.base.exception.IllegalEffectException;
 
 
@@ -305,7 +306,11 @@ public class Level extends Observable implements Runnable {
 	 */
 	private void handleBAPObjectUpdate(MovingBAPObject object, double factor, Map<BAPObject, Integer> stepsPerObject ,int maxSteps){
 		object.calculateMove(factor*stepsPerObject.get(object)/maxSteps, this);
-		object.update();
+		try {
+			object.update();
+		} catch (IllegalBodyException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

@@ -3,6 +3,7 @@ package bp.base.collision;
 import bp.base.*;
 import bp.base.collision.body.Border;
 import bp.base.collision.body.CircleBody;
+import bp.base.collision.body.MovableBody;
 import bp.base.collision.body.RectangleBody;
 
 public abstract class CollisionResolver {
@@ -27,7 +28,7 @@ public abstract class CollisionResolver {
 			ball.threeSixtyDirection();
 			ball.setDestroyed(true);
 		}		
-		ball.getBody().undoMove();
+		((MovableBody)ball.getBody()).undoMove();
 		
 	}
 	
@@ -111,11 +112,11 @@ public abstract class CollisionResolver {
 		//can't move beyond the wall, so move the paddle back to before it collided
 		if(paddle.getDirection()>0){
 			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRight().getX();
-			paddle.getBody().moveBy(adjustX, 0);			
+			((MovableBody)paddle.getBody()).moveBy(adjustX, 0);			
 		}
 		else if(paddle.getDirection()<0){
 			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeft().getX();
-			paddle.getBody().moveBy(adjustX, 0);	
+			((MovableBody)paddle.getBody()).moveBy(adjustX, 0);	
 		}		
 	}
 	

@@ -1,38 +1,31 @@
 package bp.base.collision.body;
 
-import bp.base.Paddle;
+import bp.base.BAPObject;
 
-public class RectangleBody implements Body {
+public class RectangleBody extends MovableBody {
 	
-	private double previousX;
-	private double previousY;
-	private Paddle paddle;
-	
-	public RectangleBody(Paddle paddle){
-		this.paddle = paddle;
-		previousX = paddle.getX();
-		previousY = paddle.getY();
+	/**
+	 * Creates a new RectangleBody, containing the given object
+	 * @param object The object contained in the body
+	 */
+	public RectangleBody(BAPObject object){
+		super(object);
 	}
 	
+	/**
+	 * Returns the top left corner point of this rectangle body
+	 * @return the top left corner point
+	 */
 	public Point getTopLeft(){
-		return new Point(paddle.getX(), paddle.getY());
+		return new Point(object.getX(), object.getY());
 	}
 	
+	/**
+	 * Returns the bottom right corner point of this rectangle body
+	 * @return the bottom right corner point
+	 */
 	public Point getBottomRight(){
-		return new Point(paddle.getX()+0.4+paddle.getSize()*0.1, paddle.getY()+0.26);
-	}
-
-	public void moveBy(double x, double y) {
-		previousX = paddle.getX();
-		previousY = paddle.getY();
-		paddle.incX(x);
-		paddle.incY(y);	
-	}
-
-	@Override
-	public void undoMove() {
-		paddle.setY(previousY);
-		paddle.setX(previousX);
+		return new Point(object.getX()+0.4+object.getSize()*0.1, object.getY()+0.26);
 	}
 	
 }

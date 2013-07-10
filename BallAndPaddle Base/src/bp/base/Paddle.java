@@ -3,8 +3,10 @@ package bp.base;
 import bp.base.collision.*;
 import bp.base.collision.body.Body;
 import bp.base.collision.body.CircleBody;
+import bp.base.collision.body.MovableBody;
 import bp.base.collision.body.Point;
 import bp.base.collision.body.RectangleBody;
+import bp.base.exception.IllegalBodyException;
 
 public class Paddle extends MovingBAPObject {
 
@@ -102,8 +104,12 @@ public class Paddle extends MovingBAPObject {
 	}
 
 	@Override
-	public final void update() {
-		body.moveBy(movementVectorX,0);			
+	public final void update() throws IllegalBodyException {
+		try{
+			((MovableBody)body).moveBy(movementVectorX,0);		
+		}catch(Exception e){
+			throw new IllegalBodyException("Error 412.9");
+		}
 	}
 
 	@Override

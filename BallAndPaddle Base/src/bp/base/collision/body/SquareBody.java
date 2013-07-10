@@ -2,36 +2,30 @@ package bp.base.collision.body;
 
 import bp.base.BAPObject;
 
-public class SquareBody implements Body {
-
-	private BAPObject object;
-	private double previousX;
-	private double previousY;
+public class SquareBody extends MovableBody {
 	
+	/**
+	 * Creates a new SquareBody, containing the given object
+	 * @param object The object contained in the body
+	 */
 	public SquareBody(BAPObject object){
-		previousX = object.getX();
-		previousY = object.getY();
-		this.object = object;
+		super(object);
 	}
 	
+	/**
+	 * Returns the top left corner point of this square body
+	 * @return the top left corner point
+	 */
 	public Point getTopLeft(){
 		return new Point(object.getX(), object.getY());
 	}
 	
+	/**
+	 * Returns the bottom right corner point of this square body
+	 * @return the bottom right corner point
+	 */
 	public Point getBottomRight(){
 		return new Point(object.getX()+object.getSize(), object.getY()+object.getSize());
 	}
 
-	public void moveBy(double x, double y) {
-		previousX = object.getX();
-		previousY = object.getY();
-		object.incX(x);
-		object.incY(y);
-	}
-
-	@Override
-	public void undoMove() {
-		object.setX(previousX);
-		object.setY(previousY);
-	}
 }
