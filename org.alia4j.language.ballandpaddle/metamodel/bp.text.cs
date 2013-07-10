@@ -94,7 +94,10 @@ RULES {
 	MinusBoolExpression ::= left "-" right;
 	
 	@Operator(type="unary_prefix", weight="5", superclass="BooleanExpression")
-	NegBoolExpression ::= ("!"|"-") body;		
+	NegBoolExpression ::= "-" body;		
+	
+	@Operator(type="unary_prefix", weight="5", superclass="BooleanExpression")
+	NotBoolExpression ::= "!" body;	
 		
 	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
 	BracketBoolExpression ::= "(" body ")";
@@ -148,7 +151,10 @@ RULES {
 	MinusCollisionExpression ::= left "-" right;
 	
 	@Operator(type="unary_prefix", weight="5", superclass="CollisionExpression")
-	NegCollisionExpression ::= ("!"|"-") body;
+	NegCollisionExpression ::= "-" body;
+	
+	@Operator(type="unary_prefix", weight="5", superclass="CollisionExpression")
+	NotCollisionExpression ::= "!" body;
 	
 	@Operator(type="primitive", weight="6", superclass="CollisionExpression")
 	BracketCollisionExpression ::= "(" body ")";

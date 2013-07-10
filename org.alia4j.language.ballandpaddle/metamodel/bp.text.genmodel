@@ -74,40 +74,6 @@
     <genClasses ecoreClass="bp.text.ecore#//TypeTarget">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//TypeTarget/type"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanExpression"/>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanBinaryExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BooleanBinaryExpression/left"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BooleanBinaryExpression/right"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanUnaryExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BooleanUnaryExpression/body"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//EqExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//SmthExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//SeqExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//LthExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//LeqExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//NeqExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//OrExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//AndExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//MultBoolExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//DivBoolExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//PlusBoolExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//MinusBoolExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//BracketBoolExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//NegBoolExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//AttBoolOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttBoolOperand/att"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//IntBoolOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//IntBoolOperand/value"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//DoubleBoolOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//DoubleBoolOperand/value"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//BooleanBoolOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//BooleanBoolOperand/value"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//Effect">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Effect/id"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Effect/duration"/>
@@ -154,6 +120,7 @@
     <genClasses ecoreClass="bp.text.ecore#//MinusCollisionExpression"/>
     <genClasses ecoreClass="bp.text.ecore#//BracketCollisionExpression"/>
     <genClasses ecoreClass="bp.text.ecore#//NegCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//NotCollisionExpression"/>
     <genClasses ecoreClass="bp.text.ecore#//IntCollisionOperand">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//IntCollisionOperand/value"/>
     </genClasses>
@@ -166,6 +133,41 @@
     <genClasses ecoreClass="bp.text.ecore#//AttCollisionOperand">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttCollisionOperand/classType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttCollisionOperand/att"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanExpression"/>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanBinaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BooleanBinaryExpression/left"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BooleanBinaryExpression/right"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="bp.text.ecore#//BooleanUnaryExpression">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BooleanUnaryExpression/body"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//EqExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//SmthExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//SeqExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//LthExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//LeqExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//NeqExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//OrExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//AndExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//MultBoolExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//DivBoolExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//PlusBoolExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//MinusBoolExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//BracketBoolExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//NegBoolExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//NotBoolExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//AttBoolOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttBoolOperand/att"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//IntBoolOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//IntBoolOperand/value"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//DoubleBoolOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//DoubleBoolOperand/value"/>
+    </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//BooleanBoolOperand">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//BooleanBoolOperand/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

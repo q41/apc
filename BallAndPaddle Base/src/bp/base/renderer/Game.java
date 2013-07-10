@@ -13,34 +13,92 @@ import bp.base.*;
 
 public class Game implements Observer {
 
-	private long lastFrame;
-	private long lastFPS;
-	private int fps;
+	/**
+	 * The width of the display
+	 */
 	private int width;
+	/**
+	 * The height of the display
+	 */
 	private int height;
+	/**
+	 * The scaling used while rendering
+	 */
 	private double scale;
+	/**
+	 * The distance between the edge of the display and the
+	 * part where rendering happens
+	 */
 	private double offsetX;
+	/**
+	 * The distance between the edge of the display and the
+	 * part where rendering happens
+	 */
 	private double offsetY;
+	/**
+	 * The scaling used on the y axis
+	 */
 	private double downscaleHeightRatio;
+	/**
+	 * The scaling used on the x axis
+	 */
 	private double downscaleWidthRatio;
+	/**
+	 * the height of the level
+	 */
 	private double levelHeight;
+	/**
+	 * The width of the level
+	 */
 	private double levelWidth;
-	private List<BlockRenderer> blockRenderers;
-	private List<BallRenderer> ballRenderers;
-	private List<PaddleRenderer> paddleRenderers;
-	private List<PowerRenderer> powerRenderers;
+	/**
+	 * The renderers for rectangle shaped items
+	 */
+	private List<RectangleRenderer> rectangleRenderers;
+	/**
+	 * The renderers for circle shaped items
+	 */
+	private List<CircleRenderer> circleRenderers;
+	/**
+	 * If the display is being initialized
+	 */
 	private boolean initializing;
 	
-	
+	/**
+	 * Creates a new Game for the given level, using the given scale
+	 * and using the given width and height for the screen
+	 * @param level The level
+	 * @param width The width for the screen
+	 * @param height The height for the screen
+	 * @param scale The scaling to be used
+	 */
 	public Game(Level level, int width, int height, double scale){
+		//TODO. add check to make certain height and width do not exceed screen size
 		this.width = width;
 		this.height = height;
 		this.scale = scale;
 		level.addObserver(this);
-		//TODO. add check to make certain height and width do not exceed screen size
+		initializing = true;
+		try {
+			Display.setDisplayMode(new DisplayMode(width, height));
+			Display.create();
+			System.out.println(Display.isVisible());
+			} catch (LWJGLException e) {
+			e.printStackTrace();
+			System.exit(0);
+			}
+
+		initGL();
 	}
 	
+	/**
+	 * Creates a new game for the given level, using the given scale
+	 * The width and height will be 800x600
+	 * @param level The level
+	 * @param scale The scaling to be used
+	 */
 	public Game(Level level, double scale){
+		//TODO. add check to make certain height and width do not exceed screen size
 		this.scale = scale;
 		this.levelHeight = level.getHeight();
 		this.levelWidth = level.getWidth();
@@ -60,46 +118,11 @@ public class Game implements Observer {
 		initGL();
 	}
 	
-//	public void run() {
-//		System.out.println("starting");
-//		try {
-//		Display.setDisplayMode(new DisplayMode(width, height));
-//		Display.create();
-//		System.out.println(Display.isVisible());
-//		} catch (LWJGLException e) {
-//		e.printStackTrace();
-//		System.exit(0);
-//		}
-//
-//		initGL(); // init OpenGL
-//		getDelta(); // call once before loop to initialise lastFrame
-//		lastFPS = getTime(); // call before loop to initialise fps timer
-//		double init = 0.0;
-//		int maxFPS = 10;
-//		int initialFPS = maxFPS;
-//		int ticks = 0;
-//		while (!Display.isCloseRequested()) {		
-//			int delta = getDelta();					
-//			
-//			update((int) (delta*init));
-//			renderGL();
-// 
-//			Display.update();
-//			Display.sync(maxFPS); // cap fps to 30fps
-//			if(init<1.0)
-//				init+=0.00125;
-//			if(1000/delta<maxFPS-5)
-//				maxFPS-=1;
-//			if(ticks>=maxFPS && maxFPS < initialFPS){
-//				maxFPS+=1;
-//				ticks=0;
-//			}
-//			ticks++;		
-//			System.out.println("display fps= "+maxFPS);
-//		} 
-//		Display.destroy();
-//	}
-	
+	/**
+	 * Initiates the system,
+	 * determines the scaling that should be used
+	 * and determines the offset that should be used
+	 */
 	private void initGL() {
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
@@ -118,16 +141,14 @@ public class Game implements Observer {
 			downscaleWidthRatio = width/(levelWidth*scale); 
 		else
 			offsetX = (width-scale*levelWidth)/2;		
-		blockRenderers = new ArrayList<BlockRenderer>();
-		ballRenderers = new ArrayList<BallRenderer>();
-		paddleRenderers = new ArrayList<PaddleRenderer>();
-		powerRenderers = new ArrayList<PowerRenderer>();
+		circleRenderers = new ArrayList<CircleRenderer>();
+		rectangleRenderers = new ArrayList<RectangleRenderer>();
 		initializing = false;
 	}
 
-	private void update(int delta) {
-	}
-
+	/**
+	 * Draws a white background, then draws all the items
+	 */
 	private void renderGL() {
 		// Clear The Screen And The Depth Buffer
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -144,79 +165,42 @@ public class Game implements Observer {
 				GL11.glVertex2d(offsetX, offsetY+scale*levelHeight*downscaleHeightRatio);
 			GL11.glEnd();
 		GL11.glPopMatrix();
-		for(BlockRenderer block : blockRenderers)
-			block.renderGL();
-		for(BallRenderer ball : ballRenderers)
-			ball.renderGL();		
-		for(PaddleRenderer paddle : paddleRenderers)
-			paddle.renderGL();		
-		for(PowerRenderer power : powerRenderers)
-			power.renderGL();
+		for(RectangleRenderer rectangle : rectangleRenderers)
+			rectangle.renderGL();
+		for(CircleRenderer circle : circleRenderers)
+			circle.renderGL();		
 		Display.update();
 	}
-
-	public void updateFPS() {
-	    if (getTime() - lastFPS > 1000) {
-	        Display.setTitle("FPS: " + fps);
-		fps = 0;
-		lastFPS += 1000;
-	    }
-	    fps++;
-	}	
 	
-	public long getTime() {
-	    return (Sys.getTime() * 1000) / Sys.getTimerResolution();
-	}
-	
-	public int getDelta() {
-	    long time = getTime();
-	    int delta = (int) (time - lastFrame);
-	    lastFrame = time;	 
-	    return delta;
-	}
-
 	@Override
+	/**
+	 * Processes changes to the items and refreshes the renderers
+	 * Then draws the new screen
+	 */
 	public void update(Observable arg0, Object arg1) {		
-		if(initializing){
-			try {
-				Display.setDisplayMode(new DisplayMode(width, height));
-				Display.create();
-				System.out.println(Display.isVisible());
-				} catch (LWJGLException e) {
-				e.printStackTrace();
-				System.exit(0);
-				}
-
-			initGL();
-			
-		}
-			List<PowerRenderer> newPower = new ArrayList<PowerRenderer>();
-			List<BlockRenderer> newBlock = new ArrayList<BlockRenderer>();
-			List<BallRenderer> newBall = new ArrayList<BallRenderer>();
-			List<PaddleRenderer> newPaddle = new ArrayList<PaddleRenderer>();
+			List<RectangleRenderer> newRectangles = new ArrayList<RectangleRenderer>();
+			List<CircleRenderer> newCircles = new ArrayList<CircleRenderer>();
 			List<?> items = (List<?>)arg1;
 			for(int i = 0; i<items.size(); i++){
 				if(items.get(i) instanceof Ball){
 					Ball ball = (Ball) items.get(i);
-					newBall.add(new BallRenderer(ball, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
+					newCircles.add(new CircleRenderer(ball, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 				}
 				else if(items.get(i) instanceof Block){
 					Block block = (Block) items.get(i);
-					newBlock.add(new BlockRenderer(block, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));				
+					newRectangles.add(new RectangleRenderer(block, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));				
 				}
 				else if(items.get(i) instanceof Paddle){
 					Paddle paddle = (Paddle) items.get(i);
-					newPaddle.add(new PaddleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
+					newRectangles.add(new RectangleRenderer(paddle, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 				}
 				else if(items.get(i) instanceof SpawnedPower){
 					SpawnedPower power = (SpawnedPower) items.get(i);
-					newPower.add(new PowerRenderer(power, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
+					newRectangles.add(new RectangleRenderer(power, scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY));
 				}
 			}
-			powerRenderers = newPower;
-			blockRenderers = newBlock;
-			ballRenderers = newBall;
-			paddleRenderers = newPaddle;
+			circleRenderers = newCircles;
+			rectangleRenderers = newRectangles;
 			renderGL();
 	}
 	

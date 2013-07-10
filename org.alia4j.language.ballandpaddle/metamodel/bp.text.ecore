@@ -57,74 +57,7 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	
 	class TypeTarget extends Target{
 		attribute TargetType type (1..1);
-	}
-	
-	abstract class BooleanExpression{}
-	
-	abstract class BooleanBinaryExpression extends BooleanExpression{
-		containment reference BooleanExpression left (1..1);
-		containment reference BooleanExpression right (1..1);
-	}
-	
-	abstract class BooleanUnaryExpression extends BooleanExpression{
-		containment reference BooleanExpression body (1..1);
-	}
-	
-	class EqExpression extends BooleanBinaryExpression{
-	}
-	
-	class SmthExpression extends BooleanBinaryExpression{
-	}
-	
-	class SeqExpression extends BooleanBinaryExpression{
-	}
-	
-	class LthExpression extends BooleanBinaryExpression{
-	}
-	
-	class LeqExpression extends BooleanBinaryExpression{
-	}
-	
-	class NeqExpression extends BooleanBinaryExpression{
-	}
-	
-	class OrExpression extends BooleanBinaryExpression{
-	}
-	
-	class AndExpression extends BooleanBinaryExpression{
-	}
-	
-	class MultBoolExpression extends BooleanBinaryExpression{
-	}
-	
-	class DivBoolExpression extends BooleanBinaryExpression {
-	}
-	
-	class PlusBoolExpression extends BooleanBinaryExpression{
-	}
-	
-	class MinusBoolExpression extends BooleanBinaryExpression{
-	}
-	
-	class BracketBoolExpression extends BooleanUnaryExpression{}
-	
-	class NegBoolExpression extends BooleanUnaryExpression{}
-	
-	class AttBoolOperand extends BooleanExpression{
-		attribute Attribute att (1..1);
-	}
-	
-	class IntBoolOperand extends BooleanExpression{
-		attribute EInt value(1..1);		
-	}
-	
-	class DoubleBoolOperand extends BooleanExpression{
-		attribute EDouble value(1..1);		
-	}
-	
-	class BooleanBoolOperand extends BooleanExpression{
-		attribute EBoolean value (1..1);
-	}
+	}	
 	
 	abstract class Effect{
 		attribute EString id (1..1);
@@ -168,47 +101,35 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		containment reference CollisionExpression body(1..1);
 	}
 	
-	class EqCollisionExpression extends BinaryCollisionExpression{
-	}
+	class EqCollisionExpression extends BinaryCollisionExpression{}
 	
-	class SmthCollisionExpression extends BinaryCollisionExpression{
-	}
+	class SmthCollisionExpression extends BinaryCollisionExpression{}
 	
-	class SeqCollisionExpression extends BinaryCollisionExpression{
-	}
+	class SeqCollisionExpression extends BinaryCollisionExpression{}
 	
-	class LthCollisionExpression extends BinaryCollisionExpression{
-	}
+	class LthCollisionExpression extends BinaryCollisionExpression{}
 	
-	class LeqCollisionExpression extends BinaryCollisionExpression{
-	}
+	class LeqCollisionExpression extends BinaryCollisionExpression{}
 	
-	class NeqCollisionExpression extends BinaryCollisionExpression{
-	}
+	class NeqCollisionExpression extends BinaryCollisionExpression{}
 	
-	class OrCollisionExpression extends BinaryCollisionExpression{
-	}
+	class OrCollisionExpression extends BinaryCollisionExpression{}
 	
-	class AndCollisionExpression extends BinaryCollisionExpression{
-	}
+	class AndCollisionExpression extends BinaryCollisionExpression{}
 	
-	class MultCollisionExpression extends BinaryCollisionExpression{
-	}
+	class MultCollisionExpression extends BinaryCollisionExpression{}
 	
-	class DivCollisionExpression extends BinaryCollisionExpression {
-	}
+	class DivCollisionExpression extends BinaryCollisionExpression {}
 	
-	class PlusCollisionExpression extends BinaryCollisionExpression{
-	}
+	class PlusCollisionExpression extends BinaryCollisionExpression{}
 	
-	class MinusCollisionExpression extends BinaryCollisionExpression{
-	}
+	class MinusCollisionExpression extends BinaryCollisionExpression{}
 	
-	class BracketCollisionExpression extends UnaryCollisionExpression{				
-	}
+	class BracketCollisionExpression extends UnaryCollisionExpression{}
 	
-	class NegCollisionExpression extends UnaryCollisionExpression{			
-	}
+	class NegCollisionExpression extends UnaryCollisionExpression{}
+	
+	class NotCollisionExpression extends UnaryCollisionExpression{}
 	
 	class IntCollisionOperand extends CollisionExpression{
 		attribute EInt value (1..1);	
@@ -225,6 +146,63 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	class AttCollisionOperand extends CollisionExpression{	
 		attribute TargetType classType(1..1);
 		attribute Attribute att(1..1);				
+	}
+	
+	abstract class BooleanExpression{}
+	
+	abstract class BooleanBinaryExpression extends BooleanExpression{
+		containment reference BooleanExpression left (1..1);
+		containment reference BooleanExpression right (1..1);
+	}
+	
+	abstract class BooleanUnaryExpression extends BooleanExpression{
+		containment reference BooleanExpression body (1..1);
+	}
+	
+	class EqExpression extends BooleanBinaryExpression{}
+	
+	class SmthExpression extends BooleanBinaryExpression{}
+	
+	class SeqExpression extends BooleanBinaryExpression{}
+	
+	class LthExpression extends BooleanBinaryExpression{}
+	
+	class LeqExpression extends BooleanBinaryExpression{}
+	
+	class NeqExpression extends BooleanBinaryExpression{}
+	
+	class OrExpression extends BooleanBinaryExpression{}
+	
+	class AndExpression extends BooleanBinaryExpression{}
+	
+	class MultBoolExpression extends BooleanBinaryExpression{}
+	
+	class DivBoolExpression extends BooleanBinaryExpression {}
+	
+	class PlusBoolExpression extends BooleanBinaryExpression{}
+	
+	class MinusBoolExpression extends BooleanBinaryExpression{}
+	
+	class BracketBoolExpression extends BooleanUnaryExpression{}
+	
+	class NegBoolExpression extends BooleanUnaryExpression{}
+	
+	class NotBoolExpression extends BooleanUnaryExpression{}
+	
+	class AttBoolOperand extends BooleanExpression{
+		attribute Attribute att (1..1);
+	}
+	
+	class IntBoolOperand extends BooleanExpression{
+		attribute EInt value(1..1);		
+	}
+	
+	class DoubleBoolOperand extends BooleanExpression{
+		attribute EDouble value(1..1);		
+	}
+	
+	class BooleanBoolOperand extends BooleanExpression{
+		attribute EBoolean value (1..1);
 	}
 	
 	serializable enum Attribute{
