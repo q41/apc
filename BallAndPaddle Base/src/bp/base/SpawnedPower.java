@@ -103,6 +103,7 @@ public class SpawnedPower extends MovingBAPObject {
 	 */
 	public void setCaught(boolean caught) {
 		this.caught = caught;
+		System.out.println(power.getEffects());
 		Attachment[] toDeploy = new Attachment[power.getEffects().size()];
 		org.alia4j.fial.System.deploy(power.getEffects().toArray(toDeploy));
 	}

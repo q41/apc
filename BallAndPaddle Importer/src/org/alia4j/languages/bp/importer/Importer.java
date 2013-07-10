@@ -92,12 +92,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		}
 		for(Ball ball: root.getBalls()) {
 			balls.put(ball.getId(), visit(ball));
+		}		
+		for(Effect effect: root.getEffects()) {
+			effects.put(effect.getId(), visit(effect));
 		}
 		for(Power power: root.getPowers()) {
 			powers.put(power.getId(), visit(power));
-		}
-		for(Effect effect: root.getEffects()) {
-			effects.put(effect.getId(), visit(effect));
 		}
 		for(Block block: root.getBlocks()) {
 			blocks.put(block.getId(), visit(block));
