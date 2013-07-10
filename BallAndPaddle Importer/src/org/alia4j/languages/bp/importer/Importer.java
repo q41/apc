@@ -175,7 +175,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
 			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 			Context actualId = new LocalObjectVariableContext(calleeContext, "id");
-			Context isTargetInstance = ContextFactory.findOrCreateEqualContext(actualId,targetId);
+			Context isTargetInstance = new ObjectEqualContext(actualId,targetId);
 			if(filter==null) filter = isTargetInstance;
 			else filter = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
 		}
