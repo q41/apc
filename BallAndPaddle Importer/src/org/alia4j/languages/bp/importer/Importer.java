@@ -120,7 +120,8 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private bp.base.Block visit(Block block) {
-		return new bp.base.Block(block.getId(), block.getHardness(), block.getResistance(), powers.get(block.getPower().getId()));
+		Power power = block.getPower();
+		return new bp.base.Block(block.getId(), block.getHardness(), block.getResistance(), (power!=null)?powers.get(power.getId()):null);
 	}
 
 	private bp.base.Level visit(Level level) {
@@ -129,6 +130,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		gameLevel.setPaddles(new ArrayList<bp.base.Paddle>(paddles.values()));
 		gameLevel.setBalls(new ArrayList<bp.base.Ball>(balls.values()));
 		gameLevel.setDeclaredPowers(new ArrayList<bp.base.Power>(powers.values()));
+		gameLevel.setImportedBlocks(level.getBlocks());
 		gameLevel.generateBlocks(new ArrayList<bp.base.Block>(blocks.values()));
 		gameLevel.setPowerSpawnChance(level.getPowerSpawnChance());
 		return gameLevel;
@@ -145,19 +147,29 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		//create pattern
 		MethodPattern pattern;
+		Class<?> bpObjectClass = null;
 		if(target instanceof TypeTarget) {
-			Class<?> bpObjectClass = getBPObjectClass((TypeTarget) target);
-			pattern = createPattern(bpObjectClass, body.getName().toString());
+			bpObjectClass = getBPObjectClass((TypeTarget) target);
 		} else {
-			//TODO
-			assert(false);
-			pattern = null;
+			ObjectTarget otarget = (ObjectTarget) target;
+			BAPObject bpObject = otarget.getItem();
+			if(bpObject instanceof Ball) {
+				bpObjectClass = bp.base.Ball.class;
+			}
+			else if(bpObject instanceof Block) {
+				bpObjectClass = bp.base.Block.class;
+			}
+			else if(bpObject instanceof Paddle) {
+				bpObjectClass = bp.base.Paddle.class;
+			}
 		}
+		pattern = createPattern(bpObjectClass, body.getName().toString());
 		
 		Action action = createAction(body);
 		Context context = visit(body.getExpression());
 		Context filter = visit(target.getFilter());
 		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true);
+		//TODO predicate for instance object targets
 		
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
@@ -246,8 +258,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		else if(e instanceof BooleanBoolOperand) {
 			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanBoolOperand) e).isValue());
 		}
-		else { //if(e instanceof AttBoolOperand)
+		else if(e instanceof AttBoolOperand) {
 			return visit((AttBoolOperand) e);
+		}
+		else {
+			assert(false);
+			return null;
 		}
 	}
 	
@@ -299,8 +315,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		else if(e instanceof PlusBoolExpression) {
 			return ContextFactory.findOrCreateAddContext(left, right);
 		}
-		else { //if(e instanceof MinusBoolExpression)
+		else if(e instanceof MinusBoolExpression) {
 			return ContextFactory.findOrCreateSubtractContext(left, right);
+		}
+		else {
+			assert(false);
+			return null;
 		}
 	}
 	private Context visit(BooleanUnaryExpression e) {
@@ -312,8 +332,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		else if(e instanceof NegBoolExpression) {
 			return ContextFactory.findOrCreateNegationContext(body);
 		}
-		else { //if(e instanceof BracketBoolExpression)
+		else if(e instanceof BracketBoolExpression) {
 			return body;
+		}
+		else {
+			assert(false);
+			return null;
 		}
 	}
 	
