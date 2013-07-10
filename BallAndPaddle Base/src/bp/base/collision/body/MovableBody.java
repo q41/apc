@@ -33,8 +33,8 @@ public abstract class MovableBody implements Body {
 	 * @param y The distance to be moved on the Y axis
 	 */
 	public void moveBy(double x, double y){
-		previousX = x;
-		previousY = y;
+		previousX = object.getX();
+		previousY = object.getY();
 		object.incX(x);
 		object.incY(y);
 	}

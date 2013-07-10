@@ -418,9 +418,9 @@ public class Importer implements org.alia4j.fial.Importer {
 	//--------------------Collision detection------------------------
 	
 	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.Collision"),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.Collision"),
 			"checkForCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject", "ballandpaddle.base.Level"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject", "bp.base.Level"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
@@ -447,16 +447,16 @@ public class Importer implements org.alia4j.fial.Importer {
 	//------------------Collision handling--------------------
 	
 	private static final Action handleStandardCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.StandardCollisionResolver"),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.StandardCollisionResolver"),
 			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject","ballandpaddle.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject","bp.base.BAPObject"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
 	private static final Action handleImmaterialCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.ImmaterialCollisionResolver"),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.ImmaterialCollisionResolver"),
 			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject","ballandpaddle.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject","bp.base.BAPObject"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
@@ -474,7 +474,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
 		//TODO get context for return type, action should only happen if there was actually a collision	
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
+		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
 		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
@@ -485,7 +485,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
 		//TODO predicate so it triggers on all balls with immaterial==false
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
+		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
 		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
@@ -496,7 +496,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
 		//TODO predicate so it triggers on all balls with immaterial==true
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
+		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
 		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleImmaterialCollision, ScheduleInfo.AFTER);

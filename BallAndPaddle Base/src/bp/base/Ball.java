@@ -116,6 +116,7 @@ public class Ball extends MovingBAPObject {
 	
 	@Override
 	public final void update() throws IllegalBodyException{
+		multSpeed(1.1);
 		try{
 			((MovableBody)body).moveBy(movementVectorX,movementVectorY);		
 		}catch(Exception e){

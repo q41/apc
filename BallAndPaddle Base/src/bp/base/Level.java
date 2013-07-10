@@ -9,6 +9,7 @@ import org.lwjgl.opengl.Display;
 import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 import bp.base.exception.IllegalEffectException;
+import bp.base.renderer.Game;
 
 
 public class Level extends Observable implements Runnable {
@@ -287,8 +288,9 @@ public class Level extends Observable implements Runnable {
 		int maxSteps = 0;
 		Iterator<Entry<BAPObject, Integer>> it = stepsPerObject.entrySet().iterator();
 		while(it.hasNext()){
-			if(it.next().getValue()>maxSteps)
-				maxSteps = it.next().getValue();
+			int value = it.next().getValue();
+			if(value>maxSteps)
+				maxSteps = value;
 		}
 		return maxSteps;
 	}
@@ -518,6 +520,16 @@ public class Level extends Observable implements Runnable {
 			for(Paddle pad : getPaddles())			
 				pad.setOrientation(0);
 		}
+		while (Keyboard.next()) {
+		    if (Keyboard.getEventKeyState()) {
+		        if (Keyboard.getEventKey() == Keyboard.KEY_F) {
+		        	Game.setDisplayMode(800, 600, !Display.isFullscreen());
+		        }
+		        if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+		        	System.exit(0);
+		        }
+		    }
+		}
     }
 
 	@Override
@@ -547,6 +559,7 @@ public class Level extends Observable implements Runnable {
 		}
 		while(gameOver() && !Display.isCloseRequested()){
 			//wait for player to close the game once the game has ended
+			pollInput();
 			int delta = getDelta();			
 			update((int) (delta*init));
 			Display.sync(10);
