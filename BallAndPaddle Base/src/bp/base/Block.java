@@ -20,7 +20,7 @@ public class Block extends BAPObject {
 	/**
 	 * The size of this block
 	 */
-	private double size;
+	private final double size = 1;
 	
 	/**
 	 * Creates a new block with the given id, x and y coordinates
@@ -31,8 +31,7 @@ public class Block extends BAPObject {
 	 */
 	private Block(String id, double x, double y) {
 		super(id, x, y);
-		super.setBody(new SquareBody(this));
-		size = 1;
+		super.setBody(new RectangleBody(this));
 	}
 	
 	/**

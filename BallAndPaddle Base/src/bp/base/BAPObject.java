@@ -1,8 +1,6 @@
 package bp.base;
 
 import bp.base.collision.body.Body;
-import bp.base.collision.body.CircleBody;
-import bp.base.collision.body.SquareBody;
 
 public abstract class BAPObject {
 

@@ -1,11 +1,6 @@
 package bp.base;
 
-import bp.base.collision.*;
-import bp.base.collision.body.Body;
-import bp.base.collision.body.CircleBody;
-import bp.base.collision.body.MovableBody;
-import bp.base.collision.body.Point;
-import bp.base.collision.body.RectangleBody;
+import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 
 public class Paddle extends MovingBAPObject {

@@ -1,8 +1,6 @@
 package bp.base;
 
-import bp.base.collision.body.MovableBody;
-import bp.base.collision.body.Point;
-import bp.base.collision.body.SquareBody;
+import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 
 public class SpawnedPower extends MovingBAPObject {
@@ -30,7 +28,11 @@ public class SpawnedPower extends MovingBAPObject {
 	/**
 	 * If the player has caught the power with his paddle
 	 */
-	private boolean caught;
+	private boolean caught;	
+	/**
+	 * The size of this spawnedPower
+	 */
+	private final double size = 0.25;
 
 	/**
 	 * Creates a new SpawnedPower, a container on the field which contains a power
@@ -40,7 +42,7 @@ public class SpawnedPower extends MovingBAPObject {
 	 */
 	public SpawnedPower(Power power, double x, double y){
 		super(power.getId(), x, y);
-		super.setBody(new SquareBody(this));
+		super.setBody(new RectangleBody(this));
 		alive = true;
 		caught = false;
 	}
@@ -110,5 +112,10 @@ public class SpawnedPower extends MovingBAPObject {
 	 */
 	public boolean destroyed(){
 		return !alive;
+	}
+
+	@Override
+	public double getSize() {
+		return size;
 	}	
 }

@@ -2,12 +2,26 @@ package bp.base.renderer;
 
 public abstract class Renderer {
 
+	/**
+	 * The scaling that should be used
+	 */
 	protected double scale;
+	/**
+	 * The downscaling required for the height
+	 */
 	protected double downscaleHeightRatio;
+	/**
+	 * the downscaling required for the width
+	 */
 	protected double downscaleWidthRatio;
+	/**
+	 * The offset from the border of the screen
+	 */
 	protected double offsetX;
-	protected double offsetY;
-	
+	/**
+	 * The offset from the border of the screen
+	 */
+	protected double offsetY;	
 	/**
 	 * The amount of red in the color
 	 */
@@ -20,10 +34,15 @@ public abstract class Renderer {
 	 * The amount of blue in the color
 	 */
 	protected float blue;
-	/**
-	 * For displaying text on the item
-	 */
 	
+	/**
+	 * Creates a new renderer with the given variables
+	 * @param scale The scaling
+	 * @param downscaleHeightRatio The height downscaling
+	 * @param downscaleWidthRatio The width downscaling
+	 * @param offsetX The offset from the border
+	 * @param offsetY The offset from the border
+	 */
 	public Renderer(double scale, double downscaleHeightRatio,
 			double downscaleWidthRatio, double offsetX, double offsetY) {
 		this.scale = scale;

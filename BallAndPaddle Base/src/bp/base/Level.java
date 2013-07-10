@@ -5,11 +5,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
-import bp.base.collision.*;
-import bp.base.collision.body.Body;
-import bp.base.collision.body.Border;
-import bp.base.collision.body.Point;
-import bp.base.collision.body.SquareBody;
+import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 import bp.base.exception.IllegalEffectException;
 
@@ -334,7 +330,7 @@ public class Level extends Observable implements Runnable {
 			if(blocks.get(i).isDestroyed()){
 				if(blocks.get(i).getPower()!=null){
 					//spawn the power belonging to the block
-					SquareBody body = (SquareBody)blocks.get(i).getBody();
+					RectangleBody body = (RectangleBody)blocks.get(i).getBody();
 					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
 					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
 					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
@@ -356,7 +352,7 @@ public class Level extends Observable implements Runnable {
 							j = powers.size();
 						}
 					}					
-					SquareBody body = (SquareBody)blocks.get(i).getBody();
+					RectangleBody body = (RectangleBody)blocks.get(i).getBody();
 					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
 					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
 					SpawnedPower power = new SpawnedPower(powers.get(index), x, y);

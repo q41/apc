@@ -7,28 +7,56 @@ import bp.base.collision.body.*;
 
 public class RectangleRenderer extends Renderer {
 	
+	/**
+	 * The top x coordinate
+	 */
 	private double topX;
+	/**
+	 * The bottom x coordinate
+	 */
 	private double bottomX;
+	/**
+	 * The left y coordinate
+	 */
 	private double leftY;
+	/**
+	 * The right y coordinate
+	 */
 	private double rightY;
+	/**
+	 * Text that should be displayed
+	 * Not yet supported!
+	 */
 	private String text;
 	
+	/**
+	 * Creates a new RectangleRenderer with different colors, 
+	 * depending on the type of item it should represent
+	 * @param object The object to represent
+	 * @param scale The scaling
+	 * @param downscaleHeightRatio The height downscaling
+	 * @param downscaleWidthRatio The width downscaling
+	 * @param offsetX The offset from the border
+	 * @param offsetY The offset from the border
+	 */
 	public RectangleRenderer(BAPObject object, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
 		super(scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
+		RectangleBody body = (RectangleBody)object.getBody();
+		topX = body.getTopLeft().getX();
+		bottomX = body.getBottomRight().getX();
+		leftY = body.getTopLeft().getY();
+		rightY = body.getBottomRight().getY();		
 		if(object instanceof Block ){
-			square(object);
 			red = 0.5f;
 			green = 0.5f;
 			blue = 1.0f;
 		}
 		else if(object instanceof Paddle){
-			rectangle(object);
 			red = 0.5f;
 			green = 0.5f;
 			blue = 0.5f;
 		}
 		else if(object instanceof SpawnedPower){
-			square(object);
 			red = 0.93f;
 			green = 0.5f;
 			blue = 1.0f;
@@ -36,22 +64,6 @@ public class RectangleRenderer extends Renderer {
 		text = object.getId();
 	}
 	
-	private void square(BAPObject object){
-		SquareBody body = (SquareBody)object.getBody();
-		topX = body.getTopLeft().getX();
-		bottomX = body.getBottomRight().getX();
-		leftY = body.getTopLeft().getY();
-		rightY = body.getBottomRight().getY();
-	}
-	
-	private void rectangle(BAPObject object){
-		RectangleBody body = (RectangleBody)object.getBody();
-		topX = body.getTopLeft().getX();
-		bottomX = body.getBottomRight().getX();
-		leftY = body.getTopLeft().getY();
-		rightY = body.getBottomRight().getY();
-	}
-
 	@Override
 	public void renderGL() {
 		double topLeftX = offsetX+topX*scale*downscaleWidthRatio;

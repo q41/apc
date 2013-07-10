@@ -1,12 +1,7 @@
 package bp.base.collision;
 import java.util.*;
 
-import bp.base.BAPObject;
-import bp.base.Ball;
-import bp.base.Block;
-import bp.base.Level;
-import bp.base.Paddle;
-import bp.base.SpawnedPower;
+import bp.base.*;
 import bp.base.collision.body.*;
 
 public class Collision {
@@ -228,7 +223,7 @@ public class Collision {
 	 */
 	private static boolean hasCollided(Ball ball, Block block){
 		CircleBody ballBody = (CircleBody) ball.getBody();
-		SquareBody blockBody = (SquareBody) block.getBody();
+		RectangleBody blockBody = (RectangleBody) block.getBody();
 		//split up the square into 4 parts, bottom, left, right, top. 
 		//top
 		double topY = blockBody.getTopLeft().getY();
@@ -292,7 +287,7 @@ public class Collision {
 	 */
 	private static boolean hasCollided(SpawnedPower power, bp.base.Border border){
 		Border borderBody = (Border) border.getBody();
-		SquareBody powerBody = (SquareBody) power.getBody();
+		RectangleBody powerBody = (RectangleBody) power.getBody();
 		return (borderBody.getStart().getY()>powerBody.getTopLeft().getY() && borderBody.getEnd().getY()<powerBody.getBottomRight().getY()) ||
 				(borderBody.getEnd().getY()>powerBody.getTopLeft().getY() && borderBody.getStart().getY()<powerBody.getBottomRight().getY());
 	}
@@ -304,7 +299,7 @@ public class Collision {
 	 * @return if the two objects collided
 	 */
 	private static boolean hasCollided(SpawnedPower power, Paddle paddle){
-		SquareBody powerBody = (SquareBody) power.getBody();
+		RectangleBody powerBody = (RectangleBody) power.getBody();
 		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
 		return intersectsTop(powerBody, paddleBody) || intersectsLeft(powerBody, paddleBody) || intersectsRight(powerBody, paddleBody);
 	}
@@ -315,7 +310,7 @@ public class Collision {
 	 * @param paddle the paddle
 	 * @return if the two objects collided
 	 */
-	private static boolean intersectsTop(SquareBody power, RectangleBody paddle){
+	private static boolean intersectsTop(RectangleBody power, RectangleBody paddle){
 		//power
 		double powerLX = power.getTopLeft().getX();
 		double powerRX = power.getBottomRight().getX();
@@ -337,7 +332,7 @@ public class Collision {
 	 * @param paddle the paddle
 	 * @return if the two objects collided
 	 */
-	private static boolean intersectsLeft(SquareBody power, RectangleBody paddle){
+	private static boolean intersectsLeft(RectangleBody power, RectangleBody paddle){
 		//power
 		double powerRX = power.getBottomRight().getX();
 		double powerTY = power.getTopLeft().getY();
@@ -359,7 +354,7 @@ public class Collision {
 	 * @param paddle the paddle
 	 * @return if the two objects collided
 	 */
-	private static boolean intersectsRight(SquareBody power, RectangleBody paddle){
+	private static boolean intersectsRight(RectangleBody power, RectangleBody paddle){
 		//power
 		double powerLX = power.getTopLeft().getX();
 		double powerTY = power.getTopLeft().getY();

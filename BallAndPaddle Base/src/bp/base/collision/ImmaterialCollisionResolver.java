@@ -1,10 +1,6 @@
 package bp.base.collision;
 
-import bp.base.BAPObject;
-import bp.base.Ball;
-import bp.base.Block;
-import bp.base.Paddle;
-import bp.base.SpawnedPower;
+import bp.base.*;
 
 public class ImmaterialCollisionResolver extends CollisionResolver {
 

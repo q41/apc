@@ -1,6 +1,5 @@
 package bp.base;
 
-import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 
 public abstract class MovingBAPObject extends BAPObject {

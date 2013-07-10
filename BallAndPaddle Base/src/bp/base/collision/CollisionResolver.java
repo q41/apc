@@ -1,10 +1,7 @@
 package bp.base.collision;
 
 import bp.base.*;
-import bp.base.collision.body.Border;
-import bp.base.collision.body.CircleBody;
-import bp.base.collision.body.MovableBody;
-import bp.base.collision.body.RectangleBody;
+import bp.base.collision.body.*;
 
 public abstract class CollisionResolver {
 	

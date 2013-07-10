@@ -1,6 +1,6 @@
 package bp.base.collision.body;
 
-import bp.base.BAPObject;
+import bp.base.*;
 
 public class RectangleBody extends MovableBody {
 	
@@ -25,7 +25,10 @@ public class RectangleBody extends MovableBody {
 	 * @return the bottom right corner point
 	 */
 	public Point getBottomRight(){
-		return new Point(object.getX()+0.4+object.getSize()*0.1, object.getY()+0.26);
+		if(object instanceof Paddle)		
+			return new Point(object.getX()+0.4+object.getSize()*0.1, object.getY()+0.26);
+		else
+			return new Point(object.getX()+object.getSize(), object.getY()+object.getSize());
 	}
 	
 }

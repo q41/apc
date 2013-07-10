@@ -1,12 +1,7 @@
 package bp.base.collision;
 
-import bp.base.BAPObject;
-import bp.base.Ball;
-import bp.base.Block;
-import bp.base.Paddle;
-import bp.base.SpawnedPower;
-import bp.base.collision.body.CircleBody;
-import bp.base.collision.body.SquareBody;
+import bp.base.*;
+import bp.base.collision.body.*;
 
 public class StandardCollisionResolver extends CollisionResolver{
 
@@ -73,7 +68,7 @@ public class StandardCollisionResolver extends CollisionResolver{
 	 */
 	private static void resolveCollision(Ball ball, Block block){
 		CircleBody moved = (CircleBody) ball.getBody();
-		SquareBody other = (SquareBody) block.getBody();
+		RectangleBody other = (RectangleBody) block.getBody();
 		//split up the square into 4 parts, bottom, left, right, top. 
 		//top
 		double topY = other.getTopLeft().getY();
