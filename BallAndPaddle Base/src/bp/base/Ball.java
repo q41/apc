@@ -23,6 +23,10 @@ public class Ball extends MovingBAPObject {
 	private double movementVectorY;
 	//the maximum distance the ball may move in one action
 	private final double increment = 0.250;
+	/**
+	 * if the ball is immaterial or not
+	 */
+	private boolean immaterial;
 	
 	/**
 	 * Creates a new ball
@@ -62,6 +66,7 @@ public class Ball extends MovingBAPObject {
 			orientation = 270;
 		damage = 1;
 		alive = true;
+		immaterial = true;
 	}
 	
 	/**
@@ -78,6 +83,22 @@ public class Ball extends MovingBAPObject {
 	 */
 	public void setSize(int size){
 		this.size = Math.max(lowerSizeLimit, Math.min(upperSizeLimit, size));
+	}
+	
+	/**
+	 * Returns if the ball is immaterial
+	 * @return If the ball is immaterial
+	 */
+	public boolean getImmaterial(){
+		return immaterial;
+	}
+	
+	/**
+	 * Sets if the ball is immaterial or not
+	 * @param immaterial If the ball is immaterial or not
+	 */
+	public void setImmaterial(boolean immaterial){
+		this.immaterial = immaterial;
 	}
 	
 	/**

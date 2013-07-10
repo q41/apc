@@ -29,7 +29,7 @@ public final class LocalBooleanVariableContext extends Context {
 		return SimpleType.BOOLEAN;
 	}
 	
-	public boolean getDoubleValue(Object callee) {
+	public boolean getBooleanValue(Object callee) {
 		try {
 			Field localVariable = callee.getClass().getDeclaredField(localVariableName);
 			localVariable.setAccessible(true);
