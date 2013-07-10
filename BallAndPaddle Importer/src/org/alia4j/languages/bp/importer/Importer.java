@@ -73,7 +73,7 @@ public class Importer implements org.alia4j.fial.Importer {
 
 		CompositionRule[] toDeployRules = new CompositionRule[initialCompositionRules.size()];
 		org.alia4j.fial.System.deploy(initialCompositionRules.toArray(toDeployRules));
-		Attachment[] toDeploy = new Attachment[initialAttachments.size()];
+		Attachment[] toDeploy = new Attachment[initialAttachments.size()]; //SHOULD BE EMPTY!
 		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
 	}
 	
