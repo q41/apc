@@ -135,11 +135,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		Target target = effect.getTarget();
 		
 		//create pattern
-		Pattern pattern;
+		MethodPattern pattern;
 		if(target instanceof TypeTarget) {
-			Class bpObjectClass = getBPObjectClass((TypeTarget) target);
+			Class<?> bpObjectClass = getBPObjectClass((TypeTarget) target);
 			pattern = createPattern(bpObjectClass, body.getName().toString());
 		} else {
+			//TODO
 			assert(false);
 			pattern = null;
 		}
@@ -153,7 +154,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 	}
 	
-	private Class getBPObjectClass(TypeTarget target) {
+	private Class<?> getBPObjectClass(TypeTarget target) {
 		switch(target.getType()) {
 		case BALL: return bp.base.Ball.class;
 		case BLOCK: return bp.base.Block.class;
@@ -178,23 +179,41 @@ public class Importer implements org.alia4j.fial.Importer {
 		return null;
 	}
 	
+	private enum AttributeType {
+		DOUBLE, INT, BOOL
+	}
+	
 	private Action createAction(EffectBody effectBody) {
 		AdjustmentOperator op = effectBody.getOp();
-		Attribute attr = effectBody.getName();
+		AttributeType attrType = getAttributeType(effectBody.getName());
+		switch(attrType) {
+		case DOUBLE:
+			if(op==AdjustmentOperator.SET) return DoubleAttributeAssignAction.methodCallAction;
+			else return DoubleAttributeIncAction.methodCallAction;
+		case INT:
+			if(op==AdjustmentOperator.SET) return IntAttributeAssignAction.methodCallAction;
+			else return IntAttributeIncAction.methodCallAction;
+		case BOOL:
+			return BooleanAttributeAssignAction.methodCallAction;
+		default:
+			assert(false);
+			return null;
+		}
+	}
+	
+	private AttributeType getAttributeType(Attribute attr) {
 		switch(attr) {
 		case SPEED:
 		case SIZE:
-			if(op==AdjustmentOperator.SET) return DoubleAttributeAssignAction.methodCallAction;
-			else return DoubleAttributeIncAction.methodCallAction;
+			return AttributeType.DOUBLE;
 		case HARDNESS:
 		case RESISTANCE:
 		case ORIENTATION:
 		case X:
 		case Y:
-			if(op==AdjustmentOperator.SET) return IntAttributeAssignAction.methodCallAction;
-			else return IntAttributeIncAction.methodCallAction;
+			return AttributeType.INT;
 		case IMMATERIAL:
-			return BooleanAttributeAssignAction.methodCallAction;
+			return AttributeType.BOOL;
 		default:
 			assert(false);
 			return null;
@@ -208,16 +227,34 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Context visit(BooleanExpression e) {
 		
 		if(e instanceof BooleanBinaryExpression) {
-			visit((BooleanBinaryExpression) e);
+			return visit((BooleanBinaryExpression) e);
 		}
-		
-		//TODO
-		//ContextFactory.findOrCreateIntegerConstantContext(90);
+		else if(e instanceof BooleanUnaryExpression) {
+			return visit((BooleanBinaryExpression) e);
+		}
+		else if(e instanceof DoubleBoolOperand) {
+			return ContextFactory.findOrCreateDoubleConstantContext(((DoubleBoolOperand) e).getValue());
+		}
+		else if(e instanceof IntBoolOperand) {
+			return ContextFactory.findOrCreateIntegerConstantContext(((IntBoolOperand) e).getValue());
+		}
+		else if(e instanceof BooleanBoolOperand) {
+			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanBoolOperand) e).isValue());
+		}
+		else { //if(e instanceof AttBoolOperand)
+			return visit((AttBoolOperand) e);
+		}
+	}
+	
+	private Context visit(AttBoolOperand e) {
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
-		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
-		return exceedsContext;
+		Attribute attr = e.getAtt();
+		switch(getAttributeType(attr)) {
+		case DOUBLE: return new LocalDoubleVariableContext(calleeContext, attr.toString());
+		case INT: return new LocalIntegerVariableContext(calleeContext, attr.toString());
+		case BOOL: return new LocalBooleanVariableContext(calleeContext, attr.toString());
+		default: assert(false); return null;
+		}
 	}
 	
 	private Context visit(BooleanBinaryExpression e) {
@@ -263,6 +300,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	private Context visit(BooleanUnaryExpression e) {
 		Context body = visit(e.getBody());
+		
 		if(e instanceof NotBoolExpression) {
 			return ContextFactory.findOrCreateNotContext(body);
 		}
@@ -277,91 +315,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Context visit(CollisionExpression expression) {
 		return null;
 	}
-
-//	private Predicate<AtomicPredicate> getTargetPredicate(BooleanExpression param){
-//		if(param instanceof AndParameter){
-//			AndParameter andPar = (AndParameter) param;
-//				return new AndPredicate<>(getTargetPredicate(andPar.getLeft()), getTargetPredicate(andPar.getRight()));
-//		}
-//		else if(param instanceof OrParameter){
-//			OrParameter orPar = (OrParameter) param;
-//			return new OrPredicate<>(getTargetPredicate(orPar.getLeft()), getTargetPredicate(orPar.getRight()));
-//		}
-//		else if(param instanceof EqParameter){
-//			EqParameter eqPar = (EqParameter) param;
-//			Context equalsContext = ContextFactory.findOrCreateEqualContext(getTargetContext(eqPar.getLeft()), getTargetContext(eqPar.getRight()));
-//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(equalsContext), true);
-//		}
-//		else if(param instanceof SmthParameter){
-//			SmthParameter smthPar = (SmthParameter) param;
-//			//switch right and left so that this is actually a SmallerContext
-//			Context smallerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(smthPar.getRight()), getTargetContext(smthPar.getLeft()));
-//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerContext), true);
-//		}
-//		else if(param instanceof SeqParameter){
-//			SeqParameter seqPar = (SeqParameter) param;
-//			//switch right and left so that this is actually a SmallerEqualContext
-//			Context smallerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(seqPar.getRight()), getTargetContext(seqPar.getLeft()));
-//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerOrEqualContext), true);
-//		}
-//		else if(param instanceof LthParameter){
-//			LthParameter lthPar = (LthParameter) param;
-//			Context largerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(lthPar.getLeft()), getTargetContext(lthPar.getRight()));
-//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerContext), true);
-//		}
-//		else if(param instanceof LeqParameter){
-//			LeqParameter leqPar = (LeqParameter) param;
-//			Context largerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(leqPar.getLeft()), getTargetContext(leqPar.getRight()));
-//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerOrEqualContext), true);
-//		}
-//		else if(param instanceof NeqParameter){
-//			NeqParameter neqPar = (NeqParameter) param;
-//			Context notEqualContext = ContextFactory.findOrCreateEqualContext(getTargetContext(neqPar.getLeft()), getTargetContext(neqPar.getRight()));
-//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(notEqualContext), false);
-//		}
-//		else if(param instanceof NegParameter){
-//			NegParameter negPar = (NegParameter) param;
-//			return getTargetPredicate(negPar.getBody()).negate();
-//		}
-//		else if(param instanceof BracketParameter){
-//			BracketParameter brackPar = (BracketParameter) param;
-//			//brackets, so just recursively continue for it's body
-//			return getTargetPredicate(brackPar.getBody());
-//		}
-//		return null;
-//	}
-//	
-//	private static Context getTargetContext(BooleanExpression param) {
-//		///TODO, far from finished
-//		if(param instanceof AttParameter){
-//			AttParameter attPar = (AttParameter)param;
-//			Attribute att = attPar.getAtt();
-//			Context con = null;
-//			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-//			if(att.getValue()==att.HARDNESS_VALUE)
-//				con = new LocalIntegerVariableContext(calleeContext, "hardness");
-//			else if(att.getValue()==att.IMMATERIAL_VALUE)
-//				con = new LocalBooleanVariableContext(calleeContext, "immaterial");
-//			else if(att.getValue()==att.NORMAL_RES_VALUE)
-//				con = new LocalIntegerVariableContext(calleeContext, "resistance");
-//			else if(att.getValue()==att.ORIENTATION_VALUE)
-//				con = new LocalIntegerVariableContext(calleeContext, "direction");
-//			else if(att.getValue()==att.SIZE_VALUE)
-//				con = new LocalIntegerVariableContext(calleeContext, "size");
-//			else if(att.getValue()==att.SPEED_VALUE)
-//				con = new LocalDoubleVariableContext(calleeContext, "speed");
-//			return con;
-//		}
-//		else if(param instanceof IntValueParameter){
-//			IntValueParameter intPar = (IntValueParameter)param;
-//			return ContextFactory.findOrCreateDoubleConstantContext(intPar.getValue());
-//		}
-//		else if(param instanceof DoubleValueParameter){
-//			DoubleValueParameter doubPar = (DoubleValueParameter)param;
-//			return ContextFactory.findOrCreateDoubleConstantContext(doubPar.getValue());
-//		}	
-//		return null;
-//	}
+	
 	
 	private String getBAPObjectType(TargetType type) {
 		String result = "";
