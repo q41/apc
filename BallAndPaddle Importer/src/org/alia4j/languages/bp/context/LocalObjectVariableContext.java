@@ -30,7 +30,7 @@ public final class LocalObjectVariableContext extends Context {
 	
 	public Object getObjectValue(Object callee) {
 		try {
-			Field localVariable = callee.getClass().getDeclaredField(localVariableName);
+			Field localVariable = callee.getClass().getField(localVariableName);
 			localVariable.setAccessible(true);
 			return localVariable.get(callee);
 		} catch (NoSuchFieldException e) {
