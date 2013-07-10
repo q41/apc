@@ -282,7 +282,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_9Dq68ek-EeKnZ5Mg-Y-KGg" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EClass" href="bp.text.ecore#//BooleanUnaryExpression"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_9Dq68uk-EeKnZ5Mg-Y-KGg" x="1874" y="235"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_9Dq68uk-EeKnZ5Mg-Y-KGg" x="1956" y="228"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_9DsJEOk-EeKnZ5Mg-Y-KGg" type="1001">
     <children xmi:type="notation:Node" xmi:id="_9DsJE-k-EeKnZ5Mg-Y-KGg" type="4001"/>
