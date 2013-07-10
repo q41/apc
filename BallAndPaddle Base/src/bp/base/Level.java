@@ -144,6 +144,7 @@ public class Level extends Observable implements Runnable {
 	 * Creates the actual blocks for this level,
 	 * from the imported grid importedBlocks and a list of block types.
 	 * Also creates the four borders once the height and width of the level is known
+	 * Requires that setImportedBlocks() has been used before generateBlocks() is called
 	 * @param b the list of block types
 	 */
 	public void generateBlocks(List<Block> b){
