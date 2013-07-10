@@ -7,7 +7,7 @@ public abstract class BAPObject {
 	/**
 	 * The id of this BAPObject
 	 */
-	private String id;
+	public final String id;
 	/**
 	 * The location of this object
 	 */
@@ -32,14 +32,6 @@ public abstract class BAPObject {
 		this.id = id;
 		this.x = x;
 		this.y = y;
-	}
-	
-	/**
-	 * returns the identifier of this object
-	 * @return id
-	 */
-	public String getId(){
-		return this.id;
 	}
 	
 	/**

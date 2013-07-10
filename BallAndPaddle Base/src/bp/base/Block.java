@@ -42,7 +42,7 @@ public class Block extends BAPObject {
 	 * @param b the other block that this block will inherit it's traits from
 	 */
 	public Block(double x, double y, Block b){
-		this(b.getId(), x, y);
+		this(b.id, x, y);
 		this.hardness = b.getHardness();
 		this.resistance = b.getResistance();
 		this.power = b.getPower();

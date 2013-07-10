@@ -12,16 +12,16 @@ public abstract class CollisionResolver {
 	 * @param border the border
 	 */
 	protected static void resolveCollision(Ball ball, bp.base.Border border){
-		if(border.getId().equals("left") && ball.getOrientation()>90 && ball.getOrientation()<270){
+		if(border.id.equals("left") && ball.getOrientation()>90 && ball.getOrientation()<270){
 			ball.oneEightyOrientation();
 		}
-		else if(border.getId().equals("right") && ((ball.getOrientation()>270 && ball.getOrientation()<=360) || (ball.getOrientation()<90 && ball.getOrientation()>=0))){
+		else if(border.id.equals("right") && ((ball.getOrientation()>270 && ball.getOrientation()<=360) || (ball.getOrientation()<90 && ball.getOrientation()>=0))){
 			ball.oneEightyOrientation();
 		}
-		else if(border.getId().equals("top") && ball.getOrientation()>180 && ball.getOrientation()<360){
+		else if(border.id.equals("top") && ball.getOrientation()>180 && ball.getOrientation()<360){
 			ball.threeSixtyOrientation();
 		}
-		else if(border.getId().equals("bottom") && ball.getOrientation()>0 && ball.getOrientation()<180){
+		else if(border.id.equals("bottom") && ball.getOrientation()>0 && ball.getOrientation()<180){
 			ball.threeSixtyOrientation();
 			ball.setDestroyed(true);
 		}		

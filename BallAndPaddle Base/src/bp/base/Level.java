@@ -198,7 +198,7 @@ public class Level extends Observable implements Runnable {
 		Block kind = null;
 		int i = 0;
 		while(kind==null && i<b.size()){
-			if(b.get(i).getId().charAt(0) == cur){
+			if(b.get(i).id.charAt(0) == cur){
 				kind = b.get(i);
 			}
 			i++;

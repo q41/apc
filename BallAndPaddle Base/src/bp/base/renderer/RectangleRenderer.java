@@ -61,7 +61,7 @@ public class RectangleRenderer extends Renderer {
 			green = 0.5f;
 			blue = 1.0f;
 		}
-		text = object.getId();
+		text = object.id;
 	}
 	
 	@Override
