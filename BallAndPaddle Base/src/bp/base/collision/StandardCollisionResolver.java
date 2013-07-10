@@ -83,6 +83,7 @@ public class StandardCollisionResolver extends CollisionResolver{
 		double ballYTop = moved.getCenter().getY()-moved.getR();
 		double ballXLeft = moved.getCenter().getX()-moved.getR();
 		double ballXRight = moved.getCenter().getX()+moved.getR();
+		
 		//hit right side?
 		if(ball.getDirection()>90 && ball.getDirection()<270){
 			boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));

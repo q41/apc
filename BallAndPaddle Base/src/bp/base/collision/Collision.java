@@ -177,7 +177,7 @@ public class Collision {
 	 * @return if the two objects collided
 	 */
 	private static boolean hasCollided(Ball ball, bp.base.Border border){
-		Border borderBody = (Border) border.getBody();
+		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border.getBody();
 		CircleBody ballBody = (CircleBody) ball.getBody();
 		if(borderBody.getStart().getX()==borderBody.getEnd().getX()){
 			if(ball.getDirection()>90 && ball.getDirection() < 270){
@@ -258,7 +258,7 @@ public class Collision {
 	 */
 	private static boolean hasCollided(Paddle paddle, bp.base.Border border){
 		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
-		Border borderBody = (Border) border.getBody();
+		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border.getBody();
 		if(borderBody.getStart().getX()==borderBody.getEnd().getX())
 			return (borderBody.getStart().getX()>paddleBody.getTopLeft().getX() && borderBody.getEnd().getX()<paddleBody.getBottomRight().getX()) ||
 					(borderBody.getEnd().getX()>paddleBody.getTopLeft().getX() && borderBody.getStart().getX()<paddleBody.getBottomRight().getX());
@@ -286,7 +286,7 @@ public class Collision {
 	 * @return if the two objects collided
 	 */
 	private static boolean hasCollided(SpawnedPower power, bp.base.Border border){
-		Border borderBody = (Border) border.getBody();
+		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border.getBody();
 		RectangleBody powerBody = (RectangleBody) power.getBody();
 		return (borderBody.getStart().getY()>powerBody.getTopLeft().getY() && borderBody.getEnd().getY()<powerBody.getBottomRight().getY()) ||
 				(borderBody.getEnd().getY()>powerBody.getTopLeft().getY() && borderBody.getStart().getY()<powerBody.getBottomRight().getY());

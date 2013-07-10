@@ -108,11 +108,11 @@ public abstract class CollisionResolver {
 	protected static void resolveCollision(Paddle paddle, bp.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
 		if(paddle.getDirection()>0){
-			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRight().getX();
+			double adjustX = ((bp.base.collision.body.Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRight().getX();
 			((MovableBody)paddle.getBody()).moveBy(adjustX, 0);			
 		}
 		else if(paddle.getDirection()<0){
-			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeft().getX();
+			double adjustX = ((bp.base.collision.body.Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeft().getX();
 			((MovableBody)paddle.getBody()).moveBy(adjustX, 0);	
 		}		
 	}
