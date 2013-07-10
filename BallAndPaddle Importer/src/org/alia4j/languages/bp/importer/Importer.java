@@ -203,12 +203,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		switch(attr) {
 		case SPEED:
 		case SIZE:
+		case X:
+		case Y:
 			return AttributeType.DOUBLE;
 		case HARDNESS:
 		case RESISTANCE:
 		case ORIENTATION:
-		case X:
-		case Y:
 			return AttributeType.INT;
 		case IMMATERIAL:
 			return AttributeType.BOOL;
@@ -438,27 +438,6 @@ public class Importer implements org.alia4j.fial.Importer {
 			ExceptionsPattern.ANY
 	);
 	
-	private void createStandardBallCollisionHandling(){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		//TODO get context for return type, action should only happen if there was actually a collision	
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createStandardBallCollisionHandling(AtomicPredicate pred){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		//TODO get context for return type, action should only happen if there was actually a collision	
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
 	private void createStandardOthersCollisionHandling(){
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
@@ -470,10 +449,22 @@ public class Importer implements org.alia4j.fial.Importer {
 		initialAttachments.add(attachement);
 	}
 	
-	private void createImmaterialBallCollisionHandling(AtomicPredicate pred){
+	private void createStandardBallCollisionHandling(){
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		//TODO get context for return type, action should only happen if there was actually a collision	
+		//TODO predicate so it triggers on all balls with immaterial==false
+		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createImmaterialBallCollisionHandling(){
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
+		//TODO predicate so it triggers on all balls with immaterial==true
+		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
 		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleImmaterialCollision, ScheduleInfo.AFTER);
