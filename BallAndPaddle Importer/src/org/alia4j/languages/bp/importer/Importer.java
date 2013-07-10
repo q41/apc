@@ -7,19 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.alia4j.addb.util.AddbEvent;
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.bp.*;
 import org.alia4j.languages.bp.action.*;
 import org.alia4j.languages.bp.context.*;
-import org.alia4j.languages.bp.predicate.*;
 import org.alia4j.liam.*;
 import org.alia4j.liam.pattern.*;
 import org.alia4j.liam.signature.ResolutionStrategy;
 import org.alia4j.patterns.*;
 import org.alia4j.patterns.names.ExactNamePattern;
 import org.alia4j.patterns.types.*;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -62,6 +59,20 @@ public class Importer implements org.alia4j.fial.Importer {
 		Root root = (Root) resource.getContents().get(0);
 		// Process the AST by traversing the syntax tree and visiting each model element
 		visit(root);
+		
+		createBaseCollisionDetection();
+		createStandardBallCollisionHandling();
+		createStandardOthersCollisionHandling();
+		//createEffect(Ball.class, "direction", AttributeType.INT);
+		
+		//-----------------------
+		// Deploy all definitions
+		//-----------------------
+
+		CompositionRule[] toDeployRules = new CompositionRule[initialCompositionRules.size()];
+		org.alia4j.fial.System.deploy(initialCompositionRules.toArray(toDeployRules));
+		Attachment[] toDeploy = new Attachment[initialAttachments.size()];
+		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
 	}
 	
 	//Main game objects
@@ -161,7 +172,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		}
 	}
 
-	private MethodPattern createPattern(Class bpObjectClass, String attrName) {
+	private MethodPattern createPattern(Class<?> bpObjectClass, String attrName) {
 		return new MethodPattern(	
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
@@ -217,10 +228,6 @@ public class Importer implements org.alia4j.fial.Importer {
 			return null;
 		}
 	}
-		
-	private void printError(String msg) {
-		System.err.println("ERROR: "+msg);	
-	}
 
 	private Context visit(BooleanExpression e) {
 		
@@ -228,7 +235,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			return visit((BooleanBinaryExpression) e);
 		}
 		else if(e instanceof BooleanUnaryExpression) {
-			return visit((BooleanBinaryExpression) e);
+			return visit((BooleanUnaryExpression) e);
 		}
 		else if(e instanceof DoubleBoolOperand) {
 			return ContextFactory.findOrCreateDoubleConstantContext(((DoubleBoolOperand) e).getValue());
@@ -311,6 +318,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private Context visit(CollisionExpression expression) {
+		//TODO
 		return null;
 	}
 	
@@ -580,50 +588,50 @@ public class Importer implements org.alia4j.fial.Importer {
 
 			//value change of the effect TODO
 			Expression expr = effectType.getExpression();
-//			if(expr instanceof IntOperand){
-//				IntOperand intOp = (IntOperand)expr;
-//				effect.setValue(intOp.getValue());
-//			}
-//			else if(expr instanceof DoubleOperand){
-//				DoubleOperand doubleOp = (DoubleOperand)expr;
-//				effect.setValue(doubleOp.getValue());
-//			}
-//			else{
-//				BoolOperand boolOp = (BoolOperand)expr;
-//				effect.setValue(boolOp.isValue());
-//			}
+			if(expr instanceof IntOperand){
+				IntOperand intOp = (IntOperand)expr;
+				effect.setValue(intOp.getValue());
+			}
+			else if(expr instanceof DoubleOperand){
+				DoubleOperand doubleOp = (DoubleOperand)expr;
+				effect.setValue(doubleOp.getValue());
+			}
+			else{
+				BoolOperand boolOp = (BoolOperand)expr;
+				effect.setValue(boolOp.isValue());
+			}
 				
 			//owner of the affected attribute
 			//and attribute that is modified
-//			EffectingAttribute attr = effectType.getEffectingAttribute();
-//			Attribute attribute;
-//			if(attr instanceof EffectingBallAttribute){
-//				EffectingBallAttribute ballAttr = (EffectingBallAttribute) attr;
-//				effect.setEffectTarget(Effect.EffectTarget.BALL);
-//				attribute = ballAttr.getType();
-//			}
-//			else if(attr instanceof EffectingBlockAttribute){
-//				EffectingBlockAttribute blockAttr = (EffectingBlockAttribute) attr;
-//				effect.setEffectTarget(Effect.EffectTarget.BLOCK);
-//				attribute = blockAttr.getType();
-//			}
-//			else{
-//				EffectingPaddleAttribute paddleAttr = (EffectingPaddleAttribute) attr;
-//				effect.setEffectTarget(Effect.EffectTarget.PADDLE);
-//				attribute = paddleAttr.getType();
-//			}
-//			if(attribute.getValue()==Attribute.HARDNESS_VALUE)
-//				effect.setModifiedAttribute(Effect.EffectedAttribute.HARDNESS);
-//			else if(attribute.getValue()==Attribute.IMMATERIAL_VALUE)
-//				effect.setModifiedAttribute(Effect.EffectedAttribute.IMMATERIAL);
-//			else if(attribute.getValue()==Attribute.NORMAL_RES_VALUE)
-//				effect.setModifiedAttribute(Effect.EffectedAttribute.RESISTANCE);
-//			else if(attribute.getValue()==Attribute.ORIENTATION_VALUE)
-//				effect.setModifiedAttribute(Effect.EffectedAttribute.DIRECTION);
-//			else if(attribute.getValue()==Attribute.SIZE_VALUE)
-//				effect.setModifiedAttribute(Effect.EffectedAttribute.SIZE);
-//			else if(attribute.getValue()==Attribute.SPEED_VALUE)
-//				effect.setModifiedAttribute(Effect.EffectedAttribute.SPEED);
+			EffectingAttribute attr = effectType.getEffectingAttribute();
+			Attribute attribute;
+			if(attr instanceof EffectingBallAttribute){
+				EffectingBallAttribute ballAttr = (EffectingBallAttribute) attr;
+				effect.setEffectTarget(Effect.EffectTarget.BALL);
+				attribute = ballAttr.getType();
+			}
+			else if(attr instanceof EffectingBlockAttribute){
+				EffectingBlockAttribute blockAttr = (EffectingBlockAttribute) attr;
+				effect.setEffectTarget(Effect.EffectTarget.BLOCK);
+				attribute = blockAttr.getType();
+			}
+			else{
+				EffectingPaddleAttribute paddleAttr = (EffectingPaddleAttribute) attr;
+				effect.setEffectTarget(Effect.EffectTarget.PADDLE);
+				attribute = paddleAttr.getType();
+			}
+			if(attribute.getValue()==Attribute.HARDNESS_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.HARDNESS);
+			else if(attribute.getValue()==Attribute.IMMATERIAL_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.IMMATERIAL);
+			else if(attribute.getValue()==Attribute.NORMAL_RES_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.RESISTANCE);
+			else if(attribute.getValue()==Attribute.ORIENTATION_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.DIRECTION);
+			else if(attribute.getValue()==Attribute.SIZE_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.SIZE);
+			else if(attribute.getValue()==Attribute.SPEED_VALUE)
+				effect.setModifiedAttribute(Effect.EffectedAttribute.SPEED);
 			
 			//duration of the effect
 			effect.setDuration(effectType.getDuration());
@@ -706,19 +714,10 @@ public class Importer implements org.alia4j.fial.Importer {
 		createBaseCollisionDetection();
 		createStandardBallCollisionHandling();
 		createStandardOthersCollisionHandling();
-//		createEffect(Ball.class, "direction", AttributeType.INT);
-		
-		//-----------------------
-		// Deploy all definitions
-		//-----------------------
-
-		CompositionRule[] toDeployRules = new CompositionRule[initialCompositionRules.size()];
-		org.alia4j.fial.System.deploy(initialCompositionRules.toArray(toDeployRules));
-		Attachment[] toDeploy = new Attachment[initialAttachments.size()];
-		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
-		
-	}	
+		createEffect(Ball.class, "direction", AttributeType.INT);
+	}*/
 	
+	/*
 	private List<EffectedAttribute> getTargetAttributes(BooleanExpression param) {
 		List<EffectedAttribute> result = new ArrayList<EffectedAttribute>();
 		if(param instanceof BooleanBinaryExpression){
