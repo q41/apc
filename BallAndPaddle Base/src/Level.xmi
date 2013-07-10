@@ -1,54 +1,63 @@
 <?xml version="1.0" encoding="ASCII"?>
-<ballandpaddle:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ballandpaddle="http://www.alia4j.org/language/ballandpaddle">
+<bp:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bp="http://www.emftext.org/language/ballandpaddle">
   <level id="first" powerSpawnChance="1.0">
     <blocks>.......</blocks>
     <blocks>...A...</blocks>
     <blocks>..BAB..</blocks>
-    <blocks>.......</blocks>
-    <blocks>.......</blocks>
   </level>
   <paddles id="Paddle" x="4.0" y="4.0" size="1" orientation="270"/>
   <balls id="Ball" x="3.0" y="4.0"/>
   <blocks id="A" hardness="1"/>
   <blocks id="B" hardness="5" power="//@powers.0"/>
-  <effects xsi:type="ballandpaddle:CollisionEffect" id="MoreSpeed">
-    <types duration="5">
-      <effectingAttribute xsi:type="ballandpaddle:EffectingBallAttribute" type="speed"/>
-      <expression xsi:type="ballandpaddle:DoubleOperand" value="2.5"/>
-    </types>
-    <leftTarget xsi:type="ballandpaddle:ObjectTarget" item="//@balls.0"/>
-    <rightTarget xsi:type="ballandpaddle:ObjectTarget" item="//@paddles.0"/>
+  <effects xsi:type="bp:CollisionEffect" id="MoreSpeed" duration="5">
+    <leftTarget xsi:type="bp:ObjectTarget" item="//@balls.0"/>
+    <rightTarget xsi:type="bp:ObjectTarget" item="//@paddles.0"/>
+    <body name="speed" classType="ball">
+      <expression xsi:type="bp:IntCollisionOperand" value="2"/>
+    </body>
   </effects>
-  <effects xsi:type="ballandpaddle:GeneralEffect" id="EvenMoreSpeed">
-    <types adjustmentOperator="=" duration="10">
-      <effectingAttribute xsi:type="ballandpaddle:EffectingBallAttribute" type="speed"/>
-      <expression xsi:type="ballandpaddle:IntOperand" value="3"/>
-    </types>
-    <target xsi:type="ballandpaddle:ObjectTarget" item="//@balls.0"/>
+  <effects xsi:type="bp:GeneralEffect" id="EvenMoreSpeed" duration="10">
+    <target xsi:type="bp:ObjectTarget" item="//@balls.0"/>
+    <body op="=" name="speed">
+      <expression xsi:type="bp:IntOperand" value="3"/>
+    </body>
   </effects>
-  <effects xsi:type="ballandpaddle:CollisionEffect" id="MoreDamage">
-    <types adjustmentOperator="-=" duration="10">
-      <effectingAttribute xsi:type="ballandpaddle:EffectingBlockAttribute" type="hardness"/>
-      <expression xsi:type="ballandpaddle:MultExpression">
-        <left xsi:type="ballandpaddle:IntOperand" value="2"/>
-        <right xsi:type="ballandpaddle:AttBlockOperand" att="resistance"/>
+  <effects xsi:type="bp:CollisionEffect" id="MoreDamageFromAbove">
+    <leftTarget xsi:type="bp:TypeTarget" type="ball">
+      <filter xsi:type="bp:AndExpression">
+        <left xsi:type="bp:SmthExpression">
+          <left xsi:type="bp:AttBoolOperand" att="speed"/>
+          <right xsi:type="bp:IntBoolOperand" value="6"/>
+        </left>
+        <right xsi:type="bp:LthExpression">
+          <left xsi:type="bp:AttBoolOperand" att="orientation"/>
+          <right xsi:type="bp:IntBoolOperand" value="180"/>
+        </right>
+      </filter>
+    </leftTarget>
+    <rightTarget xsi:type="bp:TypeTarget"/>
+    <body name="hardness">
+      <expression xsi:type="bp:NegCollisionExpression">
+        <body xsi:type="bp:BracketCollisionExpression">
+          <body xsi:type="bp:MultCollisionExpression">
+            <left xsi:type="bp:DoubleCollisionOperand" value="1.5"/>
+            <right xsi:type="bp:AttCollisionOperand" classType="ball" att="speed"/>
+          </body>
+        </body>
       </expression>
-    </types>
-    <leftTarget xsi:type="ballandpaddle:TypeTarget" type="ball"/>
-    <rightTarget xsi:type="ballandpaddle:TypeTarget"/>
+    </body>
   </effects>
-  <effects xsi:type="ballandpaddle:GeneralEffect" id="MoreResistance">
-    <types duration="5">
-      <effectingAttribute xsi:type="ballandpaddle:EffectingBlockAttribute" type="resistance"/>
-      <expression xsi:type="ballandpaddle:IntOperand" value="2"/>
-    </types>
-    <target xsi:type="ballandpaddle:TypeTarget">
-      <params xsi:type="ballandpaddle:SmthParameter">
-        <left xsi:type="ballandpaddle:AttParameter" att="resistance"/>
-        <right xsi:type="ballandpaddle:IntValueParameter" value="5"/>
-      </params>
+  <effects xsi:type="bp:GeneralEffect" id="MoreResistance" duration="5">
+    <target xsi:type="bp:TypeTarget">
+      <filter xsi:type="bp:SmthExpression">
+        <left xsi:type="bp:AttBoolOperand" att="resistance"/>
+        <right xsi:type="bp:IntBoolOperand" value="2"/>
+      </filter>
     </target>
+    <body name="resistance">
+      <expression xsi:type="bp:IntOperand" value="5"/>
+    </body>
   </effects>
   <powers id="Speed" effects="//@effects.0 //@effects.1"/>
   <powers id="MostlyUseless" effects="//@effects.2 //@effects.3"/>
-</ballandpaddle:Root>
+</bp:Root>

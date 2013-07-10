@@ -132,32 +132,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//CollisionEffectBody/classType"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectBody/expression"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//Expression"/>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//BinaryExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BinaryExpression/left"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BinaryExpression/right"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="bp.text.ecore#//UnaryExpression">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//UnaryExpression/body"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//MultExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//DivExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//PlusExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//MinusExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//BracketExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//NegExpression"/>
-    <genClasses ecoreClass="bp.text.ecore#//IntOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//IntOperand/value"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//DoubleOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//DoubleOperand/value"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//BoolOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//BoolOperand/value"/>
-    </genClasses>
-    <genClasses ecoreClass="bp.text.ecore#//AttOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttOperand/att"/>
-    </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//CollisionExpression"/>
     <genClasses image="false" ecoreClass="bp.text.ecore#//BinaryCollisionExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//BinaryCollisionExpression/left"/>
@@ -166,6 +140,14 @@
     <genClasses image="false" ecoreClass="bp.text.ecore#//UnaryCollisionExpression">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//UnaryCollisionExpression/body"/>
     </genClasses>
+    <genClasses ecoreClass="bp.text.ecore#//EqCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//SmthCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//SeqCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//LthCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//LeqCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//NeqCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//OrCollisionExpression"/>
+    <genClasses ecoreClass="bp.text.ecore#//AndCollisionExpression"/>
     <genClasses ecoreClass="bp.text.ecore#//MultCollisionExpression"/>
     <genClasses ecoreClass="bp.text.ecore#//DivCollisionExpression"/>
     <genClasses ecoreClass="bp.text.ecore#//PlusCollisionExpression"/>

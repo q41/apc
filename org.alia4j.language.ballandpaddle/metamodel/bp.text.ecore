@@ -148,60 +148,14 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	}
 	
 	class GeneralEffectBody extends EffectBody{
-		containment reference Expression expression (1..1);		
+		containment reference BooleanExpression expression (1..1);		
 	}
 	
 	class CollisionEffectBody extends EffectBody{
 		attribute TargetType classType (1..1);
 		containment reference CollisionExpression expression (1..1);
-	}
+	}	
 		
-	abstract class Expression{	
-	}
-	
-	abstract class BinaryExpression extends Expression{
-		containment reference Expression left(1..1);
-		containment reference Expression right(1..1);
-	}
-	
-	abstract class UnaryExpression extends Expression{
-		containment reference Expression body(1..1);
-	}
-	
-	class MultExpression extends BinaryExpression{
-	}
-	
-	class DivExpression extends BinaryExpression {
-	}
-	
-	class PlusExpression extends BinaryExpression{
-	}
-	
-	class MinusExpression extends BinaryExpression{
-	}
-	
-	class BracketExpression extends UnaryExpression{				
-	}
-	
-	class NegExpression extends UnaryExpression{			
-	}
-	
-	class IntOperand extends Expression{
-		attribute EInt value (1..1);	
-	}
-	
-	class DoubleOperand extends Expression{
-		attribute EDouble value (1..1);		
-	}
-	
-	class BoolOperand extends Expression{
-		attribute EBoolean value (1..1);
-	}
-	
-	class AttOperand extends Expression{	
-		attribute Attribute att(1..1);				
-	}
-	
 	abstract class CollisionExpression{	
 	}
 	
@@ -212,6 +166,30 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	
 	abstract class UnaryCollisionExpression extends CollisionExpression{
 		containment reference CollisionExpression body(1..1);
+	}
+	
+	class EqCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class SmthCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class SeqCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class LthCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class LeqCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class NeqCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class OrCollisionExpression extends BinaryCollisionExpression{
+	}
+	
+	class AndCollisionExpression extends BinaryCollisionExpression{
 	}
 	
 	class MultCollisionExpression extends BinaryCollisionExpression{
