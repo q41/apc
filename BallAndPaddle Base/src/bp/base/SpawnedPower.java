@@ -37,7 +37,8 @@ public class SpawnedPower extends MovingBAPObject {
 	 * @param y the y coordinate
 	 */
 	public SpawnedPower(Power power, double x, double y){
-		super(power.getId(), x, y, new SquareBody(new Point(x,y), new Point(x+0.15, y+0.15)));
+		super(power.getId(), x, y);
+		super.setBody(new SquareBody(this));
 		alive = true;
 		caught = false;
 	}

@@ -30,7 +30,7 @@ public class PowerRenderer implements Renderer {
 		double topLeftY = offsetY+body.getTopLeft().getY()*scale*downscaleHeightRatio;
 		double bottomRightX = offsetX+body.getBottomRight().getX()*scale*downscaleWidthRatio;
 		double bottomRightY = offsetY+body.getBottomRight().getY()*scale*downscaleHeightRatio;
-		//TODO, outline around each block!
+		//TODO, outline around each block?
 		GL11.glColor3f(0.93f, 0.5f, 1.0f);
 		GL11.glPushMatrix();
 			GL11.glBegin(GL11.GL_QUADS);

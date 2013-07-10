@@ -30,7 +30,7 @@ public abstract class BAPObject {
 	 * @param y the y coordinate of this object
 	 * @param body the body of this object
 	 */
-	public BAPObject(String id, double x, double y, Body body){
+	public BAPObject(String id, double x, double y){
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -76,6 +76,40 @@ public abstract class BAPObject {
 	public void setBody(Body body) {
 		this.body = body;		
 	}
+
+	/**
+	 * Sets x to the given value
+	 * @param x The new value of x
+	 */
+	public void setX(double x) {
+		this.x=x;		
+	}
+	
+	/**
+	 * Sets y to the given value
+	 * @param y The new value of y
+	 */
+	public void setY(double y) {
+		this.y=y;		
+	}
+	
+	/**
+	 * Increases the value of x by the given amount
+	 * @param x The amount to increase x by
+	 */
+	public void incX(double x){
+		this.x+=x;
+	}
+	
+	/**
+	 * Increases the value of y by the given amount
+	 * @param y The amount to increase y by
+	 */
+	public void incY(double y){
+		this.y+=y;
+	}
+
+	public abstract double getSize();
 	
 	
 }

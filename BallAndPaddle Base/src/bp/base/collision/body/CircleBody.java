@@ -1,21 +1,20 @@
 package bp.base.collision.body;
 
+import bp.base.BAPObject;
 import bp.base.Ball;
 
 public class CircleBody implements Body {
-
-	private Point center;
-	private CircleBody previousState;
+	
+	private double previousX;
+	private double previousY;
 	private Ball ball;
 	
-	public CircleBody(Point center, Ball ball){
-		this.center = center;
+	public CircleBody(Ball ball){
 		this.ball = ball;
-		previousState = this;
 	}
 	
 	public Point getCenter(){
-		return center;
+		return new Point(ball.getX(), ball.getY());
 	}
 	
 	public double getR(){
@@ -24,12 +23,15 @@ public class CircleBody implements Body {
 
 	@Override
 	public void moveBy(double x, double y) {
-		previousState = new CircleBody(new Point(center.getX(), center.getY()), ball);
-		center.moveBy(x,y);		
+		previousX = ball.getX();
+		previousY = ball.getY();
+		ball.incX(x);
+		ball.incY(y);	
 	}
 	
 	@Override
 	public void undoMove() {
-		center = previousState.getCenter();	
-	}	
+		ball.setX(previousX);
+		ball.setY(previousY);
+	}
 }

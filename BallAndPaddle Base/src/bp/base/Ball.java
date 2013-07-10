@@ -53,8 +53,8 @@ public class Ball extends MovingBAPObject {
 	 * @param size the size of the ball
 	 */
 	private Ball(String id, double x, double y, double size) {
-		super(id, x, y, null);
-		super.setBody(new CircleBody(new Point(x,y), this));
+		super(id, x, y);
+		super.setBody(new CircleBody(this));
 		this.size = size;
 		if(size>upperSizeLimit)
 			this.size = upperSizeLimit;		
@@ -199,8 +199,11 @@ public class Ball extends MovingBAPObject {
 	 * Adjusts the direction of the ball,
 	 * by subtracting it's current direction from 360
 	 */
-	public void OneEightyDirection() {
+	public void oneEightyDirection() {
 		setDirection(180-direction);	
 	}
+
+
+
 
 }

@@ -1,6 +1,6 @@
 package bp.base.collision.body;
 
-public class Point implements Body {
+public class Point {
 
 	private double x;
 	private double y;
@@ -26,12 +26,6 @@ public class Point implements Body {
 	public void moveBy(double x, double y) {
 		this.x += x;
 		this.y += y;
-		
-	}
-
-	@Override
-	public void undoMove() {
-		// TODO Auto-generated method stub
 		
 	}
 		

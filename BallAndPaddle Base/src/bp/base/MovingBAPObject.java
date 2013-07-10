@@ -11,8 +11,8 @@ public abstract class MovingBAPObject extends BAPObject {
 	 * @param y the y coordinate of the object
 	 * @param body the body of the object
 	 */
-	public MovingBAPObject(String id, double x, double y, Body body) {
-		super(id, x, y, body);
+	public MovingBAPObject(String id, double x, double y) {
+		super(id, x, y);
 	}
 	
 	/**

@@ -15,10 +15,10 @@ public abstract class CollisionResolver {
 	 */
 	protected static void resolveCollision(Ball ball, bp.base.Border border){
 		if(border.getId().equals("left") && ball.getDirection()>90 && ball.getDirection()<270){
-			ball.OneEightyDirection();
+			ball.oneEightyDirection();
 		}
 		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<=360) || (ball.getDirection()<90 && ball.getDirection()>=0))){
-			ball.OneEightyDirection();
+			ball.oneEightyDirection();
 		}
 		else if(border.getId().equals("top") && ball.getDirection()>180 && ball.getDirection()<360){
 			ball.threeSixtyDirection();
@@ -41,8 +41,8 @@ public abstract class CollisionResolver {
 	protected static void resolveCollision(Ball ball, Paddle paddle){
 		CircleBody moved = (CircleBody) ball.getBody();
 		RectangleBody other = (RectangleBody) paddle.getBody();		
-		double topLeftX = other.getTopLeftX();
-		double bottomRightX = other.getBottomRightX();
+		double topLeftX = other.getTopLeft().getX();
+		double bottomRightX = other.getBottomRight().getX();
 		double length = bottomRightX-topLeftX;		
 		if(ball.getDirection()<180)			
 			ball.setDirection((int) (200+(moved.getCenter().getX() - topLeftX)/length*140));	
@@ -110,11 +110,11 @@ public abstract class CollisionResolver {
 	protected static void resolveCollision(Paddle paddle, bp.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
 		if(paddle.getDirection()>0){
-			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRightX();
+			double adjustX = ((Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRight().getX();
 			paddle.getBody().moveBy(adjustX, 0);			
 		}
 		else if(paddle.getDirection()<0){
-			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeftX();
+			double adjustX = ((Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeft().getX();
 			paddle.getBody().moveBy(adjustX, 0);	
 		}		
 	}

@@ -11,7 +11,7 @@ public class Paddle extends MovingBAPObject {
 	/**
 	 * The size of this paddle
 	 */
-	private int size;
+	private double size;
 	/**
 	 * The direction that the paddle is moving in
 	 * -1 for left, 1 for right, 0 for none
@@ -45,18 +45,18 @@ public class Paddle extends MovingBAPObject {
 	 * @param size the size of the paddle
 	 */
 	public Paddle(String id, double x, double y, int size) {
-		super(id, x, y, null);
-		super.setBody(new RectangleBody(new Point(x,y), new Point(x, y+0.26), this));
+		super(id, x, y);
+		super.setBody(new RectangleBody(this));
 		this.speed = 5;
+		if(speed<lowerSpeedLimit)
+			speed=lowerSpeedLimit;
+		if(speed>upperSpeedLimit)
+			speed=upperSpeedLimit;		
 		this.size = size;
-	}
-	
-	/**
-	 * Returns the size of this paddle
-	 * @return the size of this paddle
-	 */
-	public int getSize(){
-		return size;
+		if(this.size<lowerSizeLimit)
+			this.size = lowerSizeLimit;
+		else if(this.size>upperSizeLimit)
+			this.size = upperSizeLimit;
 	}
 	
 	/**

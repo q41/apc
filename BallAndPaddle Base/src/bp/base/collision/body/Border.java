@@ -21,7 +21,7 @@ public class Border implements Body {
 	public Point getEnd(){
 		return end;
 	}
-
+	
 	@Override
 	public void undoMove() {
 		// TODO Auto-generated method stub		

@@ -1,34 +1,37 @@
 package bp.base.collision.body;
 
+import bp.base.BAPObject;
+
 public class SquareBody implements Body {
 
-	private Point topLeft;
-	private Point bottomRight;
-	private SquareBody previousState;
+	private BAPObject object;
+	private double previousX;
+	private double previousY;
 	
-	public SquareBody(Point topLeft, Point bottomRight){
-		this.topLeft = topLeft;
-		this.bottomRight = bottomRight;
-		previousState = this;
+	public SquareBody(BAPObject object){
+		previousX = object.getX();
+		previousY = object.getY();
+		this.object = object;
 	}
 	
 	public Point getTopLeft(){
-		return topLeft;
+		return new Point(object.getX(), object.getY());
 	}
 	
 	public Point getBottomRight(){
-		return bottomRight;
+		return new Point(object.getX()+object.getSize(), object.getY()+object.getSize());
 	}
 
 	public void moveBy(double x, double y) {
-		previousState = new SquareBody(new Point(topLeft.getX(), topLeft.getY()), new Point(bottomRight.getX(), bottomRight.getY()));
-		topLeft.moveBy(x, y);
-		bottomRight.moveBy(x, y);		
+		previousX = object.getX();
+		previousY = object.getY();
+		object.incX(x);
+		object.incY(y);
 	}
 
 	@Override
 	public void undoMove() {
-		topLeft = previousState.getTopLeft();
-		bottomRight = previousState.getBottomRight();		
+		object.setX(previousX);
+		object.setY(previousY);
 	}
 }

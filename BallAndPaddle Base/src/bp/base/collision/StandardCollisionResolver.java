@@ -10,6 +10,11 @@ import bp.base.collision.body.SquareBody;
 
 public class StandardCollisionResolver extends CollisionResolver{
 
+	/**
+	 * Resolves the collision between two BAPObjects
+	 * @param moved The object that moved
+	 * @param other The object that got hit
+	 */
 	public static void resolveCollision(BAPObject moved, BAPObject other) {
 		if(moved instanceof Ball)
 			resolveCollision((Ball) moved, other);
@@ -20,6 +25,11 @@ public class StandardCollisionResolver extends CollisionResolver{
 		}
 	}
 	
+	/**
+	 * Resolves the collision between a Ball and another BAPObject
+	 * @param moved The ball that moved
+	 * @param other The object that got hit
+	 */
 	protected static void resolveCollision(Ball moved, BAPObject other){
 		if(other instanceof bp.base.Border)
 			resolveCollision(moved, (bp.base.Border)other);
@@ -29,6 +39,11 @@ public class StandardCollisionResolver extends CollisionResolver{
 			resolveCollision(moved, (Block)other);
 	}
 	
+	/**
+	 * Resolves the collision between a Paddle and another BAPObject
+	 * @param moved The paddle that moved
+	 * @param other The object that got hit
+	 */
 	protected static void resolveCollision(Paddle moved, BAPObject other){
 		if(other instanceof bp.base.Border)
 			resolveCollision(moved, (bp.base.Border)other);
@@ -38,6 +53,11 @@ public class StandardCollisionResolver extends CollisionResolver{
 			resolveCollision((SpawnedPower)other, moved);
 	}	
 	
+	/**
+	 * Resolves the collision between a power and another BAPObject
+	 * @param moved The power that moved
+	 * @param other The object that got hit
+	 */
 	protected static void resolveCollision(SpawnedPower moved, BAPObject other){
 		if(other instanceof bp.base.Border)
 			resolveCollision(moved, (bp.base.Border)other);
@@ -45,6 +65,12 @@ public class StandardCollisionResolver extends CollisionResolver{
 			resolveCollision(moved,(Paddle)other);
 	}
 	
+	/**
+	 * Resolves the collision between a Ball and block,
+	 * The ball will bounce off the block after checking which side got hit.
+	 * @param moved The ball that moved
+	 * @param other The block that got hit
+	 */
 	private static void resolveCollision(Ball ball, Block block){
 		CircleBody moved = (CircleBody) ball.getBody();
 		SquareBody other = (SquareBody) block.getBody();
@@ -66,13 +92,13 @@ public class StandardCollisionResolver extends CollisionResolver{
 		if(ball.getDirection()>90 && ball.getDirection()<270){
 			boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
 			if(rightHit)
-				ball.OneEightyDirection();		
+				ball.oneEightyDirection();		
 		}
 		//hit left side?
 		if((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0)){
 			boolean leftHit = ballXRight<rightX && ballXRight>leftX && ballXLeft<rightX && ballXLeft<leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
 			if(leftHit)
-				ball.OneEightyDirection();
+				ball.oneEightyDirection();
 		}
 		//hit bottom side?
 		

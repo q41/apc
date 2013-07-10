@@ -18,6 +18,11 @@ public class Block extends BAPObject {
 	private Power power;
 	
 	/**
+	 * The size of this block
+	 */
+	private double size;
+	
+	/**
 	 * Creates a new block with the given id, x and y coordinates
 	 * A SquareBody is created for the block using these coordinates
 	 * @param id the identifier of this block
@@ -25,7 +30,9 @@ public class Block extends BAPObject {
 	 * @param y the y coordinate of this block
 	 */
 	private Block(String id, double x, double y) {
-		super(id, x, y,  new SquareBody(new Point(x,y), new Point(x+1, y+1)));
+		super(id, x, y);
+		super.setBody(new SquareBody(this));
+		size = 1;
 	}
 	
 	/**
@@ -112,5 +119,13 @@ public class Block extends BAPObject {
 	 */
 	public void setPower(Power power) {
 		this.power = power;		
+	}
+
+	/**
+	 * Returns the size of the block.
+	 * @return the size of the block.
+	 */
+	public double getSize() {
+		return size;
 	}
 }

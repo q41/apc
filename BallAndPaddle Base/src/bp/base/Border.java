@@ -10,7 +10,13 @@ public class Border extends BAPObject{
 	 * @param body the body belonging to this border
 	 */
 	public Border(String id, Body body) {
-		super(id, 0, 0, body);
+		super(id, 0, 0);
+		super.setBody(body);
+	}
+
+	@Override
+	public double getSize() {
+		return 0;
 	}
 	
 }
