@@ -26,8 +26,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import bp.base.Effect.EffectedAttribute;
-
 public class Importer implements org.alia4j.fial.Importer {
 
 	private boolean initialized = false;
