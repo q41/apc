@@ -666,7 +666,7 @@
     </children>
     <styles xmi:type="notation:ShapeStyle" xmi:id="_3mZj9ejQEeKFEel7OTb5nQ" fontColor="4210752" fontName="Segoe UI" fontHeight="10" fillColor="13761016" lineColor="8421504"/>
     <element xmi:type="ecore:EClass" href="bp.text.ecore#//EffectBody"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3mZj9ujQEeKFEel7OTb5nQ" x="3155"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_3mZj9ujQEeKFEel7OTb5nQ" x="3156" y="36"/>
   </children>
   <children xmi:type="notation:Node" xmi:id="_3maLBOjQEeKFEel7OTb5nQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="_3maLB-jQEeKFEel7OTb5nQ" type="4001"/>

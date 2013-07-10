@@ -125,49 +125,25 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private Attachment visit(Effect effect) {
-		//bp.base.Effect gameEffect;
 		if(effect instanceof GeneralEffect) return visit((GeneralEffect) effect);
 		else return visit((CollisionEffect) effect);
 	}
 	
-//	private void generateAttachment() {
-//		//create attribute getter pattern 
-//		MethodPattern attributeGetter = new MethodPattern(
-//			ModifiersPattern.ANY,
-//			TypePattern.ANY,
-//			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass)),
-//			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
-//			ParametersPattern.ANY,
-//			ExceptionsPattern.ANY
-//		);
-//		
-//		//create pattern matching predicate
-//		BasicPredicate<AtomicPredicate> predicate = generatePredicate();
-//		
-//		//contruct specialization
-//		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-//		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(valueContext));
-//		
-//		attachment = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
-//	}
-	
 	private Attachment visit(GeneralEffect effect) {
 		GeneralEffectBody body = effect.getBody();
-		
-		Pattern pattern = createPattern(null, attrAdjustment.getEffectedAttribute());
-		Action action = createAction(attrAdjustment);
-		Context context = visit(attrAdjustment.getExpression());
-		
 		Target target = effect.getTarget();
-		Context filter = visit(target.getFilter());
 		
+		Pattern pattern = createPattern(null, body.getName().toString());
+		Action action = createAction(body);
+		Context context = visit(body.getExpression());
+		Context filter = visit(target.getFilter());
+		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true);
 		
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 	}
 	
-	private MethodPattern createPattern(Class<? extends BAPObject> bpObjectClass, EffectedAttribute attribute) {
-		String attrName = EffectedAttribute.toString();
+	private MethodPattern createPattern(Class<? extends BAPObject> bpObjectClass, String attrName) {
 		return new MethodPattern(	
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
@@ -179,19 +155,20 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private Attachment visit(CollisionEffect effect) {
+		assert(false);
 		return null;
 	}
 	
-	private Action createAction(AttributeAdjustment attributeAdjustment) {
-		AdjustmentOperator op = attributeAdjustment.getAdjustmentOperator();
-		EffectedAttribute attr = attributeAdjustment.getEffectedAttribute();
+	private Action createAction(EffectBody effectBody) {
+		AdjustmentOperator op = effectBody.getOp();
+		Attribute attr = effectBody.getName();
 		switch(attr) {
 		case SPEED:
 		case SIZE:
 			if(op==AdjustmentOperator.SET) return DoubleAttributeAssignAction.methodCallAction;
 			else return DoubleAttributeIncAction.methodCallAction;
 		case HARDNESS:
-		case NORMAL_RES:
+		case RESISTANCE:
 		case ORIENTATION:
 		case X:
 		case Y:
@@ -199,10 +176,17 @@ public class Importer implements org.alia4j.fial.Importer {
 			else return IntAttributeIncAction.methodCallAction;
 		case IMMATERIAL:
 			return BooleanAttributeAssignAction.methodCallAction;
+		default:
+			assert(false);
+			return null;
 		}
 	}
-	
-	private Context visit(BooleanExpression expression) {
+		
+	private void printError(String msg) {
+		System.err.println("ERROR: "+msg);	
+	}
+
+	private Context visit(Expression expression) {
 		//TODO
 		//ContextFactory.findOrCreateIntegerConstantContext(90);
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
