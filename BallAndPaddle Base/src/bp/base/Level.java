@@ -561,7 +561,7 @@ public class Level extends Observable implements Runnable {
 			//wait for player to close the game once the game has ended
 			pollInput();
 			int delta = getDelta();			
-			update((int) (delta*init));
+			update(0);
 			Display.sync(10);
 		}
 	}

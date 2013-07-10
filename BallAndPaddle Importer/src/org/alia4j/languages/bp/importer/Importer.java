@@ -16,6 +16,7 @@ import org.alia4j.liam.pattern.*;
 import org.alia4j.liam.signature.ResolutionStrategy;
 import org.alia4j.patterns.*;
 import org.alia4j.patterns.names.ExactNamePattern;
+import org.alia4j.patterns.parameters.ExactParametersPattern;
 import org.alia4j.patterns.types.*;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -480,7 +481,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			ResolutionStrategy.STATIC			
 			);
 	
-	private static final MethodPattern hasCollidedMethodPattern = new MethodPattern(
+	private static final MethodPattern notABallHasCollidedMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
@@ -489,12 +490,21 @@ public class Importer implements org.alia4j.fial.Importer {
 			ExceptionsPattern.ANY
 	);
 	
+	private static final MethodPattern ballHasCollidedMethodPattern = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("haveCollided"),
+			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BAPObject"})),
+			ExceptionsPattern.ANY
+	);
+	
 	private void createStandardOthersCollisionHandling(){
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
 		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
+		Specialization specialization = new Specialization(notABallHasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
@@ -508,7 +518,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(immaterialPred, false));
 		
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, pred, con);
+		Specialization specialization = new Specialization(ballHasCollidedMethodPattern, pred, con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
@@ -522,7 +532,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(immaterialPred, true));
 		
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, pred, con);
+		Specialization specialization = new Specialization(ballHasCollidedMethodPattern, pred, con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleImmaterialCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}

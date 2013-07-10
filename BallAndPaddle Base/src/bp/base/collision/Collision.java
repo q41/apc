@@ -99,13 +99,17 @@ public class Collision {
 	 */
 	private static boolean hasCollided(BAPObject moved, BAPObject other){
 		boolean collision;
-		if(moved instanceof Ball)
+		if(moved instanceof Ball){
 			//check if the last collision of moved was with other, if so then it can't have collided with it again right away
 			//and thus there is no need to check if they collided
 			if(!lastCollision.containsKey(moved) || (lastCollision.containsKey(moved) && !lastCollision.get(moved).equals(other)))
 				collision = hasCollided((Ball)moved, other);				
 			else
 				collision = false;
+			if(collision)
+				haveCollided((Ball)moved, other);
+			return collision;
+		}
 		else if(moved instanceof Paddle)
 			collision = hasCollided((Paddle)moved, other);
 		else if(moved instanceof SpawnedPower)
@@ -123,6 +127,13 @@ public class Collision {
 	 * @param other The other object
 	 */
 	private static void haveCollided(BAPObject moved, BAPObject other){}
+	
+	/**
+	 * Called when a collision has been detected with a ball
+	 * @param moved The moved object
+	 * @param other The other object
+	 */
+	private static void haveCollided(Ball moved, BAPObject other){}
 	
 	/**
 	 * Checks if the ball has collided
