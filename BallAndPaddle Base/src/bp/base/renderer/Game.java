@@ -1,5 +1,7 @@
 package bp.base.renderer;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.*;
 
 import org.lwjgl.LWJGLException;
@@ -57,10 +59,6 @@ public class Game implements Observer {
 	 * The renderers for circle shaped items
 	 */
 	private List<CircleRenderer> circleRenderers;
-	/**
-	 * If the display is being initialized
-	 */
-	private boolean initializing;
 	
 	/**
 	 * Creates a new Game for the given level, using the given scale
@@ -70,22 +68,20 @@ public class Game implements Observer {
 	 * @param height The height for the screen
 	 * @param scale The scaling to be used
 	 */
-	public Game(Level level, int width, int height, double scale){
-		//TODO. add check to make certain height and width do not exceed screen size
+	public Game(Level level, int width, int height, double scale, boolean fullscreen){
 		this.width = width;
 		this.height = height;
 		this.scale = scale;
+		capResolution();
 		level.addObserver(this);
-		initializing = true;
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
-			System.out.println(Display.isVisible());
+			Display.setFullscreen(fullscreen);
 			} catch (LWJGLException e) {
-			e.printStackTrace();
-			System.exit(0);
+				e.printStackTrace();
+				System.exit(0);
 			}
-
 		initGL();
 	}
 	
@@ -96,25 +92,36 @@ public class Game implements Observer {
 	 * @param scale The scaling to be used
 	 */
 	public Game(Level level, double scale){
-		//TODO. add check to make certain height and width do not exceed screen size
 		this.scale = scale;
 		this.levelHeight = level.getHeight();
 		this.levelWidth = level.getWidth();
 		width = 800;
 		height = 600;
+		capResolution();
 		level.addObserver(this);
-		initializing = true;
 		try {
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
-			System.out.println(Display.isVisible());
+			Display.setFullscreen(false);
 			} catch (LWJGLException e) {
-			e.printStackTrace();
-			System.exit(0);
+				e.printStackTrace();
+				System.exit(0);
 			}
-
 		initGL();
 	}
+	
+	/**
+	 * Caps the resolution to the native resolution
+	 */
+	private void capResolution(){
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = (int) screenSize.getWidth();
+		int height = (int) screenSize.getHeight();
+		if(this.width>width)
+			this.width = width;
+		if(this.height>height)
+			this.height = height;
+	}	
 	
 	/**
 	 * Initiates the system,
@@ -141,7 +148,6 @@ public class Game implements Observer {
 			offsetX = (width-scale*levelWidth)/2;		
 		circleRenderers = new ArrayList<CircleRenderer>();
 		rectangleRenderers = new ArrayList<RectangleRenderer>();
-		initializing = false;
 	}
 
 	/**
