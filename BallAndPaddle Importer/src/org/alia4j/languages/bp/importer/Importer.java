@@ -144,11 +144,11 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Attachment visit(GeneralEffect effect) {
 		GeneralEffectBody body = effect.getBody();
 		Target target = effect.getTarget();
+		boolean isTypeTarget = target instanceof TypeTarget;
 		
 		//create pattern
-		MethodPattern pattern;
 		Class<?> bpObjectClass = null;
-		if(target instanceof TypeTarget) {
+		if(isTypeTarget) {
 			bpObjectClass = getBPObjectClass((TypeTarget) target);
 		} else {
 			ObjectTarget otarget = (ObjectTarget) target;
@@ -163,13 +163,25 @@ public class Importer implements org.alia4j.fial.Importer {
 				bpObjectClass = bp.base.Paddle.class;
 			}
 		}
-		pattern = createPattern(bpObjectClass, body.getName().toString());
+		MethodPattern pattern = createPattern(bpObjectClass, body.getName().toString());
 		
-		Action action = createAction(body);
-		Context context = visit(body.getExpression());
+		//create predicate
 		Context filter = visit(target.getFilter());
+		if(!isTypeTarget) {
+			String id = ((ObjectTarget) target).getItem().getId();
+			Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
+			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+			Context actualId = new LocalObjectVariableContext(calleeContext, "id");
+			Context isTargetInstance = ContextFactory.findOrCreateEqualContext(actualId,targetId);
+			filter = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
+		}
 		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true);
-		//TODO predicate for instance object targets
+		
+		//create context
+		Context context = visit(body.getExpression());
+				
+		//create action
+		Action action = createAction(body);
 		
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);

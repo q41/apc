@@ -19,8 +19,7 @@ public final class LocalDoubleVariableContext extends Context {
 	}
 
 	@Override
-	public Maybe<? extends Object> computeValueStatically(
-			final List<? extends Signed<?>> callStack) {
+	public Maybe<? extends Object> computeValueStatically(final List<? extends Signed<?>> callStack) {
 		return new Maybe<Double>();
 	}
 

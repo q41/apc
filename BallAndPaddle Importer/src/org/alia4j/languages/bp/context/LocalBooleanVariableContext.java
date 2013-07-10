@@ -19,9 +19,8 @@ public final class LocalBooleanVariableContext extends Context {
 	}
 
 	@Override
-	public Maybe<? extends Object> computeValueStatically(
-			final List<? extends Signed<?>> callStack) {
-		return new Maybe<Integer>();
+	public Maybe<? extends Object> computeValueStatically(final List<? extends Signed<?>> callStack) {
+		return new Maybe<Boolean>();
 	}
 
 	@Override
