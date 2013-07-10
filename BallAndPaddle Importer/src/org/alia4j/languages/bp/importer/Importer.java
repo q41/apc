@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.alia4j.addb.util.AddbEvent;
 import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.language.bp.*;
 import org.alia4j.languages.bp.action.*;
@@ -133,7 +134,16 @@ public class Importer implements org.alia4j.fial.Importer {
 		GeneralEffectBody body = effect.getBody();
 		Target target = effect.getTarget();
 		
-		Pattern pattern = createPattern(null, body.getName().toString());
+		//create pattern
+		Pattern pattern;
+		if(target instanceof TypeTarget) {
+			Class bpObjectClass = getBPObjectClass((TypeTarget) target);
+			pattern = createPattern(bpObjectClass, body.getName().toString());
+		} else {
+			assert(false);
+			pattern = null;
+		}
+		
 		Action action = createAction(body);
 		Context context = visit(body.getExpression());
 		Context filter = visit(target.getFilter());
@@ -143,7 +153,16 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 	}
 	
-	private MethodPattern createPattern(Class<? extends BAPObject> bpObjectClass, String attrName) {
+	private Class getBPObjectClass(TypeTarget target) {
+		switch(target.getType()) {
+		case BALL: return bp.base.Ball.class;
+		case BLOCK: return bp.base.Block.class;
+		case PADDLE: return bp.base.Block.class;
+		default: assert(false); return null;
+		}
+	}
+
+	private MethodPattern createPattern(Class bpObjectClass, String attrName) {
 		return new MethodPattern(	
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
@@ -186,7 +205,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		System.err.println("ERROR: "+msg);	
 	}
 
-	private Context visit(Expression expression) {
+	private Context visit(BooleanExpression e) {
+		
+		if(e instanceof BooleanBinaryExpression) {
+			visit((BooleanBinaryExpression) e);
+		}
+		
 		//TODO
 		//ContextFactory.findOrCreateIntegerConstantContext(90);
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
@@ -195,7 +219,316 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
 		return exceedsContext;
 	}
+	
+	private Context visit(BooleanBinaryExpression e) {
+		Context left = visit(e.getLeft());
+		Context right = visit(e.getRight());
+		
+		if(e instanceof EqExpression) {
+			return ContextFactory.findOrCreateEqualContext(left, right);
+		}
+		else if(e instanceof SmthExpression) {
+			return ContextFactory.findOrCreateLessContext(left, right);
+		}
+		else if(e instanceof SeqExpression) {
+			return ContextFactory.findOrCreateLessEqualContext(left, right);
+		}
+		else if(e instanceof LthExpression) {
+			return ContextFactory.findOrCreateGreaterContext(left, right);
+		}
+		else if(e instanceof LeqExpression) {
+			return ContextFactory.findOrCreateGreaterEqualContext(left, right);
+		}
+		else if(e instanceof NeqExpression) {
+			return ContextFactory.findOrCreateNotEqualContext(left, right);
+		}
+		else if(e instanceof AndExpression) {
+			return ContextFactory.findOrCreateAndContext(left, right);
+		}
+		else if(e instanceof OrExpression) {
+			return ContextFactory.findOrCreateEqualContext(left, right);
+		}
+		else if(e instanceof MultBoolExpression) {
+			return ContextFactory.findOrCreateMultiplyContext(left, right);
+		}
+		else if(e instanceof DivBoolExpression) {
+			return ContextFactory.findOrCreateDivideContext(left, right);
+		}
+		else if(e instanceof PlusBoolExpression) {
+			return ContextFactory.findOrCreateAddContext(left, right);
+		}
+		else { //if(e instanceof MinusBoolExpression)
+			return ContextFactory.findOrCreateSubtractContext(left, right);
+		}
+	}
+	private Context visit(BooleanUnaryExpression e) {
+		Context body = visit(e.getBody());
+		if(e instanceof NotBoolExpression) {
+			return ContextFactory.findOrCreateNotContext(body);
+		}
+		else if(e instanceof NegBoolExpression) {
+			return ContextFactory.findOrCreateNegationContext(body);
+		}
+		else { //if(e instanceof BracketBoolExpression)
+			return body;
+		}
+	}
+	
+	private Context visit(CollisionExpression expression) {
+		return null;
+	}
 
+//	private Predicate<AtomicPredicate> getTargetPredicate(BooleanExpression param){
+//		if(param instanceof AndParameter){
+//			AndParameter andPar = (AndParameter) param;
+//				return new AndPredicate<>(getTargetPredicate(andPar.getLeft()), getTargetPredicate(andPar.getRight()));
+//		}
+//		else if(param instanceof OrParameter){
+//			OrParameter orPar = (OrParameter) param;
+//			return new OrPredicate<>(getTargetPredicate(orPar.getLeft()), getTargetPredicate(orPar.getRight()));
+//		}
+//		else if(param instanceof EqParameter){
+//			EqParameter eqPar = (EqParameter) param;
+//			Context equalsContext = ContextFactory.findOrCreateEqualContext(getTargetContext(eqPar.getLeft()), getTargetContext(eqPar.getRight()));
+//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(equalsContext), true);
+//		}
+//		else if(param instanceof SmthParameter){
+//			SmthParameter smthPar = (SmthParameter) param;
+//			//switch right and left so that this is actually a SmallerContext
+//			Context smallerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(smthPar.getRight()), getTargetContext(smthPar.getLeft()));
+//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerContext), true);
+//		}
+//		else if(param instanceof SeqParameter){
+//			SeqParameter seqPar = (SeqParameter) param;
+//			//switch right and left so that this is actually a SmallerEqualContext
+//			Context smallerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(seqPar.getRight()), getTargetContext(seqPar.getLeft()));
+//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerOrEqualContext), true);
+//		}
+//		else if(param instanceof LthParameter){
+//			LthParameter lthPar = (LthParameter) param;
+//			Context largerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(lthPar.getLeft()), getTargetContext(lthPar.getRight()));
+//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerContext), true);
+//		}
+//		else if(param instanceof LeqParameter){
+//			LeqParameter leqPar = (LeqParameter) param;
+//			Context largerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(leqPar.getLeft()), getTargetContext(leqPar.getRight()));
+//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerOrEqualContext), true);
+//		}
+//		else if(param instanceof NeqParameter){
+//			NeqParameter neqPar = (NeqParameter) param;
+//			Context notEqualContext = ContextFactory.findOrCreateEqualContext(getTargetContext(neqPar.getLeft()), getTargetContext(neqPar.getRight()));
+//			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(notEqualContext), false);
+//		}
+//		else if(param instanceof NegParameter){
+//			NegParameter negPar = (NegParameter) param;
+//			return getTargetPredicate(negPar.getBody()).negate();
+//		}
+//		else if(param instanceof BracketParameter){
+//			BracketParameter brackPar = (BracketParameter) param;
+//			//brackets, so just recursively continue for it's body
+//			return getTargetPredicate(brackPar.getBody());
+//		}
+//		return null;
+//	}
+//	
+//	private static Context getTargetContext(BooleanExpression param) {
+//		///TODO, far from finished
+//		if(param instanceof AttParameter){
+//			AttParameter attPar = (AttParameter)param;
+//			Attribute att = attPar.getAtt();
+//			Context con = null;
+//			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+//			if(att.getValue()==att.HARDNESS_VALUE)
+//				con = new LocalIntegerVariableContext(calleeContext, "hardness");
+//			else if(att.getValue()==att.IMMATERIAL_VALUE)
+//				con = new LocalBooleanVariableContext(calleeContext, "immaterial");
+//			else if(att.getValue()==att.NORMAL_RES_VALUE)
+//				con = new LocalIntegerVariableContext(calleeContext, "resistance");
+//			else if(att.getValue()==att.ORIENTATION_VALUE)
+//				con = new LocalIntegerVariableContext(calleeContext, "direction");
+//			else if(att.getValue()==att.SIZE_VALUE)
+//				con = new LocalIntegerVariableContext(calleeContext, "size");
+//			else if(att.getValue()==att.SPEED_VALUE)
+//				con = new LocalDoubleVariableContext(calleeContext, "speed");
+//			return con;
+//		}
+//		else if(param instanceof IntValueParameter){
+//			IntValueParameter intPar = (IntValueParameter)param;
+//			return ContextFactory.findOrCreateDoubleConstantContext(intPar.getValue());
+//		}
+//		else if(param instanceof DoubleValueParameter){
+//			DoubleValueParameter doubPar = (DoubleValueParameter)param;
+//			return ContextFactory.findOrCreateDoubleConstantContext(doubPar.getValue());
+//		}	
+//		return null;
+//	}
+	
+	private String getBAPObjectType(TargetType type) {
+		String result = "";
+		if(type.getValue()==TargetType.BALL_VALUE)
+			result = "ballandpaddle.base.Ball";
+		else if(type.getValue()==TargetType.BLOCK_VALUE)
+			result = "ballandpaddle.base.Block";
+		else if(type.getValue()==TargetType.PADDLE_VALUE)
+			result = "ballandpaddle.base.Paddle";
+		return result;
+	}
+
+	private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(
+		TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
+		"print",
+		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
+		TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+		ResolutionStrategy.STATIC
+	);
+	private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
+	
+	/*
+	private void createEffect(Class<? extends BAPObject> bapobject, String attribute, AttributeType attributeType) {
+		//create attribute getter pattern 
+		MethodPattern attributeGetter = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY,
+			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bapobject)),
+			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+		);
+		
+		//create pattern matching predicate
+		BasicPredicate<AtomicPredicate> predicate = createEffectPredicate();
+
+		//create attribute assign action
+		Action attributeAssignAction = null;
+		switch(attributeType) {
+		case DOUBLE: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		case INT: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		case BOOLEAN: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
+		}
+		
+		Action attributeIncAction = null;
+		switch(attributeType) {
+		case DOUBLE: attributeIncAction = DoubleAttributeIncAction.methodCallAction; break;
+		case INT: attributeIncAction = IntAttributeIncAction.methodCallAction; break;
+		case BOOLEAN: assert(false);
+		}
+		
+		Context newSize = ContextFactory.findOrCreateIntegerConstantContext(90);
+		
+		//contruct specialization
+		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
+		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(newSize));
+		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	private BasicPredicate<AtomicPredicate> createEffectPredicate() {
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
+		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
+		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
+		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
+	}*/
+	
+	//--------------------Collision detection------------------------
+	
+	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.Collision"),
+			"checkForCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject", "ballandpaddle.base.Level"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final MethodPattern LevelHandleBAPObjectUpdateMethodPattern = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("handleBAPObjectUpdate"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createBaseCollisionDetection(){		
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(LevelHandleBAPObjectUpdateMethodPattern, null, con);//Collections.singletonList(argumentContext));
+		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), checkForCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	//------------------Collision handling--------------------
+	
+	private static final Action handleStandardCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.StandardCollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject","ballandpaddle.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	private static final Action handleImmaterialCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.ImmaterialCollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject","ballandpaddle.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final MethodPattern hasCollidedMethodPattern = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("haveCollided"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createStandardBallCollisionHandling(){
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
+		//TODO get context for return type, action should only happen if there was actually a collision	
+		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createStandardBallCollisionHandling(AtomicPredicate pred){
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
+		//TODO get context for return type, action should only happen if there was actually a collision	
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createStandardOthersCollisionHandling(){
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
+		//TODO get context for return type, action should only happen if there was actually a collision	
+		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createImmaterialBallCollisionHandling(AtomicPredicate pred){
+		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
+		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
+		//TODO get context for return type, action should only happen if there was actually a collision	
+		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleImmaterialCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	/*
 	private void oldASTprocesser(Root root){
 		String id = null;
 		Predicate<AtomicPredicate> pred = null;
@@ -461,254 +794,5 @@ public class Importer implements org.alia4j.fial.Importer {
 				result.add(EffectedAttribute.SPEED);
 		}		
 		return result;
-	}
-
-	private String getBAPObjectType(TargetType type) {
-		String result = "";
-		if(type.getValue()==TargetType.BALL_VALUE)
-			result = "ballandpaddle.base.Ball";
-		else if(type.getValue()==TargetType.BLOCK_VALUE)
-			result = "ballandpaddle.base.Block";
-		else if(type.getValue()==TargetType.PADDLE_VALUE)
-			result = "ballandpaddle.base.Paddle";
-		return result;
-	}
-
-	private Predicate<AtomicPredicate> getTargetPredicate(BooleanExpression param){
-		if(param instanceof AndParameter){
-			AndParameter andPar = (AndParameter) param;
-				return new AndPredicate<>(getTargetPredicate(andPar.getLeft()), getTargetPredicate(andPar.getRight()));
-		}
-		else if(param instanceof OrParameter){
-			OrParameter orPar = (OrParameter) param;
-			return new OrPredicate<>(getTargetPredicate(orPar.getLeft()), getTargetPredicate(orPar.getRight()));
-		}
-		else if(param instanceof EqParameter){
-			EqParameter eqPar = (EqParameter) param;
-			Context equalsContext = ContextFactory.findOrCreateEqualContext(getTargetContext(eqPar.getLeft()), getTargetContext(eqPar.getRight()));
-			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(equalsContext), true);
-		}
-		else if(param instanceof SmthParameter){
-			SmthParameter smthPar = (SmthParameter) param;
-			//switch right and left so that this is actually a SmallerContext
-			Context smallerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(smthPar.getRight()), getTargetContext(smthPar.getLeft()));
-			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerContext), true);
-		}
-		else if(param instanceof SeqParameter){
-			SeqParameter seqPar = (SeqParameter) param;
-			//switch right and left so that this is actually a SmallerEqualContext
-			Context smallerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(seqPar.getRight()), getTargetContext(seqPar.getLeft()));
-			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(smallerOrEqualContext), true);
-		}
-		else if(param instanceof LthParameter){
-			LthParameter lthPar = (LthParameter) param;
-			Context largerContext = ContextFactory.findOrCreateGreaterContext(getTargetContext(lthPar.getLeft()), getTargetContext(lthPar.getRight()));
-			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerContext), true);
-		}
-		else if(param instanceof LeqParameter){
-			LeqParameter leqPar = (LeqParameter) param;
-			Context largerOrEqualContext = ContextFactory.findOrCreateGreaterEqualContext(getTargetContext(leqPar.getLeft()), getTargetContext(leqPar.getRight()));
-			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(largerOrEqualContext), true);
-		}
-		else if(param instanceof NeqParameter){
-			NeqParameter neqPar = (NeqParameter) param;
-			Context notEqualContext = ContextFactory.findOrCreateEqualContext(getTargetContext(neqPar.getLeft()), getTargetContext(neqPar.getRight()));
-			return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(notEqualContext), false);
-		}
-		else if(param instanceof NegParameter){
-			NegParameter negPar = (NegParameter) param;
-			return getTargetPredicate(negPar.getBody()).negate();
-		}
-		else if(param instanceof BracketParameter){
-			BracketParameter brackPar = (BracketParameter) param;
-			//brackets, so just recursively continue for it's body
-			return getTargetPredicate(brackPar.getBody());
-		}
-		return null;
-	}
-	
-	private static Context getTargetContext(BooleanExpression param) {
-		///TODO, far from finished
-		if(param instanceof AttParameter){
-			AttParameter attPar = (AttParameter)param;
-			Attribute att = attPar.getAtt();
-			Context con = null;
-			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-			if(att.getValue()==att.HARDNESS_VALUE)
-				con = new LocalIntegerVariableContext(calleeContext, "hardness");
-			else if(att.getValue()==att.IMMATERIAL_VALUE)
-				con = new LocalBooleanVariableContext(calleeContext, "immaterial");
-			else if(att.getValue()==att.NORMAL_RES_VALUE)
-				con = new LocalIntegerVariableContext(calleeContext, "resistance");
-			else if(att.getValue()==att.ORIENTATION_VALUE)
-				con = new LocalIntegerVariableContext(calleeContext, "direction");
-			else if(att.getValue()==att.SIZE_VALUE)
-				con = new LocalIntegerVariableContext(calleeContext, "size");
-			else if(att.getValue()==att.SPEED_VALUE)
-				con = new LocalDoubleVariableContext(calleeContext, "speed");
-			return con;
-		}
-		else if(param instanceof IntValueParameter){
-			IntValueParameter intPar = (IntValueParameter)param;
-			return ContextFactory.findOrCreateDoubleConstantContext(intPar.getValue());
-		}
-		else if(param instanceof DoubleValueParameter){
-			DoubleValueParameter doubPar = (DoubleValueParameter)param;
-			return ContextFactory.findOrCreateDoubleConstantContext(doubPar.getValue());
-		}	
-		return null;
-	}
-
-	private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(
-		TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
-		"print",
-		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
-		TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-		ResolutionStrategy.STATIC
-	);
-	private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
-	
-//	private void createEffect(Class<? extends BAPObject> bapobject, String attribute, AttributeType attributeType) {
-//		//create attribute getter pattern 
-//		MethodPattern attributeGetter = new MethodPattern(
-//			ModifiersPattern.ANY,
-//			TypePattern.ANY,
-//			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bapobject)),
-//			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
-//			ParametersPattern.ANY,
-//			ExceptionsPattern.ANY
-//		);
-//		
-//		//create pattern matching predicate
-//		BasicPredicate<AtomicPredicate> predicate = createEffectPredicate();
-//
-//		//create attribute assign action
-//		Action attributeAssignAction = null;
-//		switch(attributeType) {
-//		case DOUBLE: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-//		case INT: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-//		case BOOLEAN: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-//		}
-//		
-//		Action attributeIncAction = null;
-//		switch(attributeType) {
-//		case DOUBLE: attributeIncAction = DoubleAttributeIncAction.methodCallAction; break;
-//		case INT: attributeIncAction = IntAttributeIncAction.methodCallAction; break;
-//		case BOOLEAN: assert(false);
-//		}
-//		
-//		Context newSize = ContextFactory.findOrCreateIntegerConstantContext(90);
-//		
-//		//contruct specialization
-//		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-//		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(newSize));
-//		
-//		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
-//		initialAttachments.add(attachement);
-//	}
-//	
-//	private BasicPredicate<AtomicPredicate> createEffectPredicate() {
-//		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-//		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
-//		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
-//		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
-//		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
-//	}
-	
-	//Collision detection
-	
-	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.Collision"),
-			"checkForCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject", "ballandpaddle.base.Level"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final MethodPattern LevelHandleBAPObjectUpdateMethodPattern = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY, 
-			ClassTypePattern.ANY,
-			new ExactNamePattern("handleBAPObjectUpdate"),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-	);
-	
-	private void createBaseCollisionDetection(){		
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(LevelHandleBAPObjectUpdateMethodPattern, null, con);//Collections.singletonList(argumentContext));
-		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), checkForCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	//Collision handling
-	private static final Action handleStandardCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.StandardCollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject","ballandpaddle.base.BAPObject"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	private static final Action handleImmaterialCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.collision.ImmaterialCollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"ballandpaddle.base.BAPObject","ballandpaddle.base.BAPObject"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final MethodPattern hasCollidedMethodPattern = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY, 
-			ClassTypePattern.ANY,
-			new ExactNamePattern("haveCollided"),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-	);
-	
-	private void createStandardBallCollisionHandling(){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		//TODO get context for return type, action should only happen if there was actually a collision	
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createStandardBallCollisionHandling(AtomicPredicate pred){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		//TODO get context for return type, action should only happen if there was actually a collision	
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createStandardOthersCollisionHandling(){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		//TODO get context for return type, action should only happen if there was actually a collision	
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Ball"));
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createImmaterialBallCollisionHandling(AtomicPredicate pred){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		//TODO get context for return type, action should only happen if there was actually a collision	
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, true), con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleImmaterialCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-
+	}*/
 }
