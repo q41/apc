@@ -13,7 +13,7 @@ public class Paddle extends MovingBAPObject {
 	 * The direction that the paddle is moving in
 	 * -1 for left, 1 for right, 0 for none
 	 */
-	private int direction;
+	private int orientation;
 	/**
 	 * The speed and size bounds for this paddle
 	 */
@@ -58,18 +58,18 @@ public class Paddle extends MovingBAPObject {
 	
 	/**
 	 * Sets the direction that this paddle should move in
-	 * @param direction the new direction for this paddle
+	 * @param orientation the new orientation for this paddle
 	 */
-	public void setDirection(int direction){
-		this.direction = direction;
+	public void setOrientation(int orientation){
+		this.orientation = orientation;
 	}
 	
 	/**
-	 * Returns the direction of this paddle
-	 * @return direction the direction this paddle is moving in
+	 * Returns the orientation of this paddle
+	 * @return orientation the orientation this paddle is moving in
 	 */
-	public int getDirection(){
-		return direction;
+	public int getOrientation(){
+		return orientation;
 	}
 	
 	@Override
@@ -77,15 +77,15 @@ public class Paddle extends MovingBAPObject {
 		//calculate distance to travel this update
 		double distance = Math.pow(getSpeed(), 0.65)*factor;
 		if(distance>=increment)
-			movementVectorX = increment*getDirection();			
+			movementVectorX = increment*getOrientation();			
 		else
-			movementVectorX = distance*getDirection();
+			movementVectorX = distance*getOrientation();
 	}
 	
 	@Override
 	public int getNeededSteps(double factor){
 		double distance = 0;
-		if(getDirection()!=0)
+		if(getOrientation()!=0)
 			distance = Math.pow(getSpeed(), 0.65)*factor;
 		return (int) Math.ceil((distance/increment));		
 	}

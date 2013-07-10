@@ -1,5 +1,6 @@
 package bp.base;
 import java.util.*;
+import java.util.Map.Entry;
 
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -239,50 +240,9 @@ public class Level extends Observable implements Runnable {
 		if(delta>0){
 			SpawnPowers();			
 			double factor = 1.0/1000*delta;
-			int maxSteps = 0;
-			Map<BAPObject, Integer> stepsPerObject = new HashMap<BAPObject, Integer>();
-			//calculate the maximum amount of steps required by the objects
-			for(Paddle pad : paddles){
-				int steps = pad.getNeededSteps(factor);
-				stepsPerObject.put(pad, steps);
-				if(steps>maxSteps)
-					maxSteps = steps;
-			}
-			for(Ball ball : balls){
-				int steps = ball.getNeededSteps(factor);
-				stepsPerObject.put(ball, steps);
-				if(steps>maxSteps)
-					maxSteps = steps;
-			}
-			for(SpawnedPower power : spawnedPowers){
-				int steps = power.getNeededSteps(factor);
-				stepsPerObject.put(power, steps);
-				if(steps>maxSteps)
-					maxSteps = steps;
-			}
-			//move the objects
-			for(int i = 0; i<maxSteps; i++){
-				for(Paddle pad : paddles){
-					if(pad.getDirection()!=0){
-						handleBAPObjectUpdate(pad, factor, stepsPerObject, maxSteps);	
-					}
-				}
-				for(int j =0; j<balls.size(); j++){
-					handleBAPObjectUpdate(balls.get(j), factor, stepsPerObject, maxSteps);	
-					if(balls.get(j).isDestroyed()){
-						balls.remove(j);
-						j--;
-					}
-					manageBlocks();
-				}	
-				for(int j =0; j<spawnedPowers.size();j++){
-					handleBAPObjectUpdate(spawnedPowers.get(j), factor, stepsPerObject, maxSteps);					
-					if(spawnedPowers.get(j).caught()||spawnedPowers.get(j).destroyed()){						
-						spawnedPowers.remove(j);
-						j--;
-					}					
-				}
-			}
+			Map<BAPObject, Integer> stepsPerObject = calculateStepsPerObject(factor);
+			int maxSteps = getMaxSteps(stepsPerObject);
+			moveAllObjects(factor, stepsPerObject, maxSteps);			
 		}	
 		List<BAPObject> objects = new ArrayList<BAPObject>();
 		objects.addAll(spawnedPowers);
@@ -292,7 +252,111 @@ public class Level extends Observable implements Runnable {
 		this.setChanged();
 		this.notifyObservers(objects);
 	}
+
+	/**
+	 * Calculates the amount of steps each object needs to complete it's move
+	 * Then puts those into a map
+	 * @param factor the portion of a second that the total move occupies
+	 * @return The mapping of BAPObjects to Integers for how many moves each needs
+	 */
+	private Map<BAPObject, Integer> calculateStepsPerObject(double factor) {
+		Map<BAPObject, Integer> stepsPerObject = new HashMap<BAPObject, Integer>();
+		//calculate the maximum amount of steps required by the objects
+		for(Paddle pad : paddles){
+			int steps = pad.getNeededSteps(factor);
+			stepsPerObject.put(pad, steps);
+		}
+		for(Ball ball : balls){
+			int steps = ball.getNeededSteps(factor);
+			stepsPerObject.put(ball, steps);
+		}
+		for(SpawnedPower power : spawnedPowers){
+			int steps = power.getNeededSteps(factor);
+			stepsPerObject.put(power, steps);
+		}
+		return stepsPerObject;
+	}
 	
+	/**
+	 * Calculates the maximum amount of moves needed by the objects to complete all moves
+	 * @param stepsPerObject The moves each object needs to take
+	 * @return The maximum amount of moves needed
+	 */
+	private int getMaxSteps(Map<BAPObject, Integer> stepsPerObject) {
+		int maxSteps = 0;
+		Iterator<Entry<BAPObject, Integer>> it = stepsPerObject.entrySet().iterator();
+		while(it.hasNext()){
+			if(it.next().getValue()>maxSteps)
+				maxSteps = it.next().getValue();
+		}
+		return maxSteps;
+	}
+	
+	/**
+	 * Moves all the objects
+	 * @param factor the portion of a second that the total move occupies
+	 * @param stepsPerObject The amount of steps each object needs to take
+	 * @param maxSteps the maximum amount of steps needed
+	 */
+	private void moveAllObjects(double factor,
+			Map<BAPObject, Integer> stepsPerObject, int maxSteps) {
+		for(int i = 0; i<maxSteps; i++){
+			movePaddles(factor, stepsPerObject, maxSteps);
+			moveBalls(factor, stepsPerObject, maxSteps);
+			movePowers(factor, stepsPerObject, maxSteps);			
+		}		
+	}
+	
+	/**
+	 * Moves all the balls
+	 * @param factor the portion of a second that the total move occupies
+	 * @param stepsPerObject The amount of steps each object needs to take
+	 * @param maxSteps the maximum amount of steps needed
+	 */
+	private void  moveBalls(double factor,
+			Map<BAPObject, Integer> stepsPerObject, int maxSteps){
+		for(int j =0; j<balls.size(); j++){
+			handleBAPObjectUpdate(balls.get(j), factor, stepsPerObject, maxSteps);	
+			if(balls.get(j).isDestroyed()){
+				balls.remove(j);
+				j--;
+			}
+			manageBlocks();
+		}	
+	}
+	
+	/**
+	 * Moves all the paddles
+	 * @param factor the portion of a second that the total move occupies
+	 * @param stepsPerObject The amount of steps each object needs to take
+	 * @param maxSteps the maximum amount of steps needed
+	 */
+	private void movePaddles(double factor,
+			Map<BAPObject, Integer> stepsPerObject, int maxSteps){
+		for(Paddle pad : paddles){
+			if(pad.getOrientation()!=0){
+				handleBAPObjectUpdate(pad, factor, stepsPerObject, maxSteps);	
+			}
+		}
+	}
+	
+	/**
+	 * Moves all the powers
+	 * @param factor the portion of a second that the total move occupies
+	 * @param stepsPerObject The amount of steps each object needs to take
+	 * @param maxSteps the maximum amount of steps needed
+	 */
+	private void  movePowers(double factor,
+			Map<BAPObject, Integer> stepsPerObject, int maxSteps){
+		for(int j =0; j<spawnedPowers.size();j++){
+			handleBAPObjectUpdate(spawnedPowers.get(j), factor, stepsPerObject, maxSteps);					
+			if(spawnedPowers.get(j).caught()||spawnedPowers.get(j).destroyed()){						
+				spawnedPowers.remove(j);
+				j--;
+			}					
+		}
+	}
+
 	/**
 	 * Lets the object calculate the variables for it's next move and then executes that move
 	 * @param object the object to be moved
@@ -328,40 +392,47 @@ public class Level extends Observable implements Runnable {
 	private void manageBlocks(){
 		for(int i = 0; i<blocks.size(); i++){
 			if(blocks.get(i).isDestroyed()){
+				RectangleBody body = (RectangleBody)blocks.get(i).getBody();
+				double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
+				double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
 				if(blocks.get(i).getPower()!=null){
 					//spawn the power belonging to the block
-					RectangleBody body = (RectangleBody)blocks.get(i).getBody();
-					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
-					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
 					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
-					this.toBeSpawnedPowers.add(power);
+					toBeSpawnedPowers.add(power);
 				}	
-				else if(Math.random()<=powerSpawnChance && powers.size()>0){
-					//spawn a random power
-					//sum up spawn chance of all powers
-					double sumChance = 0.0;
-					for(Power power : powers)
-						sumChance += power.getPowerSpawnChance();					
-					double result = (Math.random()*sumChance);
-					//find which power matches the result.
-					int index = 0;
-					for(int j =0; j<powers.size(); j++){
-						result -= powers.get(j).getPowerSpawnChance();
-						if(result<=0){
-							index = j;
-							j = powers.size();
-						}
-					}					
-					RectangleBody body = (RectangleBody)blocks.get(i).getBody();
-					double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
-					double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
-					SpawnedPower power = new SpawnedPower(powers.get(index), x, y);
-					this.toBeSpawnedPowers.add(power);
+				else if(Math.random()<=powerSpawnChance && powers.size()>0){					
+					SpawnRandomPower(x,y);					
 				}
 				blocks.remove(i);
 				i--;
 			}
 		}
+	}
+
+	/**
+	 * Randomly determines which power should be spawned,
+	 * then adds it to the list of powers to be spawned
+	 * @param x The x coordinate where the power should be spawned
+	 * @param y The y coordinate where the power should be spawned
+	 */
+	private void SpawnRandomPower(double x, double y) {
+		//spawn a random power
+		//sum up spawn chance of all powers
+		double sumChance = 0.0;
+		for(Power power : powers)
+			sumChance += power.getPowerSpawnChance();					
+		double result = (Math.random()*sumChance);
+		//find which power matches the result.
+		int index = 0;
+		for(int j =0; j<powers.size(); j++){
+			result -= powers.get(j).getPowerSpawnChance();
+			if(result<=0){
+				index = j;
+				j = powers.size();
+			}
+		}		
+		SpawnedPower power = new SpawnedPower(powers.get(index), x, y);
+		toBeSpawnedPowers.add(power);		
 	}
 
 	/**
@@ -431,20 +502,20 @@ public class Level extends Observable implements Runnable {
 	}	
 	
 	/**
-	 * Checks the keyboard for input, changing the direction of the paddles accordingly.
+	 * Checks the keyboard for input, changing the orientation of the paddles accordingly.
 	 */
 	public void pollInput() {  
 		if (Keyboard.isKeyDown(205) && !Keyboard.isKeyDown(203)) {
 			for(Paddle pad : getPaddles())
-				pad.setDirection(1);
+				pad.setOrientation(1);
 		}
 		else if (Keyboard.isKeyDown(203) && !Keyboard.isKeyDown(205)) {
 			for(Paddle pad : getPaddles())
-				pad.setDirection(-1);
+				pad.setOrientation(-1);
 		}
 		else{
 			for(Paddle pad : getPaddles())			
-				pad.setDirection(0);
+				pad.setOrientation(0);
 		}
     }
 

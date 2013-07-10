@@ -6,9 +6,9 @@ import bp.base.exception.IllegalBodyException;
 public class SpawnedPower extends MovingBAPObject {
 
 	/**
-	 * The direction of this spawned power, straight down
+	 * The orientation of this spawned power, straight down
 	 */
-	private final int direction = 90;
+	private final int orientation = 90;
 	/**
 	 * The distance to be moved in the next action
 	 */
@@ -52,15 +52,15 @@ public class SpawnedPower extends MovingBAPObject {
 		//calculate distance to travel this update
 		double distance = speed*factor;
 		if(distance>=increment)
-			movementVectorY = increment*direction;			
+			movementVectorY = increment*orientation;			
 		else
-			movementVectorY = distance*direction;
+			movementVectorY = distance*orientation;
 	}
 	
 	@Override
 	public int getNeededSteps(double factor){
 		double distance = 0;
-		if(direction!=0)
+		if(orientation!=0)
 			distance = speed*factor;
 		return (int) Math.ceil((distance/increment));		
 	}

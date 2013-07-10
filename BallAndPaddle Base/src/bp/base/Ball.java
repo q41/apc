@@ -6,8 +6,8 @@ import bp.base.exception.IllegalBodyException;
 public class Ball extends MovingBAPObject {
 
 	private double size;
-	//direction in degrees, from 0 till 360
-	private int direction = -1;
+	//orientation in degrees, from 0 till 360
+	private int orientation = -1;
 	private double speed;
 	//the upper and lower limits for speed and size
 	private final double upperSpeedLimit = 10;
@@ -30,12 +30,12 @@ public class Ball extends MovingBAPObject {
 	 * @param x the x coordinate of the ball
 	 * @param y the y coordinate of the ball
 	 * @param size the size of the ball
-	 * @param direction the direction of the ball
+	 * @param orientation the orientation of the ball
 	 * @param speed the speed of the ball
 	 */
-	public Ball(String id, double x, double y, double size, int direction, int speed){
+	public Ball(String id, double x, double y, double size, int orientation, int speed){
 		this(id, x, y, size);
-		this.direction = direction;
+		this.orientation = orientation;
 		this.speed = speed;
 		if(speed<lowerSpeedLimit)
 			this.speed = lowerSpeedLimit;
@@ -58,8 +58,8 @@ public class Ball extends MovingBAPObject {
 			this.size = upperSizeLimit;		
 		if(size<lowerSizeLimit)
 			this.size = lowerSizeLimit;	
-		if(direction == -1)
-			direction = 270;
+		if(orientation == -1)
+			orientation = 270;
 		damage = 1;
 		alive = true;
 	}
@@ -82,20 +82,20 @@ public class Ball extends MovingBAPObject {
 	
 	/**
 	 * Retuns the current heading of the ball
-	 * @return the direction of the ball in degrees
+	 * @return the orientation of the ball in degrees
 	 */
-	public int getDirection(){
-		return direction;
+	public int getOrientation(){
+		return orientation;
 	}
 	
 	/**
 	 * sets the direction of the ball, keeping it between 0 and 360
-	 * @param direction the new direction of the ball
+	 * @param orientation the new direction of the ball
 	 */
-	public void setDirection(int direction){
-		if(direction<0)
-			direction+=360;
-		this.direction = direction%360;
+	public void setOrientation(int orientation){
+		if(orientation<0)
+			orientation+=360;
+		this.orientation = orientation%360;
 	}
 	
 	/**
@@ -126,7 +126,7 @@ public class Ball extends MovingBAPObject {
 	@Override
 	public void calculateMove(double factor, Level level) {
 		double distance = Math.pow(getSpeed(), 0.65) * factor;
-		double radDir = getDirection()*Math.PI/180;
+		double radDir = getOrientation()*Math.PI/180;
 		if(distance>=increment){			
 			movementVectorX = increment*Math.cos(radDir);
 			movementVectorY = increment*Math.sin(radDir);
@@ -189,19 +189,19 @@ public class Ball extends MovingBAPObject {
 	}
 
 	/**
-	 * Adjusts the direction of the ball,
-	 * by subtracting it's current direction from 360
+	 * Adjusts the orientation of the ball,
+	 * by subtracting it's current orientation from 360
 	 */
-	public void threeSixtyDirection() {
-		setDirection(360-direction);		
+	public void threeSixtyOrientation() {
+		setOrientation(360-orientation);		
 	}
 	
 	/**
-	 * Adjusts the direction of the ball,
-	 * by subtracting it's current direction from 360
+	 * Adjusts the orientation of the ball,
+	 * by subtracting it's current orientation from 360
 	 */
-	public void oneEightyDirection() {
-		setDirection(180-direction);	
+	public void oneEightyOrientation() {
+		setOrientation(180-orientation);	
 	}
 
 

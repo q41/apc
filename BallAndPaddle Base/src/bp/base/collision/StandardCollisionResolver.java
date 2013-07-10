@@ -85,29 +85,29 @@ public class StandardCollisionResolver extends CollisionResolver{
 		double ballXRight = moved.getCenter().getX()+moved.getR();
 		
 		//hit right side?
-		if(ball.getDirection()>90 && ball.getDirection()<270){
+		if(ball.getOrientation()>90 && ball.getOrientation()<270){
 			boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
 			if(rightHit)
-				ball.oneEightyDirection();		
+				ball.oneEightyOrientation();		
 		}
 		//hit left side?
-		if((ball.getDirection()>270 && ball.getDirection()<360) || (ball.getDirection()<90 && ball.getDirection()>0)){
+		if((ball.getOrientation()>270 && ball.getOrientation()<360) || (ball.getOrientation()<90 && ball.getOrientation()>0)){
 			boolean leftHit = ballXRight<rightX && ballXRight>leftX && ballXLeft<rightX && ballXLeft<leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
 			if(leftHit)
-				ball.oneEightyDirection();
+				ball.oneEightyOrientation();
 		}
 		//hit bottom side?
 		
-		if(ball.getDirection()>180 && ball.getDirection()<360){
+		if(ball.getOrientation()>180 && ball.getOrientation()<360){
 			boolean bottomHit = ballYTop>topY && ballYTop<bottomY && ballYBottom>topY && ballYBottom>bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
 			if(bottomHit)
-				ball.threeSixtyDirection();
+				ball.threeSixtyOrientation();
 		}
 		//hit top side?
-		if(ball.getDirection()>0 && ball.getDirection()<180){
+		if(ball.getOrientation()>0 && ball.getOrientation()<180){
 			boolean topHit = ballYBottom>topY && ballYBottom<bottomY && ballYTop<topY && ballYTop<bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
 			if(topHit)
-				ball.threeSixtyDirection();			
+				ball.threeSixtyOrientation();			
 		}		
 			block.takeDamageFrom(ball);
 			moved.undoMove();		

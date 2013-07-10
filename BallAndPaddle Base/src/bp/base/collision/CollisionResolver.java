@@ -12,17 +12,17 @@ public abstract class CollisionResolver {
 	 * @param border the border
 	 */
 	protected static void resolveCollision(Ball ball, bp.base.Border border){
-		if(border.getId().equals("left") && ball.getDirection()>90 && ball.getDirection()<270){
-			ball.oneEightyDirection();
+		if(border.getId().equals("left") && ball.getOrientation()>90 && ball.getOrientation()<270){
+			ball.oneEightyOrientation();
 		}
-		else if(border.getId().equals("right") && ((ball.getDirection()>270 && ball.getDirection()<=360) || (ball.getDirection()<90 && ball.getDirection()>=0))){
-			ball.oneEightyDirection();
+		else if(border.getId().equals("right") && ((ball.getOrientation()>270 && ball.getOrientation()<=360) || (ball.getOrientation()<90 && ball.getOrientation()>=0))){
+			ball.oneEightyOrientation();
 		}
-		else if(border.getId().equals("top") && ball.getDirection()>180 && ball.getDirection()<360){
-			ball.threeSixtyDirection();
+		else if(border.getId().equals("top") && ball.getOrientation()>180 && ball.getOrientation()<360){
+			ball.threeSixtyOrientation();
 		}
-		else if(border.getId().equals("bottom") && ball.getDirection()>0 && ball.getDirection()<180){
-			ball.threeSixtyDirection();
+		else if(border.getId().equals("bottom") && ball.getOrientation()>0 && ball.getOrientation()<180){
+			ball.threeSixtyOrientation();
 			ball.setDestroyed(true);
 		}		
 		((MovableBody)ball.getBody()).undoMove();
@@ -42,15 +42,15 @@ public abstract class CollisionResolver {
 		double topLeftX = other.getTopLeft().getX();
 		double bottomRightX = other.getBottomRight().getX();
 		double length = bottomRightX-topLeftX;		
-		if(ball.getDirection()<180)			
-			ball.setDirection((int) (200+(moved.getCenter().getX() - topLeftX)/length*140));	
+		if(ball.getOrientation()<180)			
+			ball.setOrientation((int) (200+(moved.getCenter().getX() - topLeftX)/length*140));	
 		else
-			ball.setDirection((int) (20+(moved.getCenter().getX() - topLeftX)/length*140));
+			ball.setOrientation((int) (20+(moved.getCenter().getX() - topLeftX)/length*140));
 		
-		//modify ball speed depending on direction of ball and paddle
+		//modify ball speed depending on orientation of ball and paddle
 		double matchDir = 0.0;
-		if(ball.getDirection()>=180 && ball.getDirection() <=270 && paddle.getDirection() >= 180 && paddle.getDirection() <= 270){
-			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
+		if(ball.getOrientation()>=180 && ball.getOrientation() <=270 && paddle.getOrientation() >= 180 && paddle.getOrientation() <= 270){
+			matchDir = Math.abs(ball.getOrientation()-paddle.getOrientation());
 			if(matchDir<10){
 				ball.multSpeed(1.1);
 			}
@@ -58,8 +58,8 @@ public abstract class CollisionResolver {
 				ball.multSpeed(1.05);
 			}					
 		}
-		else if(ball.getDirection()>=270 && ball.getDirection() <=359 && paddle.getDirection() >= 270 && paddle.getDirection() <= 359){
-			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
+		else if(ball.getOrientation()>=270 && ball.getOrientation() <=359 && paddle.getOrientation() >= 270 && paddle.getOrientation() <= 359){
+			matchDir = Math.abs(ball.getOrientation()-paddle.getOrientation());
 			if(matchDir<10){
 				ball.multSpeed(1.1);
 			}
@@ -67,8 +67,8 @@ public abstract class CollisionResolver {
 				ball.multSpeed(1.05);
 			}
 		}
-		else if(ball.getDirection()>=0 && ball.getDirection() <=90 && paddle.getDirection() >= 0 && paddle.getDirection() <= 90){
-			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
+		else if(ball.getOrientation()>=0 && ball.getOrientation() <=90 && paddle.getOrientation() >= 0 && paddle.getOrientation() <= 90){
+			matchDir = Math.abs(ball.getOrientation()-paddle.getOrientation());
 			if(matchDir<10){
 				ball.multSpeed(1.1);
 			}
@@ -76,8 +76,8 @@ public abstract class CollisionResolver {
 				ball.multSpeed(1.05);
 			}
 		}
-		else if(ball.getDirection()>=90 && ball.getDirection() <=180 && paddle.getDirection() >= 90 && paddle.getDirection() <= 180){
-			matchDir = Math.abs(ball.getDirection()-paddle.getDirection());
+		else if(ball.getOrientation()>=90 && ball.getOrientation() <=180 && paddle.getOrientation() >= 90 && paddle.getOrientation() <= 180){
+			matchDir = Math.abs(ball.getOrientation()-paddle.getOrientation());
 			if(matchDir<10){
 				ball.multSpeed(1.1);
 			}
@@ -85,17 +85,17 @@ public abstract class CollisionResolver {
 				ball.multSpeed(1.05);
 			}
 		}
-		if(Math.abs(ball.getDirection()-270)<10)
+		if(Math.abs(ball.getOrientation()-270)<10)
 			ball.multSpeed(0.80);
-		else if(Math.abs(ball.getDirection()-270)<20)
+		else if(Math.abs(ball.getOrientation()-270)<20)
 			ball.multSpeed(0.90);
-		else if(Math.abs(ball.getDirection()-270)<25)
+		else if(Math.abs(ball.getOrientation()-270)<25)
 			ball.multSpeed(0.95);
-		else if(Math.abs(ball.getDirection()-270)>65)
+		else if(Math.abs(ball.getOrientation()-270)>65)
 			ball.multSpeed(1.05);
-		else if(Math.abs(ball.getDirection()-270)>70)
+		else if(Math.abs(ball.getOrientation()-270)>70)
 			ball.multSpeed(1.10);
-		else if(Math.abs(ball.getDirection()-270)>80)
+		else if(Math.abs(ball.getOrientation()-270)>80)
 			ball.multSpeed(1.20);	
 	}
 	
@@ -107,11 +107,11 @@ public abstract class CollisionResolver {
 	 */
 	protected static void resolveCollision(Paddle paddle, bp.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
-		if(paddle.getDirection()>0){
+		if(paddle.getOrientation()>0){
 			double adjustX = ((bp.base.collision.body.Border)border.getBody()).getEnd().getX()-((RectangleBody)paddle.getBody()).getBottomRight().getX();
 			((MovableBody)paddle.getBody()).moveBy(adjustX, 0);			
 		}
-		else if(paddle.getDirection()<0){
+		else if(paddle.getOrientation()<0){
 			double adjustX = ((bp.base.collision.body.Border)border.getBody()).getStart().getX()-((RectangleBody)paddle.getBody()).getTopLeft().getX();
 			((MovableBody)paddle.getBody()).moveBy(adjustX, 0);	
 		}		

@@ -68,9 +68,9 @@ public class Collision {
 	 * @param level The level
 	 */
 	public static void checkForCollision(Paddle paddle, Level level) {
-		if(paddle.getDirection()>0)
+		if(paddle.getOrientation()>0)
 			collision(paddle, level.getBorders()[2]);
-		else if(paddle.getDirection()<0)
+		else if(paddle.getOrientation()<0)
 				collision(paddle, level.getBorders()[1]);
 	}	
 	
@@ -180,7 +180,7 @@ public class Collision {
 		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border.getBody();
 		CircleBody ballBody = (CircleBody) ball.getBody();
 		if(borderBody.getStart().getX()==borderBody.getEnd().getX()){
-			if(ball.getDirection()>90 && ball.getDirection() < 270){
+			if(ball.getOrientation()>90 && ball.getOrientation() < 270){
 				//check if the ball has collided with the left border
 				return ballBody.getCenter().getX()-ballBody.getR()<=borderBody.getStart().getX() && borderBody.getStart().getX()==0;
 			}
@@ -190,7 +190,7 @@ public class Collision {
 			}
 		}
 		else if(borderBody.getStart().getY()==borderBody.getEnd().getY()){			
-			if(ball.getDirection()>180 && ball.getDirection()<360){
+			if(ball.getOrientation()>180 && ball.getOrientation()<360){
 				//check if ball has collided with the top border
 				return ballBody.getCenter().getY()-ballBody.getR()<=borderBody.getStart().getY() && borderBody.getStart().getY()==0;
 			}
