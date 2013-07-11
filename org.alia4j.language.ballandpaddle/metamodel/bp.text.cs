@@ -48,71 +48,71 @@ RULES {
 	Block ::= "block" id[CHAR] "{" "hardness" "=" hardness[INTEGER] ("resistance" "=" resistance[INTEGER])? ("power" "=" power[])? "}";	
 	Power ::= "power" id[] "{" "effects" "=" effects[] ("," effects[])* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
 	
-	GeneralEffect ::= "effect" id[] "on" target "{" body ("duration""="duration[INTEGER])? "}";
+	GeneralEffect ::= "effect" id[] "on" target ("(" filter ")")? "{" body ("duration""="duration[INTEGER])? "}";
 	GeneralEffectBody ::= name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
 	
-	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget "and" rightTarget "{" body ("duration""="duration[INTEGER])? "}";
-	CollisionEffectBody ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
+	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget ("(" leftFilter ")")? "and" rightTarget ("(" rightFilter ")")? "{" body ("duration""="duration[INTEGER])? "}";
+	CollisionEffectBody ::= target"."name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
 	
-	ObjectTarget ::= item[] ("(" filter ")")?;
-	TypeTarget ::= type[Block:"block",Paddle:"paddle",Ball:"ball"] ("(" filter ")")?;
+	ObjectTarget ::= object[];
+	ClassTarget ::= classType[Block:"block",Paddle:"paddle",Ball:"ball"];
 	
-	@Operator(type="binary_left_associative", weight="1", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
 	OrExpression ::= left "|" right;
 	
-	@Operator(type="binary_left_associative", weight="1", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="1", superclass="Expression")
 	AndExpression ::= left "&" right;
 	
-	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
 	EqExpression ::= left "=" right;
 
-	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
 	SmthExpression ::= left "<" right;
 	
-	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
 	SeqExpression ::= left "<=" right;
 
-	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
 	LthExpression ::= left ">" right;
 	
-	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
 	LeqExpression ::= left ">=" right;
 	
-	@Operator(type="binary_left_associative", weight="2", superclass="BooleanExpression")
+	@Operator(type="binary_left_associative", weight="2", superclass="Expression")
 	NeqExpression ::= left "!=" right;
 
-	@Operator(type="binary_left_associative", weight="3", superclass="BooleanExpression")
-	MultBoolExpression ::= left "*" right;
+	@Operator(type="binary_left_associative", weight="3", superclass="Expression")
+	MultExpression ::= left "*" right;
 
-	@Operator(type="binary_left_associative", weight="3", superclass="BooleanExpression")
-	DivBoolExpression ::= left "/" right;
+	@Operator(type="binary_left_associative", weight="3", superclass="Expression")
+	DivExpression ::= left "/" right;
 	
-	@Operator(type="binary_left_associative", weight="4", superclass="BooleanExpression")
-	PlusBoolExpression ::= left "+" right;
+	@Operator(type="binary_left_associative", weight="4", superclass="Expression")
+	PlusExpression ::= left "+" right;
 
-	@Operator(type="binary_left_associative", weight="4", superclass="BooleanExpression")
-	MinusBoolExpression ::= left "-" right;
+	@Operator(type="binary_left_associative", weight="4", superclass="Expression")
+	MinusExpression ::= left "-" right;
 	
-	@Operator(type="unary_prefix", weight="5", superclass="BooleanExpression")
-	NegBoolExpression ::= "-" body;		
+	@Operator(type="unary_prefix", weight="5", superclass="Expression")
+	NegExpression ::= "-" body;		
 	
-	@Operator(type="unary_prefix", weight="5", superclass="BooleanExpression")
-	NotBoolExpression ::= "!" body;	
+	@Operator(type="unary_prefix", weight="5", superclass="Expression")
+	NotExpression ::= "!" body;	
 		
-	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
-	BracketBoolExpression ::= "(" body ")";
+	@Operator(type="primitive", weight="6", superclass="Expression")
+	BracketExpression ::= "(" body ")";
 	
-	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
-	AttBoolOperand ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",Resistance:"resistance", Immaterial:"immaterial",X:"x", Y:"y"];
+	@Operator(type="primitive", weight="6", superclass="Expression")
+	AttOperand ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",Resistance:"resistance", Immaterial:"immaterial",X:"x", Y:"y"];
 	
-	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
-	IntBoolOperand ::= value[INTEGER];
+	@Operator(type="primitive", weight="6", superclass="Expression")
+	IntOperand ::= value[INTEGER];
 	
-	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
-	DoubleBoolOperand ::= value[FLOAT];
+	@Operator(type="primitive", weight="6", superclass="Expression")
+	DoubleOperand ::= value[FLOAT];
 	
-	@Operator(type="primitive", weight="6", superclass="BooleanExpression")
-	BooleanBoolOperand ::= value[BOOLEAN];
+	@Operator(type="primitive", weight="6", superclass="Expression")
+	BooleanOperand ::= value[BOOLEAN];
 	
 	@Operator(type="binary_left_associative", weight="1", superclass="CollisionExpression")
 	OrCollisionExpression ::= left "|" right;
@@ -170,6 +170,4 @@ RULES {
 
 	@Operator(type="primitive", weight="6", superclass="CollisionExpression")
 	AttCollisionOperand ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance", X:"x", Y:"y"];
-	
-	
 }
