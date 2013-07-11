@@ -65,6 +65,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		createStandardBallCollisionHandling();
 		createImmaterialBallCollisionHandling();
 		createStandardOthersCollisionHandling();
+		createSpeedBoundAssurance();
+		createSizeBoundAssurance();
+		createXYBoundAssurance();
 		//createEffect(Ball.class, "direction", AttributeType.INT);
 		
 		//-----------------------
@@ -83,7 +86,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Map<String, bp.base.Paddle> paddles = new HashMap<String, bp.base.Paddle>();
 	private Map<String, bp.base.Ball> balls = new HashMap<String, bp.base.Ball>();
 	private Map<String, bp.base.Block> blocks = new HashMap<String, bp.base.Block>();
-	private Map<String, Attachment> effects = new HashMap<String, Attachment>();
+	private Map<String, bp.base.Effect> effects = new HashMap<String, bp.base.Effect>();
 	private Map<String, bp.base.Power> powers = new HashMap<String, bp.base.Power>();
 
 	private void visit(Root root) {
@@ -115,9 +118,9 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private bp.base.Power visit(Power power) {
-		Map<String,Attachment> powerEffects = new HashMap<String,Attachment>();
+		List<bp.base.Effect> powerEffects = new ArrayList<bp.base.Effect>();
 		for(Effect effect: power.getEffects()) {
-			powerEffects.put(effect.getId(), effects.get(effect.getId()));
+			powerEffects.add(effects.get(effect.getId()));
 		}
 		return new bp.base.Power(power.getId(), powerEffects, power.getPowerSpawnChance());
 	}
@@ -139,12 +142,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		return gameLevel;
 	}
 	
-	private Attachment visit(Effect effect) {
+	private bp.base.Effect visit(Effect effect) {
 		if(effect instanceof GeneralEffect) return visit((GeneralEffect) effect);
 		else return visit((CollisionEffect) effect);
 	}
 	
-	private Attachment visit(GeneralEffect effect) {
+	private bp.base.Effect visit(GeneralEffect effect) {
 		GeneralEffectBody body = effect.getBody();
 		Target target = effect.getTarget();
 		boolean isClassTarget = target instanceof ClassTarget;
@@ -186,9 +189,12 @@ public class Importer implements org.alia4j.fial.Importer {
 				
 		//create action
 		Action action = createAction(body);
-		
-		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+		Specialization specialization;
+		if(filter==null)
+			specialization = new Specialization(pattern, null, Collections.singletonList(context));
+		else
+			specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		return new bp.base.Effect(effect.getDuration(),  new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND));
 	}
 	
 	private Class<?> getBPObjectClass(ClassTarget classTarget) {
@@ -211,7 +217,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		);
 	}
 	
-	private Attachment visit(CollisionEffect effect) {
+	private bp.base.Effect visit(CollisionEffect effect) {
 //		CollisionEffectBody body = effect.getBody();
 //		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
 //		Class<?>[] targetClasses = new Class<?>[2];
@@ -464,6 +470,90 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
 		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 	}*/
+	
+	//--------------------Speed Bounds assurance------------------------
+	private static final MethodPattern getSpeed = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getSpeed"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createSpeedBoundAssurance(){		
+		Context callee = ContextFactory.findOrCreateCalleeContext();
+		Context max = new LocalDoubleVariableContext(callee, "upperSpeedLimit");
+		Context min= new LocalDoubleVariableContext(callee, "lowerSpeedLimit");
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getSpeed, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	//--------------------Size Bounds assurance------------------------
+	
+	private static final MethodPattern getSize = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getSize"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createSizeBoundAssurance(){		
+		Context callee = ContextFactory.findOrCreateCalleeContext();
+		Context max = new LocalDoubleVariableContext(callee, "upperSizeLimit");
+		Context min= new LocalDoubleVariableContext(callee, "lowerSizeLimit");
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getSize, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	//--------------------XY Bounds assurance------------------------
+	
+	private static final MethodPattern getX = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getX"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private static final MethodPattern getY = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getY"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createXYBoundAssurance(){		
+		createXBoundAssurance();
+		createYBoundAssurance();
+	}
+	
+	private void createXBoundAssurance(){
+		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getWidth());
+		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getX, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createYBoundAssurance(){
+		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getHeight());
+		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getY, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
 	
 	//--------------------Collision detection------------------------
 	
