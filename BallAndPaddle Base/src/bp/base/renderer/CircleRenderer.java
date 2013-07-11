@@ -30,7 +30,7 @@ public class CircleRenderer extends Renderer {
 	 * @param offsetX The offset from the border
 	 * @param offsetY The offset from the border
 	 */
-	public CircleRenderer(BAPObject object, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
+	public CircleRenderer(BPObject object, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
 		super(scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
 		if(object instanceof Ball){
 			radius = ((CircleBody)object.getBody()).getR();

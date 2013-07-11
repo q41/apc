@@ -2,7 +2,7 @@ package bp.base;
 
 import bp.base.exception.IllegalBodyException;
 
-public abstract class MovingBAPObject extends BAPObject {
+public abstract class MovingBAPObject extends BPObject {
 
 	/**
 	 * Creates a new MovingBAPObject

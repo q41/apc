@@ -244,12 +244,12 @@ public class Level extends Observable implements Runnable {
 		if(delta>0){
 			SpawnPowers();			
 			double factor = 1.0/1000*delta;
-			Map<BAPObject, Integer> stepsPerObject = calculateStepsPerObject(factor);
+			Map<BPObject, Integer> stepsPerObject = calculateStepsPerObject(factor);
 			int maxSteps = getMaxSteps(stepsPerObject);
 			moveAllObjects(factor, stepsPerObject, maxSteps);	
 			checkForEffectDeactivation();		
 		}	
-		List<BAPObject> objects = new ArrayList<BAPObject>();
+		List<BPObject> objects = new ArrayList<BPObject>();
 		objects.addAll(spawnedPowers);
 		objects.addAll(blocks);
 		objects.addAll(balls);
@@ -274,8 +274,8 @@ public class Level extends Observable implements Runnable {
 	 * @param factor the portion of a second that the total move occupies
 	 * @return The mapping of BAPObjects to Integers for how many moves each needs
 	 */
-	private Map<BAPObject, Integer> calculateStepsPerObject(double factor) {
-		Map<BAPObject, Integer> stepsPerObject = new HashMap<BAPObject, Integer>();
+	private Map<BPObject, Integer> calculateStepsPerObject(double factor) {
+		Map<BPObject, Integer> stepsPerObject = new HashMap<BPObject, Integer>();
 		//calculate the maximum amount of steps required by the objects
 		for(Paddle pad : paddles){
 			int steps = pad.getNeededSteps(factor);
@@ -297,9 +297,9 @@ public class Level extends Observable implements Runnable {
 	 * @param stepsPerObject The moves each object needs to take
 	 * @return The maximum amount of moves needed
 	 */
-	private int getMaxSteps(Map<BAPObject, Integer> stepsPerObject) {
+	private int getMaxSteps(Map<BPObject, Integer> stepsPerObject) {
 		int maxSteps = 0;
-		Iterator<Entry<BAPObject, Integer>> it = stepsPerObject.entrySet().iterator();
+		Iterator<Entry<BPObject, Integer>> it = stepsPerObject.entrySet().iterator();
 		while(it.hasNext()){
 			int value = it.next().getValue();
 			if(value>maxSteps)
@@ -315,7 +315,7 @@ public class Level extends Observable implements Runnable {
 	 * @param maxSteps the maximum amount of steps needed
 	 */
 	private void moveAllObjects(double factor,
-			Map<BAPObject, Integer> stepsPerObject, int maxSteps) {
+			Map<BPObject, Integer> stepsPerObject, int maxSteps) {
 		for(int i = 0; i<maxSteps; i++){
 			movePaddles(factor, stepsPerObject, maxSteps);
 			moveBalls(factor, stepsPerObject, maxSteps);
@@ -330,7 +330,7 @@ public class Level extends Observable implements Runnable {
 	 * @param maxSteps the maximum amount of steps needed
 	 */
 	private void  moveBalls(double factor,
-			Map<BAPObject, Integer> stepsPerObject, int maxSteps){
+			Map<BPObject, Integer> stepsPerObject, int maxSteps){
 		for(int j =0; j<balls.size(); j++){
 			handleBAPObjectUpdate(balls.get(j), factor, stepsPerObject, maxSteps);	
 			if(balls.get(j).isDestroyed()){
@@ -348,7 +348,7 @@ public class Level extends Observable implements Runnable {
 	 * @param maxSteps the maximum amount of steps needed
 	 */
 	private void movePaddles(double factor,
-			Map<BAPObject, Integer> stepsPerObject, int maxSteps){
+			Map<BPObject, Integer> stepsPerObject, int maxSteps){
 		for(Paddle pad : paddles){
 			if(pad.getOrientation()!=0){
 				handleBAPObjectUpdate(pad, factor, stepsPerObject, maxSteps);	
@@ -363,7 +363,7 @@ public class Level extends Observable implements Runnable {
 	 * @param maxSteps the maximum amount of steps needed
 	 */
 	private void  movePowers(double factor,
-			Map<BAPObject, Integer> stepsPerObject, int maxSteps){
+			Map<BPObject, Integer> stepsPerObject, int maxSteps){
 		for(int j =0; j<spawnedPowers.size();j++){
 			handleBAPObjectUpdate(spawnedPowers.get(j), factor, stepsPerObject, maxSteps);					
 			if(spawnedPowers.get(j).caught()||spawnedPowers.get(j).destroyed()){						
@@ -380,7 +380,7 @@ public class Level extends Observable implements Runnable {
 	 * @param stepsPerObject The map containing the amount of steps the object needs to take to complete it's move
 	 * @param maxSteps the maximum amount of steps needed for all objects to complete their moves
 	 */
-	private void handleBAPObjectUpdate(MovingBAPObject object, double factor, Map<BAPObject, Integer> stepsPerObject ,int maxSteps){
+	private void handleBAPObjectUpdate(MovingBAPObject object, double factor, Map<BPObject, Integer> stepsPerObject ,int maxSteps){
 		object.calculateMove(factor*stepsPerObject.get(object)/maxSteps, this);
 		try {
 			object.update();

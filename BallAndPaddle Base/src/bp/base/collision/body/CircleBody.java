@@ -1,6 +1,6 @@
 package bp.base.collision.body;
 
-import bp.base.BAPObject;
+import bp.base.BPObject;
 import bp.base.Ball;
 
 public class CircleBody extends MovableBody {
@@ -9,7 +9,7 @@ public class CircleBody extends MovableBody {
 	 * Creates a new CircleBody with the given object
 	 * @param object The BAPObject contained in this body
 	 */
-	public CircleBody(BAPObject object){
+	public CircleBody(BPObject object){
 		super(object);
 	}
 	

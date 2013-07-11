@@ -2,7 +2,7 @@ package bp.base;
 
 import bp.base.collision.body.Body;
 
-public abstract class BAPObject {
+public abstract class BPObject {
 
 	/**
 	 * The id of this BAPObject
@@ -28,7 +28,7 @@ public abstract class BAPObject {
 	 * @param y the y coordinate of this object
 	 * @param body the body of this object
 	 */
-	public BAPObject(String id, double x, double y){
+	public BPObject(String id, double x, double y){
 		this.id = id;
 		this.x = x;
 		this.y = y;

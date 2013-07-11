@@ -39,7 +39,7 @@ public class RectangleRenderer extends Renderer {
 	 * @param offsetX The offset from the border
 	 * @param offsetY The offset from the border
 	 */
-	public RectangleRenderer(BAPObject object, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
+	public RectangleRenderer(BPObject object, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
 		super(scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
 		RectangleBody body = (RectangleBody)object.getBody();
 		topX = body.getTopLeft().getPointX();

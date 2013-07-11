@@ -8,7 +8,7 @@ public class RectangleBody extends MovableBody {
 	 * Creates a new RectangleBody, containing the given object
 	 * @param object The object contained in the body
 	 */
-	public RectangleBody(BAPObject object){
+	public RectangleBody(BPObject object){
 		super(object);
 	}
 	
