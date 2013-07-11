@@ -150,51 +150,32 @@ public class Importer implements org.alia4j.fial.Importer {
 	private bp.base.Effect visit(GeneralEffect effect) {
 		GeneralEffectBody body = effect.getBody();
 		Target target = effect.getTarget();
-		boolean isClassTarget = target instanceof ClassTarget;
 		
 		//create pattern
-		Class<?> bpObjectClass = null;
-		if(isClassTarget) {
-			bpObjectClass = getBPObjectClass((ClassTarget) target);
-		} else {
-			ObjectTarget otarget = (ObjectTarget) target;
-			BPObject bpObject = otarget.getObject();
-			if(bpObject instanceof Ball) {
-				bpObjectClass = bp.base.Ball.class;
-			}
-			else if(bpObject instanceof Block) {
-				bpObjectClass = bp.base.Block.class;
-			}
-			else if(bpObject instanceof Paddle) {
-				bpObjectClass = bp.base.Paddle.class;
-			}
-		}
+		Class<?> bpObjectClass = targetToClass(target);
 		MethodPattern pattern = createPattern(bpObjectClass, body.getName().toString());
 		
 		//create predicate
-		Context filter = (effect.getFilter()!=null)?visit(effect.getFilter()):null;
-		if(!isClassTarget) {
-			String id = ((ObjectTarget) target).getObject().getId();
-			Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
-			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-			Context actualId = new LocalObjectVariableContext(calleeContext, "id");
-			Context isTargetInstance = new ObjectEqualContext(actualId,targetId);
-			if(filter==null) filter = isTargetInstance;
-			else filter = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
-		}
-		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true);
+		Context effectApplies = null;		
+		Context filter = (effect.getFilter()!=null) ? visit(effect.getFilter()) : null;
+		Context isTargetInstance = (target instanceof ObjectTarget) ? generateIsTargetInstanceContext(target) : null;
+		
+		if(filter!=null && isTargetInstance!=null) effectApplies = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
+		else if(filter!=null) effectApplies = filter;
+		else if(isTargetInstance!=null) effectApplies = isTargetInstance;
+		
+		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true) : null;
 		
 		//create context
 		Context context = visit(body.getExpression());
 				
 		//create action
 		Action action = createAction(body);
-		Specialization specialization;
-		if(filter==null)
-			specialization = new Specialization(pattern, null, Collections.singletonList(context));
-		else
-			specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-		return new bp.base.Effect(effect.getDuration(),  new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND));
+		
+		//create effect
+		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
 	
 	private Class<?> getBPObjectClass(ClassTarget classTarget) {
@@ -218,57 +199,61 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private bp.base.Effect visit(CollisionEffect effect) {
-//		CollisionEffectBody body = effect.getBody();
+		CollisionEffectBody body = effect.getBody();
 //		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
 //		Class<?>[] targetClasses = new Class<?>[2];
 //		for(int i = 0; i<targets.length; i++) {
-//			boolean isTypeTarget = targets[i] instanceof ClassTarget;
-//			if(isTypeTarget) {
-//				targetClasses[i] = getBPObjectClass((ClassTarget) targets[i]);
-//			}
-//			else {
-//				ObjectTarget otarget = (ObjectTarget) targets[i];
-//				BPObject bpObject = otarget.getObject();
-//				if(bpObject instanceof Ball) {
-//					targetClasses[i] = bp.base.Ball.class;
-//				}
-//				else if(bpObject instanceof Block) {
-//					targetClasses[i] = bp.base.Block.class;
-//				}
-//				else if(bpObject instanceof Paddle) {
-//					targetClasses[i] = bp.base.Paddle.class;
-//				}
-//			}
+//			targetClasses[i] = targetToClass(targets[i]);
 //		}
-//				
-//		//create pattern
-//		MethodPattern pattern = createPattern(getBPObjectClass(body.getClassType()), body.getName().toString());
-//		
-//		//create predicate
-//		Context filter = null;
-//		getBPObjectClass(body.getClassType());
-//		if(!isClassTarget) {
-//			String id = ((ObjectTarget) target).getItem().getId();
-//			Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
-//			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-//			Context actualId = new LocalObjectVariableContext(calleeContext, "id");
-//			Context isTargetInstance = new ObjectEqualContext(actualId,targetId);
-//			if(filter==null) filter = isTargetInstance;
-//			else filter = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
-//		}
-//		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true);
-//		
-//		//create context
-//		Context context = visit(body.getExpression());
-//				
-//		//create action
-//		Action action = createAction(body);
-//		
-//		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-//		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
-		return null;
+				
+		//create pattern
+		MethodPattern pattern = createPattern(targetToClass(body.getTarget()), body.getName().toString());
+		
+		//create predicate
+		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(body.getTarget()) : null;
+		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
+		
+		//create context
+		Context context = visit(body.getExpression());
+				
+		//create action
+		Action action = createAction(body);
+		
+		//create effect
+		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
 	
+	private Context generateIsTargetInstanceContext(Target target) {
+		String id = ((ObjectTarget) target).getObject().getId();
+		Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		Context actualId = new LocalObjectVariableContext(calleeContext, "id");
+		return new ObjectEqualContext(actualId,targetId);
+	}
+
+	private Class<?> targetToClass(Target target) {
+		Class<?> targetClass = null;
+		if(target instanceof ClassTarget) {
+			targetClass = getBPObjectClass((ClassTarget) target);
+		}
+		else {
+			ObjectTarget otarget = (ObjectTarget) target;
+			BPObject bpObject = otarget.getObject();
+			if(bpObject instanceof Ball) {
+				targetClass = bp.base.Ball.class;
+			}
+			else if(bpObject instanceof Block) {
+				targetClass = bp.base.Block.class;
+			}
+			else if(bpObject instanceof Paddle) {
+				targetClass = bp.base.Paddle.class;
+			}
+		}
+		return targetClass;
+	}
+
 	private enum AttributeType {
 		DOUBLE, INT, BOOL
 	}
@@ -424,7 +409,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	//private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
 	
 	/*
-	private void createEffect(Class<? extends BAPObject> bapobject, String attribute, AttributeType attributeType) {
+	private void createEffect(Class<? extends BPObject> bapobject, String attribute, AttributeType attributeType) {
 		//create attribute getter pattern 
 		MethodPattern attributeGetter = new MethodPattern(
 			ModifiersPattern.ANY,
@@ -560,16 +545,16 @@ public class Importer implements org.alia4j.fial.Importer {
 	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.Collision"),
 			"checkForCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject", "bp.base.Level"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BPObject", "bp.base.Level"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
 	
-	private static final MethodPattern LevelHandleBAPObjectUpdateMethodPattern = new MethodPattern(
+	private static final MethodPattern LevelHandleBPObjectUpdateMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
-			new ExactNamePattern("handleBAPObjectUpdate"),
+			new ExactNamePattern("handleBPObjectUpdate"),
 			ParametersPattern.ANY,
 			ExceptionsPattern.ANY
 	);
@@ -578,7 +563,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(LevelHandleBAPObjectUpdateMethodPattern, null, con);//Collections.singletonList(argumentContext));
+		Specialization specialization = new Specialization(LevelHandleBPObjectUpdateMethodPattern, null, con);//Collections.singletonList(argumentContext));
 		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), checkForCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
@@ -589,14 +574,14 @@ public class Importer implements org.alia4j.fial.Importer {
 	private static final Action handleStandardCollision = ActionFactory.findOrCreateMethodCallAction(
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.StandardCollisionResolver"),
 			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject","bp.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BPObject","bp.base.BPObject"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
 	private static final Action handleImmaterialCollision = ActionFactory.findOrCreateMethodCallAction(
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.ImmaterialCollisionResolver"),
 			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject","bp.base.BAPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BPObject","bp.base.BPObject"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
@@ -615,7 +600,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
 			new ExactNamePattern("haveCollided"),
-			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BAPObject"})),
+			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BPObject"})),
 			ExceptionsPattern.ANY
 	);
 	
@@ -686,7 +671,7 @@ public class Importer implements org.alia4j.fial.Importer {
 					type = Effect.TargetType.TYPE;
 					TypeTarget tar = (TypeTarget)t;
 					tar.getType();				
-					target = getBAPObjectType(tar.getType());
+					target = getBPObjectType(tar.getType());
 					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
 						targetAttributes.addAll(getTargetAttributes(tar.getParams()));
@@ -718,7 +703,7 @@ public class Importer implements org.alia4j.fial.Importer {
 					leftType = Effect.TargetType.TYPE;
 					TypeTarget tar = (TypeTarget)leftT;
 					tar.getType();				
-					leftTarget = getBAPObjectType(tar.getType());
+					leftTarget = getBPObjectType(tar.getType());
 					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
 						rightTargetAttributes.addAll(getTargetAttributes(tar.getParams()));
@@ -736,7 +721,7 @@ public class Importer implements org.alia4j.fial.Importer {
 					rightType = Effect.TargetType.TYPE;
 					TypeTarget tar = (TypeTarget)rightT;
 					tar.getType();				
-					rightTarget = getBAPObjectType(tar.getType());
+					rightTarget = getBPObjectType(tar.getType());
 					if(tar.getParams()!=null){
 						pred = getTargetPredicate(tar.getParams());
 						leftTargetAttributes.addAll(getTargetAttributes(tar.getParams()));
