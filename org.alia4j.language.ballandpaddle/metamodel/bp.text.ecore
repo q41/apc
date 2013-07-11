@@ -215,6 +215,7 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		6 : Immaterial = "immaterial";
 		7 : X = "x";
 		8 : Y = "y";
+		9 : Damage = "damage";
 	}
 	
 	serializable enum BPClassType{		

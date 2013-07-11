@@ -97,7 +97,7 @@ public class Block extends BAPObject {
 	 * @param ball the ball dealing damage to the block
 	 */
 	public void takeDamageFrom(Ball ball) {
-		hardness -= Math.max(0, ball.getDamage()-resistance);
+		hardness -= Math.max(0, ball.getDamage()-getResistance());
 	}
 	
 	/**

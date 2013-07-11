@@ -15,6 +15,7 @@
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Immaterial"/>
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/X"/>
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Y"/>
+      <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//Attribute/Damage"/>
     </genEnums>
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="bp.text.ecore#//BPClassType">
       <genEnumLiterals ecoreEnumLiteral="bp.text.ecore#//BPClassType/Block"/>

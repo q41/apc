@@ -301,6 +301,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case HARDNESS:
 		case RESISTANCE:
 		case ORIENTATION:
+		case DAMAGE:
 			return AttributeType.INT;
 		case IMMATERIAL:
 			return AttributeType.BOOL;

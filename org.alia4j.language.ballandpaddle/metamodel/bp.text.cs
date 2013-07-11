@@ -49,10 +49,10 @@ RULES {
 	Power ::= "power" id[] "{" "effects" "=" effects[] ("," effects[])* ("powerSpawnChance" "=" powerSpawnChance[FLOAT])?"}";
 	
 	GeneralEffect ::= "effect" id[] "on" target ("(" filter ")")? "{" body ("duration""="duration[INTEGER])? "}";
-	GeneralEffectBody ::= name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
+	GeneralEffectBody ::= name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y",Damage:"damage"] op[Inc:"+=", Set:"="] expression;
 	
 	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget ("(" leftFilter ")")? "and" rightTarget ("(" rightFilter ")")? "{" body ("duration""="duration[INTEGER])? "}";
-	CollisionEffectBody ::= target"."name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y"] op[Inc:"+=", Set:"="] expression;
+	CollisionEffectBody ::= target"."name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y",Damage:"damage"] op[Inc:"+=", Set:"="] expression;
 	
 	ObjectTarget ::= object[];
 	ClassTarget ::= classType[Block:"block",Paddle:"paddle",Ball:"ball"];
@@ -103,7 +103,7 @@ RULES {
 	BracketExpression ::= "(" body ")";
 	
 	@Operator(type="primitive", weight="6", superclass="Expression")
-	AttOperand ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",Resistance:"resistance", Immaterial:"immaterial",X:"x", Y:"y"];
+	AttOperand ::= att[Size:"size",Orientation:"orientation",Speed:"speed",Hardness:"hardness",Resistance:"resistance", Immaterial:"immaterial",X:"x", Y:"y",Damage:"damage"];
 	
 	@Operator(type="primitive", weight="6", superclass="Expression")
 	IntOperand ::= value[INTEGER];
@@ -169,5 +169,5 @@ RULES {
 	BoolCollisionOperand ::= value[BOOLEAN];
 
 	@Operator(type="primitive", weight="6", superclass="CollisionExpression")
-	AttCollisionOperand ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance", X:"x", Y:"y"];
+	AttCollisionOperand ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance", X:"x", Y:"y",Damage:"damage"];
 }
