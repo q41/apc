@@ -496,7 +496,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
 			new ExactNamePattern("haveCollided"),
-			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BAPObject"})),
+			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject","bp.base.BAPObject"})),
 			ExceptionsPattern.ANY
 	);
 	
