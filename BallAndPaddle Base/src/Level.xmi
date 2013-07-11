@@ -29,5 +29,5 @@
     </body>
   </effects>
   <powers id="Speed" effects="//@effects.0"/>
-  <powers id="MostlyUseless" effects="//@effects.1"/>
+  <powers id="MostlyUseless" effects="//@effects.0"/>
 </bp:Root>

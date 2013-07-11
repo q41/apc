@@ -109,17 +109,8 @@ public class SpawnedPower extends MovingBAPObject {
 	 */
 	public void setCaught(boolean caught) {
 		this.caught = caught;
-		List<Attachment> unDeployedEffects = new ArrayList<Attachment>();
-		
-		Iterator<Entry<String, Attachment>> it = power.getEffects().entrySet().iterator();
-	    while (it.hasNext()) {
-	        Entry<String, Attachment> pairs = it.next();
-	        if(!Level.isDeployed(pairs.getKey())) unDeployedEffects.add(pairs.getValue());
-	        it.remove(); // avoids a ConcurrentModificationException
-	    }
-		
-		Attachment[] toDeploy = new Attachment[power.getEffects().size()];
-		org.alia4j.fial.System.deploy(power.getEffects().values().toArray(toDeploy));
+		for(Effect effect : power.getEffects())
+			effect.activate();
 	}
 	
 	/**

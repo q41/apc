@@ -72,10 +72,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		//-----------------------
 
 		
-		
-		initialAttachments.addAll(new ArrayList<Attachment>(effects.values()));
-		initialAttachments.addAll(new ArrayList<Attachment>(effects.values()));
-		
 		CompositionRule[] toDeployRules = new CompositionRule[initialCompositionRules.size()];
 		org.alia4j.fial.System.deploy(initialCompositionRules.toArray(toDeployRules));
 		Attachment[] toDeploy = new Attachment[initialAttachments.size()]; //SHOULD BE EMPTY!
@@ -86,7 +82,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Map<String, bp.base.Paddle> paddles = new HashMap<String, bp.base.Paddle>();
 	private Map<String, bp.base.Ball> balls = new HashMap<String, bp.base.Ball>();
 	private Map<String, bp.base.Block> blocks = new HashMap<String, bp.base.Block>();
-	private Map<String, Attachment> effects = new HashMap<String, Attachment>();
+	private Map<String, bp.base.Effect> effects = new HashMap<String, bp.base.Effect>();
 	private Map<String, bp.base.Power> powers = new HashMap<String, bp.base.Power>();
 	private bp.base.Level level;
 
@@ -119,9 +115,9 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private bp.base.Power visit(Power power) {
-		Map<String,Attachment> powerEffects = new HashMap<String,Attachment>();
+		List<bp.base.Effect> powerEffects = new ArrayList<bp.base.Effect>();
 		for(Effect effect: power.getEffects()) {
-			powerEffects.put(effect.getId(), effects.get(effect.getId()));
+			powerEffects.add(effects.get(effect.getId()));
 		}
 		return new bp.base.Power(power.getId(), powerEffects, power.getPowerSpawnChance());
 	}
@@ -143,12 +139,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		return gameLevel;
 	}
 	
-	private Attachment visit(Effect effect) {
+	private bp.base.Effect visit(Effect effect) {
 		if(effect instanceof GeneralEffect) return visit((GeneralEffect) effect);
 		else return visit((CollisionEffect) effect);
 	}
 	
-	private Attachment visit(GeneralEffect effect) {
+	private bp.base.Effect visit(GeneralEffect effect) {
 		GeneralEffectBody body = effect.getBody();
 		Target target = effect.getTarget();
 		boolean isTypeTarget = target instanceof TypeTarget;
@@ -192,7 +188,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Action action = createAction(body);
 		
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+		return new bp.base.Effect(effect.getDuration(),  new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND));
 	}
 	
 	private Class<?> getBPObjectClass(TypeTarget target) {
@@ -215,7 +211,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		);
 	}
 	
-	private Attachment visit(CollisionEffect effect) {
+	private bp.base.Effect visit(CollisionEffect effect) {
 		//handleError();
 		return null;
 	}

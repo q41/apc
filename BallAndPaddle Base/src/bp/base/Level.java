@@ -246,7 +246,8 @@ public class Level extends Observable implements Runnable {
 			double factor = 1.0/1000*delta;
 			Map<BAPObject, Integer> stepsPerObject = calculateStepsPerObject(factor);
 			int maxSteps = getMaxSteps(stepsPerObject);
-			moveAllObjects(factor, stepsPerObject, maxSteps);			
+			moveAllObjects(factor, stepsPerObject, maxSteps);	
+			checkForEffectDeactivation();		
 		}	
 		List<BAPObject> objects = new ArrayList<BAPObject>();
 		objects.addAll(spawnedPowers);
@@ -255,6 +256,16 @@ public class Level extends Observable implements Runnable {
 		objects.addAll(paddles);
 		this.setChanged();
 		this.notifyObservers(objects);
+	}
+
+	/**
+	 * Checks if any effects need to be deactivated,
+	 * They are deactivated if this is the case
+	 */
+	private void checkForEffectDeactivation() {
+		for(Power power : powers)
+			for(Effect effect : power.getEffects())
+				effect.checkForDeactivation();		
 	}
 
 	/**
@@ -463,7 +474,7 @@ public class Level extends Observable implements Runnable {
 	 */
 	public void removeIllegalEffects() throws IllegalEffectException {
 		//create list of all effects	
-		List<Effect> effects = new ArrayList<Effect>();
+//		List<Effect> effects = new ArrayList<Effect>();
 		//TODO: replace old code
 //		for(Power power : powers)
 //			for(Effect effect : power.getEffects())

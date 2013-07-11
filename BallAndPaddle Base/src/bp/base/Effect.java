@@ -1,63 +1,56 @@
 package bp.base;
 
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
 
 import org.alia4j.liam.Attachment;
+import org.lwjgl.Sys;
 
-public abstract class Effect {
+public class Effect {
 
-//	private String id;
-//	private OperatorType op;
-//	private int duration;
-//	private Object value;
-//	protected EffectTarget effectTarget;
-//	private EffectedAttribute effectedAttribute;
-//	private Attachment attachment = null;
-//
-//	public enum TargetType{
-//		TYPE, OBJECT;
-//	}
-//	
-//	public enum OperatorType{
-//		INC, DEC, SET;
-//	}
-//	
-//	public enum EffectTarget{
-//		BALL, BLOCK, PADDLE;
-//	}
-//	
-//	public enum EffectedAttribute{
-//		HARDNESS, IMMATERIAL, SIZE, SPEED, DIRECTION, RESISTANCE;
-//	}
-//	
-//	public Effect(String id){
-//		this.id = id;
-//	}
-//	
-//	public String getId(){
-//		return id;
-//	}
-//	
-//	public void setOperator(OperatorType op){
-//		this.op=op;
-//	}
-//
-//	public void setDuration(int duration) {
-//		this.duration = duration;		
-//	}
-//
-//	public void setValue(Object value) {
-//		this.value = value;
-//	}
-//	
-//	public void setEffectTarget(EffectTarget effectTarget){
-//		this.effectTarget = effectTarget;
-//	}
-//	
-//	public void setModifiedAttribute(EffectedAttribute effectedAttribute){
-//		this.effectedAttribute = effectedAttribute;
-//	}
-//
-//	public abstract boolean isLegal(Level level);
-
+	private Attachment attachment;
+	private int duration;
+	private Map<Attachment, Long> activeAttachments;
+	
+	public Effect(int duration, Attachment attachment){
+		this.duration = duration;
+		this.attachment = attachment;
+		activeAttachments = new HashMap<Attachment, Long>();
+	}
+	
+	public void activate(){
+		Attachment att;
+		if(activeAttachments.size()>0)
+			att = new Attachment(attachment.getSpecializations(), attachment.getAction(), attachment.getScheduleInfo());		
+		else
+			att = attachment;
+		activeAttachments.put(att, getEndTime());
+		org.alia4j.fial.System.deploy(att);
+	}
+	
+	public void checkForDeactivation(){
+		List<Attachment> toUndeploy = new ArrayList<Attachment>();
+		Iterator<Entry<Attachment, Long>> it = activeAttachments.entrySet().iterator();
+		while(it.hasNext()){
+			Entry<Attachment, Long> pairs = it.next();
+			if(getTime()>=pairs.getValue())
+				toUndeploy.add(pairs.getKey());
+		}
+		Attachment[] toUnDeploy = new Attachment[toUndeploy.size()];
+		org.alia4j.fial.System.undeploy(toUndeploy.toArray(toUnDeploy));
+		for(Attachment att : toUndeploy)
+			activeAttachments.remove(att);
+	}
+	
+	private long getEndTime(){
+		if(duration==0)
+			return Long.MAX_VALUE;
+		return ((Sys.getTime()+duration*1000) * 1000) / Sys.getTimerResolution();
+	}
+	
+	private long getTime(){
+		 return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	}
+	
 }
+	
