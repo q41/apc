@@ -66,6 +66,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		createImmaterialBallCollisionHandling();
 		createStandardOthersCollisionHandling();
 		//createEffect(Ball.class, "direction", AttributeType.INT);
+		createSpeedBoundAssurance();
+		createSizeBoundAssurance();
+		createXYBoundAssurance();
 		
 		//-----------------------
 		// Deploy all definitions
@@ -186,7 +189,6 @@ public class Importer implements org.alia4j.fial.Importer {
 				
 		//create action
 		Action action = createAction(body);
-		
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		return new bp.base.Effect(effect.getDuration(),  new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND));
 	}
@@ -436,6 +438,90 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 	}*/
 	
+	//--------------------Speed Bounds assurance------------------------
+	private static final MethodPattern getSpeed = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getSpeed"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createSpeedBoundAssurance(){		
+		Context callee = ContextFactory.findOrCreateCalleeContext();
+		Context max = new LocalDoubleVariableContext(callee, "upperSpeedLimit");
+		Context min= new LocalDoubleVariableContext(callee, "lowerSpeedLimit");
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getSpeed, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	//--------------------Size Bounds assurance------------------------
+	
+	private static final MethodPattern getSize = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getSize"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createSizeBoundAssurance(){		
+		Context callee = ContextFactory.findOrCreateCalleeContext();
+		Context max = new LocalDoubleVariableContext(callee, "upperSizeLimit");
+		Context min= new LocalDoubleVariableContext(callee, "lowerSizeLimit");
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getSize, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	//--------------------XY Bounds assurance------------------------
+	
+	private static final MethodPattern getX = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getX"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private static final MethodPattern getY = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getY"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createXYBoundAssurance(){		
+		createXBoundAssurance();
+		createYBoundAssurance();
+	}
+	
+	private void createXBoundAssurance(){
+		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getWidth());
+		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getX, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createYBoundAssurance(){
+		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getHeight());
+		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getY, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
 	//--------------------Collision detection------------------------
 	
 	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
@@ -482,7 +568,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			ResolutionStrategy.STATIC			
 			);
 	
-	private static final MethodPattern notABallHasCollidedMethodPattern = new MethodPattern(
+	private static final MethodPattern hasCollidedMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
@@ -495,8 +581,8 @@ public class Importer implements org.alia4j.fial.Importer {
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
-			new ExactNamePattern("haveCollided"),
-			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BAPObject","bp.base.BAPObject"})),
+			new ExactNamePattern("ballHasCollided"),
+			ParametersPattern.ANY,
 			ExceptionsPattern.ANY
 	);
 	
@@ -505,7 +591,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
 		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(notABallHasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
+		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}

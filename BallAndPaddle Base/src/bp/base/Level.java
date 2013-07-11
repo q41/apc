@@ -409,8 +409,8 @@ public class Level extends Observable implements Runnable {
 		for(int i = 0; i<blocks.size(); i++){
 			if(blocks.get(i).isDestroyed()){
 				RectangleBody body = (RectangleBody)blocks.get(i).getBody();
-				double x = body.getTopLeft().getX()+(body.getBottomRight().getX()-body.getTopLeft().getX())/2;
-				double y = body.getTopLeft().getY()+(body.getBottomRight().getY()-body.getTopLeft().getY())/2;
+				double x = body.getTopLeft().getPointX()+(body.getBottomRight().getPointX()-body.getTopLeft().getPointX())/2;
+				double y = body.getTopLeft().getPointY()+(body.getBottomRight().getPointY()-body.getTopLeft().getPointY())/2;
 				if(blocks.get(i).getPower()!=null){
 					//spawn the power belonging to the block
 					SpawnedPower power = new SpawnedPower(blocks.get(i).getPower(), x, y);
@@ -568,6 +568,8 @@ public class Level extends Observable implements Runnable {
 				maxFPS+=1;
 				ticks=0;
 			}
+			//TODO this is testing stuff, don't forget to remove!
+			powers.get(0).getEffects().get(0).activate();
 			ticks++;	
 		}
 		while(gameOver() && !Display.isCloseRequested()){

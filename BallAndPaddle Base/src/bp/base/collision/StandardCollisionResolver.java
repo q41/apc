@@ -71,18 +71,18 @@ public class StandardCollisionResolver extends CollisionResolver{
 		RectangleBody other = (RectangleBody) block.getBody();
 		//split up the square into 4 parts, bottom, left, right, top. 
 		//top
-		double topY = other.getTopLeft().getY();
+		double topY = other.getTopLeft().getPointY();
 		//bottom
-		double bottomY = other.getBottomRight().getY();
+		double bottomY = other.getBottomRight().getPointY();
 		//left
-		double leftX = other.getTopLeft().getX();
+		double leftX = other.getTopLeft().getPointX();
 		//right
-		double rightX = other.getBottomRight().getX();
+		double rightX = other.getBottomRight().getPointX();
 		//ball
-		double ballYBottom = moved.getCenter().getY()+moved.getR();
-		double ballYTop = moved.getCenter().getY()-moved.getR();
-		double ballXLeft = moved.getCenter().getX()-moved.getR();
-		double ballXRight = moved.getCenter().getX()+moved.getR();
+		double ballYBottom = moved.getCenter().getPointY()+moved.getR();
+		double ballYTop = moved.getCenter().getPointY()-moved.getR();
+		double ballXLeft = moved.getCenter().getPointX()-moved.getR();
+		double ballXRight = moved.getCenter().getPointX()+moved.getR();
 		
 		//hit right side?
 		if(ball.getOrientation()>90 && ball.getOrientation()<270){

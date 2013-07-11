@@ -106,8 +106,10 @@ public class Collision {
 				collision = hasCollided((Ball)moved, other);				
 			else
 				collision = false;
-			if(collision)
-				haveCollided((Ball)moved, other);
+			if(collision){
+				haveCollided(moved, other);
+				ballHasCollided((Ball)moved, other);
+			}
 			return collision;
 		}
 		else if(moved instanceof Paddle)
@@ -129,11 +131,11 @@ public class Collision {
 	private static void haveCollided(BAPObject moved, BAPObject other){}
 	
 	/**
-	 * Called when a collision has been detected with a ball
-	 * @param moved The moved object
+	 * Called when a collision has been detected
+	 * @param moved The moved ball
 	 * @param other The other object
 	 */
-	private static void haveCollided(Ball moved, BAPObject other){}
+	private static void ballHasCollided(Ball moved, BAPObject other){}
 	
 	/**
 	 * Checks if the ball has collided
@@ -190,24 +192,24 @@ public class Collision {
 	private static boolean hasCollided(Ball ball, bp.base.Border border){
 		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border.getBody();
 		CircleBody ballBody = (CircleBody) ball.getBody();
-		if(borderBody.getStart().getX()==borderBody.getEnd().getX()){
+		if(borderBody.getStart().getPointX()==borderBody.getEnd().getPointX()){
 			if(ball.getOrientation()>90 && ball.getOrientation() < 270){
 				//check if the ball has collided with the left border
-				return ballBody.getCenter().getX()-ballBody.getR()<=borderBody.getStart().getX() && borderBody.getStart().getX()==0;
+				return ballBody.getCenter().getPointX()-ballBody.getR()<=borderBody.getStart().getPointX() && borderBody.getStart().getPointX()==0;
 			}
 			else{	
 				//check if the ball has collided with the right border, make sure it isn't the left border
-				return ballBody.getCenter().getX()+ballBody.getR()>=borderBody.getStart().getX() && borderBody.getStart().getX()!=0;
+				return ballBody.getCenter().getPointX()+ballBody.getR()>=borderBody.getStart().getPointX() && borderBody.getStart().getPointX()!=0;
 			}
 		}
-		else if(borderBody.getStart().getY()==borderBody.getEnd().getY()){			
+		else if(borderBody.getStart().getPointY()==borderBody.getEnd().getPointY()){			
 			if(ball.getOrientation()>180 && ball.getOrientation()<360){
 				//check if ball has collided with the top border
-				return ballBody.getCenter().getY()-ballBody.getR()<=borderBody.getStart().getY() && borderBody.getStart().getY()==0;
+				return ballBody.getCenter().getPointY()-ballBody.getR()<=borderBody.getStart().getPointY() && borderBody.getStart().getPointY()==0;
 			}
 			else{
 				//check if ball has collided with the bottom border
-				return ballBody.getCenter().getY()+ballBody.getR()>=borderBody.getStart().getY() && borderBody.getStart().getY()!=0;				
+				return ballBody.getCenter().getPointY()+ballBody.getR()>=borderBody.getStart().getPointY() && borderBody.getStart().getPointY()!=0;				
 			}
 		}
 		else
@@ -237,18 +239,18 @@ public class Collision {
 		RectangleBody blockBody = (RectangleBody) block.getBody();
 		//split up the square into 4 parts, bottom, left, right, top. 
 		//top
-		double topY = blockBody.getTopLeft().getY();
+		double topY = blockBody.getTopLeft().getPointY();
 		//bottom
-		double bottomY = blockBody.getBottomRight().getY();
+		double bottomY = blockBody.getBottomRight().getPointY();
 		//left
-		double leftX = blockBody.getTopLeft().getX();
+		double leftX = blockBody.getTopLeft().getPointX();
 		//right
-		double rightX = blockBody.getBottomRight().getX();
+		double rightX = blockBody.getBottomRight().getPointX();
 		//ball
-		double ballYBottom = ballBody.getCenter().getY()+ballBody.getR();
-		double ballYTop = ballBody.getCenter().getY()-ballBody.getR();
-		double ballXLeft = ballBody.getCenter().getX()-ballBody.getR();
-		double ballXRight = ballBody.getCenter().getX()+ballBody.getR();
+		double ballYBottom = ballBody.getCenter().getPointY()+ballBody.getR();
+		double ballYTop = ballBody.getCenter().getPointY()-ballBody.getR();
+		double ballXLeft = ballBody.getCenter().getPointX()-ballBody.getR();
+		double ballXRight = ballBody.getCenter().getPointX()+ballBody.getR();
 		//top hit?
 		boolean topHit = ballYBottom>topY && ballYBottom<bottomY && ballYTop<topY && ballYTop<bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
 		//bottom hit?
@@ -270,12 +272,10 @@ public class Collision {
 	private static boolean hasCollided(Paddle paddle, bp.base.Border border){
 		RectangleBody paddleBody = (RectangleBody) paddle.getBody();
 		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border.getBody();
-		if(borderBody.getStart().getX()==borderBody.getEnd().getX())
-			return (borderBody.getStart().getX()>paddleBody.getTopLeft().getX() && borderBody.getEnd().getX()<paddleBody.getBottomRight().getX()) ||
-					(borderBody.getEnd().getX()>paddleBody.getTopLeft().getX() && borderBody.getStart().getX()<paddleBody.getBottomRight().getX());
-		else if(borderBody.getStart().getY()==borderBody.getEnd().getY())
-			return (borderBody.getStart().getY()>paddleBody.getTopLeft().getY() && borderBody.getEnd().getY()<paddleBody.getBottomRight().getY()) ||
-					(borderBody.getEnd().getY()>paddleBody.getTopLeft().getY() && borderBody.getStart().getY()<paddleBody.getBottomRight().getY());
+		if(borderBody.getStart().getPointX()==borderBody.getEnd().getPointX())
+			return (borderBody.getStart().getPointX()>paddleBody.getTopLeft().getPointX() && borderBody.getStart().getPointX()<paddleBody.getBottomRight().getPointX());
+		else if(borderBody.getStart().getPointY()==borderBody.getEnd().getPointY())
+			return (borderBody.getStart().getPointY()>=paddleBody.getTopLeft().getPointY() && borderBody.getStart().getPointY()<paddleBody.getBottomRight().getPointY());
 		else
 			return false;	
 	}
@@ -299,8 +299,8 @@ public class Collision {
 	private static boolean hasCollided(SpawnedPower power, bp.base.Border border){
 		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border.getBody();
 		RectangleBody powerBody = (RectangleBody) power.getBody();
-		return (borderBody.getStart().getY()>powerBody.getTopLeft().getY() && borderBody.getEnd().getY()<powerBody.getBottomRight().getY()) ||
-				(borderBody.getEnd().getY()>powerBody.getTopLeft().getY() && borderBody.getStart().getY()<powerBody.getBottomRight().getY());
+		return (borderBody.getStart().getPointY()>powerBody.getTopLeft().getPointY() && borderBody.getEnd().getPointY()<powerBody.getBottomRight().getPointY()) ||
+				(borderBody.getEnd().getPointY()>powerBody.getTopLeft().getPointY() && borderBody.getStart().getPointY()<powerBody.getBottomRight().getPointY());
 	}
 	
 	/**
@@ -323,15 +323,15 @@ public class Collision {
 	 */
 	private static boolean intersectsTop(RectangleBody power, RectangleBody paddle){
 		//power
-		double powerLX = power.getTopLeft().getX();
-		double powerRX = power.getBottomRight().getX();
-		double powerY = power.getBottomRight().getY();
+		double powerLX = power.getTopLeft().getPointX();
+		double powerRX = power.getBottomRight().getPointX();
+		double powerY = power.getBottomRight().getPointY();
 		
 		//paddle
-		double paddleLX = paddle.getTopLeft().getX();
-		double paddleRX = paddle.getBottomRight().getX();
-		double paddleTY = paddle.getTopLeft().getY();
-		double paddleBY = paddle.getBottomRight().getY();
+		double paddleLX = paddle.getTopLeft().getPointX();
+		double paddleRX = paddle.getBottomRight().getPointX();
+		double paddleTY = paddle.getTopLeft().getPointY();
+		double paddleBY = paddle.getBottomRight().getPointY();
 		
 		return ((powerLX>=paddleLX && powerLX<=paddleRX) || (powerRX>=paddleLX && powerRX<=paddleRX)) &&
 				powerY>=paddleTY && powerY<=paddleBY;
@@ -345,15 +345,15 @@ public class Collision {
 	 */
 	private static boolean intersectsLeft(RectangleBody power, RectangleBody paddle){
 		//power
-		double powerRX = power.getBottomRight().getX();
-		double powerTY = power.getTopLeft().getY();
-		double powerBY = power.getBottomRight().getY();
+		double powerRX = power.getBottomRight().getPointX();
+		double powerTY = power.getTopLeft().getPointY();
+		double powerBY = power.getBottomRight().getPointY();
 		
 		//paddle
-		double paddleLX = paddle.getTopLeft().getX();
-		double paddleRX = paddle.getBottomRight().getX();
-		double paddleTY = paddle.getTopLeft().getY();
-		double paddleBY = paddle.getBottomRight().getY();
+		double paddleLX = paddle.getTopLeft().getPointX();
+		double paddleRX = paddle.getBottomRight().getPointX();
+		double paddleTY = paddle.getTopLeft().getPointY();
+		double paddleBY = paddle.getBottomRight().getPointY();
 		
 		return ((powerTY>=paddleTY && powerTY<=paddleBY) || (powerBY>=paddleTY && powerBY<=paddleBY)) 
 				&& powerRX>=paddleLX && powerRX<=paddleRX;
@@ -367,15 +367,15 @@ public class Collision {
 	 */
 	private static boolean intersectsRight(RectangleBody power, RectangleBody paddle){
 		//power
-		double powerLX = power.getTopLeft().getX();
-		double powerTY = power.getTopLeft().getY();
-		double powerBY = power.getBottomRight().getY();
+		double powerLX = power.getTopLeft().getPointX();
+		double powerTY = power.getTopLeft().getPointY();
+		double powerBY = power.getBottomRight().getPointY();
 		
 		//paddle
-		double paddleLX = paddle.getTopLeft().getX();
-		double paddleRX = paddle.getBottomRight().getX();
-		double paddleTY = paddle.getTopLeft().getY();
-		double paddleBY = paddle.getBottomRight().getY();
+		double paddleLX = paddle.getTopLeft().getPointX();
+		double paddleRX = paddle.getBottomRight().getPointX();
+		double paddleTY = paddle.getTopLeft().getPointY();
+		double paddleBY = paddle.getBottomRight().getPointY();
 		
 		return ((powerTY>=paddleTY && powerTY<=paddleBY) || (powerBY>=paddleTY && powerBY<=paddleBY)) 
 				&& powerLX>=paddleLX && powerLX<=paddleRX;
@@ -388,14 +388,14 @@ public class Collision {
 	 * @return if the two objects collided
 	 */
 	private static boolean intersectsTop(CircleBody ball, RectangleBody paddle) {
-		double topLeftX = paddle.getTopLeft().getX();
-		double topLeftY = paddle.getTopLeft().getY();
-		double bottomRightX = paddle.getBottomRight().getX();
-		double bottomRightY = paddle.getBottomRight().getY();
-		boolean centerHitTop = ball.getCenter().getX()>topLeftX && ball.getCenter().getX()<bottomRightX;
-		boolean leftHitTop = ball.getCenter().getX()-ball.getR()>topLeftX && ball.getCenter().getX()-ball.getR()<bottomRightX;
-		boolean rightHitTop = ball.getCenter().getX()+ball.getR()>topLeftX && ball.getCenter().getX()+ball.getR()<bottomRightX;
-		return (centerHitTop || leftHitTop || rightHitTop) && ball.getCenter().getY()+ball.getR()>topLeftY && ball.getCenter().getY()+ball.getR()<bottomRightY;
+		double topLeftX = paddle.getTopLeft().getPointX();
+		double topLeftY = paddle.getTopLeft().getPointY();
+		double bottomRightX = paddle.getBottomRight().getPointX();
+		double bottomRightY = paddle.getBottomRight().getPointY();
+		boolean centerHitTop = ball.getCenter().getPointX()>topLeftX && ball.getCenter().getPointX()<bottomRightX;
+		boolean leftHitTop = ball.getCenter().getPointX()-ball.getR()>topLeftX && ball.getCenter().getPointX()-ball.getR()<bottomRightX;
+		boolean rightHitTop = ball.getCenter().getPointX()+ball.getR()>topLeftX && ball.getCenter().getPointX()+ball.getR()<bottomRightX;
+		return (centerHitTop || leftHitTop || rightHitTop) && ball.getCenter().getPointY()+ball.getR()>topLeftY && ball.getCenter().getPointY()+ball.getR()<bottomRightY;
 	}
 	
 	/**
@@ -405,14 +405,14 @@ public class Collision {
 	 * @return if the two objects collided
 	 */
 	private static boolean intersectsLeft(CircleBody ball, RectangleBody paddle) {
-		double topLeftX = paddle.getTopLeft().getX();
-		double topLeftY = paddle.getTopLeft().getY();
-		double bottomRightX = paddle.getBottomRight().getX();
-		double bottomRightY = paddle.getBottomRight().getY();
-		boolean centerHitLeft = ball.getCenter().getY()>topLeftY && ball.getCenter().getY()<bottomRightY;
-		boolean leftHitLeft = ball.getCenter().getY()-ball.getR()>topLeftY && ball.getCenter().getY()-ball.getR()<bottomRightY;
-		boolean rightHitLeft = ball.getCenter().getY()+ball.getR()>topLeftY && ball.getCenter().getY()+ball.getR()<bottomRightY;
-		return (centerHitLeft || leftHitLeft || rightHitLeft) && ball.getCenter().getX()-ball.getR()<bottomRightX && ball.getCenter().getX()-ball.getR()>topLeftX;
+		double topLeftX = paddle.getTopLeft().getPointX();
+		double topLeftY = paddle.getTopLeft().getPointY();
+		double bottomRightX = paddle.getBottomRight().getPointX();
+		double bottomRightY = paddle.getBottomRight().getPointY();
+		boolean centerHitLeft = ball.getCenter().getPointY()>topLeftY && ball.getCenter().getPointY()<bottomRightY;
+		boolean leftHitLeft = ball.getCenter().getPointY()-ball.getR()>topLeftY && ball.getCenter().getPointY()-ball.getR()<bottomRightY;
+		boolean rightHitLeft = ball.getCenter().getPointY()+ball.getR()>topLeftY && ball.getCenter().getPointY()+ball.getR()<bottomRightY;
+		return (centerHitLeft || leftHitLeft || rightHitLeft) && ball.getCenter().getPointX()-ball.getR()<bottomRightX && ball.getCenter().getPointX()-ball.getR()>topLeftX;
 	}
 
 	/**
@@ -422,14 +422,14 @@ public class Collision {
 	 * @return if the two objects collided
 	 */
 	private static boolean intersectsBottom(CircleBody ball, RectangleBody paddle) {
-		double topLeftX = paddle.getTopLeft().getX();
-		double topLeftY = paddle.getTopLeft().getY();
-		double bottomRightX = paddle.getBottomRight().getX();
-		double bottomRightY = paddle.getBottomRight().getY();
-		boolean centerHitBottom = ball.getCenter().getX()>topLeftX && ball.getCenter().getX()<bottomRightX;
-		boolean leftHitBottom = ball.getCenter().getX()-ball.getR()>topLeftX && ball.getCenter().getX()-ball.getR()<bottomRightX;
-		boolean rightHitBottom = ball.getCenter().getX()+ball.getR()>topLeftX && ball.getCenter().getX()+ball.getR()<bottomRightX;
-		return (centerHitBottom || leftHitBottom || rightHitBottom) && ball.getCenter().getY()-ball.getR()<bottomRightY && ball.getCenter().getY()-ball.getR()>topLeftY;
+		double topLeftX = paddle.getTopLeft().getPointX();
+		double topLeftY = paddle.getTopLeft().getPointY();
+		double bottomRightX = paddle.getBottomRight().getPointX();
+		double bottomRightY = paddle.getBottomRight().getPointY();
+		boolean centerHitBottom = ball.getCenter().getPointX()>topLeftX && ball.getCenter().getPointX()<bottomRightX;
+		boolean leftHitBottom = ball.getCenter().getPointX()-ball.getR()>topLeftX && ball.getCenter().getPointX()-ball.getR()<bottomRightX;
+		boolean rightHitBottom = ball.getCenter().getPointX()+ball.getR()>topLeftX && ball.getCenter().getPointX()+ball.getR()<bottomRightX;
+		return (centerHitBottom || leftHitBottom || rightHitBottom) && ball.getCenter().getPointY()-ball.getR()<bottomRightY && ball.getCenter().getPointY()-ball.getR()>topLeftY;
 	}
 
 	/**
@@ -439,14 +439,14 @@ public class Collision {
 	 * @return if the two objects collided
 	 */
 	private static boolean intersectsRight(CircleBody ball, RectangleBody paddle) {
-		double topLeftX = paddle.getTopLeft().getX();
-		double topLeftY = paddle.getTopLeft().getY();
-		double bottomRightX = paddle.getBottomRight().getX();
-		double bottomRightY = paddle.getBottomRight().getY();
-		boolean centerHitRight = ball.getCenter().getY()>topLeftY && ball.getCenter().getY()<bottomRightY;
-		boolean leftHitRight = ball.getCenter().getY()-ball.getR()>topLeftY && ball.getCenter().getY()-ball.getR()<bottomRightY;
-		boolean rightHitRight = ball.getCenter().getY()+ball.getR()>topLeftY && ball.getCenter().getY()+ball.getR()<bottomRightY;
-		return (centerHitRight || leftHitRight || rightHitRight) && ball.getCenter().getX()+ball.getR()<bottomRightX && ball.getCenter().getX()+ball.getR()>topLeftX;
+		double topLeftX = paddle.getTopLeft().getPointX();
+		double topLeftY = paddle.getTopLeft().getPointY();
+		double bottomRightX = paddle.getBottomRight().getPointX();
+		double bottomRightY = paddle.getBottomRight().getPointY();
+		boolean centerHitRight = ball.getCenter().getPointY()>topLeftY && ball.getCenter().getPointY()<bottomRightY;
+		boolean leftHitRight = ball.getCenter().getPointY()-ball.getR()>topLeftY && ball.getCenter().getPointY()-ball.getR()<bottomRightY;
+		boolean rightHitRight = ball.getCenter().getPointY()+ball.getR()>topLeftY && ball.getCenter().getPointY()+ball.getR()<bottomRightY;
+		return (centerHitRight || leftHitRight || rightHitRight) && ball.getCenter().getPointX()+ball.getR()<bottomRightX && ball.getCenter().getPointX()+ball.getR()>topLeftX;
 	}
 	
 	

@@ -35,22 +35,6 @@ public abstract class BAPObject {
 	}
 	
 	/**
-	 * returns the x coordinate of this object when it was created
-	 * @return x
-	 */
-	public double getX(){
-		return x;
-	}
-	
-	/**
-	 * returns the y coordinate of this object when it was created
-	 * @return y
-	 */
-	public double getY(){
-		return y;
-	}		
-	
-	/**
 	 * returns the collision body of this object
 	 * @return
 	 */
@@ -97,8 +81,5 @@ public abstract class BAPObject {
 	public void incY(double y){
 		this.y+=y;
 	}
-
-	public abstract double getSize();
-	
 	
 }

@@ -5,6 +5,12 @@ import bp.base.collision.body.Body;
 public class Border extends BAPObject{
 
 	/**
+	 * Size bounds
+	 */
+	private final double upperSizeLimit = 0;
+	private final double lowerSizeLimit = 0;
+	
+	/**
 	 * Creates a border that the ball cannot pass
 	 * @param id the id of this border
 	 * @param body the body belonging to this border
@@ -14,7 +20,6 @@ public class Border extends BAPObject{
 		super.setBody(body);
 	}
 
-	@Override
 	public double getSize() {
 		return 0;
 	}

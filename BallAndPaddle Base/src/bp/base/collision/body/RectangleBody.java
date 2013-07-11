@@ -17,7 +17,7 @@ public class RectangleBody extends MovableBody {
 	 * @return the top left corner point
 	 */
 	public Point getTopLeft(){
-		return new Point(object.getX(), object.getY());
+		return new Point(getX(), getY());
 	}
 	
 	/**
@@ -26,9 +26,11 @@ public class RectangleBody extends MovableBody {
 	 */
 	public Point getBottomRight(){
 		if(object instanceof Paddle)		
-			return new Point(object.getX()+0.4+object.getSize()*0.1, object.getY()+0.26);
+			return new Point(getX()+0.4+((Paddle)object).getSize()*0.1, getY()+0.26);
+		else if(object instanceof Block)
+			return new Point(((Block)object).getX()+((Block)object).getSize(), ((Block)object).getY()+((Block)object).getSize());
 		else
-			return new Point(object.getX()+object.getSize(), object.getY()+object.getSize());
+			return new Point(((SpawnedPower)object).getX()+((SpawnedPower)object).getSize(), ((SpawnedPower)object).getY()+((SpawnedPower)object).getSize());
 	}
 	
 }

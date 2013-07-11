@@ -34,8 +34,8 @@ public class CircleRenderer extends Renderer {
 		super(scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
 		if(object instanceof Ball){
 			radius = ((CircleBody)object.getBody()).getR();
-			x = ((CircleBody)object.getBody()).getCenter().getX();
-			y = ((CircleBody)object.getBody()).getCenter().getY();
+			x = ((CircleBody)object.getBody()).getCenter().getPointX();
+			y = ((CircleBody)object.getBody()).getCenter().getPointY();
 			red = 0.0f;
 			green = 0.0f;
 			blue = 0.0f;

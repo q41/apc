@@ -25,7 +25,7 @@ public class Point implements Body {
 	 * returns the x coordinate for this point
 	 * @return the x coordinate
 	 */
-	public double getX(){
+	public double getPointX(){
 		return x;
 	}
 	
@@ -33,7 +33,7 @@ public class Point implements Body {
 	 * returns the y coordinate for this point
 	 * @return the y coordinate
 	 */
-	public double getY(){
+	public double getPointY(){
 		return y;
 	}
 		

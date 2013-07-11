@@ -137,7 +137,6 @@ public class Ball extends MovingBAPObject {
 	
 	@Override
 	public final void update() throws IllegalBodyException{
-		multSpeed(1.1);
 		try{
 			((MovableBody)body).moveBy(movementVectorX,movementVectorY);		
 		}catch(Exception e){
@@ -226,6 +225,22 @@ public class Ball extends MovingBAPObject {
 		setOrientation(180-orientation);	
 	}
 
+	
+	/**
+	 * returns the x coordinate of this object when it was created
+	 * @return x
+	 */
+	public double getX(){
+		return x;
+	}
+	
+	/**
+	 * returns the y coordinate of this object when it was created
+	 * @return y
+	 */
+	public double getY(){
+		return y;
+	}	
 
 
 

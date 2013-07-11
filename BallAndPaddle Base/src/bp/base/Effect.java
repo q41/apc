@@ -26,6 +26,7 @@ public class Effect {
 			att = attachment;
 		activeAttachments.put(att, getEndTime());
 		org.alia4j.fial.System.deploy(att);
+		
 	}
 	
 	public void checkForDeactivation(){
@@ -38,8 +39,10 @@ public class Effect {
 		}
 		Attachment[] toUnDeploy = new Attachment[toUndeploy.size()];
 		org.alia4j.fial.System.undeploy(toUndeploy.toArray(toUnDeploy));
-		for(Attachment att : toUndeploy)
+		for(Attachment att : toUndeploy){
 			activeAttachments.remove(att);
+			System.out.println("removed "+att);
+		}
 	}
 	
 	private long getEndTime(){

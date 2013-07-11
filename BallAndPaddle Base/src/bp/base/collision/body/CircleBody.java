@@ -1,6 +1,7 @@
 package bp.base.collision.body;
 
 import bp.base.BAPObject;
+import bp.base.Ball;
 
 public class CircleBody extends MovableBody {
 	
@@ -17,7 +18,7 @@ public class CircleBody extends MovableBody {
 	 * @return The point at the center of this body
 	 */
 	public Point getCenter(){
-		return new Point(object.getX(), object.getY());
+		return new Point(((Ball)object).getX(), ((Ball)object).getY());
 	}
 	
 	/**
@@ -25,7 +26,7 @@ public class CircleBody extends MovableBody {
 	 * @return the radius
 	 */
 	public double getR(){
-		return 0.04+object.getSize()*0.01;
+		return 0.04+((Ball)object).getSize()*0.01;
 	}
 
 }

@@ -28,7 +28,12 @@ public class SpawnedPower extends MovingBAPObject {
 	/**
 	 * The speed at which the power drops
 	 */
-	private final double speed = 0.02;
+	private final double speed = 0.02;	
+	/**
+	 * Speed bounds
+	 */
+	private final double upperSpeedLimit = 0.1;
+	private final double lowerSpeedLimit = 0.01;
 	/**
 	 * If the power is still alive or not
 	 */
@@ -41,6 +46,11 @@ public class SpawnedPower extends MovingBAPObject {
 	 * The size of this spawnedPower
 	 */
 	private final double size = 0.25;
+	/**
+	 * Size bounds
+	 */
+	private final double upperSizeLimit = 0.25;
+	private final double lowerSizeLimit = 0.25;
 	/**
 	 * The type of power of this spawned power
 	 */
@@ -129,8 +139,24 @@ public class SpawnedPower extends MovingBAPObject {
 		return !alive;
 	}
 
-	@Override
 	public double getSize() {
 		return size;
+	}	
+	
+	
+	/**
+	 * returns the x coordinate of this object when it was created
+	 * @return x
+	 */
+	public double getX(){
+		return x;
+	}
+	
+	/**
+	 * returns the y coordinate of this object when it was created
+	 * @return y
+	 */
+	public double getY(){
+		return y;
 	}	
 }

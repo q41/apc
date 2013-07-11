@@ -42,10 +42,10 @@ public class RectangleRenderer extends Renderer {
 	public RectangleRenderer(BAPObject object, double scale, double downscaleHeightRatio, double downscaleWidthRatio, double offsetX, double offsetY) {
 		super(scale, downscaleHeightRatio, downscaleWidthRatio, offsetX, offsetY);
 		RectangleBody body = (RectangleBody)object.getBody();
-		topX = body.getTopLeft().getX();
-		bottomX = body.getBottomRight().getX();
-		leftY = body.getTopLeft().getY();
-		rightY = body.getBottomRight().getY();		
+		topX = body.getTopLeft().getPointX();
+		bottomX = body.getBottomRight().getPointX();
+		leftY = body.getTopLeft().getPointY();
+		rightY = body.getBottomRight().getPointY();		
 		if(object instanceof Block ){
 			red = 0.5f;
 			green = 0.5f;

@@ -28,7 +28,7 @@ public final class LocalIntegerVariableContext extends Context {
 		return SimpleType.INT;
 	}
 	
-	public int getDoubleValue(Object callee) {
+	public int getIntegerValue(Object callee) {
 		try {
 			Field localVariable = callee.getClass().getDeclaredField(localVariableName);
 			localVariable.setAccessible(true);

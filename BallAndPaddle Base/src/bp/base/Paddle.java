@@ -107,9 +107,25 @@ public class Paddle extends MovingBAPObject {
 		}
 	}
 
-	@Override
 	public double getSize() {
 		return size;
 	}
+	
+	
+	/**
+	 * returns the x coordinate of this object when it was created
+	 * @return x
+	 */
+	public double getX(){
+		return x;
+	}
+	
+	/**
+	 * returns the y coordinate of this object when it was created
+	 * @return y
+	 */
+	public double getY(){
+		return y;
+	}	
 
 }

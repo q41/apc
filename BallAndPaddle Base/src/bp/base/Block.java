@@ -21,6 +21,11 @@ public class Block extends BAPObject {
 	 * The size of this block
 	 */
 	private final double size = 1;
+	/**
+	 * Size bounds
+	 */
+	private final double upperSizeLimit = 1;
+	private final double lowerSizeLimit = 1;
 	
 	/**
 	 * Creates a new block with the given id, x and y coordinates
@@ -100,7 +105,7 @@ public class Block extends BAPObject {
 	 * @return hardness<=0
 	 */
 	public boolean isDestroyed(){
-		return hardness<=0;
+		return getHardness()<=0;
 	}
 
 	/**
@@ -127,4 +132,21 @@ public class Block extends BAPObject {
 	public double getSize() {
 		return size;
 	}
+	
+	
+	/**
+	 * returns the x coordinate of this object when it was created
+	 * @return x
+	 */
+	public double getX(){
+		return x;
+	}
+	
+	/**
+	 * returns the y coordinate of this object when it was created
+	 * @return y
+	 */
+	public double getY(){
+		return y;
+	}	
 }
