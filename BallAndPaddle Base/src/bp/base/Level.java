@@ -56,10 +56,7 @@ public class Level extends Observable implements Runnable {
 	 * All powers of this game
 	 */
 	private List<Power> powers;
-	/**
-	 * All effects of this game
-	 */
-	private Map<String, Attachment> effects;
+
 	/**
 	 * The four borders of the level
 	 */
@@ -144,14 +141,6 @@ public class Level extends Observable implements Runnable {
 		this.powers = powers;
 		spawnedPowers = new ArrayList<SpawnedPower>();
 		toBeSpawnedPowers = new ArrayList<SpawnedPower>();
-	}
-	
-	/**
-	 * Sets the effects that can be deployed
-	 * @param effects the effects, mapped by their id
-	 */
-	public void setEffects(Map<String, Attachment> effects){
-		this.effects = effects;
 	}
 
 	/**
@@ -578,5 +567,17 @@ public class Level extends Observable implements Runnable {
 			Display.sync(10);
 		}
 	}
+	
+	//Contians the id's of all deployed effects
+	private static Set<String> deployedEffects = new HashSet<>();
+	
+	public static void setDeployed(String id) {
+		deployedEffects.add(id);
+	}
+	
+	public static boolean isDeployed(String id) {
+		return deployedEffects.contains(id);
+	}
+	
 	
 }
