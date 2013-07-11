@@ -178,26 +178,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
 	
-	private Class<?> getBPObjectClass(ClassTarget classTarget) {
-		switch(classTarget.getClassType()) {
-		case BALL: return bp.base.Ball.class;
-		case BLOCK: return bp.base.Block.class;
-		case PADDLE: return bp.base.Block.class;
-		default: handleError(); return null;
-		}
-	}
-
-	private MethodPattern createPattern(Class<?> bpObjectClass, String attrName) {
-		return new MethodPattern(	
-			ModifiersPattern.ANY,
-			TypePattern.ANY,
-			new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass))),
-			new ExactNamePattern("get"+Character.toUpperCase(attrName.charAt(0))+attrName.substring(1).toLowerCase()),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-		);
-	}
-	
 	private bp.base.Effect visit(CollisionEffect effect) {
 		CollisionEffectBody body = effect.getBody();
 //		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
@@ -223,6 +203,222 @@ public class Importer implements org.alia4j.fial.Importer {
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 		return new bp.base.Effect(effect.getDuration(), attachment);
+	}
+
+	private Context visit(Expression e) {
+		
+		if(e instanceof BinaryExpression) {
+			return visit((BinaryExpression) e);
+		}
+		else if(e instanceof UnaryExpression) {
+			return visit((UnaryExpression) e);
+		}
+		else if(e instanceof DoubleOperand) {
+			return ContextFactory.findOrCreateDoubleConstantContext(((DoubleOperand) e).getValue());
+		}
+		else if(e instanceof IntOperand) {
+			return ContextFactory.findOrCreateIntegerConstantContext(((IntOperand) e).getValue());
+		}
+		else if(e instanceof BooleanOperand) {
+			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanOperand) e).isValue());
+		}
+		else if(e instanceof AttOperand) {
+			return visit(((AttOperand) e).getAtt());
+		}
+		else {
+			handleError();
+			return null;
+		}
+	}
+	
+private Context visit(CollisionExpression e) {
+		
+		if(e instanceof BinaryCollisionExpression) {
+			return visit((BinaryCollisionExpression) e);
+		}
+		else if(e instanceof UnaryCollisionExpression) {
+			return visit((UnaryCollisionExpression) e);
+		}
+		else if(e instanceof DoubleCollisionOperand) {
+			return ContextFactory.findOrCreateDoubleConstantContext(((DoubleCollisionOperand) e).getValue());
+		}
+		else if(e instanceof IntCollisionOperand) {
+			return ContextFactory.findOrCreateIntegerConstantContext(((IntCollisionOperand) e).getValue());
+		}
+		else if(e instanceof BoolCollisionOperand) {
+			return ContextFactory.findOrCreateBooleanConstantContext(((BoolCollisionOperand) e).isValue());
+		}
+		else if(e instanceof AttCollisionOperand) {
+			return visit(((AttCollisionOperand) e).getAtt());
+		}
+		else {
+			handleError();
+			return null;
+		}
+	}
+	
+	private Context visit(Attribute attr) {
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		switch(getAttributeType(attr)) {
+		case DOUBLE: return new LocalDoubleVariableContext(calleeContext, attr.toString());
+		case INT: return new LocalIntegerVariableContext(calleeContext, attr.toString());
+		case BOOL: return new LocalBooleanVariableContext(calleeContext, attr.toString());
+		default: handleError(); return null;
+		}
+	}
+	
+	private Context visit(BinaryExpression e) {
+		Context left = visit(e.getLeft());
+		Context right = visit(e.getRight());
+		
+		if(e instanceof EqExpression) {
+			return ContextFactory.findOrCreateEqualContext(left, right);
+		}
+		else if(e instanceof SmthExpression) {
+			return ContextFactory.findOrCreateLessContext(left, right);
+		}
+		else if(e instanceof SeqExpression) {
+			return ContextFactory.findOrCreateLessEqualContext(left, right);
+		}
+		else if(e instanceof LthExpression) {
+			return ContextFactory.findOrCreateGreaterContext(left, right);
+		}
+		else if(e instanceof LeqExpression) {
+			return ContextFactory.findOrCreateGreaterEqualContext(left, right);
+		}
+		else if(e instanceof NeqExpression) {
+			return ContextFactory.findOrCreateNotEqualContext(left, right);
+		}
+		else if(e instanceof AndExpression) {
+			return ContextFactory.findOrCreateAndContext(left, right);
+		}
+		else if(e instanceof OrExpression) {
+			return ContextFactory.findOrCreateEqualContext(left, right);
+		}
+		else if(e instanceof MultExpression) {
+			return ContextFactory.findOrCreateMultiplyContext(left, right);
+		}
+		else if(e instanceof DivExpression) {
+			return ContextFactory.findOrCreateDivideContext(left, right);
+		}
+		else if(e instanceof PlusExpression) {
+			return ContextFactory.findOrCreateAddContext(left, right);
+		}
+		else if(e instanceof MinusExpression) {
+			return ContextFactory.findOrCreateSubtractContext(left, right);
+		}
+		else {
+			handleError();
+			return null;
+		}
+	}
+	
+	private Context visit(BinaryCollisionExpression e) {
+		Context left = visit(e.getLeft());
+		Context right = visit(e.getRight());
+		
+		if(e instanceof EqCollisionExpression) {
+			return ContextFactory.findOrCreateEqualContext(left, right);
+		}
+		else if(e instanceof SmthCollisionExpression) {
+			return ContextFactory.findOrCreateLessContext(left, right);
+		}
+		else if(e instanceof SeqCollisionExpression) {
+			return ContextFactory.findOrCreateLessEqualContext(left, right);
+		}
+		else if(e instanceof LthCollisionExpression) {
+			return ContextFactory.findOrCreateGreaterContext(left, right);
+		}
+		else if(e instanceof LeqCollisionExpression) {
+			return ContextFactory.findOrCreateGreaterEqualContext(left, right);
+		}
+		else if(e instanceof NeqCollisionExpression) {
+			return ContextFactory.findOrCreateNotEqualContext(left, right);
+		}
+		else if(e instanceof AndCollisionExpression) {
+			return ContextFactory.findOrCreateAndContext(left, right);
+		}
+		else if(e instanceof OrCollisionExpression) {
+			return ContextFactory.findOrCreateEqualContext(left, right);
+		}
+		else if(e instanceof MultCollisionExpression) {
+			return ContextFactory.findOrCreateMultiplyContext(left, right);
+		}
+		else if(e instanceof DivCollisionExpression) {
+			return ContextFactory.findOrCreateDivideContext(left, right);
+		}
+		else if(e instanceof PlusCollisionExpression) {
+			return ContextFactory.findOrCreateAddContext(left, right);
+		}
+		else if(e instanceof MinusCollisionExpression) {
+			return ContextFactory.findOrCreateSubtractContext(left, right);
+		}
+		else {
+			handleError();
+			return null;
+		}
+	}
+	
+	private Context visit(UnaryExpression e) {
+		Context body = visit(e.getBody());
+		
+		if(e instanceof NotExpression) {
+			return ContextFactory.findOrCreateNotContext(body);
+		}
+		else if(e instanceof NegExpression) {
+			return ContextFactory.findOrCreateNegationContext(body);
+		}
+		else if(e instanceof BracketExpression) {
+			return body;
+		}
+		else {
+			handleError();
+			return null;
+		}
+	}
+	
+	private Context visit(UnaryCollisionExpression e) {
+		Context body = visit(e.getBody());
+		
+		if(e instanceof NotCollisionExpression) {
+			return ContextFactory.findOrCreateNotContext(body);
+		}
+		else if(e instanceof NegCollisionExpression) {
+			return ContextFactory.findOrCreateNegationContext(body);
+		}
+		else if(e instanceof BracketCollisionExpression) {
+			return body;
+		}
+		else {
+			handleError();
+			return null;
+		}
+	}
+	
+	//------------ Helper funtions ------------
+	
+	private Object handleError() {
+		throw new NullPointerException();
+	}
+	
+	private Class<?> getBPObjectClass(ClassTarget classTarget) {
+		switch(classTarget.getClassType()) {
+		case BALL: return bp.base.Ball.class;
+		case BLOCK: return bp.base.Block.class;
+		case PADDLE: return bp.base.Block.class;
+		default: handleError(); return null;
+		}
+	}
+
+	private MethodPattern createPattern(Class<?> bpObjectClass, String attrName) {
+		return new MethodPattern(	
+			ModifiersPattern.ANY,
+			TypePattern.ANY,
+			new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass))),
+			new ExactNamePattern("get"+Character.toUpperCase(attrName.charAt(0))+attrName.substring(1).toLowerCase()),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+		);
 	}
 	
 	private Context generateIsTargetInstanceContext(Target target) {
@@ -294,116 +490,6 @@ public class Importer implements org.alia4j.fial.Importer {
 			handleError();
 			return null;
 		}
-	}
-
-	private Context visit(Expression e) {
-		
-		if(e instanceof BinaryExpression) {
-			return visit((BinaryExpression) e);
-		}
-		else if(e instanceof UnaryExpression) {
-			return visit((UnaryExpression) e);
-		}
-		else if(e instanceof DoubleOperand) {
-			return ContextFactory.findOrCreateDoubleConstantContext(((DoubleOperand) e).getValue());
-		}
-		else if(e instanceof IntOperand) {
-			return ContextFactory.findOrCreateIntegerConstantContext(((IntOperand) e).getValue());
-		}
-		else if(e instanceof BooleanOperand) {
-			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanOperand) e).isValue());
-		}
-		else if(e instanceof AttOperand) {
-			return visit((AttOperand) e);
-		}
-		else {
-			handleError();
-			return null;
-		}
-	}
-	
-	private Object handleError() {
-		throw new NullPointerException();
-	}
-	
-	private Context visit(AttOperand e) {
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Attribute attr = e.getAtt();
-		switch(getAttributeType(attr)) {
-		case DOUBLE: return new LocalDoubleVariableContext(calleeContext, attr.toString());
-		case INT: return new LocalIntegerVariableContext(calleeContext, attr.toString());
-		case BOOL: return new LocalBooleanVariableContext(calleeContext, attr.toString());
-		default: handleError(); return null;
-		}
-	}
-	
-	private Context visit(BinaryExpression e) {
-		Context left = visit(e.getLeft());
-		Context right = visit(e.getRight());
-		
-		if(e instanceof EqExpression) {
-			return ContextFactory.findOrCreateEqualContext(left, right);
-		}
-		else if(e instanceof SmthExpression) {
-			return ContextFactory.findOrCreateLessContext(left, right);
-		}
-		else if(e instanceof SeqExpression) {
-			return ContextFactory.findOrCreateLessEqualContext(left, right);
-		}
-		else if(e instanceof LthExpression) {
-			return ContextFactory.findOrCreateGreaterContext(left, right);
-		}
-		else if(e instanceof LeqExpression) {
-			return ContextFactory.findOrCreateGreaterEqualContext(left, right);
-		}
-		else if(e instanceof NeqExpression) {
-			return ContextFactory.findOrCreateNotEqualContext(left, right);
-		}
-		else if(e instanceof AndExpression) {
-			return ContextFactory.findOrCreateAndContext(left, right);
-		}
-		else if(e instanceof OrExpression) {
-			return ContextFactory.findOrCreateEqualContext(left, right);
-		}
-		else if(e instanceof MultExpression) {
-			return ContextFactory.findOrCreateMultiplyContext(left, right);
-		}
-		else if(e instanceof DivExpression) {
-			return ContextFactory.findOrCreateDivideContext(left, right);
-		}
-		else if(e instanceof PlusExpression) {
-			return ContextFactory.findOrCreateAddContext(left, right);
-		}
-		else if(e instanceof MinusExpression) {
-			return ContextFactory.findOrCreateSubtractContext(left, right);
-		}
-		else {
-			handleError();
-			return null;
-		}
-	}
-	private Context visit(UnaryExpression e) {
-		Context body = visit(e.getBody());
-		
-		if(e instanceof NotExpression) {
-			return ContextFactory.findOrCreateNotContext(body);
-		}
-		else if(e instanceof NegExpression) {
-			return ContextFactory.findOrCreateNegationContext(body);
-		}
-		else if(e instanceof BracketExpression) {
-			return body;
-		}
-		else {
-			handleError();
-			return null;
-		}
-	}
-	
-	private Context visit(CollisionExpression expression) {
-		//TODO
-		handleError();
-		return null;
 	}
 
 	//private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),"print",TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),ResolutionStrategy.STATIC);
