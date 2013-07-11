@@ -6,36 +6,36 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		containment reference Ball balls (1..-1);
 		containment reference Block blocks (0..-1);
 		containment reference Effect effects (0..-1);
-		containment reference Power powers (0..-1);		
+		containment reference Power powers (0..-1);
 	}
 
 	class Level{
 		attribute EString id (1..1);
 		attribute EFloat powerSpawnChance (0..1);
-		attribute EString blocks (0..-1);		
+		attribute EString blocks (0..-1);
 	}
 	
-	abstract class BAPObject{
+	abstract class BPObject{
 		attribute EString id (1..1);
 	}
 	
-	class Paddle extends BAPObject{				
+	class Paddle extends BPObject{	
 		attribute EDouble x (1..1);
-		attribute EDouble y (1..1);	
+		attribute EDouble y (1..1);
 		attribute EInt size (1..1);
-		attribute EInt orientation (1..1);		
+		attribute EInt orientation (1..1);
 	}
 	
-	class Ball extends BAPObject{				
+	class Ball extends BPObject{
 		attribute EDouble x (1..1);
-		attribute EDouble y (1..1);	
+		attribute EDouble y (1..1);
 		attribute EInt size (0..1);
 		attribute EInt direction (0..1);
 		attribute EInt damage (0..1);
 		attribute EInt speed (0..1);
 	}
 	
-	class Block extends BAPObject{
+	class Block extends BPObject{
 		attribute EInt hardness (1..1);
 		attribute EInt resistance (0..1);
 		reference Power power (0..1);
@@ -47,16 +47,14 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		attribute EFloat powerSpawnChance (0..1);
 	}
 	
-	abstract class Target{
-		containment reference BooleanExpression filter (0..1);
-	}
+	abstract class Target{}
 	
 	class ObjectTarget extends Target{
-		reference BAPObject item (1..1);
+		reference BPObject object (1..1);
 	}
 	
-	class TypeTarget extends Target{
-		attribute TargetType type (1..1);
+	class ClassTarget extends Target{
+		attribute BPClassType classType (1..1);
 	}	
 	
 	abstract class Effect{
@@ -65,13 +63,16 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	}
 	
 	class GeneralEffect extends Effect{
-		containment reference Target target (1..1);		
+		containment reference Target target (1..1);
+		containment reference Expression filter (0..1);
 		containment reference GeneralEffectBody body (1..1);
 	}
 	
 	class CollisionEffect extends Effect{
 		containment reference Target leftTarget (1..1);
+		containment reference Expression leftFilter (0..1);
 		containment reference Target rightTarget (1..1);
+		containment reference Expression rightFilter (0..1);
 		containment reference CollisionEffectBody body (1..1);
 	}
 	
@@ -81,15 +82,15 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	}
 	
 	class GeneralEffectBody extends EffectBody{
-		containment reference BooleanExpression expression (1..1);		
+		containment reference Expression expression (1..1);	
 	}
 	
 	class CollisionEffectBody extends EffectBody{
-		attribute TargetType classType (1..1);
+		containment reference Target target (1..1);
 		containment reference CollisionExpression expression (1..1);
 	}	
 		
-	abstract class CollisionExpression{	
+	abstract class CollisionExpression{
 	}
 	
 	abstract class BinaryCollisionExpression extends CollisionExpression{
@@ -144,64 +145,64 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 	}
 	
 	class AttCollisionOperand extends CollisionExpression{	
-		attribute TargetType classType(1..1);
+		attribute BPClassType classType(1..1);
 		attribute Attribute att(1..1);				
 	}
 	
-	abstract class BooleanExpression{}
+	abstract class Expression{}
 	
-	abstract class BooleanBinaryExpression extends BooleanExpression{
-		containment reference BooleanExpression left (1..1);
-		containment reference BooleanExpression right (1..1);
+	abstract class BinaryExpression extends Expression{
+		containment reference Expression left (1..1);
+		containment reference Expression right (1..1);
 	}
 	
-	abstract class BooleanUnaryExpression extends BooleanExpression{
-		containment reference BooleanExpression body (1..1);
+	abstract class UnaryExpression extends Expression{
+		containment reference Expression body (1..1);
 	}
 	
-	class EqExpression extends BooleanBinaryExpression{}
+	class EqExpression extends BinaryExpression{}
 	
-	class SmthExpression extends BooleanBinaryExpression{}
+	class SmthExpression extends BinaryExpression{}
 	
-	class SeqExpression extends BooleanBinaryExpression{}
+	class SeqExpression extends BinaryExpression{}
 	
-	class LthExpression extends BooleanBinaryExpression{}
+	class LthExpression extends BinaryExpression{}
 	
-	class LeqExpression extends BooleanBinaryExpression{}
+	class LeqExpression extends BinaryExpression{}
 	
-	class NeqExpression extends BooleanBinaryExpression{}
+	class NeqExpression extends BinaryExpression{}
 	
-	class OrExpression extends BooleanBinaryExpression{}
+	class OrExpression extends BinaryExpression{}
 	
-	class AndExpression extends BooleanBinaryExpression{}
+	class AndExpression extends BinaryExpression{}
 	
-	class MultBoolExpression extends BooleanBinaryExpression{}
+	class MultExpression extends BinaryExpression{}
 	
-	class DivBoolExpression extends BooleanBinaryExpression {}
+	class DivExpression extends BinaryExpression {}
 	
-	class PlusBoolExpression extends BooleanBinaryExpression{}
+	class PlusExpression extends BinaryExpression{}
 	
-	class MinusBoolExpression extends BooleanBinaryExpression{}
+	class MinusExpression extends BinaryExpression{}
 	
-	class BracketBoolExpression extends BooleanUnaryExpression{}
+	class BracketExpression extends UnaryExpression{}
 	
-	class NegBoolExpression extends BooleanUnaryExpression{}
+	class NegExpression extends UnaryExpression{}
 	
-	class NotBoolExpression extends BooleanUnaryExpression{}
+	class NotExpression extends UnaryExpression{}
 	
-	class AttBoolOperand extends BooleanExpression{
+	class AttOperand extends Expression{
 		attribute Attribute att (1..1);
 	}
 	
-	class IntBoolOperand extends BooleanExpression{
+	class IntOperand extends Expression{
 		attribute EInt value(1..1);		
 	}
 	
-	class DoubleBoolOperand extends BooleanExpression{
+	class DoubleOperand extends Expression{
 		attribute EDouble value(1..1);		
 	}
 	
-	class BooleanBoolOperand extends BooleanExpression{
+	class BooleanOperand extends Expression{
 		attribute EBoolean value (1..1);
 	}
 	
@@ -216,7 +217,7 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		8 : Y = "y";
 	}
 	
-	serializable enum TargetType{		
+	serializable enum BPClassType{		
 		0 : Block = "block";
 		1 : Paddle = "paddle";
 		2 : Ball = "ball";

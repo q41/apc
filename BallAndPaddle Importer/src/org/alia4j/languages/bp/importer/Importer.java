@@ -66,14 +66,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		createImmaterialBallCollisionHandling();
 		createStandardOthersCollisionHandling();
 		//createEffect(Ball.class, "direction", AttributeType.INT);
-		createSpeedBoundAssurance();
-		createSizeBoundAssurance();
-		createXYBoundAssurance();
 		
 		//-----------------------
 		// Deploy all definitions
 		//-----------------------
-
+		
+		//initialAttachments.addAll(new ArrayList<Attachment>(effects.values()));
 		
 		CompositionRule[] toDeployRules = new CompositionRule[initialCompositionRules.size()];
 		org.alia4j.fial.System.deploy(initialCompositionRules.toArray(toDeployRules));
@@ -85,9 +83,8 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Map<String, bp.base.Paddle> paddles = new HashMap<String, bp.base.Paddle>();
 	private Map<String, bp.base.Ball> balls = new HashMap<String, bp.base.Ball>();
 	private Map<String, bp.base.Block> blocks = new HashMap<String, bp.base.Block>();
-	private Map<String, bp.base.Effect> effects = new HashMap<String, bp.base.Effect>();
+	private Map<String, Attachment> effects = new HashMap<String, Attachment>();
 	private Map<String, bp.base.Power> powers = new HashMap<String, bp.base.Power>();
-	private bp.base.Level level;
 
 	private void visit(Root root) {
 		
@@ -106,7 +103,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		for(Block block: root.getBlocks()) {
 			blocks.put(block.getId(), visit(block));
 		}
-		level = visit(root.getLevel());
+		visit(root.getLevel());
 	}
 
 	private bp.base.Paddle visit(Paddle paddle) {
@@ -118,9 +115,9 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	private bp.base.Power visit(Power power) {
-		List<bp.base.Effect> powerEffects = new ArrayList<bp.base.Effect>();
+		Map<String,Attachment> powerEffects = new HashMap<String,Attachment>();
 		for(Effect effect: power.getEffects()) {
-			powerEffects.add(effects.get(effect.getId()));
+			powerEffects.put(effect.getId(), effects.get(effect.getId()));
 		}
 		return new bp.base.Power(power.getId(), powerEffects, power.getPowerSpawnChance());
 	}
@@ -142,23 +139,23 @@ public class Importer implements org.alia4j.fial.Importer {
 		return gameLevel;
 	}
 	
-	private bp.base.Effect visit(Effect effect) {
+	private Attachment visit(Effect effect) {
 		if(effect instanceof GeneralEffect) return visit((GeneralEffect) effect);
 		else return visit((CollisionEffect) effect);
 	}
 	
-	private bp.base.Effect visit(GeneralEffect effect) {
+	private Attachment visit(GeneralEffect effect) {
 		GeneralEffectBody body = effect.getBody();
 		Target target = effect.getTarget();
-		boolean isTypeTarget = target instanceof TypeTarget;
+		boolean isClassTarget = target instanceof ClassTarget;
 		
 		//create pattern
 		Class<?> bpObjectClass = null;
-		if(isTypeTarget) {
-			bpObjectClass = getBPObjectClass((TypeTarget) target);
+		if(isClassTarget) {
+			bpObjectClass = getBPObjectClass((ClassTarget) target);
 		} else {
 			ObjectTarget otarget = (ObjectTarget) target;
-			BAPObject bpObject = otarget.getItem();
+			BPObject bpObject = otarget.getObject();
 			if(bpObject instanceof Ball) {
 				bpObjectClass = bp.base.Ball.class;
 			}
@@ -172,9 +169,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		MethodPattern pattern = createPattern(bpObjectClass, body.getName().toString());
 		
 		//create predicate
-		Context filter = (target.getFilter()!=null)?visit(target.getFilter()):null;
-		if(!isTypeTarget) {
-			String id = ((ObjectTarget) target).getItem().getId();
+		Context filter = (effect.getFilter()!=null)?visit(effect.getFilter()):null;
+		if(!isClassTarget) {
+			String id = ((ObjectTarget) target).getObject().getId();
 			Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
 			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 			Context actualId = new LocalObjectVariableContext(calleeContext, "id");
@@ -189,12 +186,13 @@ public class Importer implements org.alia4j.fial.Importer {
 				
 		//create action
 		Action action = createAction(body);
+		
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-		return new bp.base.Effect(effect.getDuration(),  new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND));
+		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 	}
 	
-	private Class<?> getBPObjectClass(TypeTarget target) {
-		switch(target.getType()) {
+	private Class<?> getBPObjectClass(ClassTarget classTarget) {
+		switch(classTarget.getClassType()) {
 		case BALL: return bp.base.Ball.class;
 		case BLOCK: return bp.base.Block.class;
 		case PADDLE: return bp.base.Block.class;
@@ -206,15 +204,62 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new MethodPattern(	
 			ModifiersPattern.ANY,
 			TypePattern.ANY,
-			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass)),
+			new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass))),
 			new ExactNamePattern("get"+Character.toUpperCase(attrName.charAt(0))+attrName.substring(1).toLowerCase()),
 			ParametersPattern.ANY,
 			ExceptionsPattern.ANY
 		);
 	}
 	
-	private bp.base.Effect visit(CollisionEffect effect) {
-		//handleError();
+	private Attachment visit(CollisionEffect effect) {
+//		CollisionEffectBody body = effect.getBody();
+//		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
+//		Class<?>[] targetClasses = new Class<?>[2];
+//		for(int i = 0; i<targets.length; i++) {
+//			boolean isTypeTarget = targets[i] instanceof ClassTarget;
+//			if(isTypeTarget) {
+//				targetClasses[i] = getBPObjectClass((ClassTarget) targets[i]);
+//			}
+//			else {
+//				ObjectTarget otarget = (ObjectTarget) targets[i];
+//				BPObject bpObject = otarget.getObject();
+//				if(bpObject instanceof Ball) {
+//					targetClasses[i] = bp.base.Ball.class;
+//				}
+//				else if(bpObject instanceof Block) {
+//					targetClasses[i] = bp.base.Block.class;
+//				}
+//				else if(bpObject instanceof Paddle) {
+//					targetClasses[i] = bp.base.Paddle.class;
+//				}
+//			}
+//		}
+//				
+//		//create pattern
+//		MethodPattern pattern = createPattern(getBPObjectClass(body.getClassType()), body.getName().toString());
+//		
+//		//create predicate
+//		Context filter = null;
+//		getBPObjectClass(body.getClassType());
+//		if(!isClassTarget) {
+//			String id = ((ObjectTarget) target).getItem().getId();
+//			Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
+//			Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+//			Context actualId = new LocalObjectVariableContext(calleeContext, "id");
+//			Context isTargetInstance = new ObjectEqualContext(actualId,targetId);
+//			if(filter==null) filter = isTargetInstance;
+//			else filter = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
+//		}
+//		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true);
+//		
+//		//create context
+//		Context context = visit(body.getExpression());
+//				
+//		//create action
+//		Action action = createAction(body);
+//		
+//		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+//		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 		return null;
 	}
 	
@@ -259,25 +304,25 @@ public class Importer implements org.alia4j.fial.Importer {
 		}
 	}
 
-	private Context visit(BooleanExpression e) {
+	private Context visit(Expression e) {
 		
-		if(e instanceof BooleanBinaryExpression) {
-			return visit((BooleanBinaryExpression) e);
+		if(e instanceof BinaryExpression) {
+			return visit((BinaryExpression) e);
 		}
-		else if(e instanceof BooleanUnaryExpression) {
-			return visit((BooleanUnaryExpression) e);
+		else if(e instanceof UnaryExpression) {
+			return visit((UnaryExpression) e);
 		}
-		else if(e instanceof DoubleBoolOperand) {
-			return ContextFactory.findOrCreateDoubleConstantContext(((DoubleBoolOperand) e).getValue());
+		else if(e instanceof DoubleOperand) {
+			return ContextFactory.findOrCreateDoubleConstantContext(((DoubleOperand) e).getValue());
 		}
-		else if(e instanceof IntBoolOperand) {
-			return ContextFactory.findOrCreateIntegerConstantContext(((IntBoolOperand) e).getValue());
+		else if(e instanceof IntOperand) {
+			return ContextFactory.findOrCreateIntegerConstantContext(((IntOperand) e).getValue());
 		}
-		else if(e instanceof BooleanBoolOperand) {
-			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanBoolOperand) e).isValue());
+		else if(e instanceof BooleanOperand) {
+			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanOperand) e).isValue());
 		}
-		else if(e instanceof AttBoolOperand) {
-			return visit((AttBoolOperand) e);
+		else if(e instanceof AttOperand) {
+			return visit((AttOperand) e);
 		}
 		else {
 			handleError();
@@ -289,7 +334,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		throw new NullPointerException();
 	}
 	
-	private Context visit(AttBoolOperand e) {
+	private Context visit(AttOperand e) {
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
 		Attribute attr = e.getAtt();
 		switch(getAttributeType(attr)) {
@@ -300,7 +345,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		}
 	}
 	
-	private Context visit(BooleanBinaryExpression e) {
+	private Context visit(BinaryExpression e) {
 		Context left = visit(e.getLeft());
 		Context right = visit(e.getRight());
 		
@@ -328,16 +373,16 @@ public class Importer implements org.alia4j.fial.Importer {
 		else if(e instanceof OrExpression) {
 			return ContextFactory.findOrCreateEqualContext(left, right);
 		}
-		else if(e instanceof MultBoolExpression) {
+		else if(e instanceof MultExpression) {
 			return ContextFactory.findOrCreateMultiplyContext(left, right);
 		}
-		else if(e instanceof DivBoolExpression) {
+		else if(e instanceof DivExpression) {
 			return ContextFactory.findOrCreateDivideContext(left, right);
 		}
-		else if(e instanceof PlusBoolExpression) {
+		else if(e instanceof PlusExpression) {
 			return ContextFactory.findOrCreateAddContext(left, right);
 		}
-		else if(e instanceof MinusBoolExpression) {
+		else if(e instanceof MinusExpression) {
 			return ContextFactory.findOrCreateSubtractContext(left, right);
 		}
 		else {
@@ -345,16 +390,16 @@ public class Importer implements org.alia4j.fial.Importer {
 			return null;
 		}
 	}
-	private Context visit(BooleanUnaryExpression e) {
+	private Context visit(UnaryExpression e) {
 		Context body = visit(e.getBody());
 		
-		if(e instanceof NotBoolExpression) {
+		if(e instanceof NotExpression) {
 			return ContextFactory.findOrCreateNotContext(body);
 		}
-		else if(e instanceof NegBoolExpression) {
+		else if(e instanceof NegExpression) {
 			return ContextFactory.findOrCreateNegationContext(body);
 		}
-		else if(e instanceof BracketBoolExpression) {
+		else if(e instanceof BracketExpression) {
 			return body;
 		}
 		else {
@@ -368,27 +413,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		handleError();
 		return null;
 	}
-	
-	
-	private String getBAPObjectType(TargetType type) {
-		String result = "";
-		if(type.getValue()==TargetType.BALL_VALUE)
-			result = "ballandpaddle.base.Ball";
-		else if(type.getValue()==TargetType.BLOCK_VALUE)
-			result = "ballandpaddle.base.Block";
-		else if(type.getValue()==TargetType.PADDLE_VALUE)
-			result = "ballandpaddle.base.Paddle";
-		return result;
-	}
 
-	private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(
-		TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),
-		"print",
-		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),
-		TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-		ResolutionStrategy.STATIC
-	);
-	private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
+	//private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),"print",TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),ResolutionStrategy.STATIC);
+	//private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
 	
 	/*
 	private void createEffect(Class<? extends BAPObject> bapobject, String attribute, AttributeType attributeType) {
@@ -438,90 +465,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 	}*/
 	
-	//--------------------Speed Bounds assurance------------------------
-	private static final MethodPattern getSpeed = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY, 
-			ClassTypePattern.ANY,
-			new ExactNamePattern("getSpeed"),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-	);
-	
-	private void createSpeedBoundAssurance(){		
-		Context callee = ContextFactory.findOrCreateCalleeContext();
-		Context max = new LocalDoubleVariableContext(callee, "upperSpeedLimit");
-		Context min= new LocalDoubleVariableContext(callee, "lowerSpeedLimit");
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getSpeed, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
-	
-	//--------------------Size Bounds assurance------------------------
-	
-	private static final MethodPattern getSize = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY, 
-			ClassTypePattern.ANY,
-			new ExactNamePattern("getSize"),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-	);
-	
-	private void createSizeBoundAssurance(){		
-		Context callee = ContextFactory.findOrCreateCalleeContext();
-		Context max = new LocalDoubleVariableContext(callee, "upperSizeLimit");
-		Context min= new LocalDoubleVariableContext(callee, "lowerSizeLimit");
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getSize, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
-	
-	//--------------------XY Bounds assurance------------------------
-	
-	private static final MethodPattern getX = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY, 
-			ClassTypePattern.ANY,
-			new ExactNamePattern("getX"),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-	);
-	
-	private static final MethodPattern getY = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY, 
-			ClassTypePattern.ANY,
-			new ExactNamePattern("getY"),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-	);
-	
-	private void createXYBoundAssurance(){		
-		createXBoundAssurance();
-		createYBoundAssurance();
-	}
-	
-	private void createXBoundAssurance(){
-		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getWidth());
-		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getX, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createYBoundAssurance(){
-		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getHeight());
-		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getY, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
-	
 	//--------------------Collision detection------------------------
 	
 	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
@@ -568,7 +511,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			ResolutionStrategy.STATIC			
 			);
 	
-	private static final MethodPattern hasCollidedMethodPattern = new MethodPattern(
+	private static final MethodPattern notABallHasCollidedMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
@@ -581,8 +524,8 @@ public class Importer implements org.alia4j.fial.Importer {
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
-			new ExactNamePattern("ballHasCollided"),
-			ParametersPattern.ANY,
+			new ExactNamePattern("haveCollided"),
+			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BAPObject"})),
 			ExceptionsPattern.ANY
 	);
 	
@@ -591,7 +534,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
 		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(hasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
+		Specialization specialization = new Specialization(notABallHasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
@@ -722,7 +665,6 @@ public class Importer implements org.alia4j.fial.Importer {
 			}
 			AttributeAdjustment effectType = e.getBody();
 
-			//value change of the effect TODO
 			Expression expr = effectType.getExpression();
 			if(expr instanceof IntOperand){
 				IntOperand intOp = (IntOperand)expr;
@@ -733,7 +675,7 @@ public class Importer implements org.alia4j.fial.Importer {
 				effect.setValue(doubleOp.getValue());
 			}
 			else{
-				BoolOperand boolOp = (BoolOperand)expr;
+				Operand boolOp = (Operand)expr;
 				effect.setValue(boolOp.isValue());
 			}
 				
@@ -854,7 +796,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	}*/
 	
 	/*
-	private List<EffectedAttribute> getTargetAttributes(BooleanExpression param) {
+	private List<EffectedAttribute> getTargetAttributes(Expression param) {
 		List<EffectedAttribute> result = new ArrayList<EffectedAttribute>();
 		if(param instanceof BooleanBinaryExpression){
 			BooleanBinaryExpression par = (BooleanBinaryExpression) param;

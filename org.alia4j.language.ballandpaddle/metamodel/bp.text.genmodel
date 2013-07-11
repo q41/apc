@@ -96,7 +96,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//GeneralEffectBody/expression"/>
     </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//CollisionEffectBody">
-      <genFeatures createChild="false" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectBody/target"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectBody/target"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference bp.text.ecore#//CollisionEffectBody/expression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//CollisionExpression"/>
