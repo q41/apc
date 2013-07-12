@@ -66,7 +66,7 @@ public class Ball extends MovingBPObject {
 			orientation = 270;
 		damage = 1;
 		alive = true;
-		immaterial = false;
+		immaterial = true;
 	}
 	
 	/**

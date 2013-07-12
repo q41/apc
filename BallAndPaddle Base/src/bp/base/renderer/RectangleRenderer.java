@@ -1,5 +1,7 @@
 package bp.base.renderer;
 
+import java.awt.Font;
+
 import org.lwjgl.opengl.GL11;
 
 import bp.base.*;
@@ -60,8 +62,9 @@ public class RectangleRenderer extends Renderer {
 			red = 0.93f;
 			green = 0.5f;
 			blue = 1.0f;
+			text = object.id;
 		}
-		text = object.id;
+
 	}
 	
 	@Override
@@ -70,7 +73,6 @@ public class RectangleRenderer extends Renderer {
 		double topLeftY = offsetY+leftY*scale*downscaleHeightRatio;
 		double bottomRightX = offsetX+bottomX*scale*downscaleWidthRatio;
 		double bottomRightY = offsetY+rightY*scale*downscaleHeightRatio;
-		//TODO, outline around each block!
 		GL11.glColor3f(red, green, blue);
 		GL11.glPushMatrix();
 			GL11.glBegin(GL11.GL_QUADS);
@@ -80,6 +82,15 @@ public class RectangleRenderer extends Renderer {
 				GL11.glVertex2d(topLeftX, bottomRightY);
 			GL11.glEnd();
 		GL11.glPopMatrix();
+		
+		//write text if it's a power
+		if(text!=null){
+			GL11.glColor3f(0.0f, 0.0f, 0.0f);
+			TextRenderer.drawString(text, (int)topLeftX, (int)(bottomRightY-(bottomRightY-topLeftY)/3));
+		}
+		
+		
+		   
 	}
 
 }
