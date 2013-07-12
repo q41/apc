@@ -83,13 +83,16 @@ public class Importer implements org.alia4j.fial.Importer {
 		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
 	}
 	
+	//------------------------- Model visitor methods ------------------------------
+	//These methods traverse the model and initialize the corresponding game objects
+	
 	//Main game objects
 	private Map<String, bp.base.Paddle> paddles = new HashMap<String, bp.base.Paddle>();
 	private Map<String, bp.base.Ball> balls = new HashMap<String, bp.base.Ball>();
 	private Map<String, bp.base.Block> blocks = new HashMap<String, bp.base.Block>();
 	private Map<String, bp.base.Effect> effects = new HashMap<String, bp.base.Effect>();
 	private Map<String, bp.base.Power> powers = new HashMap<String, bp.base.Power>();
-
+	
 	private void visit(Root root) {
 		
 		for(Paddle paddle: root.getPaddles()) {
@@ -159,7 +162,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create predicate
 		Context effectApplies = null;		
 		Context filter = (effect.getFilter()!=null) ? visit(effect.getFilter()) : null;
-		Context isTargetInstance = (target instanceof ObjectTarget) ? generateIsTargetInstanceContext(target) : null;
+		Context isTargetInstance = (target instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) target) : null;
 		
 		if(filter!=null && isTargetInstance!=null) effectApplies = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
 		else if(filter!=null) effectApplies = filter;
@@ -171,7 +174,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context context = visit(body.getExpression());
 				
 		//create action
-		Action action = createAction(body);
+		Action action = visit(body);
 		
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
@@ -179,33 +182,92 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
 	
+	private Action visit(GeneralEffectBody effectBody) {
+		AdjustmentOperator op = effectBody.getOp();
+		AttributeType attrType = getAttributeType(effectBody.getName());
+		switch(attrType) {
+		case DOUBLE:
+			if(op==AdjustmentOperator.SET) return DoubleAttributeAssignAction.methodCallAction;
+			else return DoubleAttributeIncAction.methodCallAction;
+		case INT:
+			if(op==AdjustmentOperator.SET) return IntAttributeAssignAction.methodCallAction;
+			else return IntAttributeIncAction.methodCallAction;
+		case BOOL:
+			return BooleanAttributeAssignAction.methodCallAction;
+		default:
+			handleError();
+			return null;
+		}
+	}
+
 	private bp.base.Effect visit(CollisionEffect effect) {
 		CollisionEffectBody body = effect.getBody();
-//		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
-//		Class<?>[] targetClasses = new Class<?>[2];
-//		for(int i = 0; i<targets.length; i++) {
-//			targetClasses[i] = targetToClass(targets[i]);
-//		}
+
+		//pattern
+		MethodPattern pattern = new MethodPattern(	
+				ModifiersPattern.ANY,
+				TypePattern.ANY,
+				new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bp.base.collision.Collision.class))),
+				new ExactNamePattern("haveCollided"),
+				ParametersPattern.ANY,
+				ExceptionsPattern.ANY
+		);
+		
+		//create predicate
+		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
+		Expression[] filters = new Expression[] {effect.getLeftFilter(), effect.getRightFilter()};
+		Context[] targetMatches = new Context[2];
+		Context[] targetIsValid = new Context[2];
+		for(int i = 0; i<targets.length; i++) {
+			Context filter = (filters[i]!=null) ? visit(filters[i]) : null;
+			Context bpObject = ContextFactory.findOrCreateArgumentContext(i);	
+			if(targets[i] instanceof ObjectTarget)
+				targetMatches[i] = generateIsTargetInstanceContext(bpObject, (ObjectTarget) targets[i]);
+			else {
+				Context targetClass = ContextFactory.findOrCreateObjectConstantContext(targetToClass((ClassTarget) targets[i]));
+				targetMatches[i] = new InstanceOfContext(bpObject, targetClass);
+			}
+			targetIsValid[i] = (filters[i]!=null)? ContextFactory.findOrCreateAndContext(filter, targetMatches[i]): targetMatches[i];
+		}
+		Context effectApplies = ContextFactory.findOrCreateAndContext(targetIsValid[0], targetIsValid[1]);
+		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true);
+		
+		//create context
+		Context context = visit(body.getExpression());
+						
+		//create action
+		//TODO
+		Action action = null;
+				
+		//create effect
+		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
+		return new bp.base.Effect(0, attachment); //deploy collision trigger permenently
+	}
+	
+	//TODO
+	private bp.base.Effect createCollisionEffect(CollisionEffect effect) {
+		CollisionEffectBody body = effect.getBody();
 				
 		//create pattern
 		MethodPattern pattern = createPattern(targetToClass(body.getTarget()), body.getName().toString());
 		
 		//create predicate
-		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(body.getTarget()) : null;
-		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
+		//Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
+		//Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
 		
 		//create context
 		Context context = visit(body.getExpression());
 				
 		//create action
-		Action action = createAction(body);
+		Action action = null; //createAction(body);
 		
 		//create effect
-		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		Specialization specialization = new Specialization(pattern, null, Collections.singletonList(context));
 		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
-
+	
 	private Context visit(Expression e) {
 		
 		if(e instanceof BinaryExpression) {
@@ -399,37 +461,11 @@ private Context visit(CollisionExpression e) {
 	//------------ Helper funtions ------------
 	
 	private Object handleError() {
-		throw new NullPointerException();
+		System.err.println("ERROR: Something that should never happen happended. Program will crash now. Have a nice day!");
+		throw new NullPointerException(); //so we don't have to add a throws declaration everywhere :P
 	}
 	
-	private Class<?> getBPObjectClass(ClassTarget classTarget) {
-		switch(classTarget.getClassType()) {
-		case BALL: return bp.base.Ball.class;
-		case BLOCK: return bp.base.Block.class;
-		case PADDLE: return bp.base.Block.class;
-		default: handleError(); return null;
-		}
-	}
-
-	private MethodPattern createPattern(Class<?> bpObjectClass, String attrName) {
-		return new MethodPattern(	
-			ModifiersPattern.ANY,
-			TypePattern.ANY,
-			new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass))),
-			new ExactNamePattern("get"+Character.toUpperCase(attrName.charAt(0))+attrName.substring(1).toLowerCase()),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-		);
-	}
-	
-	private Context generateIsTargetInstanceContext(Target target) {
-		String id = ((ObjectTarget) target).getObject().getId();
-		Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Context actualId = new LocalObjectVariableContext(calleeContext, "id");
-		return new ObjectEqualContext(actualId,targetId);
-	}
-
+	//Convert target to corresponding Class<? extends BPObject>
 	private Class<?> targetToClass(Target target) {
 		Class<?> targetClass = null;
 		if(target instanceof ClassTarget) {
@@ -450,27 +486,40 @@ private Context visit(CollisionExpression e) {
 		}
 		return targetClass;
 	}
-
-	private enum AttributeType {
-		DOUBLE, INT, BOOL
+	
+	//Convert classTarget to the corresponding Class<? extends BPObject>
+	private Class<?> getBPObjectClass(ClassTarget classTarget) {
+		switch(classTarget.getClassType()) {
+		case BALL: return bp.base.Ball.class;
+		case BLOCK: return bp.base.Block.class;
+		case PADDLE: return bp.base.Block.class;
+		default: handleError(); return null;
+		}
 	}
 	
-	private Action createAction(EffectBody effectBody) {
-		AdjustmentOperator op = effectBody.getOp();
-		AttributeType attrType = getAttributeType(effectBody.getName());
-		switch(attrType) {
-		case DOUBLE:
-			if(op==AdjustmentOperator.SET) return DoubleAttributeAssignAction.methodCallAction;
-			else return DoubleAttributeIncAction.methodCallAction;
-		case INT:
-			if(op==AdjustmentOperator.SET) return IntAttributeAssignAction.methodCallAction;
-			else return IntAttributeIncAction.methodCallAction;
-		case BOOL:
-			return BooleanAttributeAssignAction.methodCallAction;
-		default:
-			handleError();
-			return null;
-		}
+	//method pattern that matches the getter for attribute attrName of BPObject bpObjectClass
+	private MethodPattern createPattern(Class<?> bpObjectClass, String attrName) {
+		return new MethodPattern(	
+			ModifiersPattern.ANY,
+			TypePattern.ANY,
+			new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bpObjectClass))),
+			new ExactNamePattern("get"+Character.toUpperCase(attrName.charAt(0))+attrName.substring(1).toLowerCase()),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+		);
+	}
+	
+	//create context determining whether target refers to instance
+	private Context generateIsTargetInstanceContext(Context instance, ObjectTarget target) {
+		String id = target.getObject().getId();
+		Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
+		Context actualId = new LocalObjectVariableContext(instance, "id");
+		return new ObjectEqualContext(actualId,targetId);
+	}
+
+	//all possible types an attribute can have
+	private enum AttributeType {
+		DOUBLE, INT, BOOL
 	}
 	
 	private AttributeType getAttributeType(Attribute attr) {
@@ -602,6 +651,7 @@ private Context visit(CollisionExpression e) {
 	}	
 	
 	//--------------------Speed Bounds assurance------------------------
+	
 	/**
 	 * The MethodPattern for the getSpeed getter
 	 */

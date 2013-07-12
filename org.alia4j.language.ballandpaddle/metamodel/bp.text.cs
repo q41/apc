@@ -169,5 +169,5 @@ RULES {
 	BoolCollisionOperand ::= value[BOOLEAN];
 
 	@Operator(type="primitive", weight="6", superclass="CollisionExpression")
-	AttCollisionOperand ::= classType[Block:"block",Ball:"ball",Paddle:"paddle"]"."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance", X:"x", Y:"y",Damage:"damage"];
+	AttCollisionOperand ::= target"."att[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance", X:"x", Y:"y",Damage:"damage"];
 }
