@@ -54,7 +54,7 @@ RULES {
 	CollisionEffect ::= "collision" "effect" id[] "between" leftTarget ("(" leftFilter ")")? "and" rightTarget ("(" rightFilter ")")? "{" body ("duration""="duration[INTEGER])? "}";
 	CollisionEffectBody ::= target"."name[Size:"size",Orientation:"orientation",Speed:"speed", Immaterial:"immaterial", Hardness:"hardness",Resistance:"resistance",X:"x", Y:"y",Damage:"damage"] op[Inc:"+=", Set:"="] expression;
 	
-	ObjectTarget ::= object[];
+	ObjectTarget ::= (object[]|object[CHAR]);
 	ClassTarget ::= classType[Block:"block",Paddle:"paddle",Ball:"ball"];
 	
 	@Operator(type="binary_left_associative", weight="1", superclass="Expression")

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ASCII"?>
+<bp:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bp="http://www.emftext.org/language/ballandpaddle">
+  <level id="first" powerSpawnChance="0.1">
+    <blocks>.......</blocks>
+    <blocks>...A...</blocks>
+    <blocks>..BAB..</blocks>
+    <blocks>.......</blocks>
+    <blocks>.......</blocks>
+  </level>
+  <paddles id="Paddle" x="4.0" y="4.0" size="1" orientation="270"/>
+  <balls id="Ball" x="3.0" y="4.0" direction="270" damage="1" speed="5"/>
+  <blocks id="A" hardness="1" power="//@powers.0"/>
+  <blocks id="B" hardness="1" resistance="10"/>
+  <effects xsi:type="bp:GeneralEffect" id="moreHardness">
+    <target xsi:type="bp:ObjectTarget" object="//@blocks.1"/>
+    <body name="hardness">
+      <expression xsi:type="bp:IntOperand" value="-1"/>
+    </body>
+  </effects>
+  <powers id="Hardness" effects="//@effects.0"/>
+</bp:Root>
