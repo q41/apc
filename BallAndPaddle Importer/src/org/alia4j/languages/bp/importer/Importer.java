@@ -115,7 +115,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 
 	private bp.base.Ball visit(Ball ball) {
-		return new bp.base.Ball(ball.getId(), ball.getX(), ball.getY(), ball.getSize(), ball.getDirection(), ball.getSpeed());
+		return new bp.base.Ball(ball.getId(), ball.getX(), ball.getY(), ball.getSize(), ball.getDirection(), ball.getSpeed(), ball.getDamage());
 	}
 	
 	private bp.base.Power visit(Power power) {

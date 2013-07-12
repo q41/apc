@@ -37,7 +37,7 @@ public class Ball extends MovingBPObject {
 	 * @param orientation the orientation of the ball
 	 * @param speed the speed of the ball
 	 */
-	public Ball(String id, double x, double y, double size, int orientation, int speed){
+	public Ball(String id, double x, double y, double size, int orientation, int speed, int damage){
 		this(id, x, y, size);
 		this.orientation = orientation;
 		this.speed = speed;
@@ -45,6 +45,9 @@ public class Ball extends MovingBPObject {
 			this.speed = lowerSpeedLimit;
 		else if(speed>upperSpeedLimit)
 			this.speed = upperSpeedLimit;
+		this.damage = damage;
+		if(damage==0)
+			this.damage=1;
 	}
 	
 	/**
@@ -64,7 +67,8 @@ public class Ball extends MovingBPObject {
 			this.size = lowerSizeLimit;	
 		if(orientation == -1)
 			orientation = 270;
-		damage = 1;
+		if(damage==0)
+			this.damage=1;
 		alive = true;
 		immaterial = true;
 	}
