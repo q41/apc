@@ -699,10 +699,6 @@
   <children xmi:type="notation:Node" xmi:id="__AKO8upSEeK-e5H3YKkApQ" type="1001">
     <children xmi:type="notation:Node" xmi:id="__AKO9epSEeK-e5H3YKkApQ" type="4001"/>
     <children xmi:type="notation:Node" xmi:id="__AKO9upSEeK-e5H3YKkApQ" type="5001">
-      <children xmi:type="notation:Node" xmi:id="__AKO_upSEeK-e5H3YKkApQ" type="2001">
-        <element xmi:type="ecore:EAttribute" href="bp.text.ecore#//AttCollisionOperand/classType"/>
-        <layoutConstraint xmi:type="notation:Location" xmi:id="__AKO_-pSEeK-e5H3YKkApQ"/>
-      </children>
       <children xmi:type="notation:Node" xmi:id="__AKPAOpSEeK-e5H3YKkApQ" type="2001">
         <element xmi:type="ecore:EAttribute" href="bp.text.ecore#//AttCollisionOperand/att"/>
         <layoutConstraint xmi:type="notation:Location" xmi:id="__AKPAepSEeK-e5H3YKkApQ"/>

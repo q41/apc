@@ -133,7 +133,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//BoolCollisionOperand/value"/>
     </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//AttCollisionOperand">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttCollisionOperand/classType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EReference bp.text.ecore#//AttCollisionOperand/target"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//AttCollisionOperand/att"/>
     </genClasses>
     <genClasses image="false" ecoreClass="bp.text.ecore#//Expression"/>
