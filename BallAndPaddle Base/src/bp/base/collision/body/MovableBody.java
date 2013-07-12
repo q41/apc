@@ -15,13 +15,13 @@ public abstract class MovableBody implements Body {
 	/**
 	 * The object that this body contains
 	 */
-	protected BAPObject object;
+	protected BPObject object;
 	
 	/**
 	 * Creates a new MovableBody with the given BAPObject
 	 * @param object The BAPObject that this body contains
 	 */
-	public MovableBody(BAPObject object){
+	public MovableBody(BPObject object){
 		this.object=object;
 		previousX = getX();
 		previousY = getY();

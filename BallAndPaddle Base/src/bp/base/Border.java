@@ -2,7 +2,7 @@ package bp.base;
 
 import bp.base.collision.body.Body;
 
-public class Border extends BAPObject{
+public class Border extends BPObject{
 
 	/**
 	 * Size bounds

@@ -17,14 +17,14 @@ public class Collision {
 	 * A mapping ob BAPObjects to BAPObjects, 
 	 * representing which BAPObject the key last collided with
 	 */
-	private static Map<BAPObject, BAPObject> lastCollision;
+	private static Map<BPObject, BPObject> lastCollision;
 	
 	/**
 	 * Checks if the object has collided with any items from level
 	 * @param object The object that moved
 	 * @param level The level
 	 */
-	public static void checkForCollision(BAPObject object, Level level) {
+	public static void checkForCollision(BPObject object, Level level) {
 		if(object instanceof Ball)
 			checkForCollision((Ball)object, level);
 		else if(object instanceof SpawnedPower)
@@ -80,9 +80,9 @@ public class Collision {
 	 * @param other The object it's being checked against
 	 * @return If the two objects collided
 	 */
-	public static boolean collision(BAPObject moved, BAPObject other){
+	public static boolean collision(BPObject moved, BPObject other){
 		if(lastCollision == null)
-			lastCollision = new HashMap<BAPObject, BAPObject>();
+			lastCollision = new HashMap<BPObject, BPObject>();
 		if(hasCollided(moved, other)){
 			lastCollision.put(moved, other);			
 			return true;
@@ -97,7 +97,7 @@ public class Collision {
 	 * @param other The other object
 	 * @return if there was a collision
 	 */
-	private static boolean hasCollided(BAPObject moved, BAPObject other){
+	private static boolean hasCollided(BPObject moved, BPObject other){
 		boolean collision;
 		if(moved instanceof Ball){
 			//check if the last collision of moved was with other, if so then it can't have collided with it again right away
@@ -128,14 +128,14 @@ public class Collision {
 	 * @param moved The moved object
 	 * @param other The other object
 	 */
-	private static void haveCollided(BAPObject moved, BAPObject other){}
+	private static void haveCollided(BPObject moved, BPObject other){}
 	
 	/**
 	 * Called when a collision has been detected
 	 * @param moved The moved ball
 	 * @param other The other object
 	 */
-	private static void ballHasCollided(Ball moved, BAPObject other){}
+	private static void ballHasCollided(Ball moved, BPObject other){}
 	
 	/**
 	 * Checks if the ball has collided
@@ -143,7 +143,7 @@ public class Collision {
 	 * @param other The other object
 	 * @return if the two objects collided
 	 */
-	private static boolean hasCollided(Ball ball, BAPObject other){
+	private static boolean hasCollided(Ball ball, BPObject other){
 		if(other instanceof bp.base.Border)
 			return hasCollided(ball, (bp.base.Border)other);
 		else if(other instanceof Paddle)
@@ -159,7 +159,7 @@ public class Collision {
 	 * @param other The other object
 	 * @return if the two objects collided
 	 */
-	private static boolean hasCollided(Paddle paddle, BAPObject other){
+	private static boolean hasCollided(Paddle paddle, BPObject other){
 		if(other instanceof bp.base.Border)
 			return hasCollided(paddle, (bp.base.Border)other);
 		else if(other instanceof Ball)
@@ -175,7 +175,7 @@ public class Collision {
 	 * @param other The other object
 	 * @return if the two objects collided
 	 */
-	private static boolean hasCollided(SpawnedPower power, BAPObject other){
+	private static boolean hasCollided(SpawnedPower power, BPObject other){
 		if(other instanceof bp.base.Border)
 			return hasCollided(power, (bp.base.Border)other);
 		else if(other instanceof Paddle)

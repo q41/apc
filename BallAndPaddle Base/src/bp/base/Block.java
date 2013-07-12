@@ -2,7 +2,7 @@ package bp.base;
 
 import bp.base.collision.body.*;
 
-public class Block extends BAPObject {
+public class Block extends BPObject {
 
 	/**
 	 * The amount of life of this block

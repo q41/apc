@@ -10,7 +10,7 @@ public class StandardCollisionResolver extends CollisionResolver{
 	 * @param moved The object that moved
 	 * @param other The object that got hit
 	 */
-	public static void resolveCollision(BAPObject moved, BAPObject other) {
+	public static void resolveCollision(BPObject moved, BPObject other) {
 		if(moved instanceof Ball)
 			resolveCollision((Ball) moved, other);
 		else if(moved instanceof Paddle)
@@ -25,7 +25,7 @@ public class StandardCollisionResolver extends CollisionResolver{
 	 * @param moved The ball that moved
 	 * @param other The object that got hit
 	 */
-	protected static void resolveCollision(Ball moved, BAPObject other){
+	protected static void resolveCollision(Ball moved, BPObject other){
 		if(other instanceof bp.base.Border)
 			resolveCollision(moved, (bp.base.Border)other);
 		else if(other instanceof Paddle)
@@ -39,7 +39,7 @@ public class StandardCollisionResolver extends CollisionResolver{
 	 * @param moved The paddle that moved
 	 * @param other The object that got hit
 	 */
-	protected static void resolveCollision(Paddle moved, BAPObject other){
+	protected static void resolveCollision(Paddle moved, BPObject other){
 		if(other instanceof bp.base.Border)
 			resolveCollision(moved, (bp.base.Border)other);
 		else if(other instanceof Ball)
@@ -53,7 +53,7 @@ public class StandardCollisionResolver extends CollisionResolver{
 	 * @param moved The power that moved
 	 * @param other The object that got hit
 	 */
-	protected static void resolveCollision(SpawnedPower moved, BAPObject other){
+	protected static void resolveCollision(SpawnedPower moved, BPObject other){
 		if(other instanceof bp.base.Border)
 			resolveCollision(moved, (bp.base.Border)other);
 		else if(other instanceof Paddle)
