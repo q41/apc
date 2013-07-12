@@ -68,7 +68,7 @@ public class Game implements Observer {
 	 * @param height The height for the screen
 	 * @param scale The scaling to be used
 	 */
-	public Game(Level level, int width, int height, double scale, boolean fullscreen){
+	public Game(Level level, int width, int height, double scale){
 		this.width = width;
 		this.height = height;
 		this.levelHeight = level.getHeight();
@@ -76,7 +76,6 @@ public class Game implements Observer {
 		this.scale = scale;
 		capResolution();
 		level.addObserver(this);
-		System.out.println(width+" "+height+" "+fullscreen);
 		try {			
 			Display.setDisplayMode(new DisplayMode(width, height));
 			Display.create();
@@ -85,8 +84,6 @@ public class Game implements Observer {
 				System.exit(0);
 			}
 		initGL();
-		if(fullscreen)
-			setDisplayMode(width, height, fullscreen);
 	}
 	
 	/**

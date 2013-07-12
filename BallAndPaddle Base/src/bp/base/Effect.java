@@ -26,11 +26,14 @@ public class Effect {
 	 */
 	private Map<Attachment, PrecedenceRule> precedenceRules;
 	
+	private boolean sysTimer;
+	
 	public Effect(int duration, Attachment attachment){
 		this.duration = duration;
 		this.attachment = attachment;
 		activeAttachments = new HashMap<Attachment, Long>();
 		precedenceRules = new HashMap<Attachment, PrecedenceRule>();
+		sysTimer = true;
 	}
 	
 	public void activate(){
@@ -50,6 +53,7 @@ public class Effect {
 		precedence = new PrecedenceRule(existingAtt,attSet);
 		precedenceRules.put(att, precedence);
 		activeAttachments.put(att, getEndTime());
+		System.out.println(getTime()+" deployed: "+attachment);
 		org.alia4j.fial.System.deploy(att);
 		org.alia4j.fial.System.deploy(precedence);		
 	}
@@ -74,6 +78,7 @@ public class Effect {
 		
 		for(Attachment att : toUndeploy){
 			activeAttachments.remove(att);
+			System.out.println(getTime()+" undeployed: "+attachment);
 		}
 	}
 	
@@ -84,7 +89,10 @@ public class Effect {
 	private long getEndTime(){
 		if(duration==0)
 			return Long.MAX_VALUE;
-		return ((Sys.getTime()+duration*1000) * 1000) / Sys.getTimerResolution();
+		else if(sysTimer)
+			return ((Sys.getTime()+duration*1000) * 1000) / Sys.getTimerResolution();
+		else
+			return Timer.getCurrentTime()+duration*1000;
 	}
 	
 	/**
@@ -92,7 +100,14 @@ public class Effect {
 	 * @return the current time
 	 */
 	private long getTime(){
-		 return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+		if(sysTimer)
+			return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+		else
+			return Timer.getCurrentTime();
+	}
+
+	public void sysTimer(boolean sysTimer) {
+		this.sysTimer=sysTimer;		
 	}
 
 }

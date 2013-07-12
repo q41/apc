@@ -11,7 +11,7 @@
   <balls id="Ball" x="3.0" y="4.0" speed="5"/>
   <blocks id="A" hardness="1"/>
   <blocks id="B" hardness="5" resistance="1" power="//@powers.0"/>
-  <effects xsi:type="bp:GeneralEffect" id="EvenMoreSpeed" duration="10">
+  <effects xsi:type="bp:GeneralEffect" id="EvenMoreSpeed" duration="2">
     <target xsi:type="bp:ClassTarget" classType="ball"/>
     <body name="damage">
       <expression xsi:type="bp:IntOperand" value="-5"/>

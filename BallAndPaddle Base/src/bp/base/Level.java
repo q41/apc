@@ -76,6 +76,7 @@ public class Level extends Observable implements Runnable {
 	private long lastFrame;
 	private long lastFPS;
 	private int fps;
+	private boolean smooth = true;
 	
 	/**
 	 * Returns the level, creates one if it doesn't yet exist
@@ -91,6 +92,16 @@ public class Level extends Observable implements Runnable {
 	 * Creates a new level
 	 */
 	public Level(){}
+	
+	/**
+	 * Sets if the game should run normally or without relation to fps
+	 */
+	public void setSmooth(boolean smooth){
+		this.smooth = smooth;
+		for(Power power: powers)
+			for(Effect effect : power.getEffects())
+				effect.sysTimer(false);
+	}
 	
 	/**
 	 * Sets the id of this level	
@@ -249,6 +260,29 @@ public class Level extends Observable implements Runnable {
 			moveAllObjects(factor, stepsPerObject, maxSteps);	
 			checkForEffectDeactivation();		
 		}	
+		List<BPObject> objects = new ArrayList<BPObject>();
+		objects.addAll(spawnedPowers);
+		objects.addAll(blocks);
+		objects.addAll(balls);
+		objects.addAll(paddles);
+		this.setChanged();
+		this.notifyObservers(objects);
+	}
+	
+	/**
+	 * Moves all the moving objects the given amount. 
+	 * Runs smoother
+	 * And notifies the observers
+	 */
+	public void update(long fps) {
+		SpawnPowers();			
+		long time = 1000/fps;
+		double factor = (double)1/fps;
+		Map<BPObject, Integer> stepsPerObject = calculateStepsPerObject(factor);
+		int maxSteps = getMaxSteps(stepsPerObject);
+		moveAllObjects(factor, stepsPerObject, maxSteps);	
+		checkForEffectDeactivation();				
+		Timer.incrementTime(time);
 		List<BPObject> objects = new ArrayList<BPObject>();
 		objects.addAll(spawnedPowers);
 		objects.addAll(blocks);
@@ -536,8 +570,11 @@ public class Level extends Observable implements Runnable {
 		int ticks = 0;
 		while(!gameOver() && !Display.isCloseRequested()){
 			pollInput();
-			int delta = getDelta();			
-			update((int) (delta*init));
+			int delta = getDelta();		
+			if(smooth)
+				update((long)initialFPS);
+			else
+				update((int) (delta*init));
 			Display.sync(maxFPS);
 			if(init<1.0)
 				//let the game start slowly since alia4j turns the game into a mess otherwise
