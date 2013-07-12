@@ -332,7 +332,7 @@ public class Level extends Observable implements Runnable {
 	private void  moveBalls(double factor,
 			Map<BPObject, Integer> stepsPerObject, int maxSteps){
 		for(int j =0; j<balls.size(); j++){
-			handleBAPObjectUpdate(balls.get(j), factor, stepsPerObject, maxSteps);	
+			handleBPObjectUpdate(balls.get(j), factor, stepsPerObject, maxSteps);	
 			if(balls.get(j).isDestroyed()){
 				balls.remove(j);
 				j--;
@@ -351,7 +351,7 @@ public class Level extends Observable implements Runnable {
 			Map<BPObject, Integer> stepsPerObject, int maxSteps){
 		for(Paddle pad : paddles){
 			if(pad.getOrientation()!=0){
-				handleBAPObjectUpdate(pad, factor, stepsPerObject, maxSteps);	
+				handleBPObjectUpdate(pad, factor, stepsPerObject, maxSteps);	
 			}
 		}
 	}
@@ -365,7 +365,7 @@ public class Level extends Observable implements Runnable {
 	private void  movePowers(double factor,
 			Map<BPObject, Integer> stepsPerObject, int maxSteps){
 		for(int j =0; j<spawnedPowers.size();j++){
-			handleBAPObjectUpdate(spawnedPowers.get(j), factor, stepsPerObject, maxSteps);					
+			handleBPObjectUpdate(spawnedPowers.get(j), factor, stepsPerObject, maxSteps);					
 			if(spawnedPowers.get(j).caught()||spawnedPowers.get(j).destroyed()){						
 				spawnedPowers.remove(j);
 				j--;
@@ -380,7 +380,7 @@ public class Level extends Observable implements Runnable {
 	 * @param stepsPerObject The map containing the amount of steps the object needs to take to complete it's move
 	 * @param maxSteps the maximum amount of steps needed for all objects to complete their moves
 	 */
-	private void handleBAPObjectUpdate(MovingBAPObject object, double factor, Map<BPObject, Integer> stepsPerObject ,int maxSteps){
+	private void handleBPObjectUpdate(MovingBPObject object, double factor, Map<BPObject, Integer> stepsPerObject ,int maxSteps){
 		object.calculateMove(factor*stepsPerObject.get(object)/maxSteps, this);
 		try {
 			object.update();
@@ -568,8 +568,6 @@ public class Level extends Observable implements Runnable {
 				maxFPS+=1;
 				ticks=0;
 			}
-			//TODO this is testing stuff, don't forget to remove!
-			powers.get(0).getEffects().get(0).activate();
 			ticks++;	
 		}
 		while(gameOver() && !Display.isCloseRequested()){

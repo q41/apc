@@ -3,7 +3,7 @@ package bp.base;
 import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 
-public class Ball extends MovingBAPObject {
+public class Ball extends MovingBPObject {
 
 	private double size;
 	//orientation in degrees, from 0 till 360
@@ -66,7 +66,7 @@ public class Ball extends MovingBAPObject {
 			orientation = 270;
 		damage = 1;
 		alive = true;
-		immaterial = true;
+		immaterial = false;
 	}
 	
 	/**

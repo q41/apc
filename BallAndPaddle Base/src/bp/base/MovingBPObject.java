@@ -2,7 +2,7 @@ package bp.base;
 
 import bp.base.exception.IllegalBodyException;
 
-public abstract class MovingBAPObject extends BPObject {
+public abstract class MovingBPObject extends BPObject {
 
 	/**
 	 * Creates a new MovingBAPObject
@@ -11,7 +11,7 @@ public abstract class MovingBAPObject extends BPObject {
 	 * @param y the y coordinate of the object
 	 * @param body the body of the object
 	 */
-	public MovingBAPObject(String id, double x, double y) {
+	public MovingBPObject(String id, double x, double y) {
 		super(id, x, y);
 	}
 	

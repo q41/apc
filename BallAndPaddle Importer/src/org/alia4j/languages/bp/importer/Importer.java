@@ -68,6 +68,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		createSpeedBoundAssurance();
 		createSizeBoundAssurance();
 		createXYBoundAssurance();
+		createDamageBoundAssurance();
 		//createEffect(Ball.class, "direction", AttributeType.INT);
 		
 		//-----------------------
@@ -627,6 +628,26 @@ private Context visit(CollisionExpression e) {
 		initialAttachments.add(attachement);
 	}
 	
+	//--------------------Damage Bounds assurance------------------------
+	private static final MethodPattern getDamage = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getDamage"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createDamageBoundAssurance(){
+		Context max = ContextFactory.findOrCreateIntegerConstantContext(Integer.MAX_VALUE);
+		Context min = ContextFactory.findOrCreateIntegerConstantContext(0);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getDamage, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), IntAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	
 	//--------------------Collision detection------------------------
 	
 	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
@@ -686,7 +707,7 @@ private Context visit(CollisionExpression e) {
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
-			new ExactNamePattern("haveCollided"),
+			new ExactNamePattern("ballHasCollided"),
 			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BPObject"})),
 			ExceptionsPattern.ANY
 	);

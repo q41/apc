@@ -11,7 +11,7 @@ import org.alia4j.liam.Attachment;
 import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 
-public class SpawnedPower extends MovingBAPObject {
+public class SpawnedPower extends MovingBPObject {
 
 	/**
 	 * The orientation of this spawned power, straight down
