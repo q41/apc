@@ -158,7 +158,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create predicate
 		Context effectApplies = null;		
 		Context filter = (effect.getFilter()!=null) ? visit(effect.getFilter()) : null;
-		Context isTargetInstance = (target instanceof ObjectTarget) ? generateIsTargetInstanceContext(target) : null;
+		Context isTargetInstance = (target instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), target) : null;
 		
 		if(filter!=null && isTargetInstance!=null) effectApplies = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
 		else if(filter!=null) effectApplies = filter;
@@ -178,19 +178,14 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
 	
-	private bp.base.Effect visit(CollisionEffect effect) {
+	private bp.base.Effect visit2(CollisionEffect effect) {
 		CollisionEffectBody body = effect.getBody();
-//		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
-//		Class<?>[] targetClasses = new Class<?>[2];
-//		for(int i = 0; i<targets.length; i++) {
-//			targetClasses[i] = targetToClass(targets[i]);
-//		}
 				
 		//create pattern
 		MethodPattern pattern = createPattern(targetToClass(body.getTarget()), body.getName().toString());
 		
 		//create predicate
-		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(body.getTarget()) : null;
+		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), body.getTarget()) : null;
 		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
 		
 		//create context
@@ -205,6 +200,54 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
 
+	private bp.base.Effect visit(CollisionEffect effect) {
+		CollisionEffectBody body = effect.getBody();
+
+		//pattern
+		MethodPattern pattern = new MethodPattern(	
+				ModifiersPattern.ANY,
+				TypePattern.ANY,
+				new SubTypePattern(new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bp.base.collision.Collision.class))),
+				new ExactNamePattern("haveCollided"),
+				ParametersPattern.ANY,
+				ExceptionsPattern.ANY
+		);
+		
+		//create predicate
+		
+		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
+		Class<?>[] targetClasses = new Class<?>[2];
+		for(int i = 0; i<targets.length; i++) {
+			targetClasses[i] = targetToClass(targets[i]);
+		}
+		
+		
+		Context effectApplies = null;		
+		Context leftBPObject = ContextFactory.findOrCreateArgumentContext(0);
+		Context rightBPObject = ContextFactory.findOrCreateArgumentContext(1);
+		
+		Context effectAppliesLeft  = (effect.getLeftTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(leftBPObject, effect.getLeftTarget()) : null;
+		Context effectAppliesRight = (effect.getRightTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(rightBPObject, effect.getRightTarget()) : null;
+		
+		if(effectAppliesLeft!=null && effectAppliesRight!=null) effectApplies = ContextFactory.findOrCreateAndContext(effectAppliesLeft, effectAppliesRight);
+		else if(effectAppliesLeft!=null) effectApplies = effectAppliesLeft;
+		else if(effectAppliesRight!=null) effectApplies = effectAppliesRight;
+		
+		
+		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
+				
+		//create context
+		Context context = visit(body.getExpression());
+						
+		//create action
+		Action action = null;
+				
+		//create effect
+		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
+		return null;
+	}
+	
 	private Context visit(Expression e) {
 		
 		if(e instanceof BinaryExpression) {
@@ -421,11 +464,10 @@ private Context visit(CollisionExpression e) {
 		);
 	}
 	
-	private Context generateIsTargetInstanceContext(Target target) {
+	private Context generateIsTargetInstanceContext(Context instance, Target target) {
 		String id = ((ObjectTarget) target).getObject().getId();
 		Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Context actualId = new LocalObjectVariableContext(calleeContext, "id");
+		Context actualId = new LocalObjectVariableContext(instance, "id");
 		return new ObjectEqualContext(actualId,targetId);
 	}
 

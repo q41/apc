@@ -144,9 +144,9 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		attribute EBoolean value (1..1);
 	}
 	
-	class AttCollisionOperand extends CollisionExpression{	
-		attribute BPClassType classType(1..1);
-		attribute Attribute att(1..1);				
+	class AttCollisionOperand extends CollisionExpression{
+		containment reference Target target(1..1);
+		attribute Attribute att(1..1);			
 	}
 	
 	abstract class Expression{}
