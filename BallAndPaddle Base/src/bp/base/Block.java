@@ -20,11 +20,11 @@ public class Block extends BPObject {
 	/**
 	 * The size of this block
 	 */
-	private final double size = 1;
+	private double size;
 	/**
 	 * Size bounds
 	 */
-	private final double upperSizeLimit = 1;
+	private final double upperSizeLimit = 10;
 	private final double lowerSizeLimit = 1;
 	
 	/**
@@ -51,6 +51,7 @@ public class Block extends BPObject {
 		this.hardness = b.getHardness();
 		this.resistance = b.getResistance();
 		this.power = b.getPower();
+		size=10;
 	}
 	
 	/**

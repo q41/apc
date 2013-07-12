@@ -28,7 +28,7 @@ public class RectangleBody extends MovableBody {
 		if(object instanceof Paddle)		
 			return new Point(getX()+0.4+((Paddle)object).getSize()*0.1, getY()+0.26);
 		else if(object instanceof Block)
-			return new Point(((Block)object).getX()+((Block)object).getSize(), ((Block)object).getY()+((Block)object).getSize());
+			return new Point(((Block)object).getX()+((Block)object).getSize()/10, ((Block)object).getY()+((Block)object).getSize()/10);
 		else
 			return new Point(((SpawnedPower)object).getX()+((SpawnedPower)object).getSize(), ((SpawnedPower)object).getY()+((SpawnedPower)object).getSize());
 	}
