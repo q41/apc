@@ -20,23 +20,6 @@ public class Collision {
 	private static Map<BPObject, BPObject> lastCollision;
 
 	/**
-	 * Checks if the object has collided with any items from level
-	 * 
-	 * @param object
-	 *            The object that moved
-	 * @param level
-	 *            The level
-	 */
-	public static void checkForCollision(BPObject object, Level level) {
-		if (object instanceof Ball)
-			checkForCollision((Ball) object, level);
-		else if (object instanceof SpawnedPower)
-			checkForCollision((SpawnedPower) object, level);
-		else if (object instanceof Paddle)
-			checkForCollision((Paddle) object, level);
-	}
-
-	/**
 	 * Checks if the SpawnedPower collided with any paddles, or the bottom
 	 * border
 	 * 
@@ -46,9 +29,19 @@ public class Collision {
 	 *            The level
 	 */
 	public static void checkForCollision(SpawnedPower power, Level level) {
-		collision(power, level.getBorders()[3]);
+		if (lastCollision == null)
+			lastCollision = new HashMap<BPObject, BPObject>();
+		boolean collision = hasCollided(power, level.getBorders()[3]);
+		if(collision){
+			haveCollided(power, level.getBorders()[3]);
+			return;
+		}
 		for (Paddle paddle : level.getPaddles()) {
-			collision(power, paddle);
+			collision = hasCollided(power, paddle);
+			if(collision){
+				haveCollided(power, paddle);
+				return;
+			}
 		}
 	}
 
@@ -61,14 +54,35 @@ public class Collision {
 	 *            The level
 	 */
 	public static void checkForCollision(Ball ball, Level level) {
+		if (lastCollision == null)
+			lastCollision = new HashMap<BPObject, BPObject>();
+		boolean collision = false;
 		for (bp.base.Border border : level.getBorders()) {
-			collision(ball, border);
+			collision = false;
+			if(!(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(border)))			
+				collision = hasCollided(ball, border);
+			if(collision){
+				lastCollision.put(ball, border);
+				haveCollided(ball, border);
+			}
 		}
 		for (Paddle paddle : level.getPaddles()) {
-			collision(ball, paddle);
+			collision = false;
+			if(!(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(paddle)))			
+				collision = hasCollided(ball, paddle);
+			if(collision){
+				lastCollision.put(ball, paddle);
+				haveCollided(ball, paddle);
+			}
 		}
 		for (Block block : level.getBlocks()) {
-			collision(ball, block);
+			collision = false;
+			if(!(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(block)))			
+				collision = hasCollided(ball, block);
+			if(collision){
+				lastCollision.put(ball, block);
+				haveCollided(ball, block);
+			}
 		}
 	}
 
@@ -81,68 +95,46 @@ public class Collision {
 	 *            The level
 	 */
 	public static void checkForCollision(Paddle paddle, Level level) {
-		if (paddle.getOrientation() > 0)
-			collision(paddle, level.getBorders()[2]);
-		else if (paddle.getOrientation() < 0)
-			collision(paddle, level.getBorders()[1]);
-	}
-
-	/**
-	 * Checks if the given two objects collided
-	 * 
-	 * @param moved
-	 *            The moved object
-	 * @param other
-	 *            The object it's being checked against
-	 * @return If the two objects collided
-	 */
-	public static boolean collision(BPObject moved, BPObject other) {
 		if (lastCollision == null)
 			lastCollision = new HashMap<BPObject, BPObject>();
-		if (hasCollided(moved, other)) {
-			lastCollision.put(moved, other);
-			return true;
+		boolean collision = false;
+		int borderIndex = 0;
+		if (paddle.getOrientation() > 0 && !(lastCollision.containsKey(paddle) && lastCollision.get(paddle).equals(level.getBorders()[2]))){
+			collision = hasCollided(paddle, level.getBorders()[2]);
+			if(collision)
+				borderIndex=2;
 		}
-		return false;
-	}
-
-	/**
-	 * Checks if the two objects collided, but only if the last collision of the
-	 * moved object wasn't also with the other object.
-	 * 
-	 * @param moved
-	 *            The object that moved
-	 * @param other
-	 *            The other object
-	 * @return if there was a collision
-	 */
-	private static boolean hasCollided(BPObject moved, BPObject other) {
-		boolean collision;
-		if (moved instanceof Ball) {
-			// check if the last collision of moved was with other, if so then
-			// it can't have collided with it again right away
-			// and thus there is no need to check if they collided
-			if (!lastCollision.containsKey(moved)
-					|| (lastCollision.containsKey(moved) && !lastCollision.get(
-							moved).equals(other)))
-				collision = hasCollided((Ball) moved, other);
-			else
-				collision = false;
-			if (collision) {
-				haveCollided(moved, other);
-			}
-			return collision;
-		} else if (moved instanceof Paddle)
-			collision = hasCollided((Paddle) moved, other);
-		else if (moved instanceof SpawnedPower)
-			collision = hasCollided((SpawnedPower) moved, other);
-		else
+		else if (paddle.getOrientation() < 0 && !(lastCollision.containsKey(paddle) && lastCollision.get(paddle).equals(level.getBorders()[1]))){
+			collision = hasCollided(paddle, level.getBorders()[1]);
+			if(collision)
+				borderIndex=1;
+		}
+		if(collision){
+			lastCollision.put(paddle, level.getBorders()[borderIndex]);
+			haveCollided(paddle, level.getBorders()[borderIndex]);
+		}
+		//didn't hit border, but maybe it hit a ball or power
+		//revert position of the two in order to reuse code
+		for (Ball ball : level.getBalls()) {
 			collision = false;
-		if (collision)
-			haveCollided(moved, other);
-		return collision;
+			if(!(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(paddle)))			
+				collision = hasCollided(ball, paddle);
+			if(collision){
+				lastCollision.put(ball, paddle);
+				haveCollided(ball, paddle);
+			}
+		}
+		for (SpawnedPower power : level.getSpawnedPowers()){
+			collision = false;
+			if(!(lastCollision.containsKey(power) && lastCollision.get(power).equals(paddle)))			
+				collision = hasCollided(power, paddle);
+			if(collision){
+				lastCollision.put(power, paddle);
+				haveCollided(power, paddle);
+			}
+		}
 	}
-
+	
 	/**
 	 * Called when a collision has been detected. This method forms a joinpoint
 	 * for the collision handling aspect
@@ -153,61 +145,6 @@ public class Collision {
 	 *            The other object
 	 */
 	private static void haveCollided(BPObject moved, BPObject other) {
-	}
-
-	/**
-	 * Checks if the ball has collided
-	 * 
-	 * @param ball
-	 *            The ball that moved
-	 * @param other
-	 *            The other object
-	 * @return if the two objects collided
-	 */
-	private static boolean hasCollided(Ball ball, BPObject other) {
-		if (other instanceof bp.base.Border)
-			return hasCollided(ball, (bp.base.Border) other);
-		else if (other instanceof Paddle)
-			return hasCollided(ball, (Paddle) other);
-		else if (other instanceof Block)
-			return hasCollided(ball, (Block) other);
-		return false;
-	}
-
-	/**
-	 * Checks if the paddle has collided
-	 * 
-	 * @param paddle
-	 *            The paddle that moved
-	 * @param other
-	 *            The other object
-	 * @return if the two objects collided
-	 */
-	private static boolean hasCollided(Paddle paddle, BPObject other) {
-		if (other instanceof bp.base.Border)
-			return hasCollided(paddle, (bp.base.Border) other);
-		else if (other instanceof Ball)
-			return hasCollided(paddle, (Ball) other);
-		else if (other instanceof SpawnedPower)
-			return hasCollided((SpawnedPower) other, paddle);
-		return false;
-	}
-
-	/**
-	 * Checks if the power has collided
-	 * 
-	 * @param power
-	 *            The spawned power that moved
-	 * @param other
-	 *            The other object
-	 * @return if the two objects collided
-	 */
-	private static boolean hasCollided(SpawnedPower power, BPObject other) {
-		if (other instanceof bp.base.Border)
-			return hasCollided(power, (bp.base.Border) other);
-		else if (other instanceof Paddle)
-			return hasCollided(power, (Paddle) other);
-		return false;
 	}
 
 	/**
@@ -351,19 +288,6 @@ public class Collision {
 					.getPointY() < paddleBody.getBottomRight().getPointY());
 		else
 			return false;
-	}
-
-	/**
-	 * Checks if the ball collided with the paddle
-	 * 
-	 * @param paddle
-	 *            The paddle
-	 * @param ball
-	 *            The ball
-	 * @return if the two objects collided
-	 */
-	private static boolean hasCollided(Paddle paddle, Ball ball) {
-		return hasCollided(ball, paddle);
 	}
 
 	/**

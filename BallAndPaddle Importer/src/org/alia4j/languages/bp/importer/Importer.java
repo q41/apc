@@ -61,7 +61,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Process the AST by traversing the syntax tree and visiting each model element
 		visit(root);
 		
-		createBaseCollisionDetection();
+		createCollisionDetection();
 		createCollisionHandling();
 		createSpeedBoundAssurance();
 		createSizeBoundAssurance();
@@ -648,13 +648,15 @@ private Context visit(CollisionExpression e) {
 	
 	//--------------------Collision detection------------------------
 	
-	private static final Action checkForCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.Collision"),
-			"checkForCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BPObject", "bp.base.Level"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
+	private Action createCheckForCollisionAction(String type){
+		return ActionFactory.findOrCreateMethodCallAction(
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.Collision"),
+				"checkForCollision",
+				TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{type, "bp.base.Level"}),
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+				ResolutionStrategy.STATIC			
+				);
+	}	
 	
 	private static final MethodPattern LevelHandleBPObjectUpdateMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
@@ -665,81 +667,34 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
-	private void createBaseCollisionDetection(){		
+	private void createCollisionDetection(){
+		createCollisionDetection("bp.base.Ball",createCheckForCollisionAction("bp.base.Ball"));
+		createCollisionDetection("bp.base.Paddle",createCheckForCollisionAction("bp.base.Paddle"));
+		createCollisionDetection("bp.base.SpawnedPower",createCheckForCollisionAction("bp.base.SpawnedPower"));
+	}
+	
+	private void createCollisionDetection(String type, Action action){
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		AtomicPredicate aPred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName(type));
 		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(LevelHandleBPObjectUpdateMethodPattern, null, con);//Collections.singletonList(argumentContext));
-		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), checkForCollision, ScheduleInfo.AFTER);
+		BasicPredicate<AtomicPredicate> pred = new BasicPredicate<AtomicPredicate>(aPred, true);
+		Specialization specialization = new Specialization(LevelHandleBPObjectUpdateMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
 	
 	//------------------Collision handling--------------------
 	
-	private static final Action handleBallBlockCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.Block"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final Action handleBallPaddleCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.Paddle"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final Action handleBallBorderCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.Border"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final Action handlePaddleBallCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Paddle","bp.base.Ball"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final Action handlePaddleBorderCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Paddle","bp.base.Border"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final Action handlePaddlePowerCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Paddle","bp.base.SpawnedPower"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final Action handlePowerPaddleCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.SpawnedPower","bp.base.Paddle"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	
-	private static final Action handlePowerBorderCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.SpawnedPower","bp.base.Border"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
+	private Action createCollisionHandlingAction(String leftType, String rightType){
+		return ActionFactory.findOrCreateMethodCallAction(
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+				"resolveCollision",
+				TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{leftType,rightType}),
+				TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+				ResolutionStrategy.STATIC			
+				);
+	}
 	
 	private static final MethodPattern HasCollidedMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
@@ -751,109 +706,25 @@ private Context visit(CollisionExpression e) {
 	);
 	
 	private void createCollisionHandling(){
-		createBallPaddleCollisionHandling();
-		createBallBlockCollisionHandling();
-		createBallBorderCollisionHandling();
-		createPaddleBallCollisionHandling();
-		createPaddleBorderCollisionHandling();		
-		createPaddlePowerCollisionHandling();		
-		createPowerPaddleCollisionHandling();
-		createPowerBorderCollisionHandling();
+		createCollisionHandling("bp.base.Ball","bp.base.Paddle",createCollisionHandlingAction("bp.base.Ball", "bp.base.Paddle"));
+		createCollisionHandling("bp.base.Ball","bp.base.Block",createCollisionHandlingAction("bp.base.Ball", "bp.base.Block"));
+		createCollisionHandling("bp.base.Ball","bp.base.Border",createCollisionHandlingAction("bp.base.Ball", "bp.base.Border"));
+		createCollisionHandling("bp.base.Paddle","bp.base.Ball",createCollisionHandlingAction("bp.base.Paddle","bp.base.Ball"));
+		createCollisionHandling("bp.base.Paddle","bp.base.Border",createCollisionHandlingAction("bp.base.Paddle","bp.base.Border"));
+		createCollisionHandling("bp.base.Paddle","bp.base.SpawnedPower",createCollisionHandlingAction("bp.base.Paddle","bp.base.SpawnedPower"));
+		createCollisionHandling("bp.base.SpawnedPower","bp.base.Paddle",createCollisionHandlingAction("bp.base.SpawnedPower","bp.base.Paddle"));
+		createCollisionHandling("bp.base.SpawnedPower","bp.base.Border",createCollisionHandlingAction("bp.base.SpawnedPower","bp.base.Border"));
 	}
 	
-	private void createBallPaddleCollisionHandling(){
+	private void createCollisionHandling(String leftType, String rightType, Action action){
 		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
 		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
-		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
+		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName(leftType));
+		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName(rightType));
 		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(paddle, true));
 		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
 		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleBallPaddleCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createBallBlockCollisionHandling(){
-		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
-		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
-		AtomicPredicate block = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Block"));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(block, true));
-		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
-		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleBallBlockCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createBallBorderCollisionHandling(){
-		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
-		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
-		AtomicPredicate border = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Border"));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(border, true));
-		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
-		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleBallBorderCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createPaddleBallCollisionHandling(){
-		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
-		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
-		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(paddle, true), new BasicPredicate<AtomicPredicate>(ball, true));
-		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
-		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePaddleBallCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createPaddleBorderCollisionHandling(){
-		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
-		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
-		AtomicPredicate border = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Border"));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(paddle, true), new BasicPredicate<AtomicPredicate>(border, true));
-		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
-		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePaddleBorderCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createPaddlePowerCollisionHandling(){
-		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
-		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
-		AtomicPredicate power = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.SpawnedPower"));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(paddle, true), new BasicPredicate<AtomicPredicate>(power, true));
-		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
-		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePaddlePowerCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createPowerPaddleCollisionHandling(){
-		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
-		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate power = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.SpawnedPower"));
-		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(power, true), new BasicPredicate<AtomicPredicate>(paddle, true));
-		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
-		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePowerPaddleCollision, ScheduleInfo.AFTER);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createPowerBorderCollisionHandling(){
-		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
-		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate power = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.SpawnedPower"));
-		AtomicPredicate border = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Border"));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(power, true), new BasicPredicate<AtomicPredicate>(border, true));
-		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
-		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePowerBorderCollision, ScheduleInfo.AFTER);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),action, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
 }

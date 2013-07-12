@@ -570,6 +570,10 @@ public class Level extends Observable implements Runnable {
 	public static boolean isDeployed(String id) {
 		return deployedEffects.contains(id);
 	}
+
+	public List<SpawnedPower> getSpawnedPowers() {
+		return spawnedPowers;
+	}
 	
 	
 }
