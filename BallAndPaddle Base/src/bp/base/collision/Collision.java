@@ -93,20 +93,20 @@ public class Collision {
 			lastCollision = new HashMap<BPObject, BPObject>();
 		boolean collision = false;
 		int borderIndex = 0;
-		if (paddle.getOrientation() > 0 && !(lastCollision.containsKey(paddle) && lastCollision.get(paddle).equals(level.getBorders()[2]))){
+		if (paddle.getOrientation() > 0){
 			collision = hasCollided(paddle, level.getBorders()[2]);
-			if(collision)
+			if(collision){
 				borderIndex=2;
+			}
 		}
-		else if (paddle.getOrientation() < 0 && !(lastCollision.containsKey(paddle) && lastCollision.get(paddle).equals(level.getBorders()[1]))){
+		else if (paddle.getOrientation() < 0){
 			collision = hasCollided(paddle, level.getBorders()[1]);
 			if(collision)
 				borderIndex=1;
 		}
-		if(collision){
-			lastCollision.put(paddle, level.getBorders()[borderIndex]);
+		if(collision)
 			haveCollided(paddle, level.getBorders()[borderIndex]);
-		}
+		
 		//didn't hit border, but maybe it hit a ball or power
 		//revert position of the two in order to reuse code
 		for (Ball ball : level.getBalls()) {
@@ -271,10 +271,11 @@ public class Collision {
 		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border
 				.getBody();
 		if (borderBody.getStart().getPointX() == borderBody.getEnd()
-				.getPointX())
+				.getPointX()){
 			return (borderBody.getStart().getPointX() > paddleBody.getTopLeft()
 					.getPointX() && borderBody.getStart().getPointX() < paddleBody
 					.getBottomRight().getPointX());
+		}
 		else if (borderBody.getStart().getPointY() == borderBody.getEnd()
 				.getPointY())
 			return (borderBody.getStart().getPointY() >= paddleBody
