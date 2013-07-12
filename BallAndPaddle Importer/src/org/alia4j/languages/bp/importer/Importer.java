@@ -68,6 +68,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		createSpeedBoundAssurance();
 		createSizeBoundAssurance();
 		createXYBoundAssurance();
+		createDamageBoundAssurance();
 		//createEffect(Ball.class, "direction", AttributeType.INT);
 		
 		//-----------------------
@@ -555,6 +556,26 @@ public class Importer implements org.alia4j.fial.Importer {
 		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
 	}
+	
+	//--------------------Damage Bounds assurance------------------------
+	private static final MethodPattern getDamage = new MethodPattern(
+			ModifiersPattern.ANY,
+			TypePattern.ANY, 
+			ClassTypePattern.ANY,
+			new ExactNamePattern("getDamage"),
+			ParametersPattern.ANY,
+			ExceptionsPattern.ANY
+	);
+	
+	private void createDamageBoundAssurance(){
+		Context max = ContextFactory.findOrCreateIntegerConstantContext(Integer.MAX_VALUE);
+		Context min = ContextFactory.findOrCreateIntegerConstantContext(0);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(getDamage, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), IntAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
 	
 	//--------------------Collision detection------------------------
 	

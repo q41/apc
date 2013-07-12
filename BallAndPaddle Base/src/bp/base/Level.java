@@ -569,6 +569,7 @@ public class Level extends Observable implements Runnable {
 				ticks=0;
 			}
 			//TODO this is testing stuff, don't forget to remove!
+			System.out.println(balls.get(0).getDamage());
 			powers.get(0).getEffects().get(0).activate();
 			ticks++;	
 		}
