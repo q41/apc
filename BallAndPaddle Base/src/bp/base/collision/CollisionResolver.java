@@ -6,6 +6,63 @@ import bp.base.collision.body.*;
 public abstract class CollisionResolver {
 	
 	/**
+	 * Resolves the collision between a Ball and block,
+	 * The ball will bounce off the block after checking which side got hit.
+	 * @param moved The ball that moved
+	 * @param other The block that got hit
+	 */
+	private static void resolveCollision(Ball ball, Block block){
+		if(ball.getImmaterial())
+			block.setDestroyed(true);
+		else{
+			CircleBody moved = (CircleBody) ball.getBody();
+			RectangleBody other = (RectangleBody) block.getBody();
+			//split up the square into 4 parts, bottom, left, right, top. 
+			//top
+			double topY = other.getTopLeft().getPointY();
+			//bottom
+			double bottomY = other.getBottomRight().getPointY();
+			//left
+			double leftX = other.getTopLeft().getPointX();
+			//right
+			double rightX = other.getBottomRight().getPointX();
+			//ball
+			double ballYBottom = moved.getCenter().getPointY()+moved.getR();
+			double ballYTop = moved.getCenter().getPointY()-moved.getR();
+			double ballXLeft = moved.getCenter().getPointX()-moved.getR();
+			double ballXRight = moved.getCenter().getPointX()+moved.getR();
+		
+			//hit right side?
+			if(ball.getOrientation()>90 && ball.getOrientation()<270){
+				boolean rightHit = ballXLeft<rightX && ballXLeft>leftX && ballXRight>rightX && ballXRight>leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
+				if(rightHit)
+					ball.oneEightyOrientation();		
+			}
+			//hit left side?
+			if((ball.getOrientation()>270 && ball.getOrientation()<360) || (ball.getOrientation()<90 && ball.getOrientation()>0)){
+				boolean leftHit = ballXRight<rightX && ballXRight>leftX && ballXLeft<rightX && ballXLeft<leftX &&  ((ballYBottom>topY && ballYBottom<bottomY)||(ballYTop>topY && ballYTop<bottomY));
+				if(leftHit)
+					ball.oneEightyOrientation();
+			}
+			//hit bottom side?
+		
+			if(ball.getOrientation()>180 && ball.getOrientation()<360){
+				boolean bottomHit = ballYTop>topY && ballYTop<bottomY && ballYBottom>topY && ballYBottom>bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
+				if(bottomHit)
+					ball.threeSixtyOrientation();
+			}
+			//hit top side?
+			if(ball.getOrientation()>0 && ball.getOrientation()<180){
+				boolean topHit = ballYBottom>topY && ballYBottom<bottomY && ballYTop<topY && ballYTop<bottomY && ((ballXLeft>leftX && ballXLeft<rightX)||(ballXRight>leftX && ballXRight<rightX));
+				if(topHit)
+					ball.threeSixtyOrientation();			
+			}		
+				block.takeDamageFrom(ball);
+				moved.undoMove();	
+		}
+	}
+	
+	/**
 	 * Resolves a collision that happened between the ball and border,
 	 * modifying the collision of the ball so it changes course
 	 * @param ball the ball
@@ -115,6 +172,24 @@ public abstract class CollisionResolver {
 			double adjustX = ((bp.base.collision.body.Border)border.getBody()).getStart().getPointX()-((RectangleBody)paddle.getBody()).getTopLeft().getPointX();
 			((MovableBody)paddle.getBody()).moveBy(adjustX, 0);	
 		}		
+	}
+	
+	/**
+	 * Resolves the collision between the paddle and ball
+	 * @param paddle the paddle
+	 * @param ball the ball
+	 */
+	protected static void resolveCollision(Paddle paddle, Ball ball){
+		resolveCollision(ball, paddle);
+	}
+	
+	/**
+	 * Resolves the collision between the paddle and power
+	 * @param power the power
+	 * @param ball the ball
+	 */
+	protected static void resolveCollision(Paddle paddle, SpawnedPower power){
+		resolveCollision(power, paddle);
 	}
 	
 	/**

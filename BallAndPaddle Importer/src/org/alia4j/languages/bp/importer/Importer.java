@@ -62,9 +62,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		visit(root);
 		
 		createBaseCollisionDetection();
-		createStandardBallCollisionHandling();
-		createImmaterialBallCollisionHandling();
-		createStandardOthersCollisionHandling();
+		createCollisionHandling();
 		createSpeedBoundAssurance();
 		createSizeBoundAssurance();
 		createXYBoundAssurance();
@@ -79,7 +77,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		CompositionRule[] toDeployRules = new CompositionRule[initialCompositionRules.size()];
 		org.alia4j.fial.System.deploy(initialCompositionRules.toArray(toDeployRules));
-		Attachment[] toDeploy = new Attachment[initialAttachments.size()]; //SHOULD BE EMPTY!
+		Attachment[] toDeploy = new Attachment[initialAttachments.size()];
 		org.alia4j.fial.System.deploy(initialAttachments.toArray(toDeploy));
 	}
 	
@@ -679,22 +677,71 @@ private Context visit(CollisionExpression e) {
 	
 	//------------------Collision handling--------------------
 	
-	private static final Action handleStandardCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.StandardCollisionResolver"),
+	private static final Action handleBallBlockCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
 			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BPObject","bp.base.BPObject"}),
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
-			ResolutionStrategy.STATIC			
-			);
-	private static final Action handleImmaterialCollision = ActionFactory.findOrCreateMethodCallAction(
-			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.ImmaterialCollisionResolver"),
-			"resolveCollision",
-			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.BPObject","bp.base.BPObject"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.Block"}),
 			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
 			ResolutionStrategy.STATIC			
 			);
 	
-	private static final MethodPattern notABallHasCollidedMethodPattern = new MethodPattern(
+	private static final Action handleBallPaddleCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.Paddle"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final Action handleBallBorderCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.Border"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final Action handlePaddleBallCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Paddle","bp.base.Ball"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final Action handlePaddleBorderCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Paddle","bp.base.Border"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final Action handlePaddlePowerCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Paddle","bp.base.SpawnedPower"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final Action handlePowerPaddleCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.SpawnedPower","bp.base.Paddle"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final Action handlePowerBorderCollision = ActionFactory.findOrCreateMethodCallAction(
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
+			"resolveCollision",
+			TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.SpawnedPower","bp.base.Border"}),
+			TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),
+			ResolutionStrategy.STATIC			
+			);
+	
+	private static final MethodPattern HasCollidedMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
@@ -703,308 +750,110 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
-	private static final MethodPattern ballHasCollidedMethodPattern = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY, 
-			ClassTypePattern.ANY,
-			new ExactNamePattern("ballHasCollided"),
-			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BPObject"})),
-			ExceptionsPattern.ANY
-	);
+	private void createCollisionHandling(){
+		createBallPaddleCollisionHandling();
+		createBallBlockCollisionHandling();
+		createBallBorderCollisionHandling();
+		createPaddleBallCollisionHandling();
+		createPaddleBorderCollisionHandling();		
+		createPaddlePowerCollisionHandling();		
+		createPowerPaddleCollisionHandling();
+		createPowerBorderCollisionHandling();
+	}
 	
-	private void createStandardOthersCollisionHandling(){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate pred = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(notABallHasCollidedMethodPattern, new BasicPredicate<AtomicPredicate>(pred, false), con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
+	private void createBallPaddleCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
+		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(paddle, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleBallPaddleCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
 	
-	private void createStandardBallCollisionHandling(){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		Context immaterialContext = new LocalBooleanVariableContext(argumentContext, "immaterial");
-		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
-		AtomicPredicate immaterialPred = AtomicPredicateFactory.findOrCreateContextValuePredicate(immaterialContext);
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(immaterialPred, false));
-		
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(ballHasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleStandardCollision, ScheduleInfo.AFTER);
+	private void createBallBlockCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
+		AtomicPredicate block = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Block"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(block, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleBallBlockCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
 	
-	private void createImmaterialBallCollisionHandling(){
-		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
-		Context calleeContext = ContextFactory.findOrCreateArgumentContext(1);
-		Context immaterialContext = new LocalBooleanVariableContext(argumentContext, "immaterial");
-		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(argumentContext, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
-		AtomicPredicate immaterialPred = AtomicPredicateFactory.findOrCreateContextValuePredicate(immaterialContext);
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(immaterialPred, true));
-		
-		List<Context> con = new ArrayList<Context>(); con.add(argumentContext); con.add(calleeContext);
-		Specialization specialization = new Specialization(ballHasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),handleImmaterialCollision, ScheduleInfo.AFTER);
+	private void createBallBorderCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
+		AtomicPredicate border = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Border"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(border, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handleBallBorderCollision, ScheduleInfo.AFTER);
 		initialAttachments.add(attachement);
 	}
 	
-	/*
-	private void oldASTprocesser(Root root){
-		String id = null;
-		Predicate<AtomicPredicate> pred = null;
-		bp.base.Level level = bp.base.Level.getInstance();
-		//create powers before creating blocks since some blocks can have powers!
-		//create unique blocks
-		List<Block> blocks = new ArrayList<Block>();
-		EList<org.alia4j.language.bp.Block> tempBlocks = null; //root.getBlocks();		
-		
-		//create effects
-		Map<Effect, Predicate> effectPredicates = new HashMap<Effect, Predicate>();
-		List<Effect> effects = new ArrayList<Effect>();
-		for(org.alia4j.language.bp.Effect e : root.getEffects()){
-			Effect effect;
-			//name of the effect
-			e.setId(e.getId());
-			//go through target stuff
-			if(e instanceof GeneralEffect){
-				Effect.TargetType type;
-				String target;
-				GeneralEffect gE = (GeneralEffect) e;
-				Target t = gE.getTarget();
-				List<EffectedAttribute> targetAttributes = new ArrayList<EffectedAttribute>();
-				if(t instanceof TypeTarget){
-					//target is an object of the given type
-					type = Effect.TargetType.TYPE;
-					TypeTarget tar = (TypeTarget)t;
-					tar.getType();				
-					target = getBPObjectType(tar.getType());
-					if(tar.getParams()!=null){
-						pred = getTargetPredicate(tar.getParams());
-						targetAttributes.addAll(getTargetAttributes(tar.getParams()));
-					}
-				}
-				else{
-					//object is an actual item, match on object id.
-					type = Effect.TargetType.OBJECT;
-					ObjectTarget tar = (ObjectTarget)t;
-					//id of the item, for later matching
-					target = tar.getItem().getId();
-				}
-				effect = new bp.base.GeneralEffect(id, type, target);
-				((bp.base.GeneralEffect)effect).setTargetAttributes(targetAttributes);
-			}
-			else{
-				//e instanceof CollisionEffect
-				Effect.TargetType leftType;
-				String leftTarget = "";
-				Effect.TargetType rightType;
-				String rightTarget = "";
-				CollisionEffect cE = (CollisionEffect) e;
-				Target leftT = cE.getLeftTarget();
-				Target rightT = cE.getRightTarget();
-				List<EffectedAttribute> leftTargetAttributes = new ArrayList<EffectedAttribute>();
-				List<EffectedAttribute> rightTargetAttributes = new ArrayList<EffectedAttribute>();
-				if(leftT instanceof TypeTarget){
-					//target is an object of the given type
-					leftType = Effect.TargetType.TYPE;
-					TypeTarget tar = (TypeTarget)leftT;
-					tar.getType();				
-					leftTarget = getBPObjectType(tar.getType());
-					if(tar.getParams()!=null){
-						pred = getTargetPredicate(tar.getParams());
-						rightTargetAttributes.addAll(getTargetAttributes(tar.getParams()));
-					}
-				}
-				else{
-					//object is an actual item, match on object id.
-					leftType = Effect.TargetType.OBJECT;
-					ObjectTarget tar = (ObjectTarget)leftT;
-					//id of the item, for later matching
-					leftTarget = tar.getItem().getId();
-				}
-				if(rightT instanceof TypeTarget){
-					//target is an object of the given type
-					rightType = Effect.TargetType.TYPE;
-					TypeTarget tar = (TypeTarget)rightT;
-					tar.getType();				
-					rightTarget = getBPObjectType(tar.getType());
-					if(tar.getParams()!=null){
-						pred = getTargetPredicate(tar.getParams());
-						leftTargetAttributes.addAll(getTargetAttributes(tar.getParams()));
-					}
-				}
-				else{
-					//object is an actual item, match on object id.
-					rightType = Effect.TargetType.OBJECT;
-					ObjectTarget tar = (ObjectTarget)rightT;
-					//id of the item, for later matching
-					rightTarget = tar.getItem().getId();
-				}
-				effect = new bp.base.CollisionEffect(id, leftType, leftTarget, rightType, rightTarget);
-				((bp.base.CollisionEffect)effect).setLeftTargetAttributes(leftTargetAttributes);
-				((bp.base.CollisionEffect)effect).setRightTargetAttributes(rightTargetAttributes);
-			}
-			AttributeAdjustment effectType = e.getBody();
-
-			Expression expr = effectType.getExpression();
-			if(expr instanceof IntOperand){
-				IntOperand intOp = (IntOperand)expr;
-				effect.setValue(intOp.getValue());
-			}
-			else if(expr instanceof DoubleOperand){
-				DoubleOperand doubleOp = (DoubleOperand)expr;
-				effect.setValue(doubleOp.getValue());
-			}
-			else{
-				Operand boolOp = (Operand)expr;
-				effect.setValue(boolOp.isValue());
-			}
-				
-			//owner of the affected attribute
-			//and attribute that is modified
-			EffectingAttribute attr = effectType.getEffectingAttribute();
-			Attribute attribute;
-			if(attr instanceof EffectingBallAttribute){
-				EffectingBallAttribute ballAttr = (EffectingBallAttribute) attr;
-				effect.setEffectTarget(Effect.EffectTarget.BALL);
-				attribute = ballAttr.getType();
-			}
-			else if(attr instanceof EffectingBlockAttribute){
-				EffectingBlockAttribute blockAttr = (EffectingBlockAttribute) attr;
-				effect.setEffectTarget(Effect.EffectTarget.BLOCK);
-				attribute = blockAttr.getType();
-			}
-			else{
-				EffectingPaddleAttribute paddleAttr = (EffectingPaddleAttribute) attr;
-				effect.setEffectTarget(Effect.EffectTarget.PADDLE);
-				attribute = paddleAttr.getType();
-			}
-			if(attribute.getValue()==Attribute.HARDNESS_VALUE)
-				effect.setModifiedAttribute(Effect.EffectedAttribute.HARDNESS);
-			else if(attribute.getValue()==Attribute.IMMATERIAL_VALUE)
-				effect.setModifiedAttribute(Effect.EffectedAttribute.IMMATERIAL);
-			else if(attribute.getValue()==Attribute.NORMAL_RES_VALUE)
-				effect.setModifiedAttribute(Effect.EffectedAttribute.RESISTANCE);
-			else if(attribute.getValue()==Attribute.ORIENTATION_VALUE)
-				effect.setModifiedAttribute(Effect.EffectedAttribute.DIRECTION);
-			else if(attribute.getValue()==Attribute.SIZE_VALUE)
-				effect.setModifiedAttribute(Effect.EffectedAttribute.SIZE);
-			else if(attribute.getValue()==Attribute.SPEED_VALUE)
-				effect.setModifiedAttribute(Effect.EffectedAttribute.SPEED);
-			
-			//duration of the effect
-			effect.setDuration(effectType.getDuration());
-			//how the attribute is modified, += or -= or =
-			AdjustmentOperator op = effectType.getAdjustmentOperator();
-			if(op.getValue()==AdjustmentOperator.DEC_VALUE){
-				effect.setOperator(Effect.OperatorType.DEC);
-			}
-			else if(op.getValue()==AdjustmentOperator.INC_VALUE){
-				effect.setOperator(Effect.OperatorType.INC);
-			}
-			else if(op.getValue()==AdjustmentOperator.SET_VALUE){
-				effect.setOperator(Effect.OperatorType.SET);
-			}		
-			effects.add(effect);
-			if(pred != null)
-				effectPredicates.put(effect, pred);				
-		}		
-
-		//import powers
-		List<Power> powers = new ArrayList<Power>();
-		for(org.alia4j.language.bp.Power p : root.getPowers()){			
-			id = p.getId();
-			double powerSpawnChance = p.getPowerSpawnChance();
-			List<Effect> eff = new ArrayList<Effect>();
-			for(org.alia4j.language.bp.Effect e : p.getEffects()){
-				for(Effect effect : effects){
-					if(effect.getId().equals(e.getId()))
-						eff.add(effect);					
-				}				
-			}
-				powers.add(new Power(id, eff, powerSpawnChance));	
-		}
-		
-		
-		for(org.alia4j.language.bp.Block b : tempBlocks){
-			Power power = null;
-			if(b.getPower()!= null){
-				for(Power pow : powers){
-					if(pow.getId().equals(b.getPower().getId()))
-						power = pow;
-				}
-			}
-			Block block = new Block(b.getId(), b.getHardness(), b.getResistance(), power);
-			blocks.add(block);
-		}		
-		
-		//create paddle
-		List<Paddle> paddles = new ArrayList<Paddle>();		
-		EList<org.alia4j.language.bp.Paddle> tempPaddles = root.getPaddles();
-		for(org.alia4j.language.bp.Paddle p : tempPaddles){
-			Paddle paddle = new Paddle(p.getId(), p.getX(), p.getY(), p.getOrientation(), p.getSize());
-			paddles.add(paddle);
-		}		
-		
-		//create ball
-		List<Ball> balls = new ArrayList<Ball>();
-		EList<org.alia4j.language.bp.Ball> tempBalls = root.getBalls();
-		for(org.alia4j.language.bp.Ball b : tempBalls){
-			Ball ball = new Ball(b.getId(), b.getX(), b.getY(), b.getSize(), b.getDirection(), b.getSpeed());
-			balls.add(ball);
-		}
-		
-		//set up the level
-		level.setBalls(balls);
-		level.setPaddles(paddles);
-		level.setPowerSpawnChance(root.getLevel().getPowerSpawnChance());
-		level.setImportedBlocks(root.getLevel().getBlocks());
-		level.setID(root.getLevel().getId());
-		level.generateBlocks(blocks);
-		level.setDeclaredPowers(powers);
-		//now check if all the effects were correctly declared
-		//effects that were not should be removed, as should the powers that have them.
-		level.removeIllegalEffects();
-		
-		//-----------------------
-		// Creating attachments
-		//-----------------------
-		
-		createBaseCollisionDetection();
-		createStandardBallCollisionHandling();
-		createStandardOthersCollisionHandling();
-		createEffect(Ball.class, "direction", AttributeType.INT);
-	}*/
+	private void createPaddleBallCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
+		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Ball"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(paddle, true), new BasicPredicate<AtomicPredicate>(ball, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePaddleBallCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
 	
-	/*
-	private List<EffectedAttribute> getTargetAttributes(Expression param) {
-		List<EffectedAttribute> result = new ArrayList<EffectedAttribute>();
-		if(param instanceof BooleanBinaryExpression){
-			BooleanBinaryExpression par = (BooleanBinaryExpression) param;
-			result.addAll(getTargetAttributes(par.getLeft())); result.addAll(getTargetAttributes(par.getRight()));
-		}
-		if(param instanceof BooleanUnaryExpression){
-			BooleanUnaryExpression par = (BooleanUnaryExpression) param;
-			result.addAll(getTargetAttributes(par.getBody()));
-		}
-		if(param instanceof AttParameter){
-			AttParameter attPar = (AttParameter)param;
-			Attribute att = attPar.getAtt();
-			if(att.getValue()==att.HARDNESS_VALUE)
-				result.add(EffectedAttribute.HARDNESS);
-			else if(att.getValue()==att.IMMATERIAL_VALUE)
-				result.add(EffectedAttribute.IMMATERIAL);
-			else if(att.getValue()==att.NORMAL_RES_VALUE)
-				result.add(EffectedAttribute.RESISTANCE);
-			else if(att.getValue()==att.ORIENTATION_VALUE)
-				result.add(EffectedAttribute.DIRECTION);
-			else if(att.getValue()==att.SIZE_VALUE)
-				result.add(EffectedAttribute.SIZE);
-			else if(att.getValue()==att.SPEED_VALUE)
-				result.add(EffectedAttribute.SPEED);
-		}		
-		return result;
-	}*/
+	private void createPaddleBorderCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
+		AtomicPredicate border = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Border"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(paddle, true), new BasicPredicate<AtomicPredicate>(border, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePaddleBorderCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createPaddlePowerCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
+		AtomicPredicate power = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.SpawnedPower"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(paddle, true), new BasicPredicate<AtomicPredicate>(power, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePaddlePowerCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createPowerPaddleCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate power = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.SpawnedPower"));
+		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Paddle"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(power, true), new BasicPredicate<AtomicPredicate>(paddle, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePowerPaddleCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
+	
+	private void createPowerBorderCollisionHandling(){
+		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
+		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
+		AtomicPredicate power = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.SpawnedPower"));
+		AtomicPredicate border = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.Border"));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(power, true), new BasicPredicate<AtomicPredicate>(border, true));
+		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
+		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),handlePowerBorderCollision, ScheduleInfo.AFTER);
+		initialAttachments.add(attachement);
+	}
 }
