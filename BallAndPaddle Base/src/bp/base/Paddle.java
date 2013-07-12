@@ -3,7 +3,7 @@ package bp.base;
 import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
 
-public class Paddle extends MovingBAPObject {
+public class Paddle extends MovingBPObject {
 
 	/**
 	 * The size of this paddle

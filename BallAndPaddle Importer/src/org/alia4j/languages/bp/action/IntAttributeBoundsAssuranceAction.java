@@ -11,7 +11,7 @@ public class IntAttributeBoundsAssuranceAction {
 		TypeHierarchyProvider.findOrCreateFromClass(IntAttributeBoundsAssuranceAction.class),
 		"apply",
 		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] {"int","int"}),
-		TypeHierarchyProvider.findOrCreateFromClass(double.class),
+		TypeHierarchyProvider.findOrCreateFromClass(int.class),
 		ResolutionStrategy.STATIC
 	);
 	

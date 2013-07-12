@@ -707,7 +707,7 @@ private Context visit(CollisionExpression e) {
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
 			ClassTypePattern.ANY,
-			new ExactNamePattern("haveCollided"),
+			new ExactNamePattern("ballHasCollided"),
 			new ExactParametersPattern(TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{"bp.base.Ball","bp.base.BPObject"})),
 			ExceptionsPattern.ANY
 	);
