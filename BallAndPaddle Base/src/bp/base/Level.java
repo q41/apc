@@ -361,7 +361,7 @@ public class Level extends Observable implements Runnable {
 	private void movePaddles(double factor,
 			Map<BPObject, Integer> stepsPerObject, int maxSteps){
 		for(Paddle pad : paddles){
-			if(pad.getOrientation()!=0){
+			if(pad.getDirection()!=0){
 				handleBPObjectUpdate(pad, factor, stepsPerObject, maxSteps);	
 			}
 		}
@@ -515,15 +515,15 @@ public class Level extends Observable implements Runnable {
 	public void pollInput() {  
 		if (Keyboard.isKeyDown(205) && !Keyboard.isKeyDown(203)) {
 			for(Paddle pad : getPaddles())
-				pad.setOrientation(1);
+				pad.setDirection(1);
 		}
 		else if (Keyboard.isKeyDown(203) && !Keyboard.isKeyDown(205)) {
 			for(Paddle pad : getPaddles())
-				pad.setOrientation(-1);
+				pad.setDirection(-1);
 		}
 		else{
 			for(Paddle pad : getPaddles())			
-				pad.setOrientation(0);
+				pad.setDirection(0);
 		}
 		while (Keyboard.next()) {
 		    if (Keyboard.getEventKeyState()) {

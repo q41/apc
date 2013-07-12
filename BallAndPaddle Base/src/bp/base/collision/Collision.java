@@ -93,13 +93,13 @@ public class Collision {
 			lastCollision = new HashMap<BPObject, BPObject>();
 		boolean collision = false;
 		int borderIndex = 0;
-		if (paddle.getOrientation() > 0){
+		if (paddle.getDirection() > 0){
 			collision = hasCollided(paddle, level.getBorders()[2]);
 			if(collision){
 				borderIndex=2;
 			}
 		}
-		else if (paddle.getOrientation() < 0){
+		else if (paddle.getDirection() < 0){
 			collision = hasCollided(paddle, level.getBorders()[1]);
 			if(collision)
 				borderIndex=1;

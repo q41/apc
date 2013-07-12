@@ -13,7 +13,7 @@ public class Paddle extends MovingBPObject {
 	 * The direction that the paddle is moving in
 	 * -1 for left, 1 for right, 0 for none
 	 */
-	private int orientation;
+	private int direction;
 	/**
 	 * The speed and size bounds for this paddle
 	 */
@@ -60,16 +60,16 @@ public class Paddle extends MovingBPObject {
 	 * Sets the direction that this paddle should move in
 	 * @param orientation the new orientation for this paddle
 	 */
-	public void setOrientation(int orientation){
-		this.orientation = orientation;
+	public void setDirection(int direction){
+		this.direction = direction;
 	}
 	
 	/**
 	 * Returns the orientation of this paddle
 	 * @return orientation the orientation this paddle is moving in
 	 */
-	public int getOrientation(){
-		return orientation;
+	public int getDirection(){
+		return direction;
 	}
 	
 	@Override
@@ -77,15 +77,15 @@ public class Paddle extends MovingBPObject {
 		//calculate distance to travel this update
 		double distance = Math.pow(getSpeed(), 0.65)*factor;
 		if(distance>=increment)
-			movementVectorX = increment*getOrientation();			
+			movementVectorX = increment*getDirection();			
 		else
-			movementVectorX = distance*getOrientation();
+			movementVectorX = distance*getDirection();
 	}
 	
 	@Override
 	public int getNeededSteps(double factor){
 		double distance = 0;
-		if(getOrientation()!=0)
+		if(getDirection()!=0)
 			distance = Math.pow(getSpeed(), 0.65)*factor;
 		return (int) Math.ceil((distance/increment));		
 	}
