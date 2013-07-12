@@ -107,6 +107,10 @@ public class Paddle extends MovingBPObject {
 		}
 	}
 
+	/**
+	 * Returns the size of the paddle
+	 * @return size
+	 */
 	public double getSize() {
 		return size;
 	}

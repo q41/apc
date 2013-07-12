@@ -26,8 +26,16 @@ public class Effect {
 	 */
 	private Map<Attachment, PrecedenceRule> precedenceRules;
 	
+	/**
+	 * A boolean that says if the sysTimer should be used or the custom timer Timer
+	 */
 	private boolean sysTimer;
 	
+	/**
+	 * Creates a new effect with the given duration and attachment
+	 * @param duration The duration of this effect
+	 * @param attachment The attachment of this effect
+	 */
 	public Effect(int duration, Attachment attachment){
 		this.duration = duration;
 		this.attachment = attachment;
@@ -36,6 +44,12 @@ public class Effect {
 		sysTimer = true;
 	}
 	
+	/**
+	 * Actives the effect by deploying the attachment, or a copy of it if it's already deployed
+	 * This attachment is then added to the activeAttachments map with it's ending time as the value
+	 * A PrecedenceRule is also deployed to make certain that this effect takes place before others,
+	 * so that Bound Assurance attachments always take place last
+	 */
 	public void activate(){
 		Attachment att;
 		Set<Attachment> attSet = new HashSet<Attachment>();
@@ -58,6 +72,10 @@ public class Effect {
 		org.alia4j.fial.System.deploy(precedence);		
 	}
 	
+	/**
+	 * Checks if any of the active attachments should be deactivated,
+	 * if so then they are undeployed and their precedenceRule is also undeployed
+	 */
 	public void checkForDeactivation(){
 		List<Attachment> toUndeployAtt = new ArrayList<Attachment>();
 		Iterator<Entry<Attachment, Long>> it = activeAttachments.entrySet().iterator();
@@ -106,6 +124,10 @@ public class Effect {
 			return Timer.getCurrentTime();
 	}
 
+	/**
+	 * Sets if the sysTimer should be used
+	 * @param sysTimer The boolean that says if the sysTimer should be used
+	 */
 	public void sysTimer(boolean sysTimer) {
 		this.sysTimer=sysTimer;		
 	}

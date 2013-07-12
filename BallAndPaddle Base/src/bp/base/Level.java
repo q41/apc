@@ -270,29 +270,6 @@ public class Level extends Observable implements Runnable {
 	}
 	
 	/**
-	 * Moves all the moving objects the given amount. 
-	 * Runs smoother
-	 * And notifies the observers
-	 */
-	public void update(long fps) {
-		SpawnPowers();			
-		long time = 1000/fps;
-		double factor = (double)1/fps;
-		Map<BPObject, Integer> stepsPerObject = calculateStepsPerObject(factor);
-		int maxSteps = getMaxSteps(stepsPerObject);
-		moveAllObjects(factor, stepsPerObject, maxSteps);	
-		checkForEffectDeactivation();				
-		Timer.incrementTime(time);
-		List<BPObject> objects = new ArrayList<BPObject>();
-		objects.addAll(spawnedPowers);
-		objects.addAll(blocks);
-		objects.addAll(balls);
-		objects.addAll(paddles);
-		this.setChanged();
-		this.notifyObservers(objects);
-	}
-
-	/**
 	 * Checks if any effects need to be deactivated,
 	 * They are deactivated if this is the case
 	 */
@@ -571,8 +548,10 @@ public class Level extends Observable implements Runnable {
 		while(!gameOver() && !Display.isCloseRequested()){
 			pollInput();
 			int delta = getDelta();		
-			if(smooth)
-				update((long)initialFPS);
+			if(smooth){
+				update((int) (initialFPS*1.1));				
+				Timer.incrementTime(1000/initialFPS);	
+			}
 			else
 				update((int) (delta*init));
 			Display.sync(maxFPS);

@@ -11,7 +11,7 @@ public abstract class CollisionResolver {
 	 * @param moved The ball that moved
 	 * @param other The block that got hit
 	 */
-	private static void resolveCollision(Ball ball, Block block){
+	public static void resolveCollision(Ball ball, Block block){
 		if(ball.getImmaterial())
 			block.setDestroyed(true);
 		else{
@@ -68,7 +68,7 @@ public abstract class CollisionResolver {
 	 * @param ball the ball
 	 * @param border the border
 	 */
-	protected static void resolveCollision(Ball ball, bp.base.Border border){
+	public static void resolveCollision(Ball ball, bp.base.Border border){
 		if(border.id.equals("left") && ball.getOrientation()>90 && ball.getOrientation()<270){
 			ball.oneEightyOrientation();
 		}
@@ -93,7 +93,7 @@ public abstract class CollisionResolver {
 	 * @param ball the ball
 	 * @param paddle the paddle
 	 */
-	protected static void resolveCollision(Ball ball, Paddle paddle){
+	public static void resolveCollision(Ball ball, Paddle paddle){
 		CircleBody moved = (CircleBody) ball.getBody();
 		RectangleBody other = (RectangleBody) paddle.getBody();		
 		double topLeftX = other.getTopLeft().getPointX();
@@ -162,7 +162,7 @@ public abstract class CollisionResolver {
 	 * @param paddle the paddle
 	 * @param border the border
 	 */
-	protected static void resolveCollision(Paddle paddle, bp.base.Border border){
+	public static void resolveCollision(Paddle paddle, bp.base.Border border){
 		//can't move beyond the wall, so move the paddle back to before it collided
 		if(paddle.getOrientation()>0){
 			double adjustX = ((bp.base.collision.body.Border)border.getBody()).getEnd().getPointX()-((RectangleBody)paddle.getBody()).getBottomRight().getPointX();
@@ -179,7 +179,7 @@ public abstract class CollisionResolver {
 	 * @param paddle the paddle
 	 * @param ball the ball
 	 */
-	protected static void resolveCollision(Paddle paddle, Ball ball){
+	public static void resolveCollision(Paddle paddle, Ball ball){
 		resolveCollision(ball, paddle);
 	}
 	
@@ -188,7 +188,7 @@ public abstract class CollisionResolver {
 	 * @param power the power
 	 * @param ball the ball
 	 */
-	protected static void resolveCollision(Paddle paddle, SpawnedPower power){
+	public static void resolveCollision(Paddle paddle, SpawnedPower power){
 		resolveCollision(power, paddle);
 	}
 	
@@ -198,7 +198,7 @@ public abstract class CollisionResolver {
 	 * @param power the power
 	 * @param border the border
 	 */
-	protected static void resolveCollision(SpawnedPower power, bp.base.Border border){
+	public static void resolveCollision(SpawnedPower power, bp.base.Border border){
 		power.setDestroyed(true);
 	}
 	
@@ -208,7 +208,7 @@ public abstract class CollisionResolver {
 	 * @param power the power
 	 * @param paddle the paddle
 	 */
-	protected static void resolveCollision(SpawnedPower power, Paddle paddle){
+	public static void resolveCollision(SpawnedPower power, Paddle paddle){
 		power.setCaught(true);
 	}
 	

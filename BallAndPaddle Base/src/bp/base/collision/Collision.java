@@ -8,12 +8,6 @@ import bp.base.collision.body.*;
 public class Collision {
 
 	/**
-	 * This is a naive collision detection implementation, A ball is checked
-	 * against all borders, paddles and blocks to see if it has collided, even
-	 * if some of them are nowhere near it's trajectory
-	 */
-
-	/**
 	 * A mapping ob BAPObjects to BAPObjects, representing which BAPObject the
 	 * key last collided with
 	 */
@@ -87,7 +81,7 @@ public class Collision {
 	}
 
 	/**
-	 * Checks if the paddle collided with a border
+	 * Checks if the paddle collided with a border, ball or power
 	 * 
 	 * @param paddle
 	 *            The paddle that moved

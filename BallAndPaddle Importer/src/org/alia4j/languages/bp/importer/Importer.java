@@ -61,8 +61,10 @@ public class Importer implements org.alia4j.fial.Importer {
 		// Process the AST by traversing the syntax tree and visiting each model element
 		visit(root);
 		
+		//creates attachments for collision detection and handling
 		createCollisionDetection();
 		createCollisionHandling();
+		//creates attachments that prevent values from going out of their bounds
 		createSpeedBoundAssurance();
 		createSizeBoundAssurance();
 		createXYBoundAssurance();
@@ -542,7 +544,67 @@ private Context visit(CollisionExpression e) {
 		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
 	}*/
 	
+	//--------------------General Bounds assurance------------------------
+	
+	/**
+	 * Deploys an attachment that makes certain that values from the getter that the
+	 * pattern looks at are never increased/decreased to such a level where they
+	 * are outside the given bounds. These bounds are read in from the given field
+	 * in the class that the getter method belongs to
+	 * @param pattern The pattern
+	 * @param action The action that enforces the bounds
+	 * @param field The field name
+	 */
+	private void createBoundsAssurance(MethodPattern pattern, Action action, String field){
+		Context callee = ContextFactory.findOrCreateCalleeContext();
+		Context max = new LocalDoubleVariableContext(callee, "upper"+field+"Limit");
+		Context min= new LocalDoubleVariableContext(callee, "lower"+field+"Limit");
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(pattern, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);	
+	}
+	
+	/**
+	 * Deploys an attachment that makes certain that values from the getter that the
+	 * pattern looks at are never increased/decreased to such a level where they
+	 * are outside the given bounds. These bounds are given by minValue and maxValue.
+	 * @param pattern The pattern
+	 * @param action The action that enforces the bounds
+	 * @param minValue The minimum allowed value
+	 * @param maxValue The maximum allowed value
+	 */
+	private void createBoundsAssurance(MethodPattern pattern, Action action, double minValue, double maxValue){
+		Context max = ContextFactory.findOrCreateDoubleConstantContext(maxValue);
+		Context min = ContextFactory.findOrCreateDoubleConstantContext(minValue);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(pattern, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}
+	
+	/**
+	 * Deploys an attachment that makes certain that values from the getter that the
+	 * pattern looks at are never increased/decreased to such a level where they
+	 * are outside the given bounds. These bounds are given by minValue and maxValue.
+	 * @param pattern The pattern
+	 * @param action The action that enforces the bounds
+	 * @param minValue The minimum allowed value
+	 * @param maxValue The maximum allowed value
+	 */
+	private void createBoundsAssurance(MethodPattern pattern, Action action, int minValue, int maxValue){
+		Context max = ContextFactory.findOrCreateIntegerConstantContext(maxValue);
+		Context min = ContextFactory.findOrCreateIntegerConstantContext(minValue);
+		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		Specialization specialization = new Specialization(pattern, null, con);		
+		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
+		initialAttachments.add(attachement);
+	}	
+	
 	//--------------------Speed Bounds assurance------------------------
+	/**
+	 * The MethodPattern for the getSpeed getter
+	 */
 	private static final MethodPattern getSpeed = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
@@ -552,18 +614,18 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
-	private void createSpeedBoundAssurance(){		
-		Context callee = ContextFactory.findOrCreateCalleeContext();
-		Context max = new LocalDoubleVariableContext(callee, "upperSpeedLimit");
-		Context min= new LocalDoubleVariableContext(callee, "lowerSpeedLimit");
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getSpeed, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
+	/**
+	 * Deploys an attachment that makes certain that the result of getSpeed never goes out of bounds.
+	 */
+	private void createSpeedBoundAssurance(){	
+		createBoundsAssurance(getSpeed, DoubleAttributeBoundsAssuranceAction.methodCallAction, "Speed");
 	}
 	
 	//--------------------Size Bounds assurance------------------------
 	
+	/**
+	 * The MethodPattern for the getSize getter
+	 */
 	private static final MethodPattern getSize = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
@@ -571,20 +633,20 @@ private Context visit(CollisionExpression e) {
 			new ExactNamePattern("getSize"),
 			ParametersPattern.ANY,
 			ExceptionsPattern.ANY
-	);
+	);	
 	
-	private void createSizeBoundAssurance(){		
-		Context callee = ContextFactory.findOrCreateCalleeContext();
-		Context max = new LocalDoubleVariableContext(callee, "upperSizeLimit");
-		Context min= new LocalDoubleVariableContext(callee, "lowerSizeLimit");
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getSize, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
+	/**
+	 * Deploys an attachment that makes certain that the result of getSize never goes out of bounds.
+	 */
+	private void createSizeBoundAssurance(){
+		createBoundsAssurance(getSize, DoubleAttributeBoundsAssuranceAction.methodCallAction, "Size");
 	}
 	
 	//--------------------XY Bounds assurance------------------------
 	
+	/**
+	 * The MethodPattern for the getX getter
+	 */
 	private static final MethodPattern getX = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
@@ -594,6 +656,9 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
+	/**
+	 * The MethodPattern for the getY getter
+	 */
 	private static final MethodPattern getY = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
@@ -603,30 +668,19 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
+	/**
+	 * Deploys attachments that make certain that the results of getX and getY never go out of bounds.
+	 */
 	private void createXYBoundAssurance(){		
-		createXBoundAssurance();
-		createYBoundAssurance();
-	}
-	
-	private void createXBoundAssurance(){
-		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getWidth());
-		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getX, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
-	
-	private void createYBoundAssurance(){
-		Context max = ContextFactory.findOrCreateDoubleConstantContext(bp.base.Level.getInstance().getHeight());
-		Context min = ContextFactory.findOrCreateDoubleConstantContext(0.0);
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getY, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), DoubleAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
+		createBoundsAssurance(getX, DoubleAttributeBoundsAssuranceAction.methodCallAction, 0.0, (double)bp.base.Level.getInstance().getWidth());
+		createBoundsAssurance(getY, DoubleAttributeBoundsAssuranceAction.methodCallAction, 0.0, (double)bp.base.Level.getInstance().getHeight());
+	}		
 	
 	//--------------------Damage Bounds assurance------------------------
+	
+	/**
+	 * The MethodPattern for the getDamage getter
+	 */
 	private static final MethodPattern getDamage = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
@@ -636,18 +690,21 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
+	/**
+	 * Deploys attachments that makes certain that the result of getDamage never goes out of bounds.
+	 */
 	private void createDamageBoundAssurance(){
-		Context max = ContextFactory.findOrCreateIntegerConstantContext(Integer.MAX_VALUE);
-		Context min = ContextFactory.findOrCreateIntegerConstantContext(0);
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
-		Specialization specialization = new Specialization(getDamage, null, con);		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), IntAttributeBoundsAssuranceAction.methodCallAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
+		createBoundsAssurance(getDamage, IntAttributeBoundsAssuranceAction.methodCallAction, 0, Integer.MAX_VALUE);
 	}
-	
-	
+		
 	//--------------------Collision detection------------------------
 	
+	/**
+	 * Creates an action that calls checkForCollision from Collision,
+	 * using the given argument type
+	 * @param type The TypeName of the argument
+	 * @return The action
+	 */
 	private Action createCheckForCollisionAction(String type){
 		return ActionFactory.findOrCreateMethodCallAction(
 				TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.Collision"),
@@ -658,6 +715,10 @@ private Context visit(CollisionExpression e) {
 				);
 	}	
 	
+	/**
+	 * The methodpattern for the collision detection, which listens to the
+	 * handleBPObjectUpdate method
+	 */
 	private static final MethodPattern LevelHandleBPObjectUpdateMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
@@ -667,12 +728,21 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
+	/**
+	 * Creates and deploys attachments for the collision detection of balls, paddles and powers
+	 */
 	private void createCollisionDetection(){
 		createCollisionDetection("bp.base.Ball",createCheckForCollisionAction("bp.base.Ball"));
 		createCollisionDetection("bp.base.Paddle",createCheckForCollisionAction("bp.base.Paddle"));
 		createCollisionDetection("bp.base.SpawnedPower",createCheckForCollisionAction("bp.base.SpawnedPower"));
 	}
 	
+	/**
+	 * Creates and deploys an attachment for the collision detection of
+	 * a BPObject item of the given type, with the given detection action
+	 * @param type The type of the object
+	 * @param action The action to detect the collision with
+	 */
 	private void createCollisionDetection(String type, Action action){
 		Context argumentContext = ContextFactory.findOrCreateArgumentContext(0);
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
@@ -686,6 +756,13 @@ private Context visit(CollisionExpression e) {
 	
 	//------------------Collision handling--------------------
 	
+	/**
+	 * Creates an action that resolves the collision between an item of the type
+	 * supplied by leftType and an item of the type supplied by rightType
+	 * @param leftType the typename of the left object
+	 * @param rightType the typename of the right object
+	 * @return the collision resolving action
+	 */
 	private Action createCollisionHandlingAction(String leftType, String rightType){
 		return ActionFactory.findOrCreateMethodCallAction(
 				TypeHierarchyProvider.findOrCreateFromNormalTypeName("bp.base.collision.CollisionResolver"),
@@ -696,6 +773,9 @@ private Context visit(CollisionExpression e) {
 				);
 	}
 	
+	/**
+	 * Listens to the haveCollided method in order to detect collisions that have happened
+	 */
 	private static final MethodPattern HasCollidedMethodPattern = new MethodPattern(
 			ModifiersPattern.ANY,
 			TypePattern.ANY, 
@@ -705,6 +785,13 @@ private Context visit(CollisionExpression e) {
 			ExceptionsPattern.ANY
 	);
 	
+	/**
+	 * Creates and deploys 8 attachments for collision resolving. 
+	 * An attachment is deployed for each of the following eight: 
+	 * ball with a paddle, block or border
+	 * paddle with a ball, border or power
+	 * power with a paddle or border
+	 */
 	private void createCollisionHandling(){
 		createCollisionHandling("bp.base.Ball","bp.base.Paddle",createCollisionHandlingAction("bp.base.Ball", "bp.base.Paddle"));
 		createCollisionHandling("bp.base.Ball","bp.base.Block",createCollisionHandlingAction("bp.base.Ball", "bp.base.Block"));
@@ -716,6 +803,14 @@ private Context visit(CollisionExpression e) {
 		createCollisionHandling("bp.base.SpawnedPower","bp.base.Border",createCollisionHandlingAction("bp.base.SpawnedPower","bp.base.Border"));
 	}
 	
+	/**
+	 * Creates and deploys an attachment that resolves the collision between an item of the type
+	 * supplied by leftType and an item of the type supplied by rightType, 
+	 * using the given action to resolve it
+	 * @param leftType the typename of the left object
+	 * @param rightType the typename of the right object
+	 * @param action the collision resolving action
+	 */
 	private void createCollisionHandling(String leftType, String rightType, Action action){
 		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
 		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
