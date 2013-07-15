@@ -167,9 +167,9 @@ public class Importer implements org.alia4j.fial.Importer {
 		if(filter!=null && isTargetInstance!=null) effectApplies = ContextFactory.findOrCreateAndContext(isTargetInstance, filter);
 		else if(filter!=null) effectApplies = filter;
 		else if(isTargetInstance!=null) effectApplies = isTargetInstance;
-		
-		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(filter), true) : null;
-		
+
+		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
+
 		//create context
 		Context context = visit(body.getExpression());
 				
