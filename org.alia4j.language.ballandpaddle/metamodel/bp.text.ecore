@@ -23,14 +23,13 @@ package bp bp "http://www.emftext.org/language/ballandpaddle" {
 		attribute EDouble x (1..1);
 		attribute EDouble y (1..1);
 		attribute EInt size (1..1);
-		attribute EInt orientation (1..1);
 	}
 	
 	class Ball extends BPObject{
 		attribute EDouble x (1..1);
 		attribute EDouble y (1..1);
 		attribute EInt size (0..1);
-		attribute EInt direction (0..1);
+		attribute EInt orientation (0..1);
 		attribute EInt damage (0..1);
 		attribute EInt speed (0..1);
 	}

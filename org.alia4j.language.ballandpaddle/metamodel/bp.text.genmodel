@@ -46,13 +46,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Paddle/x"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Paddle/y"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Paddle/size"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Paddle/orientation"/>
     </genClasses>
     <genClasses ecoreClass="bp.text.ecore#//Ball">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Ball/x"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Ball/y"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Ball/size"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Ball/direction"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Ball/orientation"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Ball/damage"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute bp.text.ecore#//Ball/speed"/>
     </genClasses>

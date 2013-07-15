@@ -10,9 +10,9 @@
     <blocks>...........</blocks>
     <blocks>...........</blocks>
   </level>
-  <paddles id="Paddle" x="5.5" y="6.5" size="1" orientation="270"/>
-  <balls id="Ball" x="5.5" y="6.0" size="1" direction="270" damage="1" speed="4"/>
-  <balls id="BallTwo" x="6.0" y="6.0" size="1" direction="270" damage="1" speed="4"/>
+  <paddles id="Paddle" x="5.5" y="6.5" size="1"/>
+  <balls id="Ball" x="5.5" y="6.0" size="1" orientation="270" damage="1" speed="4"/>
+  <balls id="BallTwo" x="6.0" y="6.0" size="1" orientation="270" damage="1" speed="4"/>
   <blocks id="A" hardness="1"/>
   <blocks id="B" hardness="1" resistance="999"/>
   <blocks id="R" hardness="1" resistance="2" power="//@powers.2"/>

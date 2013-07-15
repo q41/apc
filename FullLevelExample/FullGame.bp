@@ -13,7 +13,6 @@ paddle Paddle {
 	x = 5.5
 	y = 6.5
     size = 1
-    orientation = 270
 }
 
 ball Ball{
@@ -21,7 +20,7 @@ ball Ball{
     y = 6.0
     size = 1
     damage = 1
-    direction = 270
+    orientation = 270
     speed = 4
 }
 
@@ -30,7 +29,7 @@ ball BallTwo{
     y = 6.0
     size = 1
     damage = 1
-    direction = 270
+    orientation = 270
     speed = 4
 }
 

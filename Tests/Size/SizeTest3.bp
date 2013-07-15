@@ -10,14 +10,13 @@ paddle Paddle {
 	x = 4.0
 	y = 4.0
     size = 1
-    orientation = 270
 }
 ball Ball{
     x = 3.0
     y = 4.0
     size = 1
     damage = 1
-    direction = 270
+    orientation = 270
     speed = 5
 }
 
@@ -33,7 +32,7 @@ block B {
 }
 
 power Size {
-    effects = LessSizeB, LessSizeP
+    effects = LessSizeB, LessSizeP, MoreSizeB
 }
 
 
@@ -43,6 +42,10 @@ effect LessSizeB on ball{
 
 effect LessSizeP on paddle{
 	size += -3
+}
+
+effect MoreSizeB on block{
+	size += 4
 }
 
 

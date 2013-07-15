@@ -10,11 +10,11 @@ paddle Paddle {
 	x = 4.0
 	y = 4.0
     size = 1
-    orientation = 270
 }
 ball Ball{
     x = 3.0
     y = 4.0
+    orientation = 270
     speed = 5
 }
 
@@ -34,7 +34,7 @@ power Damage {
 }
 
 effect moreDamage on ball{
-	damage += 1
+	size += 1
 	duration = 10
 }
 
