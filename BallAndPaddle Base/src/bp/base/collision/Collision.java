@@ -157,9 +157,13 @@ public class Collision {
 		bp.base.collision.body.Border borderBody = (bp.base.collision.body.Border) border
 				.getBody();
 		CircleBody ballBody = (CircleBody) ball.getBody();
+		int orientation = ball.getOrientation();
+		if(orientation<0)
+			orientation+=360;
+		orientation = orientation%360;		
 		if (borderBody.getStart().getPointX() == borderBody.getEnd()
 				.getPointX()) {
-			if (ball.getOrientation() > 90 && ball.getOrientation() < 270) {
+			if (orientation > 90 && orientation < 270) {
 				// check if the ball has collided with the left border
 				return ballBody.getCenter().getPointX() - ballBody.getR() <= borderBody
 						.getStart().getPointX()
@@ -173,7 +177,7 @@ public class Collision {
 			}
 		} else if (borderBody.getStart().getPointY() == borderBody.getEnd()
 				.getPointY()) {
-			if (ball.getOrientation() > 180 && ball.getOrientation() < 360) {
+			if (orientation > 180 && orientation < 360) {
 				// check if ball has collided with the top border
 				return ballBody.getCenter().getPointY() - ballBody.getR() <= borderBody
 						.getStart().getPointY()

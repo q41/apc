@@ -1,0 +1,49 @@
+level first {
+	.......
+	...A...
+	..BAB..
+	.......
+	.......
+	powerSpawnChance = 1.0
+}
+paddle Paddle {
+	x = 4.0
+	y = 4.0
+    size = 1
+}
+ball Ball{
+    x = 3.0
+    y = 4.0
+    size = 1
+    damage = 1
+    orientation = 270
+    speed = 5
+}
+
+block A {
+    hardness = 1
+    resistance = 0    
+    power = Size
+}
+
+block B {
+    hardness = 1
+    resistance = 0
+}
+
+power Size {
+    effects = LessSizeB, LessSizeP
+}
+
+effect LessSizeB on ball{
+	size += 3
+}
+
+effect LessSizeP on paddle{
+	size += 3
+}
+
+
+
+
+
