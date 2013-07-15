@@ -53,34 +53,38 @@ public class Collision {
 	public static void checkForCollision(Ball ball, Level level) {
 		if (lastCollision == null)
 			lastCollision = new HashMap<BPObject, BPObject>();
-		boolean collision = false;
+		boolean ballCollision = false;
 		for (bp.base.Border border : level.getBorders()) {
-			collision = false;
-			if(!(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(border)))			
-				collision = hasCollided(ball, border);
-			if(collision){
+			ballCollision = false;
+			ballCollision = hasCollided(ball, border);
+			if(ballCollision && !(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(border))){
 				lastCollision.put(ball, border);
 				haveCollided(ball, border);
 			}
 		}
+		boolean paddleCollision = false;
 		for (Paddle paddle : level.getPaddles()) {
-			collision = false;
-			if(!(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(paddle)))			
-				collision = hasCollided(ball, paddle);
-			if(collision){
+			paddleCollision = false;
+			paddleCollision = hasCollided(ball, paddle);
+			if(paddleCollision && !(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(paddle))){
 				lastCollision.put(ball, paddle);
 				haveCollided(ball, paddle);
 			}
 		}
+		boolean blockCollision = false;
 		for (Block block : level.getBlocks()) {
-			collision = false;
-			if(!(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(block)))			
-				collision = hasCollided(ball, block);
-			if(collision){
+			blockCollision = false;
+			blockCollision = hasCollided(ball, block);
+			if(blockCollision && !(lastCollision.containsKey(ball) && lastCollision.get(ball).equals(block))){
 				lastCollision.put(ball, block);
 				haveCollided(ball, block);
 			}
 		}
+		if(!blockCollision && !paddleCollision && !ballCollision){
+			//no collision, remove the key from the map in case of a orientation changing effect
+			lastCollision.remove(ball);			
+		}
+		
 	}
 
 	/**

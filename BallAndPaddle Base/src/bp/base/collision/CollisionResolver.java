@@ -111,12 +111,15 @@ public abstract class CollisionResolver {
 		int orientation = ball.getOrientation();
 		if(orientation<0)
 			orientation+=360;
-		orientation = orientation%360;			
-		
-		if(orientation<180)			
-			ball.setOrientation((int) (200+(moved.getCenter().getPointX() - topLeftX)/length*140));	
-		else
-			ball.setOrientation((int) (20+(moved.getCenter().getPointX() - topLeftX)/length*140));
+		orientation = orientation%360;	
+		if(orientation<180){
+			int newOrient = (int) (200+(moved.getCenter().getPointX() - topLeftX)/length*140);	
+			ball.adjustOrientation(newOrient-orientation);
+		}	
+		else{
+			int newOrient = (int) (20+(moved.getCenter().getPointX() - topLeftX)/length*140);
+			ball.adjustOrientation(newOrient-orientation);
+		}
 		
 		//modify ball speed depending on orientation of ball and paddle
 		double matchDir = 0.0;

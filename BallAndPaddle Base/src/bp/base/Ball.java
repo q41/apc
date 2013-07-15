@@ -123,6 +123,18 @@ public class Ball extends MovingBPObject {
 	}
 	
 	/**
+	 * Adjusts the orientation of the ball by the given amount, 
+	 * keeping it between 0 and 360
+	 * @param adjustment the adjustment to the orientation
+	 */
+	public void adjustOrientation(int adjustment){
+		orientation += adjustment;
+		if(orientation<0)
+			orientation+=360;
+		this.orientation = orientation%360;
+	}
+	
+	/**
 	 * Multiplies the speed of the ball by the given amount
 	 * @param mult the amount the speed should be multiplied with
 	 */
