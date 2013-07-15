@@ -1,0 +1,96 @@
+level game {
+	...AAA.HA..
+	...........
+	A...RRRAH..
+	A...RBRIH..
+	....RRRAH..
+	A...AAAAA..
+	...........
+	...........
+	powerSpawnChance = 0.2
+}
+paddle Paddle {
+	x = 5.5
+	y = 6.5
+    size = 1
+    orientation = 270
+}
+
+ball Ball{
+    x = 5.5
+    y = 6.0
+    size = 1
+    damage = 1
+    direction = 270
+    speed = 4
+}
+
+ball BallTwo{
+    x = 6.0
+    y = 6.0
+    size = 1
+    damage = 1
+    direction = 270
+    speed = 4
+}
+
+block A{
+	hardness = 1
+	resistance = 0
+}
+
+block B{
+	hardness = 1
+	resistance = 999
+}
+
+block R {
+    hardness = 1
+    resistance = 2    
+    power = DestroyB
+}
+
+block H {
+    hardness = 3
+    resistance = 0
+    power = Damage
+}
+
+block I {
+	hardness = 1
+	resistance = 0
+	power = Immaterial
+}
+
+power Damage {
+	effects = MoreDamage
+}
+
+power Immaterial {
+    effects = ImmaterialEff
+}
+
+power DestroyB{
+	effects = Destroy, Speed
+}
+
+effect ImmaterialEff on ball{
+	immaterial = true
+	duration = 10
+}
+
+effect MoreDamage on ball(damage<3){
+	damage += 1
+}
+
+collision effect Destroy between ball(immaterial=false) and B{
+	B .hardness = 0
+}
+
+effect Speed on ball(immaterial=false & speed<7){
+	speed += 2
+	duration = 5	
+}
+
+
+
