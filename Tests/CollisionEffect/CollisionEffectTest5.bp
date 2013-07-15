@@ -1,0 +1,47 @@
+level first {
+	.......
+	...A...
+	..BAB..
+	.......
+	.......
+	powerSpawnChance = 0.1
+}
+paddle Paddle {
+	x = 4.0
+	y = 4.0
+    size = 1
+    orientation = 270
+}
+
+ball Ball{
+    x = 3.0
+    y = 4.0
+    damage = 1
+    direction = 270
+    speed = 5
+}
+
+block A {
+    hardness = 1
+    resistance = 0    
+    power = Size
+}
+
+block B {
+    hardness = 1
+    resistance = 0
+    power = Size
+}
+
+power Size {
+    effects = SizeIncr
+}
+
+collision effect SizeIncr between ball and paddle{
+	paddle.size += 5
+	duration = 1
+}
+
+
+
+

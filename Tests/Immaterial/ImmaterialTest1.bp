@@ -1,0 +1,57 @@
+level first {
+	.......
+	...A...
+	..BAB..
+	.......
+	.......
+	powerSpawnChance = 0.1
+}
+paddle Paddle {
+	x = 4.0
+	y = 4.0
+    size = 1
+    orientation = 270
+}
+
+ball Ball{
+    x = 3.0
+    y = 4.0
+    damage = 1
+    direction = 270
+    speed = 5
+}
+
+block A {
+    hardness = 1
+    resistance = 0    
+    power = ImmaterialOn
+}
+
+block B {
+    hardness = 1
+    resistance = 0
+    power = ImmaterialOff
+}
+
+power ImmaterialOn {
+    effects = immaterialOn
+}
+
+power ImmaterialOff{
+    effects = immaterialOff
+}
+
+
+effect immaterialOn on ball{
+	immaterial = true
+	duration = 10
+}
+
+effect immaterialOff on ball{
+	immaterial = false
+	duration = 10
+}
+
+
+
+
