@@ -864,9 +864,9 @@ private Context visit(CollisionExpression e) {
 	private void createCollisionHandling(String leftType, String rightType, Action action){
 		Context firstArgument = ContextFactory.findOrCreateArgumentContext(0);
 		Context secondArgument = ContextFactory.findOrCreateArgumentContext(1);
-		AtomicPredicate ball = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName(leftType));
-		AtomicPredicate paddle = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName(rightType));
-		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(ball, true), new BasicPredicate<AtomicPredicate>(paddle, true));
+		AtomicPredicate left = AtomicPredicateFactory.findOrCreateExactTypePredicate(firstArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName(leftType));
+		AtomicPredicate right = AtomicPredicateFactory.findOrCreateExactTypePredicate(secondArgument, TypeHierarchyProvider.findOrCreateFromNormalTypeName(rightType));
+		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(left, true), new BasicPredicate<AtomicPredicate>(right, true));
 		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
 		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
 		Attachment attachement = new Attachment(Collections.singleton(specialization),action, ScheduleInfo.AFTER);
