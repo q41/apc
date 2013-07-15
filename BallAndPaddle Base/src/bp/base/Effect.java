@@ -30,6 +30,10 @@ public class Effect {
 	 * A boolean that says if the sysTimer should be used or the custom timer Timer
 	 */
 	private boolean sysTimer;
+	/**
+	 *A boolean that says if the game is in testing mode
+	 */
+	private boolean testing;
 	
 	/**
 	 * Creates a new effect with the given duration and attachment
@@ -67,7 +71,8 @@ public class Effect {
 		precedence = new PrecedenceRule(existingAtt,attSet);
 		precedenceRules.put(att, precedence);
 		activeAttachments.put(att, getEndTime());
-		System.out.println(getTime()+" deployed: "+attachment);
+		if(testing)
+			System.out.println(getTime()+" deployed: "+attachment);
 		org.alia4j.fial.System.deploy(att);
 		org.alia4j.fial.System.deploy(precedence);		
 	}
@@ -96,7 +101,8 @@ public class Effect {
 		
 		for(Attachment att : toUndeploy){
 			activeAttachments.remove(att);
-			System.out.println(getTime()+" undeployed: "+attachment);
+			if(testing)
+				System.out.println(getTime()+" deployed: "+attachment);
 		}
 	}
 	
@@ -130,6 +136,14 @@ public class Effect {
 	 */
 	public void sysTimer(boolean sysTimer) {
 		this.sysTimer=sysTimer;		
+	}
+
+	/**
+	 * Sets whether the game is in testing mode
+	 * @param testing if the game is in testing mode
+	 */
+	public void setTesting(boolean testing) {
+		this.testing = testing;		
 	}
 
 }

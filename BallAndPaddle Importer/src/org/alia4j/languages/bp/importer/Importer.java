@@ -492,7 +492,7 @@ private Context visit(CollisionExpression e) {
 		switch(classTarget.getClassType()) {
 		case BALL: return bp.base.Ball.class;
 		case BLOCK: return bp.base.Block.class;
-		case PADDLE: return bp.base.Block.class;
+		case PADDLE: return bp.base.Paddle.class;
 		default: handleError(); return null;
 		}
 	}

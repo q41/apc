@@ -132,4 +132,15 @@ public class Paddle extends MovingBPObject {
 		return y;
 	}	
 
+	/**
+	 * Used to print stuff while in testing mode
+	 */
+	public void print(){
+		System.out.println("----- Paddle: super.id -----");
+		System.out.println("Size: "+getSize());
+		System.out.println("Speed: "+getSpeed());
+		System.out.println("Orientation: "+getSpeed());
+	}
+	
+	
 }

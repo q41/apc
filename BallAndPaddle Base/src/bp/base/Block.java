@@ -149,5 +149,18 @@ public class Block extends BPObject {
 	 */
 	public double getY(){
 		return y;
-	}	
+	}
+	
+	/**
+	 * Used to print stuff while in testing mode
+	 */
+	public void print(){
+		System.out.println("----- Block: super.id -----");
+		System.out.println("Size: "+getSize());
+		System.out.println("Hardness: "+getHardness());
+		System.out.println("Resistance: "+getResistance());
+	}
+	
+	
+	
 }

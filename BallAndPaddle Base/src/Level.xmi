@@ -7,7 +7,7 @@
     <blocks>.......</blocks>
     <blocks>.......</blocks>
   </level>
-  <paddles id="Paddle" x="4.0" y="4.0" size="1" orientation="270"/>
+  <paddles id="Paddle" x="4.0" y="4.0" size="1"/>
   <balls id="Ball" x="3.0" y="4.0" speed="5"/>
   <blocks id="A" hardness="1"/>
   <blocks id="B" hardness="5" resistance="1" power="//@powers.0"/>

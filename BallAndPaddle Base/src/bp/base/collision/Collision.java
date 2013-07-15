@@ -31,10 +31,13 @@ public class Collision {
 			return;
 		}
 		for (Paddle paddle : level.getPaddles()) {
-			collision = hasCollided(power, paddle);
-			if(collision){
-				haveCollided(power, paddle);
-				return;
+			if(!(lastCollision.containsKey(power) && lastCollision.get(power).equals(paddle))){
+				collision = hasCollided(power, paddle);
+				if(collision){
+					lastCollision.put(power, paddle);
+					haveCollided(power, paddle);
+					return;
+				}
 			}
 		}
 	}

@@ -69,6 +69,14 @@ public class Level extends Observable implements Runnable {
 	 * The width of the level
 	 */
 	private int width;
+	/**
+	 * Whether the game is in testing mode
+	 */
+	private boolean testing = false;
+	/**
+	 * Used in testing mode
+	 */
+	private int attachmentCount;
 	
 	/**
 	 * Frame information for keeping the amount of updates well divided over the second
@@ -152,6 +160,17 @@ public class Level extends Observable implements Runnable {
 		this.powers = powers;
 		spawnedPowers = new ArrayList<SpawnedPower>();
 		toBeSpawnedPowers = new ArrayList<SpawnedPower>();
+	}
+	
+	/**
+	 * Sets the level to testing mode, printing extra data to the output.
+	 */
+	public void setTestingMode(boolean testing){
+		this.testing=testing;
+		for(Power power : powers){
+			for(Effect effect : power.getEffects())
+				effect.setTesting(testing);
+		}
 	}
 
 	/**
@@ -545,6 +564,8 @@ public class Level extends Observable implements Runnable {
 		int maxFPS = 30;
 		int initialFPS = maxFPS;
 		int ticks = 0;
+		if(testing)
+			printStatus();
 		while(!gameOver() && !Display.isCloseRequested()){
 			pollInput();
 			int delta = getDelta();		
@@ -566,6 +587,8 @@ public class Level extends Observable implements Runnable {
 				ticks=0;
 			}
 			ticks++;	
+			if(testing)
+				checkForAttachmentChanges();
 		}
 		while(gameOver() && !Display.isCloseRequested()){
 			//wait for player to close the game once the game has ended
@@ -575,7 +598,7 @@ public class Level extends Observable implements Runnable {
 			Display.sync(10);
 		}
 	}
-	
+
 	//Contians the id's of all deployed effects
 	private static Set<String> deployedEffects = new HashSet<>();
 	
@@ -591,5 +614,23 @@ public class Level extends Observable implements Runnable {
 		return spawnedPowers;
 	}
 	
+	
+	private void checkForAttachmentChanges() {
+		int currentCount = org.alia4j.fial.System.getInstance().deployedAttachments().length;
+		if(currentCount!=attachmentCount){
+			attachmentCount=currentCount;
+			printStatus();
+		}
+		
+	}
+	
+	public void printStatus(){
+		for(Ball ball : balls)
+			ball.print();
+		for(Paddle paddle : paddles)
+			paddle.print();
+		for(Block block : blocks)
+			block.print();		
+	}
 	
 }

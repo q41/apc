@@ -70,7 +70,6 @@ public class Ball extends MovingBPObject {
 		if(damage==0)
 			this.damage=1;
 		alive = true;
-		immaterial = true;
 	}
 	
 	/**
@@ -246,6 +245,16 @@ public class Ball extends MovingBPObject {
 		return y;
 	}	
 
-
+	/**
+	 * Used to print stuff while in testing mode
+	 */
+	public void print(){
+		System.out.println("----- Ball: super.id -----");
+		System.out.println("Size: "+getSize());
+		System.out.println("Speed: "+getSpeed());
+		System.out.println("Orientation: "+getOrientation());
+		System.out.println("Damage: "+getDamage());
+		System.out.println("Immaterial: "+getImmaterial());
+	}
 
 }
