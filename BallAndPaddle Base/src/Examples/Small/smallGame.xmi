@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ASCII"?>
+<bp:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bp="http://www.emftext.org/language/ballandpaddle">
+  <level id="game" powerSpawnChance="0.7">
+    <blocks>.H...H.</blocks>
+    <blocks>.RHBIR.</blocks>
+    <blocks>.AAHAA.</blocks>
+    <blocks>.......</blocks>
+    <blocks>.......</blocks>
+  </level>
+  <paddles id="Paddle" x="3.5" y="4.5" size="1"/>
+  <balls id="Ball" x="3.5" y="4.2" size="1" orientation="270" damage="1" speed="4"/>
+  <blocks id="A" hardness="1"/>
+  <blocks id="B" hardness="1" resistance="999"/>
+  <blocks id="R" hardness="1" resistance="2" power="//@powers.2"/>
+  <blocks id="H" hardness="3" power="//@powers.0"/>
+  <blocks id="I" hardness="1" power="//@powers.1"/>
+  <effects xsi:type="bp:GeneralEffect" id="ImmaterialEff" duration="10">
+    <target xsi:type="bp:ClassTarget" classType="ball"/>
+    <body op="=" name="immaterial">
+      <expression xsi:type="bp:BooleanOperand" value="true"/>
+    </body>
+  </effects>
+  <effects xsi:type="bp:GeneralEffect" id="MoreDamage">
+    <target xsi:type="bp:ClassTarget" classType="ball"/>
+    <filter xsi:type="bp:SmthExpression">
+      <left xsi:type="bp:AttOperand" att="damage"/>
+      <right xsi:type="bp:IntOperand" value="3"/>
+    </filter>
+    <body name="damage">
+      <expression xsi:type="bp:IntOperand" value="1"/>
+    </body>
+  </effects>
+  <effects xsi:type="bp:GeneralEffect" id="Speed" duration="5">
+    <target xsi:type="bp:ClassTarget" classType="ball"/>
+    <filter xsi:type="bp:AndExpression">
+      <left xsi:type="bp:EqExpression">
+        <left xsi:type="bp:AttOperand" att="immaterial"/>
+        <right xsi:type="bp:BooleanOperand"/>
+      </left>
+      <right xsi:type="bp:SmthExpression">
+        <left xsi:type="bp:AttOperand" att="speed"/>
+        <right xsi:type="bp:IntOperand" value="7"/>
+      </right>
+    </filter>
+    <body name="speed">
+      <expression xsi:type="bp:IntOperand" value="2"/>
+    </body>
+  </effects>
+  <powers id="Damage" effects="//@effects.1"/>
+  <powers id="Immaterial" effects="//@effects.0"/>
+  <powers id="DestroyB" effects="//@effects.2"/>
+</bp:Root>
