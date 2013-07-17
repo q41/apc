@@ -9,6 +9,8 @@ import org.alia4j.liam.SimpleType;
 import org.alia4j.liam.signature.Signed;
 import org.alia4j.util.Maybe;
 
+import bp.base.BPObject;
+
 public final class BooleanLocalVariableContext extends Context {
 
 	private final String localVariableName;
@@ -28,7 +30,7 @@ public final class BooleanLocalVariableContext extends Context {
 		return SimpleType.BOOLEAN;
 	}
 	
-	public boolean getBooleanValue(BPObject one, BPObject other) {
+	public boolean getBooleanValue(BPObject callee) {
 		try {
 			Field localVariable = callee.getClass().getDeclaredField(localVariableName);
 			localVariable.setAccessible(true);

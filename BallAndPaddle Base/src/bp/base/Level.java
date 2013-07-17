@@ -576,20 +576,7 @@ public class Level extends Observable implements Runnable {
 		}
 	}
 	
-	//Contians the id's of all deployed effects
-	private static Set<String> deployedEffects = new HashSet<>();
-	
-	public static void setDeployed(String id) {
-		deployedEffects.add(id);
-	}
-	
-	public static boolean isDeployed(String id) {
-		return deployedEffects.contains(id);
-	}
-
 	public List<SpawnedPower> getSpawnedPowers() {
 		return spawnedPowers;
 	}
-	
-	
 }
