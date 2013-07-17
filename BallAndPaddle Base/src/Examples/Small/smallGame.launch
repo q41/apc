@@ -43,5 +43,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="bp.base.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-width:800 -height:600 -smooth"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="BallAndPaddle Base"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:&quot;${workspace_loc:/ALIA4J NOIRIn libraries/lib/alia4j-noirin-core.jar}&quot;&#13;&#10;-Dorg.alia4j.importer=org.alia4j.languages.bp.importer.Importer&#13;&#10;-Dbp.main=Examples/Small/smallGame&#13;&#10;-Dorg.alia4j.exclude=org.lwjgl,org.newdawn.slick,bp.base.renderer.TextRenderer"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:&quot;${workspace_loc:/ALIA4J NOIRIn libraries/lib/alia4j-noirin-core.jar}&quot;&#13;&#10;-Dorg.alia4j.importer=org.alia4j.languages.bp.importer.Importer&#13;&#10;-Dbp.main=Examples/Small/smallGame&#13;&#10;-Dorg.alia4j.exclude=org.lwjgl,bp.base.renderer.TextRenderer"/>
 </launchConfiguration>
