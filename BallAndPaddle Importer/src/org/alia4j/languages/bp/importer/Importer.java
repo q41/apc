@@ -182,7 +182,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
 	
-	private Action visit(GeneralEffectBody effectBody) {
+	private Action visit(EffectBody effectBody) {
 		AdjustmentOperator op = effectBody.getOp();
 		AttributeType attrType = getAttributeType(effectBody.getName());
 		switch(attrType) {
@@ -234,10 +234,14 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		//create context
 		Context context = visit(body.getExpression());
-						
+
 		//create action
-		//TODO
 		Action action = null;
+		switch(getAttributeType(body.getName())) {
+		case BOOL: action = DeployCollisionEffectAction.methodCallAction;
+		case INT: action = IntDeployCollisionEffectAction.methodCallAction;
+		case DOUBLE: action = DoubleDeployCollisionEffectAction.methodCallAction;
+		}
 				
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
@@ -246,24 +250,21 @@ public class Importer implements org.alia4j.fial.Importer {
 	}
 	
 	//TODO
-	private bp.base.Effect createCollisionEffect(CollisionEffect effect) {
+	private bp.base.Effect createCollisionEffect(CollisionEffect effect, Context context) {
 		CollisionEffectBody body = effect.getBody();
 				
 		//create pattern
 		MethodPattern pattern = createPattern(targetToClass(body.getTarget()), body.getName().toString());
 		
 		//create predicate
-		//Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
-		//Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
-		
-		//create context
-		Context context = visit(body.getExpression());
+		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
+		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
 				
 		//create action
-		Action action = null; //createAction(body);
+		Action action = visit(body);
 		
 		//create effect
-		Specialization specialization = new Specialization(pattern, null, Collections.singletonList(context));
+		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 		return new bp.base.Effect(effect.getDuration(), attachment);
 	}
@@ -286,7 +287,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanOperand) e).isValue());
 		}
 		else if(e instanceof AttOperand) {
-			return visit(((AttOperand) e).getAtt());
+			return visit((AttOperand) e);
 		}
 		else {
 			handleError();
@@ -294,7 +295,17 @@ public class Importer implements org.alia4j.fial.Importer {
 		}
 	}
 	
-private Context visit(CollisionExpression e) {
+	private Context visit(AttOperand attr) {
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		switch(getAttributeType(attr.getAtt())) {
+		case DOUBLE: return new DoubleLocalVariableContext(calleeContext, attr.toString());
+		case INT: return new IntegerLocalVariableContext(calleeContext, attr.toString());
+		case BOOL: return new BooleanLocalVariableContext(calleeContext, attr.toString());
+		default: handleError(); return null;
+		}
+	}
+	
+	private Context visit(CollisionExpression e, Target left, Target right) {
 		
 		if(e instanceof BinaryCollisionExpression) {
 			return visit((BinaryCollisionExpression) e);
@@ -312,7 +323,20 @@ private Context visit(CollisionExpression e) {
 			return ContextFactory.findOrCreateBooleanConstantContext(((BoolCollisionOperand) e).isValue());
 		}
 		else if(e instanceof AttCollisionOperand) {
-			return visit(((AttCollisionOperand) e).getAtt());
+			AttCollisionOperand aco = (AttCollisionOperand) e;
+			Context object0 = ContextFactory.findOrCreateArgumentContext(0);
+			Context object1 = ContextFactory.findOrCreateArgumentContext(1);
+			new BooleanLocalVariableContext2(aco.getTarget(), localVariableName);
+			
+			Target target = aco.getTarget();
+			Class<?> attClass = targetToClass(target);
+			
+			if(target instanceof ObjectTarget) {
+				ObjectTarget ot = (ObjectTarget) target;
+				ot.getObject().getId();
+			}
+			
+			return visit((AttCollisionOperand) e);
 		}
 		else {
 			handleError();
@@ -320,14 +344,11 @@ private Context visit(CollisionExpression e) {
 		}
 	}
 	
-	private Context visit(Attribute attr) {
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		switch(getAttributeType(attr)) {
-		case DOUBLE: return new LocalDoubleVariableContext(calleeContext, attr.toString());
-		case INT: return new LocalIntegerVariableContext(calleeContext, attr.toString());
-		case BOOL: return new LocalBooleanVariableContext(calleeContext, attr.toString());
-		default: handleError(); return null;
-		}
+	//TODO
+	private Context visit(AttCollisionOperand attr, Target left, Target right) {
+		Context bpObjectLeft = ContextFactory.findOrCreateArgumentContext(0);
+		attr.getTarget();
+		return null;
 	}
 	
 	private Context visit(BinaryExpression e) {
@@ -513,7 +534,7 @@ private Context visit(CollisionExpression e) {
 	private Context generateIsTargetInstanceContext(Context instance, ObjectTarget target) {
 		String id = target.getObject().getId();
 		Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
-		Context actualId = new LocalObjectVariableContext(instance, "id");
+		Context actualId = new ObjectLocalVariableContext(instance, "id");
 		return new ObjectEqualContext(actualId,targetId);
 	}
 
@@ -606,8 +627,8 @@ private Context visit(CollisionExpression e) {
 	 */
 	private void createBoundsAssurance(MethodPattern pattern, Action action, String field){
 		Context callee = ContextFactory.findOrCreateCalleeContext();
-		Context max = new LocalDoubleVariableContext(callee, "upper"+field+"Limit");
-		Context min= new LocalDoubleVariableContext(callee, "lower"+field+"Limit");
+		Context max = new DoubleLocalVariableContext(callee, "upper"+field+"Limit");
+		Context min= new DoubleLocalVariableContext(callee, "lower"+field+"Limit");
 		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
 		Specialization specialization = new Specialization(pattern, null, con);		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);

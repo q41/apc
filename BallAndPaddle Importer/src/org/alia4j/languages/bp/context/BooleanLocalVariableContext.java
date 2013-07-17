@@ -9,37 +9,37 @@ import org.alia4j.liam.SimpleType;
 import org.alia4j.liam.signature.Signed;
 import org.alia4j.util.Maybe;
 
-public final class LocalDoubleVariableContext extends Context {
+public final class BooleanLocalVariableContext extends Context {
 
 	private final String localVariableName;
 
-	public LocalDoubleVariableContext(Context calleeContext, String localVariableName) {
+	public BooleanLocalVariableContext(Context calleeContext, String localVariableName) {
 		super(Collections.singletonList(calleeContext));
 		this.localVariableName = localVariableName;
 	}
 
 	@Override
 	public Maybe<? extends Object> computeValueStatically(final List<? extends Signed<?>> callStack) {
-		return new Maybe<Double>();
+		return new Maybe<Boolean>();
 	}
 
 	@Override
 	public SimpleType getDeclaredResultType(final Signed<?> call) {
-		return SimpleType.DOUBLE;
+		return SimpleType.BOOLEAN;
 	}
 	
-	public double getDoubleValue(Object callee) {
+	public boolean getBooleanValue(BPObject one, BPObject other) {
 		try {
 			Field localVariable = callee.getClass().getDeclaredField(localVariableName);
 			localVariable.setAccessible(true);
-			return localVariable.getDouble(callee);
+			return localVariable.getBoolean(callee);
 		} catch (NoSuchFieldException e) {
 			System.out.format("SYNTAX ERROR: Field %s not defined on %s.", localVariableName, callee.getClass().toString());
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return false;
 	}
 
 }
