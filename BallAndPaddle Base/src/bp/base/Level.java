@@ -107,7 +107,7 @@ public class Level extends Observable implements Runnable {
 	 * Sets if the game should run normally or without relation to fps
 	 */
 	public void setSmooth(boolean smooth){
-		sysTimer = smooth;
+		sysTimer = !smooth;
 	}
 	
 	/**
@@ -574,7 +574,7 @@ public class Level extends Observable implements Runnable {
 		while(!gameOver() && !Display.isCloseRequested()){
 			pollInput();
 			int delta = getDelta();		
-			if(sysTimer){
+			if(!sysTimer){
 				update((int) (initialFPS*1.1));				
 				Timer.incrementTime(1000/initialFPS);	
 			}

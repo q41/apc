@@ -237,14 +237,13 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create action that deploys the effect attachment
 		Attachment effectAttachment = createContextlessCollisionAttachment(effect);
 		int targetIndex = getTargetIndex(targets, effect.getBody().getTarget());
-		System.out.println("targetindex is "+targetIndex);
 		Context con = new ClassContext(ContextFactory.findOrCreateArgumentContext(targetIndex));		
 		Action action = new DeployCollisionEffectAction(effectAttachment, effect.getDuration());
 		List<Context> contextList = new ArrayList<Context>();
 		contextList.add(context); contextList.add(con);
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, contextList);
-		Attachment collisionHook = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
+		Attachment collisionHook = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AFTER);
 		return new bp.base.Effect(collisionHook, 0); //deploy collision trigger permenently
 	}
 	
@@ -900,7 +899,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		AndPredicate<AtomicPredicate> pred = new AndPredicate<AtomicPredicate>(new BasicPredicate<AtomicPredicate>(left, true), new BasicPredicate<AtomicPredicate>(right, true));
 		List<Context> con = new ArrayList<Context>(); con.add(firstArgument); con.add(secondArgument);
 		Specialization specialization = new Specialization(HasCollidedMethodPattern, pred, con);
-		Attachment attachement = new Attachment(Collections.singleton(specialization),action, ScheduleInfo.AFTER);
+		Attachment attachement = new Attachment(Collections.singleton(specialization),action, ScheduleInfo.BEFORE);
 		initialAttachments.add(attachement);
 	}
 }

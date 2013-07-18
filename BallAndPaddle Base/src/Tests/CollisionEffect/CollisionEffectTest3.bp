@@ -27,7 +27,7 @@ block A {
 }
 
 block B {
-    hardness = 1
+    hardness = 5
     resistance = 0
     power = Size
 }
