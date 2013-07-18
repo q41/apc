@@ -232,15 +232,15 @@ public class Importer implements org.alia4j.fial.Importer {
 		Predicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true);
 		
 		//create context
-		Context context = visit(body.getExpression());
+		Context newValue = visit(body.getExpression());
 
 		//create action that deploys the effect attachment
 		Attachment effectAttachment = createContextlessCollisionAttachment(effect);
 		int targetIndex = getTargetIndex(targets, effect.getBody().getTarget());
-		Context con = new ClassContext(ContextFactory.findOrCreateArgumentContext(targetIndex));		
+		Context target = new ClassContext(ContextFactory.findOrCreateArgumentContext(targetIndex));		
 		Action action = new DeployCollisionEffectAction(effectAttachment, effect.getDuration());
 		List<Context> contextList = new ArrayList<Context>();
-		contextList.add(context); contextList.add(con);
+		contextList.add(newValue); contextList.add(target);
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, contextList);
 		Attachment collisionHook = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AFTER);
@@ -277,13 +277,13 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		//create predicate
 		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
-		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
+		//Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
 				
 		//create action
 		Action action = visit(body);
 		
 		//create effect
-		Specialization specialization = new Specialization(pattern, predicate, Collections.<Context>emptyList());
+		Specialization specialization = new Specialization(pattern, null, Collections.<Context>emptyList());
 		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 	}
 	

@@ -4,21 +4,15 @@ import java.util.Collections;
 
 import org.alia4j.hierarchy.TypeDescriptor;
 import org.alia4j.hierarchy.TypeDescriptorConstants;
-import org.alia4j.hierarchy.TypeHierarchyProvider;
 import org.alia4j.languages.bp.context.ObjectEqualContext;
-import org.alia4j.languages.bp.predicate.EqualsPredicate;
 import org.alia4j.liam.Action;
-import org.alia4j.liam.ActionFactory;
 import org.alia4j.liam.AtomicPredicate;
 import org.alia4j.liam.AtomicPredicateFactory;
 import org.alia4j.liam.Attachment;
 import org.alia4j.liam.BasicPredicate;
 import org.alia4j.liam.Context;
 import org.alia4j.liam.ContextFactory;
-import org.alia4j.liam.Predicate;
 import org.alia4j.liam.Specialization;
-import org.alia4j.liam.signature.ResolutionStrategy;
-
 import bp.base.BPObject;
 import bp.base.EffectDeployment;
 import bp.base.Level;
@@ -69,7 +63,9 @@ public class DeployCollisionEffectAction extends Action{
 		BasicPredicate<AtomicPredicate> predicate = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(obeq), true);
 		Specialization originalSpecialization = original.getSpecializations().iterator().next();
 		Specialization newSpecialization = new Specialization(originalSpecialization.getPattern(), predicate, Collections.singletonList(context));
-		Attachment newAttachment = new Attachment(Collections.singleton(newSpecialization), original.getAction(), original.getScheduleInfo());		
+		Attachment newAttachment = new Attachment(Collections.singleton(newSpecialization), original.getAction(), original.getScheduleInfo());
+		
+		//deploy attachment
 		new EffectDeployment(newAttachment, duration, Level.getInstance().getTesting());
 	}
 	
