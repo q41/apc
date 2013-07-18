@@ -9,11 +9,11 @@ import org.alia4j.liam.SimpleType;
 import org.alia4j.liam.signature.Signed;
 import org.alia4j.util.Maybe;
 
-public final class LocalObjectVariableContext extends Context {
+public final class ObjectLocalVariableContext extends Context {
 
 	private final String localVariableName;
 
-	public LocalObjectVariableContext(Context calleeContext, String localVariableName) {
+	public ObjectLocalVariableContext(Context calleeContext, String localVariableName) {
 		super(Collections.singletonList(calleeContext));
 		this.localVariableName = localVariableName;
 	}

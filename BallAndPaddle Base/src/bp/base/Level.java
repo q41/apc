@@ -2,14 +2,12 @@ package bp.base;
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.alia4j.liam.Attachment;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
 import bp.base.collision.body.*;
 import bp.base.exception.IllegalBodyException;
-import bp.base.exception.IllegalEffectException;
 import bp.base.renderer.Game;
 
 
@@ -56,7 +54,7 @@ public class Level extends Observable implements Runnable {
 	 * All powers of this game
 	 */
 	private List<Power> powers;
-
+	
 	/**
 	 * The four borders of the level
 	 */
@@ -79,12 +77,16 @@ public class Level extends Observable implements Runnable {
 	private int attachmentCount;
 	
 	/**
+	 * A boolean that says if the sysTimer should be used or the custom timer Timer
+	 */
+	public static boolean sysTimer = true;
+	
+	/**
 	 * Frame information for keeping the amount of updates well divided over the second
 	 */
 	private long lastFrame;
 	private long lastFPS;
 	private int fps;
-	private boolean smooth = true;
 	
 	/**
 	 * Returns the level, creates one if it doesn't yet exist
@@ -105,10 +107,7 @@ public class Level extends Observable implements Runnable {
 	 * Sets if the game should run normally or without relation to fps
 	 */
 	public void setSmooth(boolean smooth){
-		this.smooth = smooth;
-		for(Power power: powers)
-			for(Effect effect : power.getEffects())
-				effect.sysTimer(false);
+		sysTimer = smooth;
 	}
 	
 	/**
@@ -293,9 +292,7 @@ public class Level extends Observable implements Runnable {
 	 * They are deactivated if this is the case
 	 */
 	private void checkForEffectDeactivation() {
-		for(Power power : powers)
-			for(Effect effect : power.getEffects())
-				effect.checkForDeactivation();		
+		EffectDeployment.deactivateExpired();
 	}
 
 	/**
@@ -513,8 +510,15 @@ public class Level extends Observable implements Runnable {
 	 * Returns the current time
 	 * @return the current time
 	 */
-	public long getTime() {
-	    return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	public static long getGameTime() {
+		if(sysTimer)
+			return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+		else
+			return Timer.getCurrentTime();
+	}
+	
+	public static long getTime() {
+		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	
 	/**
@@ -569,7 +573,7 @@ public class Level extends Observable implements Runnable {
 		while(!gameOver() && !Display.isCloseRequested()){
 			pollInput();
 			int delta = getDelta();		
-			if(smooth){
+			if(sysTimer){
 				update((int) (initialFPS*1.1));				
 				Timer.incrementTime(1000/initialFPS);	
 			}
@@ -598,22 +602,6 @@ public class Level extends Observable implements Runnable {
 			Display.sync(10);
 		}
 	}
-
-	//Contians the id's of all deployed effects
-	private static Set<String> deployedEffects = new HashSet<>();
-	
-	public static void setDeployed(String id) {
-		deployedEffects.add(id);
-	}
-	
-	public static boolean isDeployed(String id) {
-		return deployedEffects.contains(id);
-	}
-
-	public List<SpawnedPower> getSpawnedPowers() {
-		return spawnedPowers;
-	}
-	
 	
 	private void checkForAttachmentChanges() {
 		int currentCount = org.alia4j.fial.System.getInstance().deployedAttachments().length;
@@ -633,4 +621,7 @@ public class Level extends Observable implements Runnable {
 			block.print();		
 	}
 	
+	public List<SpawnedPower> getSpawnedPowers() {
+		return spawnedPowers;
+	}
 }
