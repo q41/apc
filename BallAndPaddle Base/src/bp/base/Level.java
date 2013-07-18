@@ -167,8 +167,9 @@ public class Level extends Observable implements Runnable {
 	public void setTestingMode(boolean testing){
 		this.testing=testing;
 		for(Power power : powers){
-			for(Effect effect : power.getEffects())
-				effect.setTesting(testing);
+			for(Effect effect : power.getEffects()) {
+				//effect.setTesting(testing);
+			}
 		}
 	}
 
