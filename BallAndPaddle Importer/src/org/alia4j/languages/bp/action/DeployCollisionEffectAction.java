@@ -1,42 +1,57 @@
 package org.alia4j.languages.bp.action;
 
-import org.alia4j.fial.Importer;
+import java.util.Collections;
+
 import org.alia4j.hierarchy.TypeHierarchyProvider;
-import org.alia4j.language.bp.CollisionEffect;
-import org.alia4j.language.bp.CollisionEffectBody;
-import org.alia4j.language.bp.ObjectTarget;
 import org.alia4j.liam.Action;
 import org.alia4j.liam.ActionFactory;
-import org.alia4j.liam.AtomicPredicate;
-import org.alia4j.liam.AtomicPredicateFactory;
-import org.alia4j.liam.BasicPredicate;
+import org.alia4j.liam.Attachment;
 import org.alia4j.liam.Context;
 import org.alia4j.liam.ContextFactory;
-import org.alia4j.liam.Predicate;
+import org.alia4j.liam.Specialization;
 import org.alia4j.liam.signature.ResolutionStrategy;
 
-import bp.base.BPObject;
+import bp.base.EffectDeployment;
 
 public class DeployCollisionEffectAction {
 	
-	public static final Action methodCallAction = ActionFactory.findOrCreateMethodCallAction(
+	Attachment original;
+	Class<?> typeClass;
+	int duration;
+	
+	public DeployCollisionEffectAction(Attachment effectAttachment, Class<?> typeClass, int duration) {
+		this.original = effectAttachment;
+		this.duration = duration;
+	}
+	
+	public final Action methodCallAction = ActionFactory.findOrCreateMethodCallAction(
 		TypeHierarchyProvider.findOrCreateFromClass(DeployCollisionEffectAction.class),
 		"apply",
-		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] {"boolean"}),
+		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] { typeClass.getName() }),
 		TypeHierarchyProvider.findOrCreateFromClass(void.class),
 		ResolutionStrategy.STATIC
 	);
 	
-	public static void apply(Importer temp, CollisionEffect effect, BPObject one, BPObject other) throws Throwable {
-		CollisionEffectBody body = effect.getBody();
-		//use effect to determine which ArgumentContext is refered to (constant order) and generate effect
+	public void apply(boolean value) throws Throwable {
+		Context valueContext = ContextFactory.findOrCreateBooleanConstantContext(value);
+		contructAnddeployEffectAttachment(valueContext);	
+	}
+	public void apply(double value) throws Throwable {
+		Context valueContext = ContextFactory.findOrCreateDoubleConstantContext(value);
+		contructAnddeployEffectAttachment(valueContext);	
+	}
+	public void apply(int value) throws Throwable {
+		Context valueContext = ContextFactory.findOrCreateIntegerConstantContext(value);
+		contructAnddeployEffectAttachment(valueContext);	
+	}
+	
+	private void contructAnddeployEffectAttachment(Context context) {
+		//construct new attachment from original + new context
+		Specialization originalSpecialization = original.getSpecializations().iterator().next();
+		Specialization newSpecialization = new Specialization(originalSpecialization.getPattern(), originalSpecialization.getPredicate(), Collections.singletonList(context));
+		Attachment newAttachment = new Attachment(Collections.singleton(newSpecialization), original.getAction(), original.getScheduleInfo());
 		
-		//whole attachment create goes here
-		
-		
-		//create predicate
-		//Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
-		//Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
+		new EffectDeployment(newAttachment, duration);
 	}
 
 }

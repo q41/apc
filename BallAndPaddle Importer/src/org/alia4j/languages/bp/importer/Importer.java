@@ -234,16 +234,14 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create context
 		Context context = visit(body.getExpression());
 
-		//create action
+		//create action that deploys the effect attachment
 		Attachment effectAttachment = createContextlessCollisionAttachment(effect);
-		//create Collision Effect with effectAttachment
-		//action: activate collision effect
-		Action action = null;
+		Action action = new DeployCollisionEffectAction(effectAttachment, targetToClass(body.getTarget()), effect.getDuration()).methodCallAction;
 				
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		Attachment collisionHook = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
-		return new bp.base.CollisionEffect(collisionHook, 0, effectAttachment); //deploy collision trigger permenently
+		return new bp.base.Effect(collisionHook, effect.getDuration()); //deploy collision trigger permenently
 	}
 	
 	private Attachment createContextlessCollisionAttachment(CollisionEffect effect) {
