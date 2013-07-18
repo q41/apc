@@ -16,7 +16,6 @@ import org.alia4j.liam.pattern.*;
 import org.alia4j.liam.signature.ResolutionStrategy;
 import org.alia4j.patterns.*;
 import org.alia4j.patterns.names.ExactNamePattern;
-import org.alia4j.patterns.parameters.ExactParametersPattern;
 import org.alia4j.patterns.types.*;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -179,10 +178,10 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
-		return new bp.base.Effect(effect.getDuration(), attachment);
+		return new bp.base.Effect(attachment, effect.getDuration());
 	}
 	
-	private Action visit(GeneralEffectBody effectBody) {
+	private Action visit(EffectBody effectBody) {
 		AdjustmentOperator op = effectBody.getOp();
 		AttributeType attrType = getAttributeType(effectBody.getName());
 		switch(attrType) {
@@ -234,38 +233,33 @@ public class Importer implements org.alia4j.fial.Importer {
 		
 		//create context
 		Context context = visit(body.getExpression());
-						
-		//create action
-		//TODO
-		Action action = null;
+
+		//create action that deploys the effect attachment
+		Attachment effectAttachment = createContextlessCollisionAttachment(effect);
+		Action action = new DeployCollisionEffectAction(effectAttachment, targetToClass(body.getTarget()), effect.getDuration());
 				
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
-		return new bp.base.Effect(0, attachment); //deploy collision trigger permenently
+		Attachment collisionHook = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
+		return new bp.base.Effect(collisionHook, effect.getDuration()); //deploy collision trigger permenently
 	}
 	
-	//TODO
-	private bp.base.Effect createCollisionEffect(CollisionEffect effect) {
+	private Attachment createContextlessCollisionAttachment(CollisionEffect effect) {
 		CollisionEffectBody body = effect.getBody();
 				
 		//create pattern
 		MethodPattern pattern = createPattern(targetToClass(body.getTarget()), body.getName().toString());
 		
 		//create predicate
-		//Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
-		//Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
-		
-		//create context
-		Context context = visit(body.getExpression());
+		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
+		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
 				
 		//create action
-		Action action = null; //createAction(body);
+		Action action = visit(body);
 		
 		//create effect
-		Specialization specialization = new Specialization(pattern, null, Collections.singletonList(context));
-		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
-		return new bp.base.Effect(effect.getDuration(), attachment);
+		Specialization specialization = new Specialization(pattern, predicate, Collections.<Context>emptyList());
+		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 	}
 	
 	private Context visit(Expression e) {
@@ -286,7 +280,7 @@ public class Importer implements org.alia4j.fial.Importer {
 			return ContextFactory.findOrCreateBooleanConstantContext(((BooleanOperand) e).isValue());
 		}
 		else if(e instanceof AttOperand) {
-			return visit(((AttOperand) e).getAtt());
+			return visit((AttOperand) e);
 		}
 		else {
 			handleError();
@@ -294,7 +288,17 @@ public class Importer implements org.alia4j.fial.Importer {
 		}
 	}
 	
-private Context visit(CollisionExpression e) {
+	private Context visit(AttOperand attr) {
+		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
+		switch(getAttributeType(attr.getAtt())) {
+		case DOUBLE: return new DoubleLocalVariableContext(calleeContext, attr.getAtt().getName());
+		case INT: return new IntegerLocalVariableContext(calleeContext, attr.getAtt().getName());
+		case BOOL: return new BooleanLocalVariableContext(calleeContext, attr.getAtt().getName());
+		default: handleError(); return null;
+		}
+	}
+	
+	private Context visit(CollisionExpression e) {
 		
 		if(e instanceof BinaryCollisionExpression) {
 			return visit((BinaryCollisionExpression) e);
@@ -312,7 +316,7 @@ private Context visit(CollisionExpression e) {
 			return ContextFactory.findOrCreateBooleanConstantContext(((BoolCollisionOperand) e).isValue());
 		}
 		else if(e instanceof AttCollisionOperand) {
-			return visit(((AttCollisionOperand) e).getAtt());
+			return visit((AttCollisionOperand) e);
 		}
 		else {
 			handleError();
@@ -320,12 +324,13 @@ private Context visit(CollisionExpression e) {
 		}
 	}
 	
-	private Context visit(Attribute attr) {
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		switch(getAttributeType(attr)) {
-		case DOUBLE: return new LocalDoubleVariableContext(calleeContext, attr.toString());
-		case INT: return new LocalIntegerVariableContext(calleeContext, attr.toString());
-		case BOOL: return new LocalBooleanVariableContext(calleeContext, attr.toString());
+	private Context visit(AttCollisionOperand attr) {
+		Context collider1 = ContextFactory.findOrCreateArgumentContext(0);
+		Context collider2 = ContextFactory.findOrCreateArgumentContext(1);
+		switch(getAttributeType(attr.getAtt())) {
+		case DOUBLE: return new DoubleTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
+		case INT: return new IntegerTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
+		case BOOL: return new BooleanTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
 		default: handleError(); return null;
 		}
 	}
@@ -460,13 +465,13 @@ private Context visit(CollisionExpression e) {
 	
 	//------------ Helper funtions ------------
 	
-	private Object handleError() {
+	private static Object handleError() {
 		System.err.println("ERROR: Something that should never happen happended. Program will crash now. Have a nice day!");
 		throw new NullPointerException(); //so we don't have to add a throws declaration everywhere :P
 	}
 	
 	//Convert target to corresponding Class<? extends BPObject>
-	private Class<?> targetToClass(Target target) {
+	public static Class<?> targetToClass(Target target) {
 		Class<?> targetClass = null;
 		if(target instanceof ClassTarget) {
 			targetClass = getBPObjectClass((ClassTarget) target);
@@ -488,7 +493,7 @@ private Context visit(CollisionExpression e) {
 	}
 	
 	//Convert classTarget to the corresponding Class<? extends BPObject>
-	private Class<?> getBPObjectClass(ClassTarget classTarget) {
+	public static Class<?> getBPObjectClass(ClassTarget classTarget) {
 		switch(classTarget.getClassType()) {
 		case BALL: return bp.base.Ball.class;
 		case BLOCK: return bp.base.Block.class;
@@ -513,7 +518,7 @@ private Context visit(CollisionExpression e) {
 	private Context generateIsTargetInstanceContext(Context instance, ObjectTarget target) {
 		String id = target.getObject().getId();
 		Context targetId = ContextFactory.findOrCreateObjectConstantContext(id);
-		Context actualId = new LocalObjectVariableContext(instance, "id");
+		Context actualId = new ObjectLocalVariableContext(instance, "id");
 		return new ObjectEqualContext(actualId,targetId);
 	}
 
@@ -606,8 +611,8 @@ private Context visit(CollisionExpression e) {
 	 */
 	private void createBoundsAssurance(MethodPattern pattern, Action action, String field){
 		Context callee = ContextFactory.findOrCreateCalleeContext();
-		Context max = new LocalDoubleVariableContext(callee, "upper"+field+"Limit");
-		Context min= new LocalDoubleVariableContext(callee, "lower"+field+"Limit");
+		Context max = new DoubleLocalVariableContext(callee, "upper"+field+"Limit");
+		Context min= new DoubleLocalVariableContext(callee, "lower"+field+"Limit");
 		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
 		Specialization specialization = new Specialization(pattern, null, con);		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);

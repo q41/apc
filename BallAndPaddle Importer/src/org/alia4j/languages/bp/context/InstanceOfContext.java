@@ -27,4 +27,8 @@ public final class InstanceOfContext extends Context {
 	public boolean getBooleanValue(Object left, Class<?> right) {
 		return right.isInstance(left);
 	}
+	
+	public boolean getBooleanValue(Object left, Object right) {
+		return ((Class<?>)right).isInstance(left);
+	}
 }

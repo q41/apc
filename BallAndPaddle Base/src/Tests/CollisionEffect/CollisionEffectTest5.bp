@@ -38,7 +38,7 @@ power Size {
 
 collision effect SizeIncr between ball and paddle{
 	paddle.size += 5
-	duration = 1
+	duration = 5
 }
 
 

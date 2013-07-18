@@ -10,7 +10,7 @@
   <paddles id="Paddle" x="4.0" y="4.0" size="1"/>
   <balls id="Ball" x="3.0" y="4.0" orientation="270" damage="1" speed="5"/>
   <blocks id="A" hardness="1" power="//@powers.0"/>
-  <blocks id="B" hardness="1" power="//@powers.0"/>
+  <blocks id="B" hardness="5" power="//@powers.0"/>
   <effects xsi:type="bp:CollisionEffect" id="SizeDec">
     <leftTarget xsi:type="bp:ObjectTarget" object="//@balls.0"/>
     <rightTarget xsi:type="bp:ObjectTarget" object="//@blocks.1"/>
