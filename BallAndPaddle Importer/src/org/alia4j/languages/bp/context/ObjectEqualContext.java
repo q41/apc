@@ -8,6 +8,9 @@ import org.alia4j.liam.SimpleType;
 import org.alia4j.liam.signature.Signed;
 import org.alia4j.util.Maybe;
 
+import bp.base.BPObject;
+import bp.base.Block;
+
 public final class ObjectEqualContext extends Context {
 	
 	public ObjectEqualContext(final Context left, final Context right) {

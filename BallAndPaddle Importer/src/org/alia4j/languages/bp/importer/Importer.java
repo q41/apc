@@ -211,7 +211,7 @@ public class Importer implements org.alia4j.fial.Importer {
 				ParametersPattern.ANY,
 				ExceptionsPattern.ANY
 		);
-		
+		Target exprTarget = effect.getBody().getTarget();
 		//create predicate
 		Target[] targets = new Target[] {effect.getLeftTarget(), effect.getRightTarget()};
 		Expression[] filters = new Expression[] {effect.getLeftFilter(), effect.getRightFilter()};
@@ -236,14 +236,40 @@ public class Importer implements org.alia4j.fial.Importer {
 
 		//create action that deploys the effect attachment
 		Attachment effectAttachment = createContextlessCollisionAttachment(effect);
-		Action action = new DeployCollisionEffectAction(effectAttachment, targetToClass(body.getTarget()), effect.getDuration());
-				
+		int targetIndex = getTargetIndex(targets, effect.getBody().getTarget());
+		System.out.println("targetindex is "+targetIndex);
+		Context con = new ClassContext(ContextFactory.findOrCreateArgumentContext(targetIndex));		
+		Action action = new DeployCollisionEffectAction(effectAttachment, effect.getDuration());
+		List<Context> contextList = new ArrayList<Context>();
+		contextList.add(context); contextList.add(con);
 		//create effect
-		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
+		Specialization specialization = new Specialization(pattern, predicate, contextList);
 		Attachment collisionHook = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
-		return new bp.base.Effect(collisionHook, effect.getDuration()); //deploy collision trigger permenently
+		return new bp.base.Effect(collisionHook, 0); //deploy collision trigger permenently
 	}
 	
+	private int getTargetIndex(Target[] targets, Target target) {
+		if(target instanceof ObjectTarget){
+			ObjectTarget objectT = (ObjectTarget) target;
+			if(targets[0] instanceof ObjectTarget)
+				if(((ObjectTarget)targets[0]).getObject().equals(objectT.getObject()))
+					return 0;	
+			if(targets[1] instanceof ObjectTarget)
+				if(((ObjectTarget)targets[1]).getObject().equals(objectT.getObject()))
+					return 1;
+		}
+		else{
+			ClassTarget classT = (ClassTarget) target;			
+			if(targets[0] instanceof ClassTarget)
+				if(((ClassTarget)targets[0]).getClassType().equals(classT.getClassType()))
+					return 0;
+			if(targets[1] instanceof ClassTarget)
+				if(((ClassTarget)targets[1]).getClassType().equals(classT.getClassType()))
+					return 1;			
+		}
+		return 0;
+	}
+
 	private Attachment createContextlessCollisionAttachment(CollisionEffect effect) {
 		CollisionEffectBody body = effect.getBody();
 				
