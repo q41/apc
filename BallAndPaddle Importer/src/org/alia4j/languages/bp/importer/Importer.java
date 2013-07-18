@@ -17,6 +17,7 @@ import org.alia4j.liam.signature.ResolutionStrategy;
 import org.alia4j.patterns.*;
 import org.alia4j.patterns.names.ExactNamePattern;
 import org.alia4j.patterns.types.*;
+import org.apache.commons.collections.iterators.EmptyListIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -68,14 +69,11 @@ public class Importer implements org.alia4j.fial.Importer {
 		createSizeBoundAssurance();
 		createXYBoundAssurance();
 		createDamageBoundAssurance();
-		//createEffect(Ball.class, "direction", AttributeType.INT);
 		
 		//-----------------------
 		// Deploy all definitions
 		//-----------------------
-		
-		//initialAttachments.addAll(new ArrayList<Attachment>(effects.values()));
-		
+				
 		CompositionRule[] toDeployRules = new CompositionRule[initialCompositionRules.size()];
 		org.alia4j.fial.System.deploy(initialCompositionRules.toArray(toDeployRules));
 		Attachment[] toDeploy = new Attachment[initialAttachments.size()];
@@ -184,19 +182,12 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Action visit(EffectBody effectBody) {
 		AdjustmentOperator op = effectBody.getOp();
 		AttributeType attrType = getAttributeType(effectBody.getName());
-		switch(attrType) {
-		case DOUBLE:
-			if(op==AdjustmentOperator.SET) return DoubleAttributeAssignAction.methodCallAction;
-			else return DoubleAttributeIncAction.methodCallAction;
-		case INT:
-			if(op==AdjustmentOperator.SET) return IntAttributeAssignAction.methodCallAction;
-			else return IntAttributeIncAction.methodCallAction;
-		case BOOL:
-			return BooleanAttributeAssignAction.methodCallAction;
-		default:
-			handleError();
-			return null;
+		Action action = null;
+		switch(op) {
+		case SET: action = new AttributeAssignAction(attrType); break;
+		case INC: action = new AttributeIncAction(attrType); break;
 		}
+		return action;
 	}
 
 	private bp.base.Effect visit(CollisionEffect effect) {
@@ -275,10 +266,6 @@ public class Importer implements org.alia4j.fial.Importer {
 				
 		//create pattern
 		MethodPattern pattern = createPattern(targetToClass(body.getTarget()), body.getName().toString());
-		
-		//create predicate
-		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
-		//Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
 				
 		//create action
 		Action action = visit(body);
@@ -316,12 +303,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	
 	private Context visit(AttOperand attr) {
 		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		switch(getAttributeType(attr.getAtt())) {
-		case DOUBLE: return new DoubleLocalVariableContext(calleeContext, attr.getAtt().getName());
-		case INT: return new IntegerLocalVariableContext(calleeContext, attr.getAtt().getName());
-		case BOOL: return new BooleanLocalVariableContext(calleeContext, attr.getAtt().getName());
-		default: handleError(); return null;
-		}
+		return new LocalVariableContext(calleeContext, getAttributeType(attr.getAtt()), attr.getAtt().getName());
 	}
 	
 	private Context visit(CollisionExpression e) {
@@ -353,12 +335,8 @@ public class Importer implements org.alia4j.fial.Importer {
 	private Context visit(AttCollisionOperand attr) {
 		Context collider1 = ContextFactory.findOrCreateArgumentContext(0);
 		Context collider2 = ContextFactory.findOrCreateArgumentContext(1);
-		switch(getAttributeType(attr.getAtt())) {
-		case DOUBLE: return new DoubleTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
-		case INT: return new IntegerTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
-		case BOOL: return new BooleanTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
-		default: handleError(); return null;
-		}
+		AttributeType attrType = getAttributeType(attr.getAtt());
+		return new TargetVariableContext(collider1, collider2, attr.getTarget(), attrType, attr.getAtt().getName());
 	}
 	
 	private Context visit(BinaryExpression e) {
@@ -547,11 +525,6 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context actualId = new ObjectLocalVariableContext(instance, "id");
 		return new ObjectEqualContext(actualId,targetId);
 	}
-
-	//all possible types an attribute can have
-	private enum AttributeType {
-		DOUBLE, INT, BOOL
-	}
 	
 	private AttributeType getAttributeType(Attribute attr) {
 		switch(attr) {
@@ -566,63 +539,12 @@ public class Importer implements org.alia4j.fial.Importer {
 		case DAMAGE:
 			return AttributeType.INT;
 		case IMMATERIAL:
-			return AttributeType.BOOL;
+			return AttributeType.BOOLEAN;
 		default:
 			handleError();
 			return null;
 		}
 	}
-
-	//private static final Action testAction = ActionFactory.findOrCreateMethodCallAction(TypeHierarchyProvider.findOrCreateFromNormalTypeName("ballandpaddle.base.Main"),"print",TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[]{}),TypeHierarchyProvider.findOrCreateFromNormalTypeName("void"),ResolutionStrategy.STATIC);
-	//private static final BasicPredicate<AtomicPredicate> testPred = new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(ContextFactory.findOrCreateBooleanConstantContext(true)),true);
-	
-	/*
-	private void createEffect(Class<? extends BPObject> bapobject, String attribute, AttributeType attributeType) {
-		//create attribute getter pattern 
-		MethodPattern attributeGetter = new MethodPattern(
-			ModifiersPattern.ANY,
-			TypePattern.ANY,
-			new ExactClassTypePattern(TypeHierarchyProvider.findOrCreateFromClass(bapobject)),
-			new ExactNamePattern("get"+Character.toUpperCase(attribute.charAt(0))+attribute.substring(1).toLowerCase()),
-			ParametersPattern.ANY,
-			ExceptionsPattern.ANY
-		);
-		
-		//create pattern matching predicate
-		BasicPredicate<AtomicPredicate> predicate = createEffectPredicate();
-
-		//create attribute assign action
-		Action attributeAssignAction = null;
-		switch(attributeType) {
-		case DOUBLE: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-		case INT: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-		case BOOLEAN: attributeAssignAction = DoubleAttributeAssignAction.methodCallAction; break;
-		}
-		
-		Action attributeIncAction = null;
-		switch(attributeType) {
-		case DOUBLE: attributeIncAction = DoubleAttributeIncAction.methodCallAction; break;
-		case INT: attributeIncAction = IntAttributeIncAction.methodCallAction; break;
-		case BOOLEAN: assert(false);
-		}
-		
-		Context newSize = ContextFactory.findOrCreateIntegerConstantContext(90);
-		
-		//contruct specialization
-		//Predicate<AtomicPredicate> andPredicate = new AndPredicate<AtomicPredicate>(testPred, isFinalPred);
-		Specialization specialization = new Specialization(attributeGetter, predicate, Collections.singletonList(newSize));
-		
-		Attachment attachement = new Attachment(Collections.singleton(specialization), attributeIncAction, ScheduleInfo.AROUND);
-		initialAttachments.add(attachement);
-	}
-	
-	private BasicPredicate<AtomicPredicate> createEffectPredicate() {
-		Context calleeContext = ContextFactory.findOrCreateCalleeContext();
-		Context speedContext = new LocalDoubleVariableContext(calleeContext, "speed");
-		Context thresholdContext = ContextFactory.findOrCreateDoubleConstantContext(1.5);
-		Context exceedsContext = ContextFactory.findOrCreateGreaterContext(speedContext, thresholdContext);
-		return new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(exceedsContext), true);
-	}*/
 	
 	//--------------------General Bounds assurance------------------------
 	
@@ -637,8 +559,8 @@ public class Importer implements org.alia4j.fial.Importer {
 	 */
 	private void createBoundsAssurance(MethodPattern pattern, Action action, String field){
 		Context callee = ContextFactory.findOrCreateCalleeContext();
-		Context max = new DoubleLocalVariableContext(callee, "upper"+field+"Limit");
-		Context min= new DoubleLocalVariableContext(callee, "lower"+field+"Limit");
+		Context max = new LocalVariableContext(callee, AttributeType.DOUBLE, "upper"+field+"Limit");
+		Context min= new LocalVariableContext(callee, AttributeType.DOUBLE, "lower"+field+"Limit");
 		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
 		Specialization specialization = new Specialization(pattern, null, con);		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
@@ -699,7 +621,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	 * Deploys an attachment that makes certain that the result of getSpeed never goes out of bounds.
 	 */
 	private void createSpeedBoundAssurance(){	
-		createBoundsAssurance(getSpeed, DoubleAttributeBoundsAssuranceAction.methodCallAction, "Speed");
+		createBoundsAssurance(getSpeed, new AttributeBoundsAssuranceAction(AttributeType.DOUBLE), "Speed");
 	}
 	
 	//--------------------Size Bounds assurance------------------------
@@ -720,7 +642,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	 * Deploys an attachment that makes certain that the result of getSize never goes out of bounds.
 	 */
 	private void createSizeBoundAssurance(){
-		createBoundsAssurance(getSize, DoubleAttributeBoundsAssuranceAction.methodCallAction, "Size");
+		createBoundsAssurance(getSize, new AttributeBoundsAssuranceAction(AttributeType.DOUBLE), "Size");
 	}
 	
 	//--------------------XY Bounds assurance------------------------
@@ -753,8 +675,8 @@ public class Importer implements org.alia4j.fial.Importer {
 	 * Deploys attachments that make certain that the results of getX and getY never go out of bounds.
 	 */
 	private void createXYBoundAssurance(){		
-		createBoundsAssurance(getX, DoubleAttributeBoundsAssuranceAction.methodCallAction, 0.0, (double)bp.base.Level.getInstance().getWidth());
-		createBoundsAssurance(getY, DoubleAttributeBoundsAssuranceAction.methodCallAction, 0.0, (double)bp.base.Level.getInstance().getHeight());
+		createBoundsAssurance(getX, new AttributeBoundsAssuranceAction(AttributeType.DOUBLE), 0.0, (double)bp.base.Level.getInstance().getWidth());
+		createBoundsAssurance(getY, new AttributeBoundsAssuranceAction(AttributeType.DOUBLE), 0.0, (double)bp.base.Level.getInstance().getHeight());
 	}		
 	
 	//--------------------Damage Bounds assurance------------------------
@@ -775,7 +697,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	 * Deploys attachments that makes certain that the result of getDamage never goes out of bounds.
 	 */
 	private void createDamageBoundAssurance(){
-		createBoundsAssurance(getDamage, IntAttributeBoundsAssuranceAction.methodCallAction, 0, Integer.MAX_VALUE);
+		createBoundsAssurance(getDamage, new AttributeBoundsAssuranceAction(AttributeType.INT), 0, Integer.MAX_VALUE);
 	}
 		
 	//--------------------Collision detection------------------------
