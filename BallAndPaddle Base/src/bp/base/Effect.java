@@ -13,6 +13,8 @@ public class Effect {
 	 */
 	private int duration;
 	
+	private boolean testing;
+	
 	/**
 	 * Creates a new effect with the given duration and attachment
 	 * @param attachment The attachment of this effect
@@ -21,12 +23,17 @@ public class Effect {
 	public Effect(Attachment attachment, int duration){
 		this.duration = duration;
 		this.original = attachment;
+		testing = false;
 	}
 	
 	//this effect becomes active
 	public void activate(){
 		Attachment newAttachment = new Attachment(original.getSpecializations(), original.getAction(), original.getScheduleInfo());
-		new EffectDeployment(newAttachment, duration);	
+		new EffectDeployment(newAttachment, duration, testing);	
+	}
+	
+	public void setTesting(boolean testing){
+		this.testing = testing;
 	}
 }
 	

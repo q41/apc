@@ -16,8 +16,9 @@ public class EffectDeployment {
 	private Attachment uniqueAttachment;
 	private PrecedenceRule precedence;
 	private long expirationTime;
+	private boolean testing;
 	
-	public EffectDeployment(Attachment uniqueAttachment, int duration) {
+	public EffectDeployment(Attachment uniqueAttachment, int duration, boolean testing) {
 		//create attachment
 		this.uniqueAttachment = uniqueAttachment;
 		
@@ -28,10 +29,16 @@ public class EffectDeployment {
 		//set expiration time
 		setExpirationTime(duration);
 		
-		System.out.println(Level.getGameTime() + " deploying: " + uniqueAttachment);
+		//set testing
+		this.testing = testing;
+		if(testing)
+			System.out.println(Level.getGameTime() + " deploying: " + uniqueAttachment);
+		
 		org.alia4j.fial.System.deploy(uniqueAttachment);
 		org.alia4j.fial.System.deploy(precedence);
 		effectDeployments.add(this);
+		
+		
 	}
 
 	public long getExpirationTime() {
@@ -72,7 +79,8 @@ public class EffectDeployment {
 
 	//Ends this effect deployments existence
 	private void destroy() {
-		System.out.println(Level.getGameTime() + " undeploying: " + uniqueAttachment);
+		if(testing)
+			System.out.println(Level.getGameTime() + " undeploying: " + uniqueAttachment);
 		org.alia4j.fial.System.undeploy(this.uniqueAttachment);
 		org.alia4j.fial.System.undeploy(this.precedence);
 		effectDeployments.remove(this);

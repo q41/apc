@@ -14,6 +14,7 @@ import org.alia4j.liam.Specialization;
 import org.alia4j.liam.signature.ResolutionStrategy;
 
 import bp.base.EffectDeployment;
+import bp.base.Level;
 
 public class DeployCollisionEffectAction extends Action{
 	
@@ -63,7 +64,7 @@ public class DeployCollisionEffectAction extends Action{
 		Specialization newSpecialization = new Specialization(originalSpecialization.getPattern(), originalSpecialization.getPredicate(), Collections.singletonList(context));
 		Attachment newAttachment = new Attachment(Collections.singleton(newSpecialization), original.getAction(), original.getScheduleInfo());
 		
-		new EffectDeployment(newAttachment, duration);
+		new EffectDeployment(newAttachment, duration, Level.getInstance().getTesting());
 	}
 	
 	
