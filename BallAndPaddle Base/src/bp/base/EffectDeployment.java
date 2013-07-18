@@ -65,7 +65,7 @@ public class EffectDeployment {
 	
 	//Undeploys any expired effects and their precedencerules
 	public static void deactivateExpired() {
-		while(effectDeployments.first().getExpirationTime() <= Level.getGameTime()) {
+		while(!effectDeployments.isEmpty() && effectDeployments.first().getExpirationTime() <= Level.getGameTime()) {
 			effectDeployments.first().destroy();
 		}
 	}
