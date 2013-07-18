@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ASCII"?>
+<bp:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bp="http://www.emftext.org/language/ballandpaddle">
+  <level id="first">
+    <blocks>.......</blocks>
+    <blocks>...A...</blocks>
+    <blocks>..BAB..</blocks>
+  </level>
+  <paddles id="Paddle" x="2.0" y="4.0" size="5"/>
+  <balls id="Ball" x="3.0" y="4.0" damage="4"/>
+  <blocks id="A" hardness="4" resistance="4"/>
+  <blocks id="B" hardness="1" power="//@powers.0"/>
+  <effects xsi:type="bp:GeneralEffect" id="LaunchBall">
+    <target xsi:type="bp:ClassTarget" classType="ball"/>
+    <filter xsi:type="bp:SmthExpression">
+      <left xsi:type="bp:AttOperand" att="speed"/>
+      <right xsi:type="bp:AttOperand"/>
+    </filter>
+    <body name="speed">
+      <expression xsi:type="bp:AttOperand"/>
+    </body>
+  </effects>
+  <effects xsi:type="bp:CollisionEffect" id="AbsorbSpeed">
+    <leftTarget xsi:type="bp:ClassTarget" classType="ball"/>
+    <rightTarget xsi:type="bp:ClassTarget"/>
+    <rightFilter xsi:type="bp:LthExpression">
+      <left xsi:type="bp:AttOperand" att="resistance"/>
+      <right xsi:type="bp:IntOperand"/>
+    </rightFilter>
+    <body name="speed">
+      <target xsi:type="bp:ClassTarget" classType="ball"/>
+      <expression xsi:type="bp:NegCollisionExpression">
+        <body xsi:type="bp:AttCollisionOperand" att="resistance">
+          <target xsi:type="bp:ClassTarget"/>
+        </body>
+      </expression>
+    </body>
+  </effects>
+  <powers id="TestPower" effects="//@effects.0"/>
+</bp:Root>
