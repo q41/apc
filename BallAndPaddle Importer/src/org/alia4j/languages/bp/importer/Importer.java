@@ -178,7 +178,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
 		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
-		return new bp.base.Effect(effect.getDuration(), attachment);
+		return new bp.base.Effect(attachment, effect.getDuration());
 	}
 	
 	private Action visit(EffectBody effectBody) {
@@ -235,16 +235,18 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context context = visit(body.getExpression());
 
 		//create action
-		Action action = DeployCollisionEffectAction.methodCallAction;
+		Attachment effectAttachment = createContextlessCollisionAttachment(effect);
+		//create Collision Effect with effectAttachment
+		//action: activate collision effect
+		Action action = null;
 				
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
-		return new bp.base.Effect(0, attachment); //deploy collision trigger permenently
+		Attachment collisionHook = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.BEFORE);
+		return new bp.base.CollisionEffect(collisionHook, 0, effectAttachment); //deploy collision trigger permenently
 	}
 	
-	@SuppressWarnings("unused")
-	private void deployCollisionEffect(CollisionEffect effect, double doubleValue) {
+	private Attachment createContextlessCollisionAttachment(CollisionEffect effect) {
 		CollisionEffectBody body = effect.getBody();
 				
 		//create pattern
@@ -253,21 +255,13 @@ public class Importer implements org.alia4j.fial.Importer {
 		//create predicate
 		Context effectApplies = (body.getTarget() instanceof ObjectTarget) ? generateIsTargetInstanceContext(ContextFactory.findOrCreateCalleeContext(), (ObjectTarget) body.getTarget()) : null;
 		Predicate<AtomicPredicate> predicate = (effectApplies!=null) ? new BasicPredicate<AtomicPredicate>(AtomicPredicateFactory.findOrCreateContextValuePredicate(effectApplies), true) : null;
-		
-		//create context
-		Context context = ContextFactory.findOrCreateDoubleConstantContext(doubleValue);
-		
+				
 		//create action
 		Action action = visit(body);
 		
 		//create effect
-		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
-		Attachment attachment = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
-		
-		//deploy effect
-		//TODO
-		bp.base.Effect gameEffect = new bp.base.Effect(effect.getDuration(), attachment);
-		gameEffect.activate();
+		Specialization specialization = new Specialization(pattern, predicate, Collections.<Context>emptyList());
+		return new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 	}
 	
 	private Context visit(Expression e) {
