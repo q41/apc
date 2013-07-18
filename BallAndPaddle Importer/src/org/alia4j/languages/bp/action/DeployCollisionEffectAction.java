@@ -16,18 +16,19 @@ import bp.base.EffectDeployment;
 public class DeployCollisionEffectAction {
 	
 	Attachment original;
-	Class<?> typeClass;
+	String typeClass;
 	int duration;
 	
-	public DeployCollisionEffectAction(Attachment effectAttachment, Class<?> typeClass, int duration) {
+	public DeployCollisionEffectAction(Attachment effectAttachment, String typeClass, int duration) {
 		this.original = effectAttachment;
 		this.duration = duration;
+		this.typeClass = typeClass;
 	}
 	
 	public final Action methodCallAction = ActionFactory.findOrCreateMethodCallAction(
 		TypeHierarchyProvider.findOrCreateFromClass(DeployCollisionEffectAction.class),
 		"apply",
-		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] { typeClass.getName() }),
+		TypeHierarchyProvider.findOrCreateFromNormalTypeNames(new String[] { typeClass }),
 		TypeHierarchyProvider.findOrCreateFromClass(void.class),
 		ResolutionStrategy.STATIC
 	);

@@ -191,7 +191,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case INT:
 			if(op==AdjustmentOperator.SET) return IntAttributeAssignAction.methodCallAction;
 			else return IntAttributeIncAction.methodCallAction;
-		case BOOL:
+		case BOOLEAN:
 			return BooleanAttributeAssignAction.methodCallAction;
 		default:
 			handleError();
@@ -236,7 +236,7 @@ public class Importer implements org.alia4j.fial.Importer {
 
 		//create action that deploys the effect attachment
 		Attachment effectAttachment = createContextlessCollisionAttachment(effect);
-		Action action = new DeployCollisionEffectAction(effectAttachment, targetToClass(body.getTarget()), effect.getDuration()).methodCallAction;
+		Action action = new DeployCollisionEffectAction(effectAttachment, getAttributeType(body.getName()).name().toLowerCase(), effect.getDuration()).methodCallAction;
 				
 		//create effect
 		Specialization specialization = new Specialization(pattern, predicate, Collections.singletonList(context));
@@ -293,7 +293,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		switch(getAttributeType(attr.getAtt())) {
 		case DOUBLE: return new DoubleLocalVariableContext(calleeContext, attr.getAtt().getName());
 		case INT: return new IntegerLocalVariableContext(calleeContext, attr.getAtt().getName());
-		case BOOL: return new BooleanLocalVariableContext(calleeContext, attr.getAtt().getName());
+		case BOOLEAN: return new BooleanLocalVariableContext(calleeContext, attr.getAtt().getName());
 		default: handleError(); return null;
 		}
 	}
@@ -330,7 +330,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		switch(getAttributeType(attr.getAtt())) {
 		case DOUBLE: return new DoubleTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
 		case INT: return new IntegerTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
-		case BOOL: return new BooleanTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
+		case BOOLEAN: return new BooleanTargetVariableContext(collider1, collider2, attr.getTarget(), attr.getAtt().getName());
 		default: handleError(); return null;
 		}
 	}
@@ -524,7 +524,7 @@ public class Importer implements org.alia4j.fial.Importer {
 
 	//all possible types an attribute can have
 	private enum AttributeType {
-		DOUBLE, INT, BOOL
+		DOUBLE, INT, BOOLEAN
 	}
 	
 	private AttributeType getAttributeType(Attribute attr) {
@@ -540,7 +540,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		case DAMAGE:
 			return AttributeType.INT;
 		case IMMATERIAL:
-			return AttributeType.BOOL;
+			return AttributeType.BOOLEAN;
 		default:
 			handleError();
 			return null;
