@@ -19,8 +19,8 @@ import bp.base.Level;
 
 public class DeployCollisionEffectAction extends Action{
 	
-	Attachment original;
-	int duration;
+	private Attachment original;
+	private int duration;
 	
 	public DeployCollisionEffectAction(Attachment effectAttachment, int duration) {
 		this.original = effectAttachment;
@@ -29,7 +29,6 @@ public class DeployCollisionEffectAction extends Action{
 	
 	@Override
 	public TypeDescriptor getResultType() {
-		// TODO Auto-generated method stub
 		return TypeDescriptorConstants.VOID_PRIMITIVE;
 	}
 
