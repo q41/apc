@@ -491,11 +491,15 @@ public class Level extends Observable implements Runnable {
 	 * Returns the current time
 	 * @return the current time
 	 */
-	public static long getTime() {
+	public static long getGameTime() {
 		if(sysTimer)
 			return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 		else
 			return Timer.getCurrentTime();
+	}
+	
+	public static long getTime() {
+		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
 	}
 	
 	/**

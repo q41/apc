@@ -28,7 +28,7 @@ public class EffectDeployment {
 		//set expiration time
 		setExpirationTime(duration);
 		
-		System.out.println(Level.getTime() + " deploying: " + uniqueAttachment);
+		System.out.println(Level.getGameTime() + " deploying: " + uniqueAttachment);
 		org.alia4j.fial.System.deploy(uniqueAttachment);
 		org.alia4j.fial.System.deploy(precedence);
 		effectDeployments.add(this);
@@ -65,14 +65,14 @@ public class EffectDeployment {
 	
 	//Undeploys any expired effects and their precedencerules
 	public static void deactivateExpired() {
-		while(effectDeployments.first().getExpirationTime() <= Level.getTime()) {
+		while(effectDeployments.first().getExpirationTime() <= Level.getGameTime()) {
 			effectDeployments.first().destroy();
 		}
 	}
 
 	//Ends this effect deployments existence
 	private void destroy() {
-		System.out.println(Level.getTime() + " undeploying: " + uniqueAttachment);
+		System.out.println(Level.getGameTime() + " undeploying: " + uniqueAttachment);
 		org.alia4j.fial.System.undeploy(this.uniqueAttachment);
 		org.alia4j.fial.System.undeploy(this.precedence);
 		effectDeployments.remove(this);
