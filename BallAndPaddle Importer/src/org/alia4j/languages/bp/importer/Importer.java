@@ -561,7 +561,7 @@ public class Importer implements org.alia4j.fial.Importer {
 		Context callee = ContextFactory.findOrCreateCalleeContext();
 		Context max = new LocalVariableContext(callee, AttributeType.DOUBLE, "upper"+field+"Limit");
 		Context min= new LocalVariableContext(callee, AttributeType.DOUBLE, "lower"+field+"Limit");
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		List<Context> con = new ArrayList<Context>(); con.add(min); con.add(max); 
 		Specialization specialization = new Specialization(pattern, null, con);		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);	
@@ -579,7 +579,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	private void createBoundsAssurance(MethodPattern pattern, Action action, double minValue, double maxValue){
 		Context max = ContextFactory.findOrCreateDoubleConstantContext(maxValue);
 		Context min = ContextFactory.findOrCreateDoubleConstantContext(minValue);
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		List<Context> con = new ArrayList<Context>(); con.add(min); con.add(max); 
 		Specialization specialization = new Specialization(pattern, null, con);		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
@@ -597,7 +597,7 @@ public class Importer implements org.alia4j.fial.Importer {
 	private void createBoundsAssurance(MethodPattern pattern, Action action, int minValue, int maxValue){
 		Context max = ContextFactory.findOrCreateIntegerConstantContext(maxValue);
 		Context min = ContextFactory.findOrCreateIntegerConstantContext(minValue);
-		List<Context> con = new ArrayList<Context>(); con.add(max); con.add(min);
+		List<Context> con = new ArrayList<Context>();  con.add(min); con.add(max);
 		Specialization specialization = new Specialization(pattern, null, con);		
 		Attachment attachement = new Attachment(Collections.singleton(specialization), action, ScheduleInfo.AROUND);
 		initialAttachments.add(attachement);
