@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 
+import org.alia4j.language.bp.Target;
 import org.alia4j.languages.bp.action.AttributeAssignAction;
 import org.alia4j.languages.bp.importer.AttributeType;
 import org.alia4j.liam.Context;
@@ -50,7 +51,7 @@ public final class LocalVariableContext extends Context {
 	
 	public int getIntegerValue(Object callee) {
 		try {
-			Field localVariable = callee.getClass().getDeclaredField(localVariableName);
+			Field localVariable = callee.getClass().getDeclaredField(localVariableName.toLowerCase());
 			localVariable.setAccessible(true);
 			return localVariable.getInt(callee);
 		} catch (NoSuchFieldException e) {
@@ -60,6 +61,10 @@ public final class LocalVariableContext extends Context {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	public int getIntValue(Object callee){
+		return getIntegerValue(callee);
 	}
 
 	public boolean getBooleanValue(BPObject callee) {

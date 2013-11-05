@@ -87,6 +87,10 @@ public final class TargetVariableContext extends Context {
 		return 0;
 	}
 	
+	public int getIntValue(BPObject collider1, BPObject collider2, Target target){
+		return getIntegerValue(collider1, collider2, target);
+	}
+	
 	public boolean getBooleanValue(BPObject collider1, BPObject collider2, Target target) {
 		//determine which colliding object is the owner of the attribute
 		BPObject targetObject = getTargetObject(collider1, collider2, target);

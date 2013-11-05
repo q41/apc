@@ -55,6 +55,10 @@ public final class LocalGetterResultContext extends Context {
 		return (int) evaluateMethod(callee);
 	}
 	
+	public int getIntValue(CalleeContext callee){
+		return getIntegerValue(callee);
+	}
+	
 	public double getDoubleValue(CalleeContext callee) {
 		return (double) evaluateMethod(callee);
 	}

@@ -37,7 +37,7 @@ public class AttributeIncAction extends Action {
 		Object objectContext = ((Object[]) exposedContextValues)[0];
 		double increment;
 		if(objectContext instanceof Double) increment = (double) objectContext;
-		else increment = (double) objectContext; 
+		else increment = (int) objectContext; 
 		return result + (int)increment;
 	}
 }
